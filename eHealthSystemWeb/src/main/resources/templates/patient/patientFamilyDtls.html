@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<script>
+
+
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		var columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},{
+				headerName : "Family Member Name",
+				field : "name",
+				width: 250
+			},{
+				headerName : "Relation",
+				field : "relation",
+				width: 250
+			},{
+				headerName :"Age",
+				field : "age",
+				width: 250
+			},{
+				headerName : "Birth Date",
+				field : "birthDate",
+				width: 250
+			},{
+				headerName : "Since",
+				field : "since",
+				width: 250
+			
+			}];			
+						
+	 	
+		      
+		var gridOptions = {
+				columnDefs : columnDefs,
+				defaultColDef : {
+					sortable : true,
+					filter : true,
+					resizable : true,
+					width : 700.5,
+					height : 10
+				}
+				/* },
+				rowSelection : 'single',
+				suppressRowClickSelection : true, */
+				
+			};
+		new agGrid.Grid(gridDiv, gridOptions);
+		 agGrid.simpleHttpRequest({
+			url :"view-patient-family-details-familydata"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+			console.log(data)
+		}); 		 
+	});
+	
+	
+	
+	
+	
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					
+
+						<div class="maincontentsec">
+							
+							<div class="row">
+							<div class="col-md-12">
+								<div class="panel-heading active" role="tab" id="headingOne">
+									<div class="font-design">
+										FAMILY DETAILS
+									</div>
+								</div>
+								</div>
+								<div class="col-md-12">
+									
+									<div class="box_reference" align="center">
+										<div id="myGrid" style="width: 100%; height: 300px;" class="ag-theme-alpine">
+											</div>
+									</div>
+
+								</div> 	
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Login</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style type="text/css">
+.icon-crl .fa {
+	padding: 14px;
+	font-size: 25px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #80bbdd;
+	margin: 5px 2px;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.btn-reg a {
+	color: #fff
+}
+
+.login-container {
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+.login-form-1 {
+	padding: 5%;
+	background: #0076ba;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	height: 600px;
+}
+
+.login-form-1 h3 {
+	text-align: center;
+	color: #333;
+}
+
+.login-form-2 {
+	padding: 10% 5% 5%;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	height: 600px;
+}
+
+.login-form-2 h3 {
+	text-align: center;
+	color: #fff;
+}
+
+.login-container form {
+	padding: 10%;
+}
+
+.btnSubmit {
+	width: 50%;
+	border-radius: 1rem;
+	padding: 1.5%;
+	border: none;
+	cursor: pointer;
+}
+
+.login-form-1 .btnSubmit {
+	font-weight: 600;
+	color: #fff;
+	background-color: #0062cc;
+}
+
+.login-form-2 .btnSubmit {
+	font-weight: 600;
+	color: #0062cc;
+	background-color: #fff;
+}
+
+.login-form-2 .ForgetPwd {
+	color: #fff;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.login-form-1 .ForgetPwd {
+	color: #ccc;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.right-text {
+	font-size: 14px;
+	color: #0076ba;
+	vertical-align: middle;
+	font-weight: 600;
+	text-align: center;
+	position: relative;
+	top: 25%;
+}
+
+.logo img {
+	margin-bottom: 20px;
+	height: 90px;
+}
+
+.signin-txt {
+	font-size: 36px;
+	font-weight: 200;
+	margin-bottom: 6rem;
+	text-align: center;
+	color: #fff;
+}
+
+.form-control1 {
+	display: block;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border-bottom: 1px solid #ced4da;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control1:focus {
+	outline: none;
+	border-bottom: 1px solid #ced4da;
+}
+
+.input_icon i {
+	position: absolute;
+	bottom: 2px;
+	left: 5px;
+	width: 24px;
+	height: 24px;
+	color: #979797;
+}
+
+.btn-login {
+	color: #fff;
+	background-color: #ed1b24;
+	border-color: #d90710;
+	border-radius: 20px;
+}
+
+.btn-login:hover {
+	color: #fff;
+	background-color: #d80e17;
+	border-color: #d90710;
+	border-radius: 20px;
+}
+
+.btn-reg {
+	color: #0076b9;
+	background-color: #ffffff;
+	border-color: #0076ba;
+	border-radius: 20px;
+}
+
+.btn-reg:hover {
+	color: #fff;
+	background-color: #0074f0;
+	border-color: #0074f0;
+	border-radius: 20px;
+}
+
+.or {
+	font-size: 18px;
+	color: #fff;
+	text-align: center;
+}
+</style>
+<script>
+	$(document).ready(function() {
+
+		$("#otp").hide();
+		$("#password").hide();
+		$("#confPassword").hide();
+		$("#cancelBtn").hide();
+		$("#otpSubmitBtn").hide();
+		$("#pwdSubmitBtn").hide();
+	});
+
+	/* function for OTP */
+	function getOTP() {
+		 var userid = $('#userid').val();
+		 var usermob = $('#usermob').val();
+		 if(userid){
+			 var data = {};
+			 data.key = $("#userid").val();
+			 data.name = 'UHID';
+			 $.ajax({
+		            type: "POST",
+		            url: "get-otp",
+		            dataType: "json",
+		            contentType: "application/json",
+		            data: JSON.stringify(data),
+		            success: function(response) {
+		                console.log(response);
+		                if (response.message == "Success") {
+		            		$('#userid').attr('disabled', true);
+		        			$('#usermob').attr('disabled', true);
+		        			$("#otp").show();
+		        			$("#password").hide();
+		        			$("#otpBtn").hide();
+		        			$("#confPassword").hide();
+		        			$("#cancelBtn").show();
+		        			$("#otpSubmitBtn").show();
+		                }
+		            },
+		            error: function(response) {
+		                console.log(response);
+		            }
+		        })
+	
+		 }if(usermob){
+			 var data = {};
+			 data.key = $("#usermob").val();
+			 data.name = 'Mobile number';
+			 $.ajax({
+		            type: "POST",
+		            url: "get-otp",
+		            dataType: "json",
+		            contentType: "application/json",
+		            data: JSON.stringify(data),
+		            success: function(response) {
+		                console.log(response);
+		                if (response.message == "Success") {
+		                	 $("#userid").val(response.body.key);
+		                	$('#userid').attr('disabled', true);
+		        			$('#usermob').attr('disabled', true);
+		        			$("#otp").show();
+		        			$("#otpBtn").hide();
+		        			$("#password").hide();
+		        			$("#confPassword").hide();
+		        			$("#cancelBtn").show();
+		        			$("#otpSubmitBtn").show();
+		                }
+		            },
+		            error: function(response) {
+		                console.log(response);
+		            }
+		        })
+		
+		 }else{
+			 
+		 }
+		 
+		    
+		
+	}
+	/* function for OTP Submit */
+	function otpSubmit() {
+	
+		$('#userid').hide();
+		$('#usermob').hide();
+		$("#orDiv").hide();
+		$("#otp").hide();
+		$("#password").show();
+		$("#confPassword").show();
+		$("#otpBtn").hide();
+		$("#cancelBtn").show();
+		$("#otpSubmitBtn").hide();
+		$("#pwdSubmitBtn").show();
+	}
+	/* function for Password Submit */
+	function pwdSubmit() {
+		var data = {};
+		 data.key = $("#userid").val();
+		 data.code = $("#password").val();
+		 $.ajax({
+	            type: "POST",
+	            url: "save-new-password",
+	            dataType: "json",
+	            contentType: "application/json",
+	            data: JSON.stringify(data),
+	            success: function(response) {
+	                console.log(response);
+	                if (response.message == "Success") {
+	                
+	                }
+	            },
+	            error: function(response) {
+	                console.log(response);
+	            }
+	        })
+	}
+	/* function for cancel */
+	function cancel() {
+		window.location.href = '/login';
+
+	}
+</script>
+</head>
+<body>
+
+	<div class="container pt-3">
+		<div class="row justify-content-sm-center">
+			<div class="col-sm-9 col-md-9">
+				<div class="row">
+					<div class="col-md-6 login-form-1">
+						<div class="signin-txt">Sign In</div>
+
+						<div class="input-group mb-3">
+							<input type="text" class="form-control1" id="userid"
+								onkeyup="checkNum('userid')"  maxLength="16" name="userid" placeholder="User Id">
+						</div>
+						<div class="mb-3" id="orDiv">
+							<div class="or">OR</div>
+						</div>
+						<div class="input-group mb-3">
+							<input type="text" class="form-control1" id="usermob"
+								onkeyup="checkNum('usermob')"  maxLength="10" name="usermob" placeholder="Mobile No">
+						</div>
+
+						<div class="input-group mb-3">
+							<input type="text" class="form-control1" id="otp" name="otp"
+								onkeyup="checkNum('otp')"  maxLength="6" placeholder="Enter OTP">
+						</div>
+						<div class="input-group mb-3">
+							<input type="text" class="form-control1" id="password" name="pass"
+								placeholder="Enter New Password">
+						</div>
+						<div class="input-group mb-3">
+							<input type="text" class="form-control1" id="confPassword" name="confPass"
+								placeholder="Enter Confirm Password">
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<button type="button" class="btn btn-reg btn-block mb-3" id="otpBtn"
+									onclick="getOTP()">Get OTP</button>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6" style="padding-right: 1px;" id="cancelBtn">
+								<button class="btn btn-login btn-block mb-3" type="button" onclick="cancel()">Cancel</button>
+							</div>
+							<div class="col-md-6" style="padding-left: 1px;"
+								id="otpSubmitBtn">
+								<button type="button" class="btn btn-reg btn-block mb-3"
+									onclick="otpSubmit()">Submit</button>
+							</div>
+							<div class="col-md-6" style="padding-left: 1px;"
+								id="pwdSubmitBtn">
+								<button type="button" class="btn btn-reg btn-block mb-3"
+									onclick="pwdSubmit()">Submit</button>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-6 login-form-2">
+
+						<div class="logo" align="center">
+							<img src="assets/images/EHS_Logo_02.jpg">
+						</div>
+						<div class="right-text">Internationally Patented Technology
+							interconnecting all Healthcare Service Providers on one single
+							Platform.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

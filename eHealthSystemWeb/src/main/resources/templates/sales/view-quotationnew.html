@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+	
+<head>
+<style type="text/css">
+.highcharts-exporting-group {
+	display: none;
+}
+
+.slidebox {
+	padding: 14px;
+	margin-top: 0px;
+	margin: 0px 10px;
+}
+
+.form-group label {
+	font-size: 12px;
+	position: relative;
+	top: 4px;
+}
+
+.holdCls {
+	background-color: rgb(0, 143, 0);
+}
+
+.bg_white {
+	background: #ffffff !important;
+}
+
+.blueClsWT {
+	background: #0076ba;
+	color:#fff;
+	
+}
+.blueCls {
+	background: #0076ba;
+	color:#fff;
+}
+.blueClsWT::before
+{
+	font-size:8px;
+	color:#FFF;
+	content:'\e64c';
+	font-family: 'themify';
+	padding-right:7px;
+	
+}
+
+
+.tptCls {
+	background:transparnt; 
+}
+</style>
+<script>
+		$(document).ready(function() {
+			
+
+				var gridDiv = document.querySelector('#myGrid');
+				new agGrid.Grid(gridDiv, gridOptions);
+				
+				var gridDiv = document.querySelector('#item');
+				new agGrid.Grid(gridDiv, itemOptions);
+			
+				$("#Cancel").hide();
+				$("#addData").hide();
+				$("#save").hide();
+				
+				$('#delete').attr("disabled", true);
+				
+				gridOptions.api.setRowData();
+				itemOptions.api.setRowData();
+				agGrid.simpleHttpRequest({
+					url : "view-quotation-through-ajax"
+				}).then(function(data) {
+					var len = data.length;
+					$('#totalCandidate').find('span').html(len);
+					gridOptions.api.setRowData(data);
+				});
+				
+				agGrid.simpleHttpRequest({
+					url : "view-quotation-through-ajax"
+				}).then(function(data) {
+					itemOptions.api.setRowData(data);
+				});
+				
+				
+				var dateFormat = localStorage.getItem("dateFormat");
+				
+				$("#toDateCalendar").datetimepicker({
+					format : dateFormat,
+					closeOnDateSelect : true,
+					timepicker : false,
+				}).on("change", function() {
+					$('#qutValidDate').val($(this).val());
+				})
+
+				$('#qutValidDate').blur(function() {
+					$("#toDateCalendar").val($(this).val());
+				})
+				
+				
+	$("#toDateCalendarad").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#qutUpdatedOn').val($(this).val());
+		})
+
+		$('#qutUpdatedOn').blur(function() {
+			$("#toDateCalendarad").val($(this).val());
+		})
+		
+		
+
+	});
+
+	var columnDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : 'Quotation Name',
+		field : "qutName"
+	}, {
+		headerName : 'Valid Up To Date',
+		field : "qutValidDate"
+	}, {
+		headerName : 'Customer',
+		field : "customer"
+	}, {
+		headerName : 'Quotation Description',
+		field : "qutDescription"
+	}, {
+		headerName : 'Active',
+		field : "qutActive"
+	}, {
+		headerName : 'Created By',
+		field : "qutCreatedBy"
+	}, {
+		headerName : 'Updated On',
+		field : "qutUpdatedOn"
+	} ];
+
+	var itemDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : 'Item Name',
+		field : "itemName"
+	}, {
+		headerName : 'Quantity',
+		field : "quantity"
+	}, {
+		headerName : 'Unit Price',
+		field : "unitPrice"
+	}, {
+		headerName : 'Discount',
+		field : "discount"
+	}, {
+		headerName : 'GstRate',
+		field : "gstRate"
+	}, {
+		headerName : 'Amount',
+		field : "amount"
+	} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		},
+	};
+
+	const itemOptions = {
+		columnDefs : itemDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		},
+	};
+
+	function add() {
+		$('#hideTbl').hide();
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#save").show();
+		$("#Cancel").show();
+		$("#addData").show();
+		$("#totalCandidate").hide();
+		$("#dwnld").hide();
+		$("#upld").hide();
+	}
+
+	function Cancel() {
+		$("#add").show();
+		$("#myGrid").show();
+		$("#save").hide();
+		$("#Cancel").hide();
+		$("#addData").hide();
+		$('#hideTbl').show();
+		$("#totalCandidate").show();
+		$("#dwnld").show();
+		$("#upld").show();
+
+	}
+
+	function openNav() {
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto; top:260px;";
+
+		document.getElementById("main_content").style.width = "72%";
+		$('#Cancel').attr('disabled', true);
+		$('#save').attr('disabled', true);
+
+	}
+
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+
+	}
+</script>
+</head>	
+
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+					<div class="row margin_topbot" id="hideTbl">
+							<div class="btn-hs">
+								<div class="input-style row">
+									<input type="text" id="searchBar" placeholder="Search.."
+										name="search" class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()">
+									<div class="searchicon">
+										<a href="#"><span style="display: none" id="closeKey"
+											onclick="gridVendorOptions.api.setQuickFilter(null);$('#searchBar').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i">X</span></a> <a href="#"><i
+											class="fa fa-search"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+
+							<div class="col-md-7 btn-hs">
+								<div class="font-design" id="totalCandidate">
+									QUOTATION LIST (<span></span>)
+								</div>
+							</div>
+							<div class="col-md-5 buttonsec btn-hs">
+
+								<button class="btn4" id=dwnld>Download</button>
+								<button class="btn4" id=upld>Upload</button>
+								<div class="buttongap"></div>
+								<!-- <button id="save" onclick="save()" class="btn1">save</button>
+								<button class="btn4" id=Cancel onclick="Cancel()">Cancel</button> -->
+
+								<button onclick="add()" class="btn1" id="add">New</button>
+								<button onclick="deleteCust()" class="btn3" id="delete">delete</button>
+							</div>
+						</div>
+						<div id="myGrid" style="height: 500px; width: 1090px;"
+							class="ag-theme-alpine"></div>
+							<div class="collapse" id="addData">
+							<div class="innerstickybg">
+								<div class="row">
+
+									<div class="col-md-3">
+										Quotation ID: <span id="quotationId"></span>
+									</div>
+									<div class="col-md-6">
+										<div id="statusDiv">
+											<div class="hr4"></div>
+											<div class="main-div">
+												<div class="section2">
+													<div id="createdDiv" class="green-box">
+														<div class="green-box-heading">CREATED</div>
+														<div class="date" id="createdDate"></div>
+													</div>
+												</div>
+												<div class="section3">
+													<div id="activeDiv" class="green-box">
+														<div class="green-box-heading">ACTIVE</div>
+														<div class="date" id="activeDate"></div>
+													</div>
+												</div>
+												<div class="section4">
+													<div id="completeDiv" class="grey-box">
+														<div class="green-box-heading">COMPLETE</div>
+														<div class="date" id="completeDate"></div>
+													</div>
+												</div>
+												<div class="section5">
+													<div id="onHoldDiv" class="grey-box">
+														<div class="green-box-heading">ONHOLD</div>
+														<div class="date" id="onHoldDate"></div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3" align="right">
+										<button class="btn4" id="Cancel" onClick="Cancel()">Cancel</button>
+										<button class="btn1" id="save" onclick="save()">Save</button>
+									</div>
+									</div>
+									</div>
+									
+									
+							
+								<div class="row innersticky_contentgap">
+								<input type="hidden" id="quotationId">
+										<div class="col-lg-3">
+										<div class="form-group">
+											<label>Quotation Name</label> <input type="text" id="qutName"
+												placeholder="Quotation Name" class="form-control">
+										</div>
+										</div>
+
+										<div class="col-md-3">
+											<label>Valid UpTo Date</label> <input type="text" id="qutValidDate"
+												class="form-control"
+												th:attr="onkeyup=|formatDate('dob','${session.DATEFORMAT_JS}')|">
+											<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+										</div>
+								<div class="col-md-6">
+									<input type="hidden" id="qutUpdatedOn"> <i
+										id="toDateCalendarad"></i>
+								</div>
+								<div class="col-lg-3">
+										<div class="form-group">
+											<label>Customer Name</label> <input type="text"
+												id="customer" placeholder="Customer Name"
+												class="form-control">
+										</div>
+									</div>
+										<div class="col-md-3">
+										<div class="form-group">
+											<input type="checkbox" class="loc-chb" name="isActive"
+												id="qutActive" value="1" checked> <label
+												style="margin-top: 10px;">Active</label>
+										</div>
+									</div>
+										
+									<div class="col-lg-12">
+										<div class="form-group">
+											<label>Customer Description</label> <textarea
+												id="qutDescription"> </textarea>
+												
+										</div>
+									</div>
+									
+								</div>
+								
+								<div id="main_content">
+								<div class="wrapper center-block">
+									<div class="panel-group" id="accordion" role="tablist"
+									aria-multiselectable="true">
+									<div class="panel panel-default">
+									<div class="panel-heading active" role="tab" id="headingOne">
+												<h4 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion" href="#itemList"
+														aria-expanded="true" aria-controls="itemList"> Quotation
+														Item </a>
+												</h4>
+											</div>
+												<div id="itemList" class="panel-collapse collapse show"
+												role="tabpanel" aria-labelledby="headingOne">
+												<div class="row">
+
+													<div class="col-md-4 btn-hs1">
+														<div class="font-design"></div>
+													</div>
+													<div class="col-md-8 butttonsec">
+														
+														<button class="btn1" id="addProduct" onclick="openNav()">NEW</button>
+													</div>
+												</div>
+												<div id="item" style="width: 100%; height: 200px;"
+													class="ag-theme-alpine"></div>
+
+
+											</div>
+											
+									</div>
+									</div>
+									
+									<div id="mySidenav" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+											<div class="chartbtnsec">
+												<div align="right">
+													<button class="btn4" onclick="closeNav()">CANCEL</button>
+													<button class="btn1" onclick="saveTableData()">SAVE</button>
+													
+												</div>
+											</div>
+											
+											<div class="col-lg-6">
+													<div class="form-group">
+														<label>Item Name</label> <input type="text" id="itemName"
+															class="form-control">
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Quantity</label>  <input type="text" id="quantity"
+															class="form-control">
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Unit Price</label><input type="text" id="unitPrice"
+															class="form-control">
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Discount</label> <input type="text" id="discount"
+															class="form-control">
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>gstRate</label><input type="text" id="gstRate"
+															class="form-control">
+													</div>
+												</div>
+												<div class="col-lg-6">
+													<div class="form-group">
+														<label>Amount</label> <input type="text" id="amount"
+															class="form-control">
+													</div>
+												</div>
+											</div>
+											</div>
+											</div>
+									</div>
+									</div>
+									
+								</div>
+							</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<style type="text/css">
+body
+{
+  background: #f5f5f5;
+}
+.content-wrapper {
+    background: transparent;
+    padding: .75rem 2.25rem;
+    }
+.btnDisable
+{
+  color: #ccc!important;
+}
+
+.card-body a{
+  color:#000;
+}
+.highcharts-axis-title
+{
+  display: none;
+}
+/*todaychanges*/
+.card
+{
+  margin:8px 0px;
+}
+
+.smlbox
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:5px;
+color: #333;
+}
+.smlbox1
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:11.5px 0px;
+color: #333;
+}
+.smlbox11
+{
+border-radius: 5px;
+padding: 10px;
+color: #0071c1;
+}
+.smlbox11 .title
+{
+  width: 100px!important;
+  color: #000;
+  float: left;
+}
+.smlbox2
+{
+background: transparent;
+border-radius: 5px;
+padding:5px 10px;
+margin:5px 0px;
+color: #FFF;
+}
+.smlbox2 span
+{
+  float:right;
+  text-align: right;
+}
+.mrt_5
+{
+  margin-top: 8px;
+}
+.text-left
+{
+  color:#0071c1;
+}
+.padding_8
+{
+  padding: 0px 8px;
+}
+.heading
+{
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+}
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 16px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 8px !important;
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+
+
+
+.card-title
+{
+  padding:10px 3px;
+  color: #333!important;
+  font-size: 16px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+.active
+{
+  background: #98cb4a;
+  border:1px solid #FFF;
+}
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+  position: relative;
+  top: -20px;
+}
+.font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 16px;
+}
+.profile
+{
+  border:2px solid #ccc;
+  border-radius: 80px;
+  height: 104px;
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.card-title2 {
+    /* padding: 10px 3px; */
+    color: #333!important;
+    font-size: 16px;
+    font-weight: 500;
+}
+.card-dsn{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 315px;
+  border-bottom: 5px solid #913ccd;
+  border-radius: 5px;
+  overflow-y: scroll;
+    overflow-x: hidden;
+}
+.card-emergency{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f2b40c;
+  border-radius: 5px;
+
+}
+.card-family{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f15f74;
+  border-radius: 5px;
+
+}
+.card-profile{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  border-bottom: 5px solid #3000c6;
+  border-radius: 5px;
+
+}
+.mt-8{
+  margin-top: 8px;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+    .tbl-card {
+    background-color: #fff;
+    border-radius: 5px;
+    border-bottom: 5px solid #2ca8c2;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    height: 315px;
+   }
+    .tbl-head{
+      font-size: 16px;
+      color: #fff;
+      background-color: #2ca8c2;
+      padding: 5px 10px;
+      border-radius: 5px 5px 0px 0px;
+    }
+    .table thead th{
+      border:none;
+    }
+    .table td, .table th {
+     border-top:none; 
+}
+.inr-tbl{
+  padding: 10px;
+}
+.date-clnd{
+  border:1px solid #2d9f9e;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #000;
+}
+.btm-txt{
+  background-color: #2d9f9e;
+  border-radius: 0px 0px 7px 7px;
+  color: #fff;
+  font-weight: 500;
+}
+.disble-clnd{
+  border:1px solid #cacaca;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #000;
+}
+.disble-txt{
+  background-color: #cacaca;
+  border-radius: 0px 0px 7px 7px;
+  font-weight: 500;
+}
+
+.mecication-head a{
+  color: #fff;
+}
+.rlt-nm {
+    font-size: 16px;
+    color: #000;
+    border-right: 2px solid #000;
+    width: 165px;
+    float: left;
+}
+.rlt {
+    font-size: 16px;
+    color: #000;
+    margin-left: 10px;
+}
+.ph-no {
+    font-size: 16px;
+    color: #000;
+}
+.ph-no span {
+  color: #056fe2;
+
+}
+.d-flex{
+  display: flex;
+}
+.user-dtlhd {
+              font-size: 16px;
+              color: #000;
+              font-weight: 500;
+          }
+           .user-id {
+            font-size: 16px;
+            font-weight: 400;
+            color: #056fe2;
+        }
+           
+           .mb-10{
+            margin-bottom: 10px;}
+
+    .since-txt{
+      font-size: 16px;
+      color: #000;
+    }
+    .since-txt span{
+      font-size: 16px;
+      color: #000;
+      margin-left: 10px;
+
+    }
+    .more{
+      text-align: right;
+      font-size: 16px;
+      color: #000;
+      margin-right: 20px;
+      margin-bottom: 8px;
+    }
+    .rpt-nm {
+    font-size: 16px;
+    color: #000;
+    }
+    .lab-name {
+        font-size: 16px;
+        color: #056fe2;
+    }
+    .btn-book{
+          color: #fff;
+    background-color: #3000c6;
+    border-color: #3000c6;
+    }
+     .btn-book:hover{
+          color: #fff;
+    background-color: #5129ce;
+    border-color: #5129ce;
+    }
+    .prf-ht{
+      height: 621px;
+    }
+    .mecication-head {
+    font-size: 16px;
+    color: #fff;
+    background-color: #117a75;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0px 0px;
+}
+.md-tbl td,.md-tbl th {
+  padding: 6px 5px;
+}
+.md-tbl td {
+  color: #056fe2;
+  font-size: 16px;
+}
+.mecication-card {
+    background-color: #fff;
+    border-radius: 5px;
+    border-bottom: 5px solid #117a75;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    height: 300px;
+    margin-top: -30px;
+}
+.mb-8 {
+    margin-bottom: 8px;
+}
+.user-dtlhd1 {
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+}
+.user-id1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #056fe2;
+}
+
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 14px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+    .mecication-head {
+    font-size: 18px;
+    color: #fff;
+    background-color: #2ca8c2;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+
+
+.card-title
+{
+  padding:10px 3px;
+  color: #333!important;
+  font-size: 18px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+.active
+{
+  background: #98cb4a;
+  border:1px solid #FFF;
+}
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+  position: relative;
+  top: -20px;
+}
+.font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 14px;
+}
+.profile
+{
+  border:2px solid #ccc;
+  border-radius: 80px;
+  height: 104px;
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.padding_0 {
+    padding: 0px;
+}
+.flexrow {
+    display: flex;
+    flex-flow: row wrap;
+}
+ 
+.flexrow.row-7-el > .element  {
+    flex: 0 1 calc(100%/7);
+    max-width: calc(100%/7);
+}
+
+.element {
+  text-align: center;
+}
+.user-dtlhd {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.user-id {
+    font-size: 16px;
+    font-weight: 400;
+    color: #056fe2;
+}
+.mb-10 {
+    margin-bottom: 10px;
+}
+.card-profile {
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    border-bottom: 5px solid #3000c6;
+    border-radius: 5px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    Highcharts.chart('blood', {
+    	 chart : {
+    	  backgroundColor: 'transparent',
+    	  type : 'column'
+    	},
+    	title : {
+    	 text : ''
+    	},
+
+    	colors: [
+    	  '#d83d39'
+    	],
+
+    	plotOptions: {
+    	  series: {
+    	    dataLabels: {
+    	      enabled: true,
+    	      format: '{point.y:.1f}'
+    	    }
+    	  }
+    	},
+
+    	xAxis: {
+    	  labels: {
+    	    style: {
+    	      color: '#e4e4e2',
+    	      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	    }
+    	  },
+    	  categories: ['Cardiology', 'Orthopedic', 'Asthma' , 'Diabetes', 'Cancer','Inflenza'],
+    	  crosshair : true,
+
+    	},
+    	credits: {
+    	  enabled: false
+    	},
+    	exporting: { enabled: false },
+    	series: [{
+    	  type: 'column',
+    	  colorByPoint: false,
+    	  data: [10.5, 15.7, 18.9, 35.0, 21.4, 30.3],
+    	  showInLegend: false
+    	}
+
+
+    	],
+
+    	yAxis:{ 
+    	  labels: {
+    	    style: {
+    	      color: '#e4e4e2',
+    	      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	    }
+    	  },
+    	  gridLineWidth: 0,
+    	  minorGridLineWidth: 0
+    	}
+
+    	});
+
+/*Day wise Registration*/
+
+
+	Highcharts.chart('diabetes', {
+					chart : {
+						type : 'column',
+						backgroundColor : 'transparent',
+						color : 'white',
+					},
+
+					credits : {
+						enabled : false
+					},
+					exporting : {
+						enabled : false
+					},
+					title : {
+						text : ''
+					},
+
+					subtitle : {
+						text : ''
+					},
+					xAxis : {
+						type : 'category',
+						labels : {
+
+							style : {
+								fontSize : '11px',
+								fontFamily : 'Verdana, sans-serif'
+							}
+						}
+					},
+					yAxis : {
+						min : 0,
+						gridLineWidth : 0,
+						title : {
+							text : ''
+						}
+					},
+
+					legend : {
+						enabled : false
+					},
+					tooltip : {
+						pointFormat : ''
+					},
+					colors : [ '#4b6875' ],
+					series : [{
+						name : 'diabetes',
+						data : [ [ 'Cancel', 10.2 ], [ 'Pending', 22.4 ],
+								[ 'Booked', 32.3 ],
+						//['', 12.3]
+						],
+						dataLabels : {
+							enabled : true,
+							rotation : 0,
+							color : '#FFFFFF',
+							align : 'right',
+							format : '{point.y:.1f}', // one decimal
+							y : 10, // 10 pixels down from the top
+							style : {
+								fontSize : '11px',
+								fontFamily : 'Verdana, sans-serif'
+							}
+						}
+    }]
+  }); 
+
+Highcharts.chart('cholesterol', {
+							chart : {
+								type : 'bar'
+							},
+							exporting : {
+								enabled : false
+							},
+							title : {
+								text : ''
+							},
+							subtitle : {
+								text : ''
+							},
+
+							xAxis : {
+								categories : [ 'Readdmision', 'Discharge',
+										'Addmision' ],
+								title : {
+									text : null
+								}
+							},
+							yAxis : {
+								min : 0,
+								title : {
+									text : 'Population (millions)',
+									align : 'high'
+								},
+								labels : {
+									overflow : 'justify'
+								}
+							},
+							tooltip : {
+								valueSuffix : ' M'
+							},
+							plotOptions : {
+								bar : {
+									dataLabels : {
+										enabled : true
+									}
+								}
+							},
+							colors : [ '#2db5a9' ],
+							credits : {
+								enabled : false
+							},
+							series : [ {
+								name : 'Result',
+								data : [ 14.5, 21.4, 30.3 ],
+							}, 
+
+
+]
+});
+  
+Highcharts.chart('sugar', {
+					chart : {
+						type : 'spline'
+					},
+					title : {
+						text : ''
+					},
+					subtitle : {
+						text : ''
+					},
+					xAxis : {
+						categories : [ 'Week1', 'Week2', 'Week3', 'Week4',
+								'Week5', ]
+					},
+					credits : {
+						enabled : false
+					},
+					exporting : {
+						enabled : false
+					},
+					yAxis : {
+						title : {
+							text : ''
+						},
+						labels : {
+							formatter : function() {
+								return this.value + '°';
+							}
+						}
+					},
+					colors : [ '#942d2a' ],
+					tooltip : {
+						crosshairs : true,
+						shared : true
+					},
+					plotOptions : {
+						spline : {
+							marker : {
+								radius : 4,
+								lineColor : '#666666',
+								lineWidth : 1
+							}
+						}
+					},
+					series : [ {
+						name : 'Weekly Appointment',
+						marker : {
+							symbol : 'diamond'
+						},
+						data : [ 60.0, 26.9, -9.5, -44.5, 18.2 ]
+					} ]
+				});
+
+				Highcharts.chart('Electrolyte', {
+					chart : {
+						type : 'spline'
+					},
+					title : {
+						text : ''
+					},
+					subtitle : {
+						text : ''
+					},
+					xAxis : {
+						categories : [ 'Week1', 'Week2', 'Week3', 'Week4',
+								'Week5' ]
+					},
+					credits : {
+						enabled : false
+					},
+					exporting : {
+						enabled : false
+					},
+					yAxis : {
+						title : {
+							text : ''
+						},
+						labels : {
+							formatter : function() {
+								return this.value + '°';
+							}
+						}
+					},
+					tooltip : {
+						crosshairs : true,
+						shared : true
+					},
+					plotOptions : {
+						spline : {
+							marker : {
+								radius : 4,
+								lineColor : '#666666',
+								lineWidth : 1
+							}
+						}
+					},
+
+					series : [ {
+						name : 'Potassium(Serum)',
+						marker : {
+							symbol : 'square'
+						},
+						data : [ 7.0, 6.9, 9.5, 14.5, 18.2 ]
+
+					}, {
+						name : 'Calcium(Serum)',
+						marker : {
+							symbol : 'diamond'
+						},
+						data : [ 4.2, 5.7, 8.5, 11.9, 15.2, ]
+					}, {
+						name : 'Magnesium(Serum)',
+						marker : {
+							symbol : 'diamond'
+						},
+						data : [ 17.0, 16.6, 14.2, 20.3, 6.6, ]
+					}, {
+						name : 'Sodium(Serum)',
+						marker : {
+							symbol : 'diamond'
+						},
+						data : [ 14.2, 15.7, 15.2, 17.0, 16.6, ]
+					} ]
+				});
+
+				Highcharts.chart('livertest', {
+					chart : {
+						type : 'spline',
+						scrollablePlotArea : {
+							minWidth : 800,
+							scrollPositionX : 1
+						}
+					},
+					legend : {
+						enabled : false
+					},
+					credits : {
+						enabled : false
+					},
+					exporting : {
+						enabled : false
+					},
+					title : {
+						text : '',
+						align : 'left'
+					},
+					subtitle : {
+						text : '',
+						align : 'left'
+					},
+					xAxis : {
+						type : 'datetime',
+						labels : {
+							overflow : 'justify'
+						}
+					},
+					yAxis : {
+						title : {
+							text : 'Wind speed (m/s)'
+						},
+						minorGridLineWidth : 0,
+						gridLineWidth : 0,
+						alternateGridColor : null,
+						plotBands : [ {
+							from : 0.3,
+							to : 1.5,
+							color : 'rgba(68, 170, 213, 0.1)',
+							label : {
+								text : 'Light air',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 1.5,
+							to : 3.3,
+							color : 'rgba(0, 0, 0, 0)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 3.3,
+							to : 5.5,
+							color : 'rgba(68, 170, 213, 0.1)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 5.5,
+							to : 8,
+							color : 'rgba(0, 0, 0, 0)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 8,
+							to : 11,
+							color : 'rgba(68, 170, 213, 0.1)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 11,
+							to : 14,
+							color : 'rgba(0, 0, 0, 0)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						}, {
+							from : 14,
+							to : 15,
+							color : 'rgba(68, 170, 213, 0.1)',
+							label : {
+								text : '',
+								style : {
+									color : '#606060'
+								}
+							}
+						} ]
+					},
+					tooltip : {
+						valueSuffix : ' m/s'
+					},
+					plotOptions : {
+						spline : {
+							lineWidth : 4,
+							states : {
+								hover : {
+									lineWidth : 5
+								}
+							},
+							marker : {
+								enabled : false
+							},
+							pointInterval : 3600000, // one hour
+							pointStart : Date.UTC(2021, 7, 10, 0, 0, 0)
+						}
+					},
+					series : [ {
+						name : 'AG Ratio',
+						data : [ 69.6, 63.7, 63.9, 43.7, 66.0, 61.7 ]
+					}, {
+						name : 'Albumin',
+						data : [ 34.8, 43.0, 51.2, 41.4, 64.9, 72.4 ]
+					},
+
+					{
+						name : 'Alkaline Phosphatase',
+						data : [ 20.2, 30.7, 36.8, 30.9, 39.6, 47.1 ]
+					}, {
+						name : 'Direct Bilirubin',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					}, {
+						name : 'Globulin',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					}, {
+						name : 'Indirect Bilirubin',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					}, {
+						name : 'SGPT',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					}, {
+						name : 'Total Bilirubin',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					}, {
+						name : 'Total Protein',
+						data : [ null, null, null, null, 21.4, 30.3 ]
+					} ],
+					navigation : {
+						menuItemStyle : {
+							fontSize : '10px'
+						}
+					}
+				});
+
+			})
+var columnDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 15,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},  {
+		headerName : "UHID No",
+		field : "patientId",
+		width:250
+	},
+	
+	{
+		headerName : "Patient Name",
+		field : "patientName",
+		width:250
+	},
+	{
+
+		headerName : "Doctor Name",
+		field : "docName",
+		width:250
+	}, {
+		headerName : "Date",
+		field : "date",
+		width:200
+	}, {
+		headerName : 'Slot Time',
+		field : "slotTime",
+		width:200
+	},
+	{
+		headerName : "Status",
+		field : "status",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	}
+	 ];
+
+	var rowData = [ {
+		patientId : '9121589558694236',
+		patientName:'Anil Sahoo',
+		docName : 'Gyana Nayak',
+		date : '12-06-2021',
+		slotTime : '10.30AM',
+		status : 'Booked',
+	},
+	
+	{
+		patientId : '9121589558694536',
+		patientName:' Akash Pradhan',
+		docName : 'Sradhanjali Panda',
+		date : '18-06-2021',
+		slotTime : '12.05PM',
+		status : 'Cancel',
+	},
+	
+	{
+		patientId : '9121589558692536',
+		patientName:'Rohan Nayak',
+		docName : 'Sagar Anchal',
+		date : '21-06-2021',
+		slotTime : '14.10PM',
+		status : 'Pending',
+	}
+
+	];
+
+
+	var gridOptions = {
+			columnDefs : columnDefs,
+			 rowData: rowData,
+			defaultColDef : {
+				sortable : true,
+				filter : true,
+				resizable : true,
+				width : 180,
+				height : 10
+			},
+			rowSelection : 'multiple'		
+
+		};
+
+	
+document.addEventListener('DOMContentLoaded', function() {
+	
+	var myGrid = document.querySelector('#myGrid');
+	new agGrid.Grid(myGrid, gridOptions);	
+	
+	
+});
+
+
+$(document).ready(
+		function() {
+			var date = (new Date()).toISOString().split('T')[0];
+			$("#punchinDate").val(date); 
+
+			
+
+			var d = new Date();
+			var strDate = d.getFullYear() + "/" + (d.getMonth() + 1) + "/"
+					+ d.getDate();
+			$("#totalReq").text(strDate);
+
+		});
+		
+function add() {
+	
+	
+	var date = (new Date()).toISOString().split('T')[0];
+	$("#punchinDate").val(date);
+}
+	
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		 <div class="container-scroller">
+      <!-- partial -->
+      <div class="container-fluid">
+
+      
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+<input type="hidden" id="moduleList" th:value="${session.MODULELIST}">
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="row">
+               <div class="col-md-3 stretch-card padding_5">
+              
+                <div class="card card-img-holder text-white" style="background: #913ccd; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                      <div class="font-weight-normal">Today Appointment</div>
+                      <h4>340</h4>
+                      
+                       <i class="mdi mdi-cash-register mdi-36px float-right icon"></i>
+                   </a>
+                  </div>
+                </div>
+             
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #f15f74; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                      <div class="font-weight-normal">No Of Appointment Cancel</div>
+                      <h4>2855</h4>
+                      <i class="mdi mdi-doctor mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #2ca8c2; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">No of Hospital</div>
+                    <h4>7</h4>
+                    <i class="mdi mdi-file-document mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #009933; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Patient Addmision</div>
+                    <h4>456</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #f2b40c; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Available Doctor</div>
+                    <h4>545</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+                 <!-- <div class="card card-img-holder text-white" style="background: #f2b40c;">
+                 <div class="card-body">
+                    <h4 class="font-weight-normal mb-3 text-center">15 AUG 2021</h4>                    
+                  </div>
+               </div> -->
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #3000c6; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Available Slot</div>
+                    <h4>45</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background:#ae1e64; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Test Report</div>
+                    <h4>Yes</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #074525; height: 80px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Feedback</div>
+                    <h4>Yes</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              </div>
+              
+              
+                
+       <div class="row">
+                  <div class="col-md-6 padding_5">
+                <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                   <h4 class="card-title">Patient Disease</h4>
+                 </div>
+                 <div id="blood" style="height:270px;"></div>
+               </div>
+                <div class="card" style="background: #FFF; color: #333;">
+                <div class="col-md-12">
+                  <h4 class="card-title float-left">Bed Status</h4>
+                </div>
+
+                <div id="invChartDiv2">
+                  <div class="highcharts-figure" id="cholesterol" style="height:270px;"> </div> 
+                </div>
+            </div>
+
+               
+                </div>
+              <div class="col-md-6  padding_5">
+                <div class="card" style="background: #FFF;">
+                  <div class="col-md-12">
+                   <h4 class="card-title float-left">Appointment Status</h4>
+                 </div>
+                 <div id="diabetes" style="height:270px;"></div>
+               </div>
+
+                <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                   <h4 class="card-title">Weekly Appointment </h4>
+                 </div>
+                 <div id="sugar" style="height:270px;"></div>
+               </div>
+              </div>
+              </div>
+              
+              <div id="tab23">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label> Date</label> <input type="text" id="punchinDate"
+													class="form-control" placeholder="Current Date"
+													style="border: none !important;" disabled="disabled">
+
+											</div>
+										</div>
+										
+										<div class="col-md-12 buttonsec btn-hs">
+											<button id="add1" class="btn1" onclick="add()">VIEW</button>
+										</div>
+									</div>
+								</div>
+              
+     		<div id="myGrid" style="height: 250px; width: 1370px;"
+															class="ag-theme-alpine"></div>
+
+<br>
+
+            <div class="col-md-4  stretch-card padding_5">
+    <div class="dct-tbl-card">
+        <div class="mecication-head">Walk In Patient
+        </div>
+
+        <div class="pd-10">
+        <div class="row">
+          <div class="col-md-5 mb-10">
+            <label>eHealthCard No.:</label>
+          </div>
+          <div class="col-md-7 mb-10">
+            <input type="text" name="" class="form-control">
+          </div>
+          <div class="col-md-5 mb-10">
+            <label>Password.:</label>
+          </div>
+          <div class="col-md-7 mb-10">
+            <input type="text" name="" class="form-control">
+          </div>
+           <div class="col-md-12 mb-10 btn-psn" align="right">
+            <button class="btn btn-primary">Book Appointment</button>
+          </div>
+        </div>
+      </div>
+      </div>
+   </div>
+
+
+   </div>
+
+  <!-- partial -->
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<!-- plugins:js -->
+
+<!-- End custom js for this page -->
+	</div>
+	</div>
+	</div>
+</body>
+</html> 

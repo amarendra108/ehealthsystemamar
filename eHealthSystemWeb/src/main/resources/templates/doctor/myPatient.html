@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- plugins:css -->
+
+
+<style>
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+	
+	agGrid.simpleHttpRequest({
+		url : 'view-my-patient-list',
+	}).then(function(data) {
+		console.log(data);
+		gridOptions.api.setRowData(data);
+	})
+
+});
+const columnDefs = [
+	{
+		headerCheckboxSelection : false,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	},
+
+	{
+		headerName : 'Patient Id',
+		field : "patientId",
+		hide : true
+	},
+	{
+
+		headerName : 'Patient Name',
+		field : "patientName",
+		
+	}, {
+
+		headerName : 'Patient Address',
+		field : "address"
+	},
+
+	{
+		headerName : 'Mobile No',
+		field : "mobileNo"
+	}, {
+		headerName : 'Opd Date',
+		field : "opdDate"
+
+	} ];
+
+const gridOptions = {
+columnDefs : columnDefs,
+defaultColDef : {
+	sortable : true,
+	filter : true,
+	resizable : true,
+	width : 300,
+	height : 10
+},
+rowSelection : 'multiple',
+suppressRowClickSelection : true,
+getRowNodeId : function(data) {
+	return data.opdId;
+}
+};
+</script>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-scroller">
+			<!-- partial -->
+			<div class="container-fluid">
+				<!-- partial -->
+				<div class="main-panel">
+					<div class="content-wrapper">
+
+						<div class="row">
+							<div class="maincontentsec">
+								<div class="content_padding">
+									<div class="col-md-12">
+										<div class="row">
+
+											<div class="col-md-6">My Patients</div>
+											
+										</div>
+
+
+									</div>
+									<div id="main_content">
+										<div id="myGrid" style="width: 100%; height: 450px;"
+											class="ag-theme-alpine"></div>
+
+										
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					<!-- page-body-wrapper ends -->
+				</div>
+				<!-- container-scroller -->
+			</div>
+
+			<!-- End custom js for this page -->
+		</div>
+	</div>
+
+</body>
+</head>
+</html>

@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<title>Welcome To NERP</title>
+<style>
+.btnDisable{
+color: #ccc!important;
+}
+</style>
+<!-- 
+<script type="text/javascript">
+  var gridOptions = {
+  columnDefs: [
+    // different ways to define 'categories'
+    { field: 'athlete', width: 150, chartDataType: 'category' },
+    { field: 'age', chartDataType: 'category', sort: 'asc' },
+    { field: 'sport' }, // inferred as category by grid
+
+    // excludes year from charts
+    { field: 'year', chartDataType: 'excluded' },
+
+    // different ways to define 'series'
+    { field: 'gold', chartDataType: 'series' },
+    { field: 'silver', chartDataType: 'series' },
+    { field: 'bronze' }, // inferred as series by grid
+  ],
+  defaultColDef: {
+    editable: true,
+    sortable: true,
+    flex: 1,
+    minWidth: 100,
+    filter: true,
+    resizable: true,
+  },
+  popupParent: document.body,
+  enableRangeSelection: true,
+  enableCharts: true,
+  chartThemeOverrides: {
+    common: {
+      title: {
+        enabled: true,
+        text: 'Medals by Age',
+      },
+      legend: {
+        position: 'bottom',
+      },
+    },
+    column: {
+      axes: {
+        category: {
+          label: {
+            rotation: 0,
+          },
+        },
+      },
+    },
+  },
+  onFirstDataRendered: onFirstDataRendered,
+};
+
+function onFirstDataRendered(params) {
+  var createRangeChartParams = {
+    cellRange: {
+      rowStartIndex: 0,
+      rowEndIndex: 79,
+      columns: ['age', 'gold', 'silver', 'bronze'],
+    },
+    chartType: 'groupedColumn',
+    chartContainer: document.querySelector('#myChart'),
+    aggFunc: 'sum',
+  };
+
+  params.api.createRangeChart(createRangeChartParams);
+}
+
+// setup the grid after the page has finished loading
+document.addEventListener('DOMContentLoaded', function () {
+  var gridDiv = document.querySelector('#myGrid');
+  new agGrid.Grid(gridDiv, gridOptions);
+
+  agGrid
+    .simpleHttpRequest({
+      url: 'https://www.ag-grid.com/example-assets/wide-spread-of-sports.json',
+    })
+    .then(function (data) {
+      gridOptions.api.setRowData(data);
+    });
+});
+</script> -->
+
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						
+						$("#barChartInv").addClass("btnDisable");
+						$("#barChartInv1").addClass("btnDisable");
+						$("#barChartInv2").addClass("btnDisable");
+						$("#pobarChartInv").addClass("btnDisable");
+						
+						var initData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-InitData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalVendor').html(response.body[0].totalVendor);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						var stockData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-StockData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalStocks').html(response.body[0].totalStocks);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						var poData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-POData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalPo').html(response.body[0].totalPo);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						var requiData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-RequiData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalRequi').html(response.body[0].totalRequi);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						var inventoryData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-inventoryData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalInventory').html(response.body[0].totalInventory);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						var purchaseTranData = [];
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-purchaseTranData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								var arr = [];
+								for(var i = 1;i<=12;i++){
+									response.body.forEach(res=>{
+										if(parseInt(res.name) == i){
+											arr.push(parseInt(res.key));
+										}else{
+											arr.push(3);
+										}
+									})
+								}
+								purchaseTranData = arr;
+								console.log(arr);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						var receivedData = [];
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-receivedData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								var arr = [];
+								for(var i = 1;i<=12;i++){
+									response.body.forEach(res=>{
+										if(parseInt(res.name) == i){
+											arr.push(parseInt(res.key));
+										}else{
+											arr.push(5);
+										}
+									})
+								}
+								receivedData = arr;
+								console.log(arr);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						var returnData = [];
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-returnData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								var arr = [];
+								for(var i = 1;i<=12;i++){
+									response.body.forEach(res=>{
+										if(parseInt(res.name) == i){
+											arr.push(parseInt(res.key));
+										}else{
+											arr.push(4);
+										}
+									})
+								}
+								returnData = arr;
+								console.log(arr);
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						
+						
+						var StocksInTransit = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-StocksInTransit',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalStocksInHand').html(response.body[0].totalStocksInHand);
+								$('#totalStocksInTransit').html(response.body[0].totalStocksInTransit);
+								$('#totalStock').html(response.body[0].totalStock);
+								
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						 var requisitionData = [];
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-requisitionData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								
+								if (response.body.length != 0) {
+									column5(response.body, [], '');
+					            } else {
+					            	column5("", [], '');
+					                //swal('No Data Found For Monthly Wise Production.');
+					            }
+								
+								/* var arr = [];
+								for(var i = 1;i<=12;i++){
+									response.body.forEach(res=>{
+										if(parseInt(res.name) == i){
+											arr.push(parseInt(res.key));
+										}else{
+											arr.push(0);
+										}
+									})
+								}
+								requisitionData = arr;
+								console.log(arr); */
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						
+						var poRecptHistoryData = {};
+						$.ajax({
+							type : 'GET',
+							url : 'procurement-dashboard-poRecptHistoryData',
+							contentType : 'application/json',
+							async:false,
+							success : function(response) {
+								console.log(response)
+								initData = response.body[0];
+								$('#totalImmediate').html(response.body[0].totalImmediate);
+								$('#totalGeneral').html(response.body[0].totalGeneral);
+								$('#totalHigh').html(response.body[0].totalHigh);
+								
+							},
+							error:function(err){
+								console.log(err)
+							}
+						});
+						
+						
+						
+						 var poRecptData = [];
+							$.ajax({
+								type : 'GET',
+								url : 'procurement-dashboard-poRecptData',
+								contentType : 'application/json',
+								async:false,
+								success : function(response) {
+									
+									if (response.body.length != 0) {
+										column6(response.body, [], '');
+						            } else {
+						            	column6("", [], '');
+						                //swal('No Data Found For Monthly Wise Production.');
+						            }
+									
+									
+								},
+								error:function(err){
+									console.log(err)
+								}
+							});
+						
+						
+
+						/*inventory*/
+						Highcharts
+								.chart(
+										'inventory',
+										{
+											chart : {
+												backgroundColor: '#FFFFFF',
+												type : 'column'
+											},
+											exporting: { enabled: false },
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+											xAxis : {
+												categories : [ 'Jan', 'Feb',
+														'Mar', 'Apr', 'May',
+														'Jun', 'Jul', 'Aug',
+														'Sep', 'Oct', 'Nov',
+														'Dec' ],
+												crosshair : true
+											},
+											yAxis : {
+												min : 0,
+												title : {
+													text : 'Stock'
+												}
+											},
+											tooltip : {
+												headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+												pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+														+ '<td style="padding:0"><b>{point.y:.1f} unit</b></td></tr>',
+												footerFormat : '</table>',
+												shared : true,
+												useHTML : true
+											},
+											plotOptions : {
+												column : {
+													pointPadding : 0.2,
+													borderWidth : 0
+												}
+											},
+											series : [
+													{
+														name : 'Received',
+														color:'#89d6c6',
+														data : [ 69, 71, 10,
+																130, 114, 160,
+																155, 72, 126,
+																104, 92, 44 ],
+													},
+													{
+														name : 'On Hand',
+														color:'#f9f96c',
+														data : [ 33, 88, 48,
+																63, 108, 84,
+																105, 104, 91,
+																83, 111, 92 ]
+
+													},
+													{
+														name : 'Transit',
+														color:'#ffb3ba',
+														data : [ 22, 33, 34,
+																139, 52, 18,
+																57, 60, 147,
+																39, 46, 91 ]
+
+													} ]
+										});
+
+						/*Purchase*/
+
+						Highcharts
+								.chart(
+										'purchase',
+										{
+											chart : {
+												backgroundColor: '#FFFFFF',
+												type : 'column'
+											},
+											exporting: { enabled: false },
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+											xAxis : {
+												categories : [ 'Jan', 'Feb',
+														'Mar', 'Apr', 'May',
+														'Jun', 'Jul', 'Aug',
+														'Sep', 'Oct', 'Nov',
+														'Dec' ],
+												crosshair : true
+											},
+											yAxis : {
+												min : 0,
+												title : {
+													text : 'purchase'
+												}
+											},
+											tooltip : {
+												headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+												pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+														+ '<td style="padding:0"><b>{point.y:.1f} unit</b></td></tr>',
+												footerFormat : '</table>',
+												shared : true,
+												useHTML : true
+											},
+											plotOptions : {
+												column : {
+													pointPadding : 0.2,
+													borderWidth : 0
+												}
+											},
+											series : [
+													{
+														name : 'In transit',
+														color:'#d281fc',
+														data :purchaseTranData
+
+													},
+													{
+														name : 'Recived',
+														color:'#a2d5fd',
+														data : receivedData
+  
+													},
+												
+													{
+														name : 'Return',
+														color:'#ffb3ba',
+														data : returnData
+													} ]
+										});
+					});
+						
+	$(document).ready(function() {
+		$('#invTableDiv').hide();
+		$("#barChartInv").click(function() {
+			$("#invTableDiv").hide();
+			$("#invChartDiv").show();
+			$("#barChartInv").addClass("btnDisable");
+			$("#tableInv").removeClass("btnDisable");
+		})
+		$("#tableInv").click(function() {
+			$("#invTableDiv").show();
+			$("#invChartDiv").hide();
+			$("#barChartInv").removeClass("btnDisable");
+			$("#tableInv").addClass("btnDisable");
+		})
+
+		$('#invTableDiv1').hide();
+		$("#barChartInv1").click(function() {
+			$("#invTableDiv1").hide();
+			$("#invChartDiv1").show();
+			$("#barChartInv1").addClass("btnDisable");
+			$("#tableInv1").removeClass("btnDisable");
+		})
+		$("#tableInv1").click(function() {
+			$("#invTableDiv1").show();
+			$("#invChartDiv1").hide();
+			$("#barChartInv1").removeClass("btnDisable");
+			$("#tableInv1").addClass("btnDisable");
+		})
+
+		$('#invTableDiv2').hide();
+		$("#barChartInv2").click(function() {
+			$("#invTableDiv2").hide();
+			$("#invChartDiv2").show();
+			$("#barChartInv2").addClass("btnDisable");
+			$("#tableInv2").removeClass("btnDisable");
+		})
+		$("#tableInv2").click(function() {
+			$("#invTableDiv2").show();
+			$("#invChartDiv2").hide();
+			$("#barChartInv2").removeClass("btnDisable");
+			$("#tableInv2").addClass("btnDisable");
+		})
+		$('#poinvTableDiv').hide();
+		$("#pobarChartInv").click(function() {
+			$("#poinvTableDiv").hide();
+			$("#poinvChartDiv").show();
+			$("#pobarChartInv").addClass("btnDisable");
+			$("#potableInv").removeClass("btnDisable");
+		})
+		$("#potableInv").click(function() {
+			$("#poinvTableDiv").show();
+			$("#poinvChartDiv").hide();
+			$("#pobarChartInv").removeClass("btnDisable");
+			$("#potableInv").addClass("btnDisable");
+		})
+	})
+</script>
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+
+/*
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.my-chart {
+  flex: 1;
+}*/
+</style>
+
+</head>
+<body>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<!--  <div class="dashboard_heading">Login By: Pinaki Datta 
+            <div class="vshort_details">Value Added: #2,000</div>
+            <div class="vshort_details">Requisition: 200</div>
+            <div class="vshort_details">Spending: $ 400,000</div>
+            <div class="vshort_details">Suppliers: 5000</div>
+          </div> -->
+						<div class="row">
+							<div class="col-md-2">
+								<div class="box_green">
+									<div class="inner-box-number" id="totalVendor">5000</div>
+									<div class="inner-box-text">Vendor</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="box_yellow">
+									<div class="inner-box-number">$ 400,000</div>
+									<div class="inner-box-text">Total Invest</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="box_pink">
+									<div class="inner-box-number">$ 2,000</div>
+									<div class="inner-box-text">Value Added</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="box_brown">
+									<div class="inner-box-number" id="totalStocks"></div>
+									<div class="inner-box-text">Requisition</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="box_deepblue">
+									<div class="inner-box-number" id="totalPo">500</div>
+									<div class="inner-box-text">Purchase Order</div>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<div class="box_blue">
+									<div class="inner-box-number" id="totalInventory">500</div>
+									<div class="inner-box-text">Inventory</div>
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">Top 3 Avg. Procurement Cycle (Vendor Classification)
+										</div>
+									<div class="row">
+										<div class="col-lg-4" align="center">
+											<div class="progress blue">
+												<span class="progress-left"> <span
+													class="progress-bar"></span>
+												</span> <span class="progress-right"> <span
+													class="progress-bar"></span>
+												</span>
+												<div class="progress-value">
+													16%<br> <span>Short</span>
+												</div>
+											</div>
+
+										</div>
+										<div class="col-lg-4" align="center">
+											<div class="progress yellow">
+												<span class="progress-left"> <span
+													class="progress-bar"></span>
+												</span> <span class="progress-right"> <span
+													class="progress-bar"></span>
+												</span>
+												<div class="progress-value">
+													36%<br> <span>Medium</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4" align="center">
+											<div class="progress green">
+												<span class="progress-left"> <span
+													class="progress-bar"></span>
+												</span> <span class="progress-right"> <span
+													class="progress-bar"></span>
+												</span>
+												<div class="progress-value">
+													48%<br> <span>Long</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Purchase Analysis Report
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv1"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv1"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+									<div class="highcharts-figure" id="invChartDiv1">
+										<div id="purchase" style="height: 150px;"></div>
+									</div>
+
+									<div class="row" id="invTableDiv1">
+										<div class="col-lg-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Vendor Id</th>
+														<th>Vendor Name</th>
+														<th>Order</th>
+														<th>Status</th>
+														<th>Date</th>
+														<th>Amount</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${purchaseAnalys}">
+														<td th:text="${c.vendorId}"></td>
+														<td th:text="${c.vendorName}"></td>
+														<td th:text="${c.order}"></td>
+														<td th:text="${c.status}"></td>
+														<td th:text="${c.date}"></td>
+														<td th:text="${c.amount}"></td>
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 margin_topbot20">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Stock
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv2"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv2"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+									<div class="row" id="invChartDiv2">
+										<div class="col-md-8">
+											<figure class="highcharts-figure">
+												<div id="container" style="height: 390px;"></div>
+											</figure>
+										</div>
+										<div class="col-md-4">
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalRequi"></div>
+												<div class="inner-box-text">Requisition</div>
+											</div>
+
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalStocksInHand">370</div>
+												<div class="inner-box-text">Stock In Hand</div>
+											</div>
+
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalStocksInTransit">170</div>
+												<div class="inner-box-text">Stock In transit</div>
+											</div>
+
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalStock">540</div>
+												<div class="inner-box-text">Total Stock</div>
+											</div>
+										</div>
+
+									</div>
+
+									<div id="invTableDiv2">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>SKU</th>
+													<th>Item Name</th>
+													<th>Min Stock</th>
+													<th>Stock in Hand</th>
+													
+												</tr>
+											</thead>
+											<tbody>
+											<tr th:each="c,iter:${stocks}">
+														<td th:text="${c.sku}"></td>
+														<td th:text="${c.itemName}"></td>
+														<td th:text="${c.modelId}"></td>
+														<td th:text="${c.minStock}"></td>
+														
+													</tr>
+													
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 margin_topbot20">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										PO Rcpt. History
+										<div class="float-right">
+										<a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="pobarChartInv"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="potableInv"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+									<div class="highcharts-figure" id="poinvChartDiv">
+										<div id="PO" style="height: 400px;"></div>
+									</div>
+									<div id="poinvTableDiv">
+									<div class="row">
+										<div class="col-md-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Requisition Id</th>
+														<th>Description</th>
+														<th>Type</th>
+														<th>Priority</th>
+														<th>Received Date</th>
+														<th>Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${poRecptHist}">
+														<td th:text="${c.requisitionId}"></td>
+														<td th:text="${c.description}"></td>
+														<td th:text="${c.type}"></td>
+														<td th:text="${c.priority}"></td>
+														<td th:text="${c.receivedDate}"></td>
+														<td th:text="${c.poStatus}"></td>
+													</tr>
+													
+
+												</tbody>
+											</table>
+										</div>
+										</div>
+									
+									<div class="row">
+										<div class="col-md-4">
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalImmediate">300</div>
+												<div class="inner-box-text">Immidiate</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalGeneral">200</div>
+												<div class="inner-box-text">General</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="dashboard_box graybox">
+												<div class="inner-box-number" id="totalHigh">374</div>
+												<div class="inner-box-text">High</div>
+											</div>
+										</div>
+
+
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 margin_topbot20">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Pending Invoices
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											 <a href="#"><i
+												class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Due Date</th>
+														<th>Vendor Name</th>
+														<th>Bill Number</th>
+														<th>Base Amount</th>
+														<th>State</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${pendInvoice}">
+														<td th:text="${c.dueDate}"></td>
+														<td th:text="${c.vendorNme}"></td>
+														<td th:text="${c.billNumber}"></td>
+														<td th:text="${c.baseAmount}"></td>
+														<td th:text="${c.stateVendor}"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-6 margin_topbot20">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Inventory
+										<div class="float-right">
+										<a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+									<div class="highcharts-figure" id="invChartDiv">
+										<div id="inventory" style="height: 440px;"></div>
+									</div>
+									<div class="row" id="invTableDiv">
+										<div class="col-md-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Item</th>
+														<th>Product</th>
+														<th>Warehouse</th>
+														<th>UOM</th>
+														<th>On Order</th>
+														<th>On Hand</th>
+														<th>On Transit</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>REQ0000002</td>
+														<td>Test2 Req</td>
+														<td>Direct</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+
+													<tr>
+														<td>Electronics</td>
+														<td>Laptop</td>
+														<td>Main</td>
+														<td align="center">50</td>
+														<td align="center">30</td>
+														<td align="center">20</td>
+														<td align="center">20</td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

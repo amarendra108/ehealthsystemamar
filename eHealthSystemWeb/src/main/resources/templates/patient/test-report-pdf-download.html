@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+ <style type="text/css">
+  
+
+
+body
+  {
+    margin:0;
+    font-family:'Poppins', sans-serif;
+    font-size: 12px;
+    color:#000;
+  }
+
+  img
+  {
+    border: none;
+    outline: none;
+  }
+  .mainsec
+  {
+    width: 792px; background: #FFF; margin:0 auto; padding:0px; position: relative;
+  }
+  .detailcontent
+  {
+    margin-bottom:15px;
+    margin-top:5px;
+  }
+  td
+  {
+   padding:0px;
+   border:none!important;
+ }
+ td:last-child {
+  }
+
+
+.nobdr
+{
+  font-size: 10px;
+}
+p{
+  font-size: 14px;
+  padding: 2px 0!important;
+  line-height: 23px;
+}
+.indent{
+  margin-left:50px;
+}
+.top-title
+{
+  padding: 6px 0px;
+}
+
+.logoname
+{
+  font-size: 24px;
+  color:#3464b3;
+  font-weight:600;
+  padding-bottom:8px; 
+  padding-top:10px; 
+}
+.heading
+{
+  font-size: 24px;
+  color:#333;
+  font-weight:600;
+  padding-bottom:8px; 
+  padding-top:10px; 
+}
+.commentsec
+{
+ 
+  background: #f5f5f5;
+  padding: 10px;
+  line-height: 22px;
+}
+.commentheading
+{
+  background: #e4e5e6;
+  font-size: 14px;
+ 
+}
+
+
+.content-block, p {
+  page-break-inside: avoid;
+}
+
+html, body {
+  width: 210mm;
+ 
+  margin:0  auto;
+}
+
+thead {
+ 
+ top: 0px;
+ left: 50%;
+ margin-left:-397px;
+ z-index: 99;
+}
+.formtable
+{
+ position:relative;
+}
+.formtable td
+{
+  padding: 4px 24px;
+}
+
+
+@page    {
+  margin-top:0;
+  margin-bottom:0;
+  margin-left:0;
+  margin-right:0;    
+}  
+.logo
+{
+  height:186px;
+}
+.address
+{
+  padding: 10px;
+  text-align: right;
+  width: 200px;
+  float: right;
+}
+.logotext
+{
+  float: left;
+  width: 300px;
+  margin-left: 10px;
+}
+
+.label{
+  font-weight:bold;
+  line-height: 22px;
+  padding: 3px 10px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.labelnxt{
+  font-weight:bold;
+  line-height: 22px;
+  padding: 3px 10px;
+  display: inline-block;
+  width: 230px;
+  margin-bottom: 8px;
+}
+
+.labelnew{
+  font-weight:bold;
+  line-height: 22px;
+  padding: 3px 10px;
+  display: inline-block;
+}
+
+.labeltxt{
+  font-weight:bold;
+  line-height: 22px;
+  padding: 3px 10px;
+  display: inline-block;
+  width: 80px;
+}
+
+.datelabel{
+  font-weight:bold;
+  padding: 0px 10px;
+}
+.titletxt{
+  font-weight:bold;
+}
+.redtxt{
+  font-weight:bold;
+  color:#FF0000;
+}
+
+.blue{
+  font-weight:bold;
+  color:#3869BF;
+}
+
+.green{
+  font-weight:bold;
+  color:#29AF35;
+}
+
+.electiontxt{
+  font-weight:bold;
+  float:right;
+}
+.formtable{
+  position: relative;
+  width:100%;
+}
+
+.formtable td{
+}
+.elesec{
+  margin-right:66px;
+  float: right;
+}
+.dtsec{
+  float:left;
+}
+.line{
+  text-decoration: line-through;
+}
+
+
+.sundargardfooter {
+    bottom:0 px;
+    height:auto;
+    left:0;
+    width:100%;
+    padding:0px 30px;
+}
+.biharfooter {
+    bottom:0 px;
+    height:auto;
+    left:0;
+    width:100%;
+    padding:0px 30px;
+}
+
+.nobdr{
+  position:relative
+}
+.nobdr tr td{
+  border:none;
+}
+.nobdr > tbody {
+  position:relative
+}
+
+.nobdr > tbody > tr > td {
+  border-bottom: none!important;
+}
+.footertxt{
+  color:#043E80;
+  font-size:15px;
+  font-weight:bold;
+  line-height: 36px;
+  margin-bottom: 20px;
+}
+.imgicon{
+  /*float:left;*/
+}
+.bluetxt{
+  color:#3869BF;
+  font-size:16px;
+  font-weight:bold;
+  line-height:20px;
+  margin-left:5px;
+  margin-top:20px;
+ /* float:left;*/
+  margin-bottom:12px;
+}
+.formtable .toptitle{
+  font-size:16px;
+  font-weight:500;
+  padding:6px 0px;
+  background: #E1E4F3;
+  text-align: center;
+  color: #0A55A8;
+  width: 99.8%;
+}
+
+.bg{
+  background:url("https://www.matrujyoti.in/public/assets/images/ehealth_reportbg.jpg") no-repeat;
+  background-position:left bottom;
+  left:0;
+  bottom:0;
+  position:relative;
+}
+.back-bg{
+ background-image:url("http://localhost:8061/assets/images/header_report.png");
+ background-repeat:no-repeat;
+ height:200px;
+ width:100%;
+} 
+.note
+{
+    padding-left:30px;
+    padding-top:20px;
+    padding-bottom:10px;
+}
+.top-sec{
+padding:90px 30px 0px;
+}
+.ehealth-hd{
+font-size:24px;
+color:#106cb5;
+font-weight:bold;
+text-align:center;
+}
+.ehealth-adrs{
+font-size:16px;
+color:#797979;
+text-align:center;
+}
+.call{
+font-size:20px;
+color:#000;
+font-weight:bold;
+text-align:right;
+}
+.top-sec img{
+width:300px;
+}
+.logo img{
+height:100px;
+width:80px;'
+}
+.logo1 img{
+height:50px;
+width:270px;'
+}
+.ft-last{
+background-color:#1f4e78;
+color:#fff;
+font-weight:700;
+padding:15px;
+text-align:center;
+font-size:20px;
+}
+.imgicon {
+    float: left;
+}
+
+</style>
+<script>
+function download(){
+
+	window.print(); 	
+	 
+}
+/* $(document).ready(function() {
+	uhid = $("#uhid").text();
+	alert(uhid);	
+}); */
+}
+
+
+</script>
+</head>
+<body th:each="c,iter:${gatPatientdetails[0].testgroup}">
+<!-- <div layout:fragment="content" class="maincontent"> -->
+		<div class="container-fluid" >
+			<div class="row"  >
+				<div class="maincontentsec" >
+					<div class="mainsec" >
+
+						<div id="sundergardhHeader"  th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9121'">
+							<div class="logo" align="center" onclick="download();">
+								<!-- <img th:src="@{classpath:static/assets/images/pdf_header.jpg}"
+									border="0" /> -->
+									<div class="back-bg">
+									<!-- <img th:src="@{classpath:static/assets/images/e.png}"
+									border="0" /> -->
+									<div class="top-sec">
+									
+									<table>
+									<tr>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/sundargarh.png}"
+									border="0" />
+									</td>
+									<td width="700">
+									<div class="right-sec">
+									<div class="ehealth-hd">Sundargarh District Administration</div>
+									<div class="ehealth-adrs">
+									Office of the Collector cum District Magistrate
+									</div>
+									<div class="ehealth-adrs">
+									At/Po-Sundargarh,PIN-770001,Dist-Sundargarh,Odisha
+									</div>
+									</div>
+									</td>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/odisha_logo.png}"
+									border="0" style="height:90px;" />
+									</td>
+									
+									</tr>
+									</table>
+									</div>
+									</div>
+							</div>
+						</div>
+						
+								<div id="biharhHeader" th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9110'">
+						<div class="logo" align="center" onclick="download();">
+								<!-- <img th:src="@{classpath:static/assets/images/pdf_header.jpg}"
+									border="0" /> -->
+									<div class="back-bg">
+									<!-- <img th:src="@{classpath:static/assets/images/e.png}"
+									border="0" /> -->
+									<div class="top-sec">
+									
+									<table>
+									<tr>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/bihar.png}"
+									border="0" height="80" width="80" />
+									</td>
+									<td width="700">
+									<div class="right-sec">
+									<div class="ehealth-hd">Nalanda District Administration</div>
+									<div class="ehealth-adrs">
+									District Collectorate Building,Near Kachehri,Biharsharif,Nalanda
+									</div>
+									<!-- <div class="ehealth-adrs">
+									At/Po-Sundargarh,PIN-770001,Distt-Sundargarh,Odisha
+									</div> -->
+									</div>
+									</td>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/logo_right.jpg}"
+									border="0" style="height:60px;" />
+									</td>
+									
+									</tr>
+									</table>
+									</div>
+									</div>
+							</div>
+						</div>
+						
+						
+						
+									<div id="normalHeader" th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9999'">
+						<div class="logo" align="center" onclick="download();">
+								 <img th:src="@{classpath:static/assets/images/pdf_header.jpg}"
+									border="0" width="800" height="180" />
+								<!-- 	<div class="back-bg">
+									<img th:src="@{classpath:static/assets/images/e.png}"
+									border="0" />
+									<div class="top-sec">
+									
+									<table>
+									<tr>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/bihar.png}"
+									border="0" height="80" width="80" />
+									</td>
+									<td width="700">
+									<div class="right-sec">
+									<div class="ehealth-hd">Nalanda District Administration</div>
+									<div class="ehealth-adrs">
+									District Collectorate Building,Near Kachehri,Biharsharif,Nalanda
+									</div>
+									<div class="ehealth-adrs">
+									At/Po-Sundargarh,PIN-770001,Distt-Sundargarh,Odisha
+									</div>
+									</div>
+									</td>
+									<td width="150">
+									<img th:src="@{classpath:static/assets/images/logo_right.jpg}"
+									border="0" style="height:60px;" />
+									</td>
+									
+									</tr>
+									</table>
+									</div>
+									</div> -->
+							</div>
+						</div>
+						
+						
+						<div style="height:728px;">
+							<table class="formtable">
+								<tr align="center">
+									<td colspan="3" class="toptitle"><strong>Patient
+											Details</strong></td>
+								</tr>
+								<tr>
+									<td colspan="2"><strong>UHID</strong> <span th:text="${gatPatientdetails[0].patientId}"></span></td>
+									<td align="right"><img
+										th:src="${image}"
+										border="0" height="80" width="80"/></td>
+								</tr>
+
+								<tr align="left">
+									<td width="33%"><strong>Name:</strong> 
+									<span th:text="${gatPatientdetails[0].patientName}"></span>
+									</td>
+									<td width="37%"><strong>Age:</strong><span th:text="${gatPatientdetails[0].age}"> </span>
+									</td>
+									<td width="30%"><strong>Gender:</strong><span th:text="${gatPatientdetails[0].gender}"></span> 
+									</td>
+								</tr>
+
+								<tr align="left">
+									<td><strong>Weight:</strong> <span th:text="${gatPatientdetails[0].weight}"></span> </td>
+									<td><strong>Height:</strong> <span th:text="${gatPatientdetails[0].height}"></span></td>
+									<td><strong>Date:</strong> <span th:text="${gatPatientdetails[0].testDate}"></span></td>
+								</tr>
+
+								<tr align="left">
+									<td><strong>Aadhaar No.:</strong> </td>
+									<td><strong>RH:</strong>  <span th:text="${gatPatientdetails[0].phc}"></span></td>
+									<td><strong>Address:</strong> </td>
+								</tr>
+								
+								<tr align="center">
+									<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>HEALTH
+											CHECKUP DETAILS</strong></td>
+								</tr>
+								<tr>
+									<td bgcolor="#FFFFFF" height="20" colspan="3" align="center"><div
+											class="bluetxt" th:text="${c.testGroupName}">BP And BMI</div></td>
+								</tr>
+								<tr>
+								<td colspan="3">
+								<table width="100%">
+								    <tr align="left" >
+										<td><strong>Test Name</strong></td>
+										<td align="right"><strong>Result</strong></td>
+										<td><strong>Unit</strong></td>
+										<td><strong>Reference Range</strong></td>
+								    </tr>
+
+									<tr th:each="k,itr:${c.testlist}">
+									  
+										<td th:text="${k.key}">Blood Pressure</td>
+										<td align="right" th:text="${k.name}">120/80 </td>
+										<td th:text="${k.code}">(-)</td>
+										<td th:text="${k.image}"></td>
+										
+									</tr>
+								</table>
+								</td>
+								</tr>
+								
+							</table>
+						</div>
+                      
+						 <div class="sundargardfooter" th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9121'">
+							<!-- <img
+								th:src="@{classpath:static/assets/images/pdf_footer.jpg}"
+								border="0" /> -->
+								 <div style="margin:10px 0px;"><strong>Note:</strong></div>
+								<table>
+								 <tr align="left">
+									 <td colspan="3">
+									   <table class="nobdr" style="width:700px; margin:0 auto;">
+									    <tr align="left" width="50%">
+									      <td>1. All the investigations are conducted by POCT methods.</td>
+									      <td>2. Test results are not valid for Medico-legal purpose.</td>              
+									    </tr>
+									    <tr align="left" width="50%">
+									      <td>3. The results should be correlated with clinical information.</td>
+									      <td>4. Consult your doctor, if you have any health concern. Do not self adjust medications.</td>              
+									    </tr>
+									    <tr>
+									      <td colspan="2">5. The Body composition, BMR and metabolic age values are estimates and may very as per many factors like ethnicity, activity levels diet and other factors.
+									      </td>
+									    </tr>
+									
+									  </table>
+									</td>
+									
+									</tr>
+									<td colspan="3">
+   <table class="nobdr" style="width:740px; margin:0 auto;">
+       <tr>
+ <td width="240"><img th:src="@{classpath:static/assets/images/phone.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>1800 345 7461 </strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/mail.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>dm-sundargarh@nic.in</strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/location.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>Sundargarh, Odisha.</strong></div></td>
+ </tr>
+ </table></td>
+								</table>
+						</div>
+						 <div class="biharfooter" th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9110'">
+							<!-- <img
+								th:src="@{classpath:static/assets/images/pdf_footer.jpg}"
+								border="0" /> -->
+								 <div style="margin:10px 0px;"><strong>Note:</strong></div>
+								<table>
+								 <tr align="left">
+									 <td colspan="3">
+									   <table class="nobdr" style="width:700px; margin:0 auto;">
+									    <tr align="left" width="50%">
+									      <td>1. All the investigations are conducted by POCT methods.</td>
+									      <td>2. Test results are not valid for Medico-legal purpose.</td>              
+									    </tr>
+									    <tr align="left" width="50%">
+									      <td>3. The results should be correlated with clinical information.</td>
+									      <td>4. Consult your doctor, if you have any health concern. Do not self adjust medications.</td>              
+									    </tr>
+									    <tr>
+									      <td colspan="2">5. The Body composition, BMR and metabolic age values are estimates and may very as per many factors like ethnicity, activity levels diet and other factors.
+									      </td>
+									    </tr>
+									
+									  </table>
+									
+									</td>
+									
+									</tr>
+									<td colspan="3">
+   <table class="nobdr" style="width:740px; margin:0 auto;">
+       <tr>
+ <td width="240"><img th:src="@{classpath:static/assets/images/phone.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>+91 9905550800 </strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/mail.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>report@ehealthsystems.in</strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/location.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>Nalanda,Bihar.</strong></div></td>
+ </tr>
+ </table></td>
+								</table>
+						</div>
+						
+						
+						
+							 <div class="biharfooter" th:if="${#strings.substring(gatPatientdetails[0].patientId, 0, 4)}=='9999'">
+							<!-- <img
+								th:src="@{classpath:static/assets/images/pdf_footer.jpg}"
+								border="0" /> -->
+								 <div style="margin:10px 0px;"><strong>Note:</strong></div>
+								<table>
+								 <tr align="left">
+									 <td colspan="3">
+									   <table class="nobdr" style="width:700px; margin:0 auto;">
+									    <tr align="left" width="50%">
+									      <td>1. All the investigations are conducted by POCT methods.</td>
+									      <td>2. Test results are not valid for Medico-legal purpose.</td>              
+									    </tr>
+									    <tr align="left" width="50%">
+									      <td>3. The results should be correlated with clinical information.</td>
+									      <td>4. Consult your doctor, if you have any health concern. Do not self adjust medications.</td>              
+									    </tr>
+									    <tr>
+									      <td colspan="2">5. The Body composition, BMR and metabolic age values are estimates and may very as per many factors like ethnicity, activity levels diet and other factors.
+									      </td>
+									    </tr>
+									
+									  </table>
+									
+									</td>
+									
+									</tr>
+									<td colspan="3">
+   <table class="nobdr" style="width:740px; margin:0 auto;">
+       <tr>
+ <td width="240"><img th:src="@{classpath:static/assets/images/phone.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>+91 9905550800 </strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/mail.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>report@ehealthsystems.in</strong></div></td>
+ <td width="240"><img th:src="@{classpath:static/assets/images/location.png}" class="imgicon" width="30" height="30"/> <div class="footertxt"><strong>Pune,Maharastra.</strong></div></td>
+ </tr>
+ </table></td>
+								</table>
+						</div>
+						
+						
+						
+					</div>
+					
+								<div class="ft-last"><span style="font-size:12px;">Prepared by:</span> eHealthSystem Technologies</div>
+
+
+
+
+				</div>
+</div>
+</div>
+
+
+</body>
+</html>

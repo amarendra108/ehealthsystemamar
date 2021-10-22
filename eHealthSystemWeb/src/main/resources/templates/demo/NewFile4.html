@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function saveReportTemplates(dataset) {
+		$.ajax({
+			type : "POST",
+			url : "demo-templates-save-th-ajax",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(dataset),
+			success : function(response) {
+				if (response.message == "Success") {
+					$('.loader').hide();
+					$("body").removeClass("overlay");
+					console.log(response.body)
+				} else {
+
+					$('.loader').hide();
+					$("body").removeClass("overlay");
+				}
+			},
+			error : function(data) {
+				console.log(data);
+				$('.loader').hide();
+				$("body").removeClass("overlay");
+			}
+		})
+	}
+
+	function saveMultiFile(event) {
+		//var AssignItemQty = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var currentFldId = "#" + currentFldId;
+
+		var uFile = $(currentFldId)[0].files[0];
+		var fileName = event.currentTarget.value;
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var extension = fileName.split(".");
+
+		var iURL = URL.createObjectURL(uFile);
+		$("#uploadedBillDiv_" + counter).html("");
+		if (extension[1] == "png" || extension[1] == "jpg") {
+			var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file'></i></a></div>";
+		}
+		$("#uploadedBillDiv_" + counter).html(LightImg);
+		//$("#imageName_" + counter).html(fileName);
+
+		var data = [];
+		var x = [];
+		if (fileName != '' && fileName != 'undefined' && fileName != null) {
+			var lastIndex = fileName.lastIndexOf("\\");
+			if (lastIndex >= 0) {
+				fileName = fileName.substring(lastIndex + 1);
+			}
+			var reader = new FileReader();
+			reader.readAsDataURL(uFile);
+
+			reader.onload = function() {
+				console.log(reader.result)
+				data = reader.result.split(",");
+				x.push(data[1]);
+			};
+		} else {
+			x = [];
+		}
+
+		uploadData = {};
+		uploadData.docName = $("#docnoid_").val();
+		//uploadData['docId'] = $("#docId_"+counter).text();
+		uploadData['htmlFile'] = x;
+		uploadData['fileName'] = fileName;
+
+		setTimeout(function() {
+			saveReportTemplates(uploadData);
+		}, 1000)
+	}
+
+	function checkEmpty() {
+		var infofileName = true;
+		var mulDocInfo = true;
+		$('.document').each(function() {
+			if ($(this).val()) {
+			} else {
+				mulDocInfo = false;
+				$("#messageParagraph").text("Please Chose a File ");
+				$("#msgOkModal").removeClass("btn3");
+				$("#msgOkModal").addClass("btn1");
+				$("#msgModal").modal('show');
+				return false;
+			}
+		});
+		/* if(infofileName && mulDocInfo){
+		 addMore1()
+		 } */
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="row">
+
+						<div class="maincontentsec">
+							<div class="content_padding">
+								<div class="wrapper center-block">
+									<div class="panel-group" id="accordion" role="tablist"
+										aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="panel-heading active" role="tab" id="headingOne">
+
+												<h4 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion" href="#collapseOne"
+														aria-expanded="true" aria-controls="collapseOne">
+														Report Document </a>
+												</h4>
+											</div>
+
+											<div id="collapseOne" class="panel-collapse collapse show"
+												role="tabpanel" aria-labelledby="headingOne"
+												style="height: 620px;">
+												<div class="panel-body">
+													<div class="row" id="main_content">
+														<div class="col-md-5 btn-hs1">
+															<div class="font-design"></div>
+
+
+														</div>
+
+														<div class="col-md-12 btn-hs1 padding-7" align="right">
+
+															<button class="btn1" onclick="checkEmpty();">Save</button>
+														</div>
+
+														<table id="docTbl" cellspacing="7" cellpadding="7">
+															<thead>
+																<tr class="tr_clone">
+																	<th width="320">Document Name</th>
+																	<th width="380">Attachment</th>
+
+
+																</tr>
+															</thead>
+															<tbody id="doctbodyData">
+
+
+
+
+																</div>
+																<td><div class="form-group">
+																		<input type="text" value=""
+																			class="form-control docNoclss" id="docnoid_">
+																	</div></td>
+
+																<td>
+																	<div class="control-group position-r">
+																		<label class="custom-file-upload" for="uploadDoc_0"
+																			id="uploadFor_0"> <i class="ti-plus"></i>
+																		</label>
+																		<div class="controls">
+
+																			<input type="file" class="document" id="uploadDoc_0"
+																				name="userImage" accept="image/*"
+																				onchange="saveMultiFile(event)" />
+
+																		</div>
+																	</div> <input type="hidden" id="uploadHidden_0"
+																	class="uploadHidCls">
+																	<div id="uploadedBillDiv_0" align="center"
+																		class="uploadedBillCls"></div>
+																	<div id="imageName_0" class="imageName"></div>
+																</td>
+
+
+
+
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

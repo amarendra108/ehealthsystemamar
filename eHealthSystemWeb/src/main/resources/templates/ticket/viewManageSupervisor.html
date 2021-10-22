@@ -1,0 +1,3531 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Welcome To Extend</title>
+<style>
+.ulCls {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #e6e9ed;
+}
+
+.a {
+	float: left;
+}
+
+.a a {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color: #4d94ff;
+	color: white;
+}
+
+.active1 {
+	background-color: #4d94ff;
+}
+
+.form-control1:disabled, .form-control[readonly] {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+
+.form-control {
+	height: 35px;
+	border-radius: 3px;
+	box-shadow: none;
+	/* border-color: #000000; */
+	font-family: 'Roboto', sans-serif;
+}
+</style>
+<!-- ******************       General Enquiry       *****************************************************************-->
+<!--  View General Enquiry -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivGenEnq = document.querySelector('#myGridGenEnq');
+		new agGrid.Grid(gridDivGenEnq, gridOptionsGenEnq);
+
+		//view agent ticket
+		agGrid.simpleHttpRequest({
+			url : "view-manageSupervisor-generalEnquiry"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingOne').find('span').html(len);
+			gridOptionsGenEnq.api.setRowData(data);
+		});
+
+		$("#myGridGenEnq").show();
+
+	});
+
+	const columnDefsGenEnq = [
+			{
+				headerName : 'Id',
+				field : "ticketid",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelGenEnq("'
+							+ params.data.ticketid
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketid + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone No',
+				field : "phone",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agent"
+			},
+			{
+				headerName : 'Supported By',
+				field : "supports"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsModelGenEnq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewAssignModelGenEnq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+				}
+			}, ];
+
+	const gridOptionsGenEnq = {
+		columnDefs : columnDefsGenEnq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 135,
+			height : 10
+		},
+	};
+	//Search	
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	//modal view for General Enquiry	
+	function viewInModelGenEnq(index) {
+		//alert(index)
+		$('#tableGenEnq').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewGenEnq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phone').val(response.body.phone);
+					$('#customerName').val(response.body.customerName);
+					$('#customerLocation').val(response.body.customerLocation);
+					$('#callQueue').val(response.body.callQueue);
+					$('#callReason').val(response.body.callReason);
+					$('#productType').val(response.body.productType);
+					$('#comment').val(response.body.comment);
+
+					$('#myModalGenEnq').modal('show');
+					$('#tableGenEnq').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+
+	/* comment for General Enquiry	 */
+
+	function viewCommentsModelGenEnq(index) {
+
+		document.getElementById("commentSidenav1").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#mySidenav1").hide();
+		$("#mySidenav2").hide();
+		$("#mySidenav3").hide();
+		$("#mySidenav4").hide();
+		$("#mySidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-commentModalViewGenEnq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				//concole.log(response);
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$("#ticketStatusGenEnq").val(response.body.ticketStatus);
+					$("#lastcommentGenEnq").val(response.body.comment);
+					$("#lastDateGenEnq").val(response.body.lastDate);
+					$("#ageingGenEnq").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nave
+	function commentCloseNav1() {
+
+		$("#supportsGenEnq").val("");
+		$("#commentIdGenEnq").val("");
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitGenEnq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#commentsGenEnq")
+													.val();
+											var status = $("#StatusGenEnq")
+													.val();
+											if (!blankValidation(
+													"commentsGenEnq",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"StatusGenEnq",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addCommentsGenEnq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+																commentCloseNav1();
+
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-generalEnquiry"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingOne')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsGenEnq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+
+	//view Assign supervisor
+	function viewAssignModelGenEnq(id) {
+
+		document.getElementById("mySidenav1").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#commentSidenav1").hide();
+		$("#commentSidenav2").hide();
+		$("#commentSidenav3").hide();
+		$("#commentSidenav4").hide();
+		$("#commentSidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewGenEnq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : id,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$('#CallQueue').val(response.body.callQueue);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nav
+	function closeNav1() {
+		$("#mySidenav1").hide();
+
+		$("#supports").val("");
+		$("#commentId").val("");
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Assign supervisor	
+	$(document)
+			.ready(
+					function() {
+						$("#assignGenEnq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var CallQueue = $("#CallQueue")
+													.val();
+											var comment = $("#commentId").val();
+											var supports = $("#supports").val();
+											if (!blankValidation("commentId",
+													"TextArea",
+													"comments can not be left blank"))
+												return false;
+											if (!blankValidation("supports",
+													"TextField",
+													"supports can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addAssignSupportsGenEnq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&supports="
+																+ supports
+																+ "&CallQueue="
+																+ CallQueue,
+														success : function(
+																response) {
+															console
+																	.log(response);
+															if (response.message == "success") {
+
+																closeNav1();
+
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-generalEnquiry"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingOne')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsGenEnq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+										});
+					});
+</script>
+<!-- ******************       Service Request       *****************************************************************-->
+<!--  View Service Request -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivSerReq = document.querySelector('#myGridSerReq');
+		new agGrid.Grid(gridDivSerReq, gridOptionsSerReq);
+
+		//view agent ticket
+		agGrid.simpleHttpRequest({
+			url : "view-manageSupervisor-serviceRquest"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingTwo').find('span').html(len);
+			gridOptionsSerReq.api.setRowData(data);
+		});
+
+		$("#myGridSerReq").show();
+
+	});
+
+	const columnDefsSerReq = [
+
+			{
+				headerName : 'Id',
+				field : "ticketid",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelSerReq("'
+							+ params.data.ticketid
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketid + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phone",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agent"
+			},
+			{
+				headerName : 'Supported By',
+				field : "supports"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsModelSerReq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewAssignModelSerReq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+				}
+			}, ];
+
+	const gridOptionsSerReq = {
+		columnDefs : columnDefsSerReq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 135,
+			height : 10
+		},
+		rowSelection : 'multiple',
+
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.customerId;
+		}
+	};
+	//modal view for service request	
+	function viewInModelSerReq(index) {
+		//alert(index)
+		$('#tableSerReq').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewSerReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneSerReq').val(response.body.phone);
+					$('#customerNameSerReq').val(response.body.customerName);
+					$('#customerLocationSerReq').val(
+							response.body.customerLocation);
+					$('#callQueueSerReq').val(response.body.callQueue);
+					$('#callReasonSerReq').val(response.body.callReason);
+					$('#productTypeSerReq').val(response.body.productType);
+					$('#serviceCenterSerReq').val(response.body.serviceCenter);
+					$('#commentSerReq').val(response.body.comment);
+				}
+				$('#myModalSerReq').modal('show');
+				$('#tableSerReq').append(table);
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Service Request	 */
+
+	function viewCommentsModelSerReq(index) {
+		document.getElementById("commentSidenav2").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#mySidenav1").hide();
+		$("#mySidenav2").hide();
+		$("#mySidenav3").hide();
+		$("#mySidenav4").hide();
+		$("#mySidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-commentModalViewSerReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicketSerReq').val(response.body.ticketid);
+					$("#ticketStatusSerReq").val(response.body.ticketStatus);
+					$("#lastcommentSerReq").val(response.body.comment);
+					$("#lastDateSerReq").val(response.body.lastDate);
+					$("#ageingSerReq").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav2() {
+		$("#commentSidenav2").hide();
+
+		$("#supportsSerReq").val("");
+		$("#commentIdSerReq").val("");
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitSerReq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#commentsSerReq")
+													.val();
+											var status = $("#StatusSerReq")
+													.val();
+											if (!blankValidation(
+													"commentsSerReq",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"StatusSerReq",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addCommentsSerReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav2();
+																//view agent ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-serviceRquest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingTwo')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSerReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+
+	//view Assign supervisor
+	function viewAssignModelSerReq(id) {
+		document.getElementById("mySidenav2").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#commentSidenav1").hide();
+		$("#commentSidenav2").hide();
+		$("#commentSidenav3").hide();
+		$("#commentSidenav4").hide();
+		$("#commentSidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewSerReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : id,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$('#CallQueue').val(response.body.callQueue);
+					$('#myAssignModal').modal('show');
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nave
+	function closeNav2() {
+		$("#mySidenav2").hide();
+
+		$("#supports").val("");
+		$("#commentId").val("");
+
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Assign supervisor	
+	$(document)
+			.ready(
+					function() {
+						$("#assignSerReq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var CallQueue = $("#CallQueue")
+													.val();
+											var comment = $("#commentIdSerReq")
+													.val();
+											var supports = $("#supportsSerReq")
+													.val();
+											if (!blankValidation(
+													"commentIdSerReq",
+													"TextArea",
+													"comments can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"supportsSerReq",
+													"TextField",
+													"supports can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addAssignSupportsSerReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&supports="
+																+ supports
+																+ "&CallQueue="
+																+ CallQueue,
+														success : function(
+																response) {
+															console
+																	.log(response);
+															if (response.message == "success") {
+
+																closeNav2();
+																//view agent ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-serviceRquest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingTwo')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSerReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+											//}
+											//})
+										});
+					});
+</script>
+<!-- ******************       Complaints       *****************************************************************-->
+<!--  View Complaint -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivComp = document.querySelector('#myGridComp');
+		new agGrid.Grid(gridDivComp, gridOptionsComp);
+
+		//view comp ticket
+		agGrid.simpleHttpRequest({
+			url : "view-manageSupervisor-complaint"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingThree').find('span').html(len);
+			gridOptionsComp.api.setRowData(data);
+		});
+
+		$("#myGridComp").show();
+
+	});
+
+	const columnDefsComp = [
+
+			{
+				headerName : 'Id',
+				field : "ticketid",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelComp("'
+							+ params.data.ticketid
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketid + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phone",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agent"
+			},
+			{
+				headerName : 'Supported By',
+				field : "supports"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsModelComp(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewAssignModelComp(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+				}
+			}, ];
+
+	const gridOptionsComp = {
+		columnDefs : columnDefsComp,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 135,
+			height : 10
+		},
+		rowSelection : 'multiple',
+
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.customerId;
+		}
+	};
+	//modal view for complaint	
+	function viewInModelComp(index) {
+		//alert(index)
+		$('#tableComp').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewComp",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneComp').val(response.body.phone);
+					$('#customerNameComp').val(response.body.customerName);
+					$('#customerLocationComp').val(
+							response.body.customerLocation);
+					$('#callQueueComp').val(response.body.callQueue);
+					$('#callReasonComp').val(response.body.callReason);
+					$('#productTypeComp').val(response.body.productType);
+					$('#servicecenterComp').val(response.body.serviceCenter);
+					$('#complainCategoryComp').val(
+							response.body.complainCategory);
+					$('#complainDescriptionComp').val(
+							response.body.complainDescription);
+					$('#commentComp').val(response.body.comment);
+
+					$('#myModalComp').modal('show');
+					$('#tableComp').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Comp	 */
+
+	function viewCommentsModelComp(index) {
+		document.getElementById("commentSidenav3").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#mySidenav1").hide();
+		$("#mySidenav2").hide();
+		$("#mySidenav3").hide();
+		$("#mySidenav4").hide();
+		$("#mySidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-commentModalViewComp",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$("#ticketStatusComp").val(response.body.ticketStatus);
+					$("#lastcommentComp").val(response.body.comment);
+					$("#lastDateComp").val(response.body.lastDate);
+					$("#ageingComp").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav3() {
+		$("#commentSidenav3").hide();
+
+		$("#supportsComp").val("");
+		$("#commentIdComp").val("");
+
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitComp")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#commentsComp")
+													.val();
+											var status = $("#StatusComp").val();
+											if (!blankValidation(
+													"commentsComp",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation("StatusComp",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addCommentsComp?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav3();
+																//view comp ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-complaint"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingThree')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsComp.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+
+	//view Assign supervisor
+	function viewAssignModelComp(id) {
+		document.getElementById("mySidenav3").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#commentSidenav1").hide();
+		$("#commentSidenav2").hide();
+		$("#commentSidenav3").hide();
+		$("#commentSidenav4").hide();
+		$("#commentSidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewComp",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : id,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$('#CallQueue').val(response.body.callQueue);
+					$('#myAssignModal').modal('show');
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nave
+	function closeNav3() {
+		$("#mySidenav3").hide();
+
+		$("#supportsComp").val("");
+		$("#commentIdComp").val("");
+
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Assign supervisor	
+	$(document)
+			.ready(
+					function() {
+						$("#assignComp")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var CallQueue = $("#CallQueue")
+													.val();
+											var comment = $("#commentIdComp")
+													.val();
+											var supports = $("#supportsComp")
+													.val();
+											if (!blankValidation(
+													"supportsComp", "TextArea",
+													"comments can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"supportsComp",
+													"TextField",
+													"supports can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addAssignSupportsComp?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&supports="
+																+ supports
+																+ "&CallQueue="
+																+ CallQueue,
+														success : function(
+																response) {
+															console
+																	.log(response);
+															if (response.message == "success") {
+
+																closeNav3();
+																//view comp ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-complaint"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingThree')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsComp.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+											//}
+											//})
+										});
+					});
+</script>
+<!-- ******************       Sales       *****************************************************************-->
+<!--  View Sales -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivSale = document.querySelector('#myGridSale');
+		new agGrid.Grid(gridDivSale, gridOptionsSale);
+
+		//view sale ticket
+		agGrid.simpleHttpRequest({
+			url : "view-manageSupervisor-sales"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingFour').find('span').html(len);
+			gridOptionsSale.api.setRowData(data);
+		});
+
+		$("#myGridSale").show();
+
+	});
+
+	const columnDefsSale = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelSale("'
+							+ params.data.ticketid
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketid + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phone",
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agent"
+			},
+			{
+				headerName : 'Supported By',
+				field : "supports"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsModelSale(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewAssignModelSale(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+				}
+			}, ];
+
+	const gridOptionsSale = {
+		columnDefs : columnDefsSale,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 135,
+			height : 10
+		},
+	};
+	//modal view for Sales	
+	function viewInModelSale(index) {
+		//alert(index)
+		$('#tableSale').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewSale",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneSale').val(response.body.phone);
+					$('#customerNameSale').val(response.body.customerName);
+					$('#customerLocationSale').val(
+							response.body.customerLocation);
+					$('#callQueueSale').val(response.body.callQueue);
+					$('#callReasonSale').val(response.body.callReason);
+					$('#productTypeSale').val(response.body.productType);
+					$('#serviceCenterSale').val(response.body.serviceCenter);
+					$('#quantitySale').val(response.body.quantity);
+					$('#salesDescriptionSale').val(
+							response.body.salesDescription);
+					$('#commentSale').val(response.body.comment);
+
+					$('#myModalSale').modal('show');
+					$('#tableSale').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Sale	 */
+
+	function viewCommentsModelSale(index) {
+		document.getElementById("commentSidenav4").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#mySidenav1").hide();
+		$("#mySidenav2").hide();
+		$("#mySidenav3").hide();
+		$("#mySidenav4").hide();
+		$("#mySidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-commentModalViewSale",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$("#ticketStatusSale").val(response.body.ticketStatus);
+					$("#lastcommentSale").val(response.body.comment);
+					$("#lastDateSale").val(response.body.lastDate);
+					$("#ageingSale").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nave
+	function commentCloseNav4() {
+		$("#commentSidenav4").hide();
+
+		$("#supportsSale").val("");
+		$("#commentIdSale").val("");
+
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+		$("#mySidenav1").hide();
+		$("#mySidenav2").hide();
+		$("#mySidenav3").hide();
+		$("#mySidenav4").hide();
+		$("#mySidenav5").hide();
+	}
+
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitSale")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#commentsSale")
+													.val();
+											var status = $("#StatusSale").val();
+											if (!blankValidation(
+													"commentsSale",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation("StatusSale",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addCommentsSale?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav4();
+																//view sale ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-sales"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFour')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSale.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+
+	//view Assign supervisor
+	function viewAssignModelSale(id) {
+		document.getElementById("mySidenav4").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+		$("#commentSidenav1").hide();
+		$("#commentSidenav2").hide();
+		$("#commentSidenav3").hide();
+		$("#commentSidenav4").hide();
+		$("#commentSidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewSale",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : id,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$('#CallQueue').val(response.body.callQueue);
+					$('#myAssignModal').modal('show');
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nave
+	function closeNav4() {
+		$("#mySidenav4").hide();
+
+		$("#supportsSale").val("");
+		$("#commentIdSale").val("");
+
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+
+	}
+	//add Assign supervisor	
+	$(document)
+			.ready(
+					function() {
+						$("#assignSale")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var CallQueue = $("#CallQueue")
+													.val();
+											var comment = $("#commentIdSale")
+													.val();
+											var supports = $("#supportsSale")
+													.val();
+											if (!blankValidation(
+													"commentIdSale",
+													"TextArea",
+													"comments can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"supportsSale",
+													"TextField",
+													"supports can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addAssignSupportsSale?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&supports="
+																+ supports
+																+ "&CallQueue="
+																+ CallQueue,
+														success : function(
+																response) {
+															console
+																	.log(response);
+															if (response.message == "success") {
+
+																closeNav4();
+																//view sale ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-sales"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFour')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSale.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+											//}
+											//})
+										});
+					});
+</script>
+<!-- ****************   Marketing Request      ***********************-->
+<!--  View Marketing Request -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivMktgReq = document.querySelector('#myGridMktgReq');
+		new agGrid.Grid(gridDivMktgReq, gridOptionsMktgReq);
+
+		//view mktg ticket
+		agGrid.simpleHttpRequest({
+			url : "view-manageSupervisor-marketingRequest"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingFive').find('span').html(len);
+			gridOptionsMktgReq.api.setRowData(data);
+		});
+
+		$("#myGridMktgReq").show();
+
+	});
+
+	const columnDefsMktgReq = [
+
+			{
+				headerName : 'Id',
+				field : "ticketid",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelMktgReq("'
+							+ params.data.ticketid
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketid + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phone",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agent"
+			},
+			{
+				headerName : 'Supported By',
+				field : "supports"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsModelMktgReq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewAssignModelMktgReq(\""
+							+ params.data.ticketid
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+				}
+			}, ];
+
+	const gridOptionsMktgReq = {
+		columnDefs : columnDefsMktgReq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 135,
+			height : 10
+		},
+		rowSelection : 'multiple',
+
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.customerId;
+		}
+	};
+	//modal view for Marketing Request	
+	function viewInModelMktgReq(index) {
+		//alert(index)
+		$('#tableMktgReq').empty();
+
+		$
+				.ajax({
+					type : "POST",
+					url : "view-manageSupervisor-modalViewMktgReq",
+					dataType : 'json',
+					contentType : 'application/json',
+					data : index,
+					success : function(response) {
+						if (response.message == "success") {
+
+							$('#phoneMktgReq').val(response.body.phone);
+							$('#customerNameMktgReq').val(
+									response.body.customerName);
+							$('#customerLocationMktgReq').val(
+									response.body.customerLocation);
+							$('#callQueueMktgReq').val(response.body.callQueue);
+							$('#callReasonMktgReq').val(
+									response.body.callReason);
+							$('#productTypeMktgReq').val(
+									response.body.productType);
+							$('#serviceCenterMktgReq').val(
+									response.body.serviceCenter);
+							$('#quantityMktgReq').val(response.body.quantity);
+							$('#marketingDescriptionMktgReq').val(
+									response.body.marketingDescription);
+							$('#commentMktgReq').val(response.body.comment);
+
+							$('#myModalMktgReq').modal('show');
+							$('#tableMktgReq').append(table);
+						}
+					},
+					error : function(data) {
+						console.log(data);
+					}
+				})
+
+	}
+	/* comment for Mktg Request	 */
+
+	function viewCommentsModelMktgReq(index) {
+		//alert(index);
+		document.getElementById("commentSidenav5").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-commentModalViewMktgReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$("#ticketStatusMktgReq").val(response.body.ticketStatus);
+					$("#lastcommentMktgReq").val(response.body.comment);
+					$("#lastDateMktgReq").val(response.body.lastDate);
+					$("#ageingMktgReq").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav5() {
+		$("#commentSidenav5").hide();
+
+		$("#supportsMktgReq").val("");
+		$("#commentIdMktgReq").val("");
+
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitMktgReq")
+								.click(
+										function() {
+
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#commentsMktgReq")
+													.val();
+											var status = $("#StatusMktgReq")
+													.val();
+
+											if (!blankValidation(
+													"commentsMktgReq",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"StatusMktgReq",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addCommentsMktgReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav5();
+																//view mktg ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-marketingRequest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFive')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsMktgReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+
+	//view Assign supervisor
+	function viewAssignModelMktgReq(id) {
+		document.getElementById("mySidenav5").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("myGridMktgReq").style.width = "79%";
+
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("myGridGenEnq").style.width = "79%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("myGridComp").style.width = "79%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("myGridSale").style.width = "79%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("myGridSerReq").style.width = "79%";
+		$("#commentSidenav1").hide();
+		$("#commentSidenav2").hide();
+		$("#commentSidenav3").hide();
+		$("#commentSidenav4").hide();
+		$("#commentSidenav5").hide();
+
+		$.ajax({
+			type : "POST",
+			url : "view-manageSupervisor-modalViewMktgReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : id,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketid);
+					$('#CallQueue').val(response.body.callQueue);
+					$('#myAssignModal').modal('show');
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close side nave
+	function closeNav5() {
+		$("#mySidenav5").hide();
+
+		$("#supportsMktgReq").val("");
+		$("#commentIdMktgReq").val("");
+
+		document.getElementById("mySidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("myGridMktgReq").style.width = "100%";
+		document.getElementById("mySidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("myGridGenEnq").style.width = "100%";
+		document.getElementById("mySidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("myGridComp").style.width = "100%";
+		document.getElementById("mySidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("myGridSale").style.width = "100%";
+		document.getElementById("mySidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("myGridSerReq").style.width = "100%";
+	}
+	//add Assign supervisor	
+	$(document)
+			.ready(
+					function() {
+						$("#assignMktgReq")
+								.click(
+										function() {
+
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var CallQueue = $("#CallQueue")
+													.val();
+											var comment = $("#commentIdMktgReq")
+													.val();
+											var supports = $("#supportsMktgReq")
+													.val();
+											if (!blankValidation(
+													"commentIdMktgReq",
+													"TextArea",
+													"comments can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"supportsMktgReq",
+													"TextField",
+													"supports can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-manageSupervisor-addAssignSupportsMktgReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&supports="
+																+ supports
+																+ "&CallQueue="
+																+ CallQueue,
+														success : function(
+																response) {
+															console
+																	.log(response);
+															if (response.message == "success") {
+
+																closeNav5();
+																//view mktg ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-manageSupervisor-marketingRequest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFive')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsMktgReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+											//}
+											//})
+										});
+					});
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+				<div class="content_padding">
+					<div class="card-title">
+						<h4>All Ticket</h4>
+					</div>
+					<!-- 	main div start here -->
+					<div id="main">
+
+						<!-- 	sidenave for General Enquiry Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading active" role="tab" id="headingOne">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"
+												aria-expanded="false" aria-controls="collapseOne">
+												General Enquiry(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav1" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav1()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav1()">CANCEL</button>
+														<button class="btn1" id="submitGenEnq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusGenEnq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentGenEnq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateGenEnq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ageingGenEnq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsGenEnq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusGenEnq">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<!-- <start mySidenav  > -->
+									<div id="mySidenav1" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Assign/Reassign</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav1()"><i class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="closeNav1()">CANCEL</button>
+														<button class="btn1" id="assignGenEnq">SAVE</button>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="hidTicket"> <input
+															type="hidden" id="CallQueue"> <label>Supports</label>
+														<div class="select">
+															<select id="supports">
+																<option value="">--Select Supports--</option>
+																<option th:each="c,iter:${supportList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentId" spellcheck="false"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  > -->
+									<div id="collapseOne" class="panel-collapse collapse show"
+										role="tabpanel" aria-labelledby="headingOne">
+										<div class="row">
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+
+										<div id="myGridGenEnq" style="width: 100%; height: 300px;"
+											class="ag-theme-alpine"></div>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for General Enquiry End here -->
+						<!-- 	sidenave for Service request Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseTwo"
+												aria-expanded="false" aria-controls="collapseTwo">
+												Service Request(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav2" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav2()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav2()">CANCEL</button>
+														<button class="btn1" id="submitSerReq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentSerReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ageingSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsSerReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusSerReq">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<!-- <start mySidenav  > -->
+									<div id="mySidenav2" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Assign/Reassign</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav2()"><i class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="closeNav2()">CANCEL</button>
+														<button class="btn1" id="assignSerReq">SAVE</button>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="hidTicket"> <input
+															type="hidden" id="CallQueue"> <label>Supports</label>
+														<div class="select">
+															<select id="supportsSerReq">
+																<option value="">--Select Supports--</option>
+																<option th:each="c,iter:${supportList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentIdSerReq"
+															spellcheck="false"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  > -->
+									<div id="collapseTwo" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingTwo">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridSerReq" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Service request End here -->
+
+						<!-- 	sidenave for Complaints Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseThree"
+												aria-expanded="false" aria-controls="collapseThree">
+												Complaints(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav3" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav3()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav3()">CANCEL</button>
+														<button class="btn1" id="submitComp">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" id="ticketStatusComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentComp"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageingComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsComp"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusComp">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<!-- <start mySidenav  > -->
+									<div id="mySidenav3" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Assign/Reassign</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav3()"><i class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="closeNav3()">CANCEL</button>
+														<button class="btn1" id="assignComp">SAVE</button>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="hidTicket"> <input
+															type="hidden" id="CallQueue"> <label>Supports</label>
+														<div class="select">
+															<select id="supportsComp">
+																<option value="">--Select Supports--</option>
+																<option th:each="c,iter:${supportList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentIdComp"
+															spellcheck="false"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  > -->
+									<div id="collapseThree" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingThree">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridComp" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Complaints End here -->
+
+						<!-- 	sidenave for Sales Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseFour"
+												aria-expanded="false" aria-controls="collapseFour">
+												Sales(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav4" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav4()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav4()">CANCEL</button>
+														<button class="btn1" id="submitSale">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentSale"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageingSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsSale"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusSale">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<!-- <start mySidenav  > -->
+									<div id="mySidenav4" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Assign/Reassign</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav4()"><i class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="closeNav4()">CANCEL</button>
+														<button class="btn1" id="assignSale">SAVE</button>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="hidTicket"> <input
+															type="hidden" id="CallQueue"> <label>Supports</label>
+														<div class="select">
+															<select id="supportsSale">
+																<option value="">--Select Supports--</option>
+																<option th:each="c,iter:${supportList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentIdSale"
+															spellcheck="false"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  > -->
+									<div id="collapseFour" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingFour">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridSale" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Sales End here -->
+
+						<!-- 	sidenave for Marketing Request Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseFive"
+												aria-expanded="false" aria-controls="collapseFive">
+												Marketing Request(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav5" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav5()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav5()">CANCEL</button>
+														<button class="btn1" id="submitMktgReq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusMktgReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentMktgReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateMktgReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ageingMktgReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsMktgReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusMktgReq">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<!-- <start mySidenav  > -->
+									<div id="mySidenav5" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Assign/Reassign</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav5()"><i class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="closeNav5()">CANCEL</button>
+														<button class="btn1" id="assignMktgReq">SAVE</button>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="hidTicket"> <input
+															type="hidden" id="CallQueue"> <label>Supports</label>
+														<div class="select">
+															<select id="supportsMktgReq">
+																<option value="">--Select Supports--</option>
+																<option th:each="c,iter:${supportList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentIdMktgReq"
+															spellcheck="false"></textarea>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  > -->
+									<div id="collapseFive" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingFive">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridMktgReq" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Marketing Request End here -->
+					</div>
+
+					<!-- 	main div end here -->
+
+
+				</div>
+			</div>
+		</div>
+
+		<!---General Enquiry Modal Start-->
+		<div id="myModalGenEnq" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+
+					</div>
+
+					<!-- text input -->
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phone" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerName" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocation" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueue" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReason" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productType" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="comment"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--General Enquiry Modal End-->
+
+
+		<!-- service request Modal Start-->
+		<div id="myModalSerReq" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 61%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>>
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentSerReq"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+				</div>
+			</div>
+		</div>
+		<!-- Service Request Modal End-->
+
+		<!-- Complaint  Modal Start-->
+		<div id="myModalComp" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 72%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneComp" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonComp" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="servicecenterComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Complain Category</label> <input class="form-control"
+										type="text" id="complainCategoryComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Complaint Description</label>
+									<textarea class="form-control textarea"
+										id="complainDescriptionComp" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentComp"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Complaint  Modal End-->
+
+		<!--Sales  Modal Start-->
+		<div id="myModalSale" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 78%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneSale" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationSale" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonSale" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterSale" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Quantity</label> <input class="form-control" type="text"
+										id="quantitySale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Sales Description</label>
+									<textarea class="form-control textarea"
+										id="salesDescriptionSale" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentSale"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- Sales  Modal End-->
+		<!-- Marketing Request Modal Start-->
+		<div id="myModalMktgReq" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 80%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Quantity</label> <input class="form-control" type="text"
+										id="quantityMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Marketing Description</label>
+									<textarea class="form-control textarea"
+										id="marketingDescriptionMktgReq" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentMktgReq"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Marketing Request Modal End-->
+
+		<!--Start.... Modal Comment For All -->
+		<div id="myCommentsModal1" class="modal fade " role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content" style="width: 750px;">
+					<div class="modal-header">
+
+						<h4 class="modal-title">Give Comments</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<!-- text input -->
+							<input type="hidden" id="hidTicket">
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Last Status</label> <input class="form-control"
+											type="text" readonly="readonly" value="" id="ticketStatus">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Last Comments</label>
+										<textarea class="form-control textarea" rows="3"
+											placeholder="Enter ..." readonly="readonly" id="lastcomment"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Last Date Updated</label> <input class="form-control"
+											type="text" readonly="readonly" value="" id="lastDate">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Ageing</label> <input class="form-control" type="text"
+											readonly="readonly" value="" id="ageing">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Comments</label>
+										<textarea class="form-control textarea" rows="3"
+											placeholder="Enter ..." id="comments"></textarea>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Status</label> <select class="form-control" id="Status">
+											<option th:value="NULL">--Select--</option>
+											<option th:each="c:${statusList}" th:value='${c.key}'
+												th:text="${c.name}" th:selected="${c.key==status}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<div class="modal-footer">
+
+											<button type="button" class="btn btn-default pull-left"
+												data-dismiss="modal">Close</button>
+											<button type="button" class="btn btn-primary" id="submit1"
+												onclick="ChangeStatus();">Save</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

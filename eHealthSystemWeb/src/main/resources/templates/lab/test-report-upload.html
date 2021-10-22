@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">
+
+.bgwhite_field {
+	border: none;
+	outline: none;
+	width: 150px;
+	text-align: right;
+}
+
+
+  .ag-theme-alpine .ag-header {
+    background-color: #ffffff!important;
+    border-bottom: solid 1px;
+    border-bottom-color: #babfc7;
+    border-bottom-color: var(--ag-border-color, #babfc7);
+}
+
+.ag-theme-alpine .ag-row {
+height:40px!important;
+}
+.ag-row
+{
+min-height:40px!important;
+}
+.ag-row-even
+{height:40px!important; display:block;
+}
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height:40px!important;
+}
+.ag-center-cols-container
+{
+height:500px!important;
+}
+/* .ag-center-cols-viewport
+{height:500px!important;
+} */
+ .ag-cell .photo 
+{
+border-radius:50px!important;
+height:50px!important;
+margin:0px!important;
+}
+.icon_view 
+{
+  font-size:16px;
+  color:#006ce2;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_edit
+{
+  font-size: 16px;
+  color:#013064;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_delete 
+{
+  font-size:16px;
+  color:#ed1c24;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.ag-cell .ag-cell-not-inline-editing .ag-cell-auto-height
+{
+min-height:50px!important;
+}
+.ag-cell .active {
+    background: #e6f1fc;
+    color: #02356c;
+}
+.ag-cell span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+}
+
+/* .ag-cell a {
+    background: #ed1c24;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+} */
+.red-btn{
+    background:#ed1c24;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+}
+ .grn-btn{
+    background:#00a330;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+    }
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height: 40px!important;
+    color: #000!important;
+    font-weight: 500!important;
+}
+.form-group label {
+    font-size: 13px;
+    position: relative;
+    top: 0px;
+}
+.multiselecttxxt{
+font-size:16px;
+color: #5b626b!important;
+}
+
+</style>
+ 
+<script>
+	var patientId = "";
+	$(document).ready(function() {
+		$("#dBtn").hide();
+		$("#tab21").hide();
+		$("#tab22").hide();
+		$("#new").hide();
+		$("#tab11").hide();
+		/* $("#pdf").hide(); */
+		$("#selectDiv").hide();
+		$("#sltBtn").attr("disabled", true);
+		disableSelect();
+		
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions1);
+
+		//report-view
+		agGrid.simpleHttpRequest({
+			url : "test-report-viewLabTestReport"
+		}).then(function(data) {
+			gridOptions1.api.setRowData(data);
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			if(data.length > 0) {
+				$('#patientId').val(data[0].patientId);
+			}
+		});
+		$("#fromDateCalendar2").datetimepicker({
+			format : 'Y-m-d',
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#testDate').val($(this).val());
+		})
+
+		$('#testDate').blur(function() {
+			$("#fromDateCalendar2").val($(this).val());
+		})
+		$("#sltBtn").click(function(){	
+			//$(".groupCls").disabled= true;
+			//$(".groupCls").setAttribute('disabled', 'disabled');
+			//$('#grp_0').disabled=true;
+			 $('.groupCls').attr('disabled', true);
+			var dataset=[];
+			$("#tab21").find("input:checkbox[name=groupName]:checked").each(function(j){
+			
+			
+			dataset.push($(this).closest("div").find(".groupCls").val());
+			});		
+			
+		
+			showTestName(dataset);
+		});
+		
+		
+			
+	});
+	
+	/* -------------------search bar for mygrid------------------------ */
+
+	function onQuickFilterChanged() {
+		gridOptions1.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+	/* -------------------disable  Select------------------------ */
+	function disableSelect() {
+	    document.getElementById("sltBtn").disabled = true;
+	}
+
+	function activateButton(element) {
+
+	    if (element.checked) {
+	        document.getElementById("sltBtn").disabled = false;
+	    } else {
+	        document.getElementById("sltBtn").disabled = true;
+	    }
+	}
+/* -------------------ag Grid column------------------------ */
+	var columnDefs1 = [ {
+		headerName : "Patient Id",
+		field : "patientId",
+		width:200,
+	}, {
+		headerName : "Patient Name",
+		field : "patientName",
+		width:200,
+	}, {
+		headerName : "Mobile No",
+		field : "mob",
+		width:200,
+		cellStyle : {
+			textAlign : 'center'
+		}
+	
+	}, {
+		headerName : "Date",
+		field : "date",
+		width:200,
+	},{
+		
+		  headerName : "View / Edit/ Delete",
+	      field : "operation",
+	      width: 200,
+	   
+	      cellRenderer: function(params) {
+	        s = "";
+	        s = ' <i class="ti ti-file icon_view"> <i onclick=addTestReport("' + params.data.patientId
+			+ '") class="ti ti-pencil icon_edit ">  <i class="ti ti-trash icon_delete">';
+	        return s;
+	      }
+	    }, {
+	      headerName : "Download",
+	      field : "reportStatus",
+	      width: 200,
+	      cellRenderer: function(params) {
+	    	  console.log(params.data.reportStatus);
+	        s = "";
+	        if (params.data.reportStatus == "true"){
+	        	s = ' <a href="#" class="grn-btn" onclick="pdfGatePass(\''+params.data.patientId+'\',\''+params.data.date+'\')"><i class="ti ti-download"></i> Report</a>';
+	        	
+	        }
+	        else{
+	        	 s = ' <a href="#" class="red-btn" onclick="pdfGatePass(\''+params.data.patientId+'\',\''+params.data.date+'\')"><i class="ti ti-download"></i> Report</a>';
+	        }
+	        return s;
+	      }
+	} ];
+
+	var gridOptions1 = {
+		columnDefs : columnDefs1,
+
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 165,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.patientId;
+	},
+	onSelectionChanged : pdfDownloadId,
+}
+
+	var pdfId = "";
+	function pdfDownloadId(){
+		$("#pdf").attr("disabled",false);
+		var selectedRows = gridOptions1.api.getSelectedRows();
+		pdfId = "";
+		pdfId = selectedRows[0].patientId;
+
+	}
+//function for pdf download	
+
+function pdfGatePass(id1,id2) {	
+	var id = window.btoa(id1);
+	window.open("/user/view-patient-test-report-pdf-download?id=" +id+'&id2='+id2 , '_blank');
+	//window.open("/user/view-patient-test-report-pdf-download-pdf?id=" +id , '_blank');
+}
+	//Edit Operation
+	function addTestReport(id) {
+		$("#tab11").show();
+		$("#tab21").show();
+		$("#tab22").hide();
+		$("#myGrid").hide();
+		$("#hideTbl").hide();
+		$("#reqTable").hide();
+		$("#selectDiv").show();
+		
+		var selectedNodes = gridOptions1.api.getRowNode(id);
+		$('#patientId').val(selectedNodes.data.patientId);
+		$('#patientName').val(selectedNodes.data.patientName);
+		$('#age').val(selectedNodes.data.age);
+		$('#gender').val(selectedNodes.data.gender);
+		$('#height').val(selectedNodes.data.height);
+		$('#weight').val(selectedNodes.data.weight);
+		$('#mob').val(selectedNodes.data.mob);
+		$('#phc').val(selectedNodes.data.phc);
+		
+		
+
+	}
+	
+	/* -------------------function for cancel------------------------ */
+	function cancel(){
+		$("#myGrid").show();
+		$("#hideTbl").show();
+		$("#reqTable").show();
+		$("#tab21").hide();
+		$("#tab22").hide();
+		$("#new").attr("disabled", true);
+		$("#tab11").hide();
+		$("#pdf").hide();
+		$("#selectDiv").hide();
+		agGrid.simpleHttpRequest({
+			url : "test-report-viewLabTestReport"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions1.api.setRowData(data);
+		});
+	}
+
+/* -------------------function for row select------------------------ */
+	var pId = " ";
+	function rowSelectId() {
+
+		$('#new').attr("disabled", false);
+		var selectedRows = gridOptions1.api.getSelectedRows();
+		pId = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+
+			pId = pId + '"' + selectedRows[i].patientId + '",';
+		}
+		pId = pId.substring(0, pId.length - 1);
+	}
+/* -------------------function for show TestName------------------------ */
+function showTestName(dataset){
+	 // $('#testNameList').empty();
+	//alert($('#'+x+':checked').val())
+	//var id=$('#'+x+':checked').val();
+	//if(dataset){
+		
+	  $.ajax({
+          type: 'GET',
+          url: 'test-report-get-reportType?id=' + dataset,
+          contentType: false,
+          success: function(response) {
+              if (response.message == "success") {
+            	 
+                  $("#tab22").show();
+                  for(i=0;i<dataset.length;i++){
+                	  
+                	  var div='<table class="table table-bordered table-responsive" id="myTbl_'+i+'" cellspacing="0" cellpadding="0" style="display:none">'+
+            		  '<thead><tr><th style="color: #8ed8c9;">Group Name</th><th style="color: #8ed8c9;">Test Name</th>'+
+            		  '<th style="color: #8ed8c9;">Unit</th><th style="color: #8ed8c9;" id="monDate">Actual Value</th>'+
+            		  '<th style="color: #8ed8c9;">Range</th></tr></thead><tbody id="testNameList_'+i+'"></tbody>'+
+            		  '</table></div><div class="pdiv" id="proceeddiv_'+i+'">';
+            		  $('#tab22').append(div);
+                	  for(j=0;j<response.body[i].obj.length;j++){
+                		  
+                		var tbl = '<tr><td bgcolor="#F6f8f8" align="center" id="groupName_'+i+'-'+j+'">' + response.body[i].obj[0].grpName
+      					+ '</td><td bgcolor="#F6f8f8" align="center" id="testName_'+i+'-'+j+'">' + response.body[i].obj[j].testName
+      					+ '</td><td bgcolor="#F6f8f8" align="center" id="testUnit_'+i+'-'+j+'">'
+      					+ response.body[i].obj[j].testUnit
+      					+ '</td><td bgcolor="#F6f8f8" width="150" align="right" class="tdwhite monCls"><input type="text" align="right" class="bgwhite_field" id="actualValue_'+i+'-'+j+'">'
+      					+ '</td><td bgcolor="#F6f8f8" width="150" align="right" id="range_'+i+'-'+j+'" >'
+      					+ response.body[i].obj[j].range
+      					+ '</td></tr>';
+                         $('#testNameList_'+i).append(tbl);  
+                         
+                	  }  
+                	  
+                  }
+                  
+                  var len = dataset.length;
+                  for(i=0;i<dataset.length;i++){
+                	  if(len > 1) {
+                		  
+                		  $("#proceeddiv_"+i).append('<button class="btn1" id="proceed_'+i+'" onclick="proceed('+i+','+len+');Submit('+i+');" style="display:block">Proceed</button>');
+  		              }else{
+                		  $("#proceeddiv_"+i).append('<button class="btn1" id="submit_'+i+'" onclick="finalSubmit('+i+')" style="display:block">Submit</button>');
+                	  }
+                	    disableCheckbox(i);
+                  }
+                  
+                  $("#sltBtn").hide();
+                  $(".pdiv").hide();
+                  $("#myTbl_0").show();
+                 
+                  
+                  $("#proceeddiv_0").show();
+              
+              }else{
+            	  $("#tab22").hide();
+              }
+          },
+          error: function(e) {
+              alert("error");
+          }
+      });
+}
+function disableCheckbox(i) {
+	$(".groupCls").disabled = true;
+	}
+/* -------------------function for proceed------------------------ */
+function proceed(a,len){
+	//alert(len)
+	b=a+1;	
+	finalData=len-2;
+	idLen=len-1;
+	//alert(a+"-length-"+finalData)
+	  if(a==finalData){			  
+		  $("#myTbl_"+a).hide();	 
+		  $("#myTbl_"+b).show();		
+		$("#proceeddiv_"+a).empty();
+	    $("#proceeddiv_"+a).append('<button class="btn1" id="submit_'+b+'" onclick="Submit('+b+','+len+')" style="display:block">Submit</button>');
+	  
+	  }else{		  
+		  
+		  $("#myTbl_"+a).hide();		 
+		 $("#myTbl_"+b).show();		
+		  $("#proceeddiv_"+a).hide();
+		$("#proceeddiv_"+b).show();
+	  }
+	
+     
+}
+/* -------------------function for submit(Proceed)------------------------ */
+ 	var datas=[];
+ function Submit(i,len){	
+		
+	 var testDataset=[];
+		$("#testNameList_"+i+" > tr").each(function(j){
+		item={};
+		item['patientId']= $("#patientId").val();
+		item['patientName']= $("#patientName").val();
+		item['patientAge']= $("#age").val();
+		item['gender']= $("#gender").val();
+		item['height']= $("#height").val();
+		item['weight']= $("#weight").val();
+		item['mob']= $("#mob").val();
+		item['phc']= $("#phc").val();
+		item['testDate']= $("#testDate").val();
+		
+		item['grpName']=	$("#groupName_"+i+"-"+j).text();
+        item['testName']=	$("#testName_"+i+"-"+j).text();
+        item['testUnit']=	$("#testUnit_"+i+"-"+j).text();
+        item['actualValue']=$("#actualValue_"+i+"-"+j).val();
+        item['range']=		$("#range_"+i+"-"+j).text();
+        datas.push(item);
+	}); 
+		// datas.push(testDataset);
+	var finalLen=len-1;
+		if(i==finalLen){
+			saveLabTest(datas);
+		}else{
+		}
+		
+}; 
+
+/* -------------------function for single table submit------------------------ */
+function finalSubmit(i){
+	var datas = [];
+
+	$("#testNameList_"+i+" > tr").each(function(j){
+		item={};
+		item['patientId']= $("#patientId").val();
+		item['patientName']= $("#patientName").val();
+		item['patientAge']= $("#age").val();
+		item['gender']= $("#gender").val();
+		item['height']= $("#height").val();
+		item['weight']= $("#weight").val();
+		item['mob']= $("#mob").val();
+		item['phc']= $("#phc").val();
+		item['testDate']= $("#testDate").val();
+		
+		item['grpName']=	$("#groupName_"+i+"-"+j).text();
+        item['testName']=	$("#testName_"+i+"-"+j).text();
+        item['testUnit']=	$("#testUnit_"+i+"-"+j).text();
+        item['actualValue']=	$("#actualValue_"+i+"-"+j).val();
+        item['range']=		$("#range_"+i+"-"+j).text();
+        datas.push(item);
+       
+	});
+	saveLabTest(datas);
+	
+}
+/* -------------------function for All Multiple Data Submit------------------------ */
+function saveLabTest(datas) {
+	
+		$.ajax({
+			type : "POST",
+			url : "test-report-addLabTestReport",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				if (response.message == "Success") {
+
+					$("#myGrid").show();
+					$("#hideTbl").show();
+					$("#reqTable").show();
+					$("#tab21").hide();
+					$("#tab22").hide();
+					$("#new").attr("disabled", true);
+					$("#tab11").hide();
+					$("#pdf").hide();
+					$("#selectDiv").hide();
+					//report-view
+					agGrid.simpleHttpRequest({
+						url : "test-report-viewLabTestReport"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions1.api.setRowData(data);
+						patientId = data[0].patientId;
+					});
+				}
+			},
+			error : function(datas) {
+			}
+		})
+	
+
+}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			
+				<!-- 	<div class="maincontentsec"> -->
+				<div class="row margin_topbot" id="hideTbl">
+					<div class="input-style row">
+						<input type="text" placeholder="Search.." name="search"
+							class="searchboxinput" onkeyup="cancelBar()"
+							oninput="onQuickFilterChanged()" id="quickFilter">
+						<div class="searchicon">
+							<a href="javascript:void(0)"><span
+								style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+								id="closeKey"
+								onclick="gridOptions1.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+								class="close_i"><i class="ti-close srchicon"></i></span></a><a
+								href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" id="reqTable">
+
+					<div class="col-md-6 btn-hs">
+						<div class="font-design" id="totalReq">
+							LABS TEST REPORT LIST(<span></span>)
+						</div>
+					</div>
+					<div class="col-md-6 buttonsec btn-hs" id="dBtn">
+
+						<button class="btn4" id="pdf" onclick="pdfGatePass()">DOWNLOAD</button>
+						<button class="btn1" id="new" onclick="add()">New</button>
+						<div class="buttongap"></div>
+
+					</div>
+
+				</div>
+				<div id="tab11">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="butttonsec">
+								<button class="btn4" id=Cancel onclick="cancel()">Cancel</button>
+
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+						<input type="hidden" id="patientIdHid">
+							<div class="col-md-6">
+							<div class="form-group">
+								<label>Patient Id</label> <input type="text" id="patientId"
+									placeholder="Patient Id" class="form-control" readonly>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Patient Name</label> <input type="text" 
+									class="form-control" id="patientName" readonly >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Age</label> <input type="text" id="age" placeholder="Age"
+									class="form-control" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Gender</label> <input type="text" id="gender" 
+									class="form-control" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Height</label> <input type="text" id="height"
+									placeholder="Height" class="form-control" >
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Weight</label> <input type="text" id="weight"
+									placeholder="Weight" class="form-control" >
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Mob Number</label> <input type="text"
+									id="mob" placeholder="Alternate Mobile Number"
+									class="form-control" readonly>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>PHC</label> <input type="text" id="phc" placeholder="PHC"
+									class="form-control">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label> Date</label> <input type="text" id="testDate"
+									class="form-control" placeholder="Date"
+									onblur="removeValid(event)"
+									th:attr="onkeyup=|formatDate('testDate','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="fromDateCalendar2"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="tab21">
+					<label>GROUP NAME</label>
+					<div class="col-md-6" id="a">
+						<div th:each="c,iter : ${groupNameList}" class="multiselecttxxt"
+							id="groupDiv" style="color: #929292;">
+							<input type="checkbox" th:id="'grp_'+${iter.index}"
+								name="groupName" class="groupCls" th:value='${c.name}'
+								th:text="${c.name}" onchange="activateButton(this);"/>
+						</div>
+					</div>
+				</div>
+				<div class="row" id="selectDiv">
+					<div class="col-md-12">
+						<div class="butttonsec">
+							<button id="sltBtn" class="btn1">Select</button>
+						</div>
+					</div>
+
+				</div>
+				<div class="mrt_20" id="tab22">
+
+					<!-- <table class="table table-bordered table-responsive" id="myTbl"
+						cellspacing="0" cellpadding="0">
+						<thead>
+							<tr>
+								<th style="color: #8ed8c9;">Test Name</th>
+								<th style="color: #8ed8c9;">Unit</th>
+								<th style="color: #8ed8c9;" id="monDate">Actual Value</th>
+								<th style="color: #8ed8c9;">Range</th>
+							</tr>
+						</thead>
+						<tbody id="testNameList"></tbody>
+					</table> -->
+
+				</div>
+
+				<!-- 	</div> -->
+			</div>
+		</div>
+	
+
+
+</body>
+</html>

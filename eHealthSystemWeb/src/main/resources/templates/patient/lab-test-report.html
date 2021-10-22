@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">
+ .grn-btn{
+    background:#00a330;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+    }
+</style>
+<script>
+
+var patientId="";
+$(document).ready(function() {
+	$("#pdf").hide();
+
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions1);
+
+	//reimbursement-view
+	agGrid.simpleHttpRequest({
+		url : "view-patient-test-report-view"
+	}).then(function(data) {
+		console.log(JSON.stringify(data));
+		gridOptions1.api.setRowData(data);
+		patientId = data[0].patientId;
+	});
+
+});
+
+var columnDefs1 = [
+	{
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},
+	{
+		headerName : "Patient Id",
+		field : "patientId",
+	}, {
+		headerName : "Patient Name",
+		field : "patientName",
+	}, {
+		headerName : "Age",
+		field : "age",
+	}, {
+		headerName : "Gender",
+		field : "gender",
+	},  {
+		headerName : "weight",
+		field : "weight",
+	}, {
+		headerName : "height",
+		field : "height",
+	},{
+		headerName : "Test Date",
+		field : "testDate",
+	},{
+		headerName : "PHC",
+		field : "phc",
+	},{
+	      headerName : "Download",
+	      field : "reportStatus",
+	      width: 200,
+	      cellRenderer: function(params) {
+	        s = "";
+	        s = ' <a href="#" class="grn-btn" onclick="pdfGatePass(\''+params.data.testDate+'\')"><i class="ti ti-download"></i> Report</a>';
+	   
+	        return s;
+	      },
+	      cellStyle : {
+				textAlign : 'center'
+			}
+	} ];
+	
+var gridOptions1 = {
+		columnDefs : columnDefs1,
+		
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 149,
+			height : 10
+		},
+	};
+	
+function onQuickFilterChanged() {
+	gridOptions1.api
+			.setQuickFilter(document.getElementById('quickFilter').value);
+}
+
+function cancelBar() {
+	var id = document.getElementById("closeKey");
+	id.style.display = "block";
+
+	if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+		id.style.display = "none";
+	}
+}
+
+function pdfGatePass(id1) {
+	$("#pdf").show();	
+	var id2=id1;
+	var id = window.btoa(patientId);
+	window.open("/user/view-patient-test-report-pdf-download?id=" +id+'&id2='+id2 , '_blank');
+}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			
+				<div class="maincontentsec">
+					<div class="row margin_topbot" id="hideTbl">
+						<div class="btn-hs">
+							<div class="input-style row">
+								<input type="text" id="searchBar" placeholder="Search.."
+									name="search" class="searchboxinput" onkeyup="cancelBar()"
+									oninput="onQuickFilterChanged()">
+								<div class="searchicon">
+									<a href="#"><span style="display: none" id="closeKey"
+										onclick="gridVendorOptions.api.setQuickFilter(null);$('#searchBar').val('');document.getElementById('closeKey').style.display='none';"
+										class="close_i">X</span></a> <a href="#"><i
+										class="fa fa-search"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" id="reqTable">
+
+						<div class="col-md-6 btn-hs">
+							<div class="font-design" id="totalReq">LABS TEST REPORT
+								LIST</div>
+						</div>
+						<input type="hidden" id="patientId">
+						<div class="col-md-6 buttonsec btn-hs">
+
+							<!-- <button id= "download" class="btn4" onclick="pdfGatePass()">DOWNLOAD</button> -->
+							<div class="buttongap"></div>
+
+						</div>
+
+					</div>
+					<div id="myGrid" style="width: 100%; height: 450px;"
+						class="ag-theme-alpine"></div>
+					
+				</div>
+			</div>
+		</div>
+	
+	
+
+</body>
+</html>

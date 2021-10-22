@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<title>Extend</title>
+<style>
+.hover-class {
+	cursor: pointer;
+}
+
+.btnDisable {
+	color: #ccc !important;
+}
+</style>
+
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+</style>
+<title>Insert title here</title>
+<script>
+
+$(document).ready(function() {
+			var id = $("#auditTypeId").val();
+			var gridDiv = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv, gridOptions);
+
+			agGrid.simpleHttpRequest({
+				url : 'audit-dashboard-viewAudit?id=' + id
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq').find('span').html(len);
+				gridOptions.api.setRowData(data);
+			});
+			
+			$("#myGrid").show();
+			$("#btnDiv").show();
+			$("#addData").hide();
+
+});
+		
+
+/************************            View Document             **************************/
+	//columnDefs
+	const columnDefs = [ {
+		headerName : 'Audit NO',
+		field : "auditInitiate",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editAudit("' + params.data.auditInitiate
+					+ '") href="javascript:void(0)">'
+					+ params.data.auditInitiate + '</a>';
+		}
+	}, {
+		headerName : 'Audit Type',
+		field : "auditType",
+	}, {
+		headerName : 'Financial Year',
+		field : "financialYear",
+	}, {
+		headerName : 'Status',
+		field : "auditStatus",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	}, {
+		headerName : 'Initiated Date',
+		field : "initiatedDate",
+	} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 250,
+			height : 10
+		},
+
+	};
+	
+
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+
+						<div class="row margin_topbot" id="searchRowDiv">
+
+							<div class="input-style row">
+								<input type="text" placeholder="Search.." name="search"
+									class="searchboxinput" onkeyup="cancelBar()"
+									oninput="onQuickFilterChanged()" id="quickFilter">
+								<div class="searchicon">
+									<a href="javascript:void(0)"><span
+										style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+										id="closeKey"
+										onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+										class="close_i"><i class="ti-close srchicon"></i></span></a><a
+										href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row" id="totalRowDiv">
+							<div class="col-md-12">
+								<div class="font-design" id="totalReq">
+									Audit  Details (<span></span>)
+								</div>
+							</div>
+					
+						</div>
+						
+						<div id="myGrid" style="height: 500px; width: 100%;"
+							class="ag-theme-alpine"></div>
+			
+
+							<div class="row" id="addData">
+								<input type="hidden" id="auditUploadId"> 
+								<div class="col-md-4">
+									<div class="form-group">
+
+										<label>Audit Type</label><input type="hidden" id="auditTypeId"
+											th:value="${auditTypeId}">  <input type="hidden"
+											id="auditTypeName" class="form-control"
+											th:value="${auditTypeName}" readonly />
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+						
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+</body>
+</html>

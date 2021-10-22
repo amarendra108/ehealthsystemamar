@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style type="text/css">
+.table th, .table td {	
+	padding: .5rem .2rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+	font-size: 14px;
+	background: transparent;
+	font-weight: 100;
+	letter-spacing: .5px;
+}
+
+.table thead th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #dee2e6;
+	background: transparent;
+	font-size: 16px !important;
+	color: #757373;
+	text-align: center;
+	font-weight: 100;
+	letter-spacing: .5px;
+}
+
+body {
+	background-color: #eee;
+}
+
+.profile_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	height: 837px;
+}
+
+.profile-img img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	border: 1px solid #0071c1;
+	margin: 20px 0px 10px;
+	position: relative;
+}
+
+.change-pf {
+	height: 35px;
+	width: 35px;
+	background-color: #056fe2;
+	color: #fff;
+	border-radius: 50%;
+	position: absolute;
+	padding: 5px;
+	right: 132px;
+	top: 85px;
+}
+
+.user-nm {
+	font-size: 16px;
+	color: #000;
+	text-align: center;
+	font-weight: 500;
+	padding-bottom: 10px;
+}
+
+.user-dtl {
+	border-top: 1px dashed #0071c1;
+	padding: 10px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mb-8 {
+	margin-bottom: 4px;
+}
+.modal-content-md {
+	padding: 15px 14px;
+	position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    outline: 0;
+}
+.user-dtlhd {
+	font-size: 16px;
+	color: #000;
+	font-weight: 500;
+}
+
+.user-id {
+	font-size: 16px;
+	font-weight: 400;
+	color: #056fe2;
+}
+
+.right_tbl_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	height: 290px;
+}
+
+.vital_card {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.vital-sign {
+	height: 496px;
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
+.vital {
+	font-size: 16px;
+	color: #fff;
+	font-weight: 700;
+	background-color: #12b3bb;
+	text-transform: uppercase;
+	padding: 5px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.col-md-pd {
+	padding-right: 0px !important;
+	padding-left: 14px !important
+}
+
+#upload-photo {
+	opacity: 0;
+	position: absolute;
+	/* z-index: -1; */
+	height: 35px;
+	width: 35px;
+	right: 0px;
+	z-index: 999;
+	border-radius: 50%;
+}
+
+.pd-10 {
+	padding: 10px;
+}
+
+.family_tbl_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+.smtbl-scrl{
+
+	height: 180px;
+	overflow-y: scroll;
+}
+.tbl-scrl {
+	height: 210px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+</style>
+<script>
+	//Document Upload Ends
+
+	$(document).ready(function() {
+		
+		$("#cancel1").hide();
+		
+		$("#saveallergy").hide();
+		$("#saveFamilyDoctor").hide();
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendar").datetimepicker({
+			format : 'Y-m-d',
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#implantDate').val($(this).val());
+		})
+
+		$('#implantDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+		$.ajax({
+			type : "GET",
+			url : "view-doctor-patient-details-edit-vitalsign",
+			success : function(response) {
+				if (response.message == "Success") {
+					if(response.body.heightId != null && response.body.heightId != "") {
+						$("#patHeight").text(response.body.heightId);
+					} else {
+						$("#patHeight").text("N/A");
+					}
+					if(response.body.weightid!= null && response.body.weightid != "") {
+						$("#patWeight").text(response.body.weightid);
+					} else {
+						$("#patWeight").text("N/A");
+					}
+					if(response.body.bmi!= null && response.body.bmi != "") {
+						$("#patBMI").text(response.body.bmi);
+					} else {
+						$("#patBMI").text("N/A");
+					}
+					if(response.body.tempCs!= null && response.body.tempCs != "") {
+						$("#patTemp").text(response.body.tempCs);
+					} else {
+						$("#patTemp").text("N/A");
+					}
+					if(response.body.tempFah!= null && response.body.tempFah != "") {
+						$("#tempFah").text(response.body.tempFah);
+					} else {
+						$("#tempFah").text("N/A");
+					}
+					if(response.body.bldpsr!= null && response.body.bldpsr != "") {
+						$("#patBprssr").text(response.body.bldpsr);
+					} else {
+						$("#patBprssr").text("N/A");
+					}
+					if(response.body.sysDis!= null && response.body.sysDis != "") {
+						$("#patSys").text(response.body.sysDis);
+					} else {
+						$("#patSys").text("N/A");
+					}
+					if(response.body.pulseMin!= null && response.body.pulseMin != "") {
+						$("#patPulse").text(response.body.pulseMin);
+					} else {
+						$("#patPulse").text("N/A");
+					}
+					if(response.body.respBpm!= null && response.body.respBpm != "") {
+						$("#patResprition").text(response.body.respBpm);
+					} else {
+						$("#patResprition").text("N/A");
+					}
+					if(response.body.oxygenPer!= null && response.body.oxygenPer != "") {
+						$("#patOxy").text(response.body.oxygenPer);
+					} else {
+						$("#patOxy").text("N/A");
+					}
+					
+				}
+			},
+
+		});
+
+	});
+
+	$(document)
+			.ready(
+					function() {
+						$
+								.ajax({
+									type : "GET",
+									url : "view-doctor-patient-details-edit",
+									success : function(response) {
+										if (response.message == "Success") {
+											$('#imgLocs').attr('src', '');
+											if (response.body.fileDetails != null
+													&& response.body.fileDetails != "") {
+												$('#imgLocs').attr('src',
+														response.body.fileDetails);
+											} else {
+												$('#imgLocs').attr('src',
+														'../assets/eHealth/images/doctor.jpg');
+											}
+											$('#patientName').text(response.body.firstnameid+ " "+ response.body.lastnameid);
+											$("#firstName").text(response.body.firstnameid);
+											$("#lastName").text(response.body.lastnameid);
+											$("#uhIdNo").text(response.body.uhidNo);
+											$("#bldGrp").text(response.body.bloodgrp);
+											$("#dob").text(response.body.dobid);
+											$("#patAge").text(response.body.age);
+											$("#gender").text(response.body.gender);
+											$("#maritalSts").text(response.body.maritialStatus);
+											$("#occupation").text(response.body.occupation);
+											$("#patAddress").text(response.body.homeAdd);
+											$("#patCountry").text(response.body.countryid);
+											$("#patState").text(response.body.stateid);
+											
+											if(response.body.cityid != null && response.body.cityid != "") {
+												$("#patCity").text(response.body.cityid);
+											} else {
+												$("#patCity").text("N/A");
+											}
+											$("#patEmail").text(
+													response.body.cemail);
+											$("#patMob").text(
+													response.body.phNo);
+											if(response.body.zipCode!= null && response.body.zipCode != "") {
+												$("#patzipcode").text(response.body.zipCode);
+											} else {
+												$("#patzipcode").text("N/A");
+											}
+										}
+									},
+
+								});
+						
+						
+						$("#savevitalsign").hide();
+						$("#editSaveVital").hide();
+						
+					});
+/* 
+	agGrid.simpleHttpRequest({
+		url : "view-doctor-patient-details-edit-emercontact"
+	}).then(
+			function(data) {
+				for (var i = 0; i < data.length; i++) {
+					var div2 = '<tr><td>' + data[i].eName + '</td>' + '<td>'
+							+ data[i].eRealtion + '</td>' + '<td>'
+							+ data[i].eMobNo + '</td>';
+					$("#tbodyid").append(div2)
+				}
+
+			}); */
+	/*view emergency contact*/
+
+	agGrid.simpleHttpRequest({
+		url : "view-doctor-patient-details-edit-emercontact"
+	}).then(
+			function(data) {
+				for (var i = 0; i < data.length; i++) {
+					
+					var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editEmergencyContact(\''+ data[i].eId +'\',\''+ data[i].eName +'\',\''+ data[i].eRelationId +'\',\''+ data[i].eMobNo +'\')">' + data[i].eName + '</td>'
+							+ '<td>' + data[i].eRealtion + '</td>'
+							+ '<td>' + data[i].eMobNo + '</td>';
+					$("#tbodyid").append(div2)
+				}
+
+			});
+	agGrid.simpleHttpRequest({
+		url : "view-doctor-patient-details-alergy-through-ajax"
+	}).then(
+			function(data) {
+				 for (var i = 0; i < data.length; i++) {
+					var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editAllergys(\''+ data[i].allergyId +'\')">' + data[i].allerName +  '</td>' 
+				
+					+ '<td>'+ data[i].alergenType + '</td>' + '<td>'
+							+ data[i].allerRection + '</td>' + '<td>'
+							+ data[i].allerSeverity + '</td>' + '<td>'
+							+ data[i].drUpdatedby + '</td>';
+					$("#tbodyid1").append(div2)
+				}
+				 
+				/*  for (var i = 0; i < data.length; i++) {
+						
+						var div2 = '<tr><td class="user-id"  style="cursor:pointer" onclick="editEmergencyContact(\''+ data[i].eId +'\',\''+ data[i].eName +'\',\''+ data[i].eRelationId +'\',\''+ data[i].eMobNo +'\')">' + data[i].eName + '</td>'
+								+ '<td>' + data[i].eRealtion + '</td>'
+								+ '<td>' + data[i].eMobNo + '</td>';
+						$("#tbodyid").append(div2)
+					} */
+ 
+			});
+	
+	
+	agGrid.simpleHttpRequest({
+		url : "view-doctor-patient-details-edit-famdoc"
+	}).then(
+			function(data) {
+				 for (var i = 0; i < data.length; i++) {
+					var div2 = '<tr><td>' + data[i].docName +  '</td>' + '<td>'
+							+ data[i].docSpeciality + '</td>' + '<td>'
+							+ data[i].docMobNo + '</td>';
+					$("#tbodyid2").append(div2)
+				}
+ 
+			});
+	agGrid.simpleHttpRequest({
+		url : "view-doctor-patient-details-biomedical-through-ajax"
+	}).then(
+			function(data) {
+				 for (var i = 0; i < data.length; i++) {
+					var div2 = '<tr><td>' + data[i].bName +  '</td>' + '<td>'
+							+ data[i].breson + '</td>' + '<td>'
+							+ data[i].implantDate + '</td>' ;
+					$("#tbodyid3").append(div2)
+				}
+ 
+			});
+	
+	 
+	
+	function editVital() {
+		$('#cancel1').show();
+		$('#editVital').hide();
+		
+		$("#editvitalsign").hide();
+		$("#savevitalsign").show();
+		$('#editSaveVital').show();
+		
+		$.ajax({
+			type : "GET",
+			url : "view-doctor-patient-details-edit-vitalsign",
+			success : function(response) {
+				if (response.message == "Success") {
+					
+					$("#sHeightId").val(response.body.heightId);
+					$("#sWeightid").val(response.body.weightid);
+					$("#sBmi").val(response.body.bmi);
+					$("#sTempCs").val(response.body.tempCs);
+					$("#stempFah").val(response.body.tempFah);
+					$("#sBldpsr").val(response.body.bldpsr);
+					$("#sSysDis").val(response.body.sysDis);
+					$("#sPulseMin").val(response.body.pulseMin);
+					$("#sRespBpm").val(response.body.respBpm);
+					$("#sOxygenPer").val(response.body.oxygenPer);
+					$("#vCount").val(response.body.vCount);
+					
+				}
+			},
+
+		});
+		
+	}
+	
+	/*
+	save vitals
+	*/
+	
+	function editSaveVital() {
+		 $('#editVital').show();
+		 $('#cancel1').hide();
+		$("#editvitalsign").show();
+		$("#savevitalsign").hide();
+		$('#editSaveVital').hide(); 
+		
+		
+		var obj = {};
+		obj.heightId = $("#sHeightId").val();
+		obj.weightid = $("#sWeightid").val();
+		obj.bmi = $("#sBmi").val();
+		obj.tempCs = $("#sTempCs").val();
+		obj.tempFah = $("#sTempFah").val();
+		obj.bldpsr = $("#sBldpsr").val();
+		obj.sysDis = $("#sSysDis").val();
+		obj.pulseMin = $("#sPulseMin").val();
+		obj.respBpm = $("#sRespBpm").val();
+		obj.oxygenPer = $("#sOxygenPer").val();
+		obj.vCount = $("#vCount").val();
+		
+		obj.heightSId = $("#htId").val();
+		obj.weightSid = $("#wtId").val();
+		obj.bSmi = $("#bmId").val();
+		obj.tempSCs = $("#tcId").val();
+		obj.tempSFah = $("#sTempFah").val();
+		obj.bldSpsr = $("#bpId").val();
+		obj.sysSDis = $("#systId").val();
+		obj.pulseSMin = $("#pmId").val();
+		obj.respSBpm = $("#rbId").val();
+		obj.oxygenSPer = $("#osId").val();
+		var uhid=$("#uhIdNo").text();
+		saveVital(obj)
+	}
+	
+	function saveVital(obj){
+												$.ajax({
+														type : "POST",
+														url : "view-doctor-patient-details-vitals-add",
+														contentType : "application/json",
+														data : JSON.stringify(obj),
+														success : function(response) {
+															if (response.message == "Success") {
+																$.ajax({
+																	type : "GET",
+																	url : "view-doctor-patient-details-edit-vitalsign",
+																	success : function(response) {
+																		if (response.message == "Success") {
+																				$("#patHeight").text(response.body.heightId);
+																				$("#patWeight").text(response.body.weightid);
+																				$("#patBMI").text(response.body.bmi);
+																				$("#patTemp").text(response.body.tempCs);
+																				$("#tempFah").text(response.body.tempFah);
+																				$("#patBprssr").text(response.body.bldpsr);
+																				$("#patSys").text(response.body.sysDis);
+																				$("#patPulse").text(response.body.pulseMin);
+																				$("#patResprition").text(response.body.respBpm);
+																				$("#patOxy").text(response.body.oxygenPer);																			
+																		}
+																	},
+
+																});
+																
+															}
+														},
+														error : function(data) {
+
+														}
+													})
+
+										}
+	
+	function editAllergyCon() {
+		
+		  $("#myModalAllergyContact").show();
+		}
+	function editFamilyDoctor(){
+		  $("#myModalFmlyDoctor").show();
+	}
+	function editBioMedical(){
+		$("#myModalBioMedical").show();
+	}
+	function cancelModalBtn(){
+		 $("#myModalAllergyContact").hide();
+	}
+	
+	function cancelModalBtn1(){
+		 $("#myModalFmlyDoctor").hide();
+	}
+	function cancelModalBtn2(){
+		 $("#myModalBioMedical").hide();
+	}
+	/*Save Allergy Contact*/
+
+	function saveAlergy(){
+		var data = {};
+		data.allerNameId = $("#allerName").val();
+		data.alergenTypeId = $("#alergenType").val();
+		data.allerSeverity = $("#allerSeverity").val();
+		data.allerRection = $("#allerRection").val();
+		data.drUpdatedby = $("#drUpdatedby").val();
+	
+			$.ajax({
+					type : "POST",
+					url : "view-doctor-patient-details-alergy-save",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						if (response.message == "Success") {
+							cancelModalBtn();
+							
+						 agGrid.simpleHttpRequest({
+								url : "view-doctor-patient-details-alergy-through-ajax"
+							}).then(
+									function(data) {
+										$("#tbodyid1").empty()
+										 for (var i = 0; i < data.length; i++) {
+											var div2 = '<tr><td>' + data[i].allerName +  '</td>' + '<td>'
+													+ data[i].alergenType + '</td>' + '<td>'
+													+ data[i].allerRection + '</td>' + '<td>'
+													+ data[i].allerSeverity + '</td>' + '<td>'
+													+ data[i].drUpdatedby + '</td>';
+											$("#tbodyid1").append(div2)
+										}
+						 
+									}); 
+
+						} else {
+							swal({
+								title : response.code,
+								text : response.message,
+								type : "warning"
+							})
+						}
+					},
+					error : function(response) {
+						
+					}
+				})
+		
+	}
+function editAllergys(id){
+	$("#allergyHiddenId").val(id);
+	$("#myModalAllergyContact").show();
+}	
+/*edit Emergency Contact*/
+function editEmergencyContact(id,name,relation, mobno) {
+	$("#emergencyHiddenId").val(id)
+
+	$("#myModalEmergencyContact").modal('show');
+	$("#deleteContact").show();
+	$("#eName").val(name)
+	$("#eRealtion").val(relation)
+	$("#eMobNo").val(mobno)
+
+	
+}
+	/*Save Bio Medical*/
+
+	function saveBioMedical(){
+		var data = {};
+		data.bNameId = $("#bName").val();
+		data.breson = $("#breson").val();
+		data.implantDate = $("#implantDate").val();
+	
+			$.ajax({
+					type : "POST",
+					url : "view-doctor-patient-details-biomedical-save",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						if (response.message == "Success") {
+							cancelModalBtn2();
+							 
+							agGrid.simpleHttpRequest({
+								url : "view-doctor-patient-details-biomedical-through-ajax"
+							}).then(
+									function(data) {
+										$("#tbodyid3").empty()
+										 for (var i = 0; i < data.length; i++) {
+											var div2 = '<tr><td>' + data[i].bName +  '</td>' + '<td>'
+													+ data[i].breson + '</td>' + '<td>'
+													+ data[i].implantDate + '</td>' ;
+											$("#tbodyid3").append(div2)
+										}
+						 
+									});
+
+						} else {
+							swal({
+								title : response.code,
+								text : response.message,
+								type : "warning"
+							})
+						}
+					},
+					error : function(response) {
+						
+					}
+				})
+		
+	}
+	/*edit Emergency Contact*/
+	function editEmergencyContact(id,name,relation, mobno) {
+		$("#emergencyHiddenId").val(id)
+
+		$("#myModalEmergencyContact").modal('show');
+		$("#deleteContact").show();
+		$("#eName").val(name)
+		$("#eRealtion").val(relation)
+		$("#eMobNo").val(mobno)
+
+		
+	}
+	
+	function editCancel() {
+		
+	$('#editVital').show();
+	$('#cancel1').hide();
+	$('#editSaveVital').hide();
+	$("#editvitalsign").show();
+	$("#savevitalsign").hide();
+	
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row mt-10">
+				<div class="col-md-4 col-md-pd">
+					<div class="profile_sec">
+						<div class="profile-img" align="center">
+							<img th:src="${drProfDoc}" id="imgLocs"></img>
+							
+						</div>
+
+						<div class="user-nm" id="patientName"></div>
+
+						<div class="user-dtl">
+							<div class="mb-10">
+								<div class="user-dtlhd">First Name :</div>
+								<div class="user-id" id="firstName"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Last Name :</div>
+								<div class="user-id" id="lastName"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">UHID Card No :</div>
+								<div class="user-id" id="uhIdNo"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Blood Group :</div>
+								<div class="user-id" id="bldGrp"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">DOB :</div>
+								<div class="user-id" id="dob"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Age :</div>
+								<div class="user-id" id="patAge"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Gender :</div>
+								<div class="user-id" id="gender"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Marital Status :</div>
+								<div class="user-id" id="maritalSts"></div>
+							</div>
+							<div class="mb-10">
+								<div class="user-dtlhd">Occupation :</div>
+								<div class="user-id" id="occupation"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-6 col-md-pd">
+							<div class="right_tbl_sec">
+								<div class="vital">Address</div>
+								<div class="row">
+									<div class="col-md-6">
+
+										<div class="pd-10">
+											<div class="mb-10">
+												<div class="user-dtlhd">Address :</div>
+												<div class="user-id" id="patAddress"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Country:</div>
+												<div class="user-id" id="patCountry"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">State :</div>
+												<div class="user-id" id="patState"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">City :</div>
+												<div class="user-id" id="patCity"></div>
+											</div>
+										</div>
+
+									</div>
+									<div class="col-md-6">
+										<div class="mb-10">
+											<div class="user-dtlhd">Zipcode :</div>
+											<div class="user-id" id="patzipcode"></div>
+										</div>
+										<div class="mb-10">
+											<div class="user-dtlhd">Email :</div>
+											<div class="user-id" id="patEmail"></div>
+										</div>
+										<div class="mb-10">
+											<div class="user-dtlhd">Mobile No :</div>
+											<div class="user-id" id="patMob"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							
+							<div class="vital_card">
+								<div class="vital">
+								
+											<div class="row" >
+											
+												<div class="col-md-6">Vital Sign</div>
+												<div class="col-md-6" align="right">
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editSaveVital" onclick="editSaveVital()">Save</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editVital" onclick="editVital()">
+														<i class="fa fa-edit"></i>Edit
+													</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="cancel1" onclick="editCancel()">
+														<i class="fa fa-edit"></i>Cancel
+													</button>
+												</div>
+											</div>
+										</div>
+
+								<div class="pd-10 vital-sign" id="editvitalsign" >
+							
+									<div class="row">
+									<input type="hidden" id="userId">
+									<input type="hidden" id="patVitalId">
+										<div class="col-md-7">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="mb-8">
+														<div class="user-dtlhd">Height (cm) :</div>
+														<div class="user-id" id="patHeight"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Weight (kg) :</div>
+														<div class="user-id" id="patWeight"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">BMI (kg/m2) :</div>
+														<div class="user-id" id="patBMI"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Pulse(in mln) :</div>
+														<div class="user-id" id="patPulse"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Respiration(in bpm) :</div>
+														<div class="user-id" id="patResprition"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Oxygen Saturation(in %):</div>
+														<div class="user-id" id="patOxy"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-5">
+											<img src="../assets/eHealth/images/human.png"
+												class="img-fluid">
+										</div>
+										<div class="col-md-12">
+
+											<div class="mb-8">
+												<div class="user-dtlhd">Temperature (in Celcius):</div>
+												<div class="user-id" id="patTemp"></div>
+											</div>
+											<div class="mb-8">
+												<div class="user-dtlhd">Temperature (in Fahrenheit) :</div>
+												<div class="user-id" id="tempFah"></div>
+											</div>
+											<!-- <div class="mb-8">
+												<div class="user-dtlhd">Systolic/Diastolic :</div>
+												<div class="user-id" id="patSys"></div>
+											</div> -->
+											<div class="mb-8">
+												<div class="user-dtlhd">Blood Pressure(mmHg) :</div>
+												<div class="user-id" id="patBprssr"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="pd-10 vital-sign" id="savevitalsign">
+									<div class="row">
+										<div class="col-md-7">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="mb-8">
+														<div class="user-dtlhd">Height (cm) :</div>
+														<input type="text" class="form-control" id="sHeightId">
+														<input type="hidden" id="htId" value="4">
+													</div>
+													
+													<div class="mb-8">
+														<div class="user-dtlhd">Weight (kg) :</div>
+														<input type="text" class="form-control" id="sWeightid">
+														<input type="hidden" id="wtId" value="5">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">BMI (kg/m2) :</div>
+														<input type="text" class="form-control" id="sBmi">
+														<input type="hidden" id="bmId" value="6">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Temperature in celsius :</div>
+														<input type="text" class="form-control" id="sTempCs"><input
+															type="hidden" id="tcId" value="1">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Temperature in Fahrenheit :</div>
+														<input type="text" class="form-control" id="stempFah">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Blood Pressure(Systolic):</div>
+														<input type="text" class="form-control" id="sBldpsr"><input
+															type="hidden" id="bpId" value="4001">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Blood Pressure(Diastolic):</div>
+														<input type="text" class="form-control" id="sSysDis"><input
+															type="hidden" id="systId" value="6005">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Pulse Pulse(in mln) :</div>
+														<input type="text" class="form-control" id="sPulseMin"><input
+															type="hidden" id="pmId" value="2001">
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Respiration(in bpm) :</div>
+														<input type="text" class="form-control" id="sRespBpm"><input
+															type="hidden" id="rbId" value="2">
+														<div class="user-id" id="patResprition"></div>
+													</div>
+													<div class="mb-8">
+														<div class="user-dtlhd">Oxygen Saturation :</div>
+														<input type="text" class="form-control" id="sOxygenPer"><input
+															type="hidden" id="osId" value="3"><input
+															type="hidden" id="vCount">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-5">
+											<img src="../assets/eHealth/images/human.png"
+												class="img-fluid">
+										</div>
+									
+									</div>
+								</div>
+							</div>
+ 
+						</div>
+						<div class="col-md-6 col-md-pd">
+							<div class="family_tbl_sec">
+								<div class="vital">Emergency Contact</div>
+
+								<div class="pd-10">
+									<div id="tab22">
+										<table class="table table-responsive table-bordered"
+											id="tblId">
+											<thead>
+												<th>Name</th>
+												<th>Relation</th>
+												<th>Email</th>
+											<thead>
+											<tbody class="tbodyCls" id="tbodyid"></tbody>
+										</table>
+									</div>
+
+								</div>
+
+							</div>
+							
+							
+							<div class="family_tbl_sec">
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">Allergies</div>
+												<div class="col-md-4" align="right">
+													<button class="btn1" id="saveallergy"
+																				onclick="saveAlergy()">SAVE</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editAlrgyCon" onclick="editAllergyCon()">
+														<i class="fa fa-plus"></i>
+													</button>
+												</div>
+
+											</div>
+										</div>
+
+										<div class="pd-10 smtbl-scrl">
+										<input type="hidden" id="allergyHiddenId">
+								<div id="tab_1">
+									<table class="table table-responsive table-bordered" id="tblId1">
+										<thead>
+											<th>Name</th>
+											<th>Allergen</th>
+											<th>Severity</th>
+											<th>Reaction</th>
+											<th>Updated By</th>
+										<thead>
+										<tbody class="tbodyCls" id="tbodyid1">
+										</tbody>
+									</table>
+								</div>
+								</div>
+
+
+									</div>
+							<div class="family_tbl_sec">
+								<!-- <div class="vital">Family Doctor</div> -->
+								<div class="vital">
+									<div class="row">
+										<div class="col-md-8">Family Doctor</div>
+										<div class="col-md-4" align="right">
+										</div>
+
+									</div>
+								</div>
+								<div class="pd-10 smtbl-scrl">
+									<div id="tab_2">
+									<table class="table table-responsive table-bordered" id="tblId2">
+										<thead>
+											<th>Name</th>
+											<th>Speciality</th>
+											<th>Mobile No.</th>
+										<thead>
+										<tbody class="tbodyCls" id="tbodyid2">
+
+
+										</tbody>
+									</table>
+								</div>
+
+								</div>
+							</div>
+
+							<div class="family_tbl_sec">
+								<!-- <div class="vital">Bio Medical</div> -->
+								<div class="vital">
+									<div class="row">
+										<div class="col-md-8">Bio Medical</div>
+										<div class="col-md-4" align="right">
+											<button class="btn btn-outline-default bg-wt btn-sm"
+												id="editAlrgyCon" onclick="editBioMedical()">
+												<i class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="pd-10 smtbl-scrl">
+									<div id="tab_3">
+									<table class="table table-responsive table-bordered" id="tblId3">
+										<thead>
+											<th>Name</th>
+											<th>Reason</th>
+											<th>Implanted Date</th>
+										<thead>
+										<tbody class="tbodyCls" id="tbodyid3">
+
+
+										</tbody>
+									</table>
+								</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+	
+				</div>
+				<!-- Allergy contact modal -->
+				<div id="myModalAllergyContact" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn"
+											onclick="cancelModalBtn()">CANCEL</button>
+
+									<button class="btn1" id="saveallergy"
+																				onclick="saveAlergy()">SAVE</button>
+									</div>
+								</div>
+							</div>
+<input type ="hidden" id="allergyHiddenId">
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Name</label>
+										<div class="select">
+										<input type="hidden" id="allergyId">
+											<select class="form-control  countryclss" id="allerName">
+												<option value="">Select</option>
+												<option th:each="c,iter:${alernameList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Allergen</label>
+										<div class="select">
+										<input type="hidden" id="allergyTypesId">
+											<select class="form-control stateclss" id="alergenType">
+												<option value="">Select</option>
+												<option th:each="c,iter:${alertypeList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Severity</label>
+										<div class="select">
+											<input type="hidden" id="severityTypesId">
+											<select class="form-control   cityclsss" id="allerSeverity">
+												<option th:value="null">--Select--</option>
+												<option th:value="High">High</option>
+												<option th:value="Low">Low</option>
+												<option th:value="Medium">Medium</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+
+										<label>Reaction</label> <input type="text" name="Reaction"
+											value="" placeholder="Reaction"
+											class="form-control   zipclss" id="allerRection">
+
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+
+										<label>Updated By</label> <input type="text"
+											name="drUpdatedby" value="" placeholder="Updated By"
+											class="form-control   zipclss" id="drUpdatedby">
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+					<!-- Family doctor modal -->
+				<div id="myModalFmlyDoctor" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn"
+											onclick="cancelModalBtn1()">CANCEL</button>
+
+									<button class="btn1" id="saveFamilyDoctor"
+																				onclick="saveFamilyDoctor()">SAVE</button>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-6">
+										<div class="form-group">
+
+										<label>Name</label> <input type="text" name="familyName"
+											value="" placeholder="Name"
+											class="form-control   zipclss" id="docName">
+
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Speciality</label>
+										<div class="select">
+											<select class="form-control stateclss" id="docSpeciality">
+												<option value="">Select</option>
+												<option th:each="c,iter:${specialityList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+
+										<label>Mobile Number</label> <input type="text" name="docMobNo"
+											value="" placeholder="Mobile Number"
+											class="form-control   zipclss" id="docMobNo">
+
+									</div>
+								</div>
+							
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+					<!-- Bio Medical modal -->
+				<div id="myModalBioMedical" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn2"
+											onclick="cancelModalBtn2()">CANCEL</button>
+
+									<button class="btn1" id="saveBioMedical"
+																				onclick="saveBioMedical()">SAVE</button>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-6">
+										<div class="form-group">
+
+										<label>Name</label> <div class="select">
+											<select class="form-control stateclss" id="bName">
+												<option value="">Select</option>
+												<option th:each="c,iter:${bioMedicalList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Reason</label>
+										<input type="text" name="breson"
+											value="" placeholder="Reason"
+											class="form-control   zipclss" id="breson">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+
+										<label>Implemented Date</label> <input type="text"
+											id="implantDate" class="form-control" placeholder="Implemented Date"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('implantDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar"></i>
+
+									</div>
+								</div>
+							
+
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<div id="myModalEmergencyContact" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+					
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn"
+											onclick="cancelModalBtn()">CANCEL</button>
+
+										<button class="btn1" id="submitemerContact"
+											onclick="submitemerContact()">SAVE</button>
+										<button class="btn3" id="deleteContact"
+											onclick="deleteContact()">Delete</button>
+									</div>
+								</div>
+							</div>
+
+
+										<input type ="hidden" id="emergencyHiddenId">
+							<div class="row">
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Name</div>
+
+									<input type="text" class="form-control" placeholder="Name"
+										id="eName"autocomplete="off"><input type ="hidden" id="eId">
+										
+								</div>
+
+
+								<div class="col-md-6">
+
+									<div class="user-dtlhd">Relation</div>
+									<div class="select">
+										<input type="hidden" id="eRelationId"> <select
+											class="form-control" id="eRealtion">
+											<option value="">Select</option>
+											<option th:each="c,iter:${erelationList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+
+										</select>
+									</div>
+
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Mobile No</div>
+									<input type="text" placeholder="Mobile No" class="form-control"
+										id="eMobNo"autocomplete="off">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+</body>
+</html>

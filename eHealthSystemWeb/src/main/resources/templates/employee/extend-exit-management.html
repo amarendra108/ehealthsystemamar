@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$("#add").show();
+		$("#finance").attr("disabled", true);
+		$("#delete").attr("disabled", true);
+		$("#fin").hide();
+		//Clearance
+		var gridDiv1 = document.querySelector('#myGridClearance');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		$('.collapse').on('show.bs.collapse', function() {
+			$(this).siblings('.panel-heading').addClass('active');
+		});
+
+		$('.collapse').on('hide.bs.collapse', function() {
+			$(this).siblings('.panel-heading').removeClass('active');
+		});
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		//exit Management
+		agGrid.simpleHttpRequest({
+			url : "exit-view-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+
+		$("#demo").hide();
+
+		
+		 var dateFormat = localStorage.getItem("dateFormat");
+		
+		//resign Date
+		$("#resignDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#resignDate').val($(this).val());
+		})
+
+		$('#resignDate').blur(function() {
+			$("#resignDateCalendar").val($(this).val());
+		})	
+		
+		
+
+		//release Date
+		$("#releaseDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#releaseDate').val($(this).val());
+		})
+
+		$('#releaseDate').blur(function() {
+			$("#releaseDateCalendar").val($(this).val());
+		})
+
+		$("#form").hide();
+		$("#cancel").hide();
+		$("#save").hide();
+		$('#delete').attr("disabled", true);
+		$("#initiate").attr("disabled", true);
+
+		$("#myGrid").show();
+	});
+	//Exit Management
+	const columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+			{
+				headerName : 'Exit Id',
+				field : "employeeExit",
+				cellRenderer : function(params) {
+					return '<a id="editId" onclick=editPage("'
+							+ params.data.employeeExit
+							+ '") href="javascript:void(0)">'
+							+ params.data.employeeExit + '</a>';
+				}
+			}, {
+				headerName : 'Employee Id',
+				field : "empID",
+			}, {
+				headerName : 'Employee Name',
+				field : "empName"
+			}, {
+				field : "designationId",
+				hide : true
+			},{
+				headerName : 'Employee status',
+				field : "empStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Designation',
+				field : "designation"
+			}, {
+				headerName : 'Notice Period',
+				field : "noticePeriod",
+				type : "rightAligned"
+			}, {
+				headerName : 'Salary',
+				field : "salary",
+				type : "rightAligned",
+				valueFormatter : currencyFormatter
+			}, {
+				headerName : 'Resign Date',
+				field : "resignDate",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Release Date',
+				field : "releaseDate",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Bonus',
+				field : "bonus",
+				type : "rightAligned",
+				valueFormatter : currencyFormatter
+			}, {
+				headerName : 'Recovery',
+				field : "recovery",
+				type : "rightAligned",
+				valueFormatter : currencyFormatter
+			}, {
+				headerName : 'Reason',
+				field : "reason"
+			},  {
+				headerName : 'Finanace Status',
+				field : "financeStatus",
+				hide : true
+			}, {
+				headerName : 'Clearance Status',
+				field : "empClrncStatus",
+				cellStyle : {
+					textAlign : 'center'
+				},
+				cellRenderer : function(params) {
+					if (params.data.empClrncStatus > 0) {
+
+						return 'Inactive';
+
+					} else {
+
+						return 'Active';
+					}
+				}
+			}, {
+				field : "deptId",
+				hide : true
+			}, {
+				field : "deptName",
+				hide : true
+			}, {
+				field : "managerId",
+				hide : true
+			}, {
+				field : "managerName",
+				hide : true
+			}, {
+				field : "initId",
+				hide : true
+			}, {
+				headerName : 'Salary',
+				field : "salaryF",
+				type : "rightAligned",
+				valueFormatter : currencyFormatter,
+				hide : true
+			}, {
+				headerName : 'Recovery',
+				field : "recoveryF",
+				type : "rightAligned",
+				hide : true
+			}, {
+				headerName : 'Bonus',
+				field : "bonusF",
+				type : "rightAligned",
+				hide : true
+			}, {
+				headerName : 'Other',
+				field : "other",
+				type : "rightAligned"
+			}, ];
+	//Exit management
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		onSelectionChanged : initiate,
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.empID;
+		}
+	};
+
+	/*
+	 * Clearance Details
+	 */
+
+	var len = 0;
+	const columnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "SlNo.",
+				field : "slNo",
+				cellRenderer : function(params) {
+					if (params.data.slNo) {
+
+						return '<a onclick=editRow("' + params.data.slNo
+								+ '") href="javascript:void(0)">'
+								+ params.data.slNo + '</a>';
+					} else {
+						return '<a onclick=editRow("' + params.data.slNo
+								+ '") href="javascript:void(0)">'
+								+ params.data.slNo + '</a>';
+
+					}
+
+				}
+
+			}, {
+				field : "empID",
+				hide : true
+			}, {
+				headerName : 'Clearance Dept Name',
+				field : "clearanceDeptName",
+			}, {
+				field : "clearanceBy",
+				hide : true
+			}, {
+				headerName : 'Clearance By',
+				field : "clearancePName"
+			}, {
+				headerName : 'Clearance Status',
+				field : "clearanceStatus"
+			}, {
+				headerName : 'Clearance Comment',
+				field : "clearanceCmnt"
+			}, ];
+
+	const gridOptions1 = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 302,
+			height : 10
+		},
+		getRowNodeId : function(data) {
+
+			return data.slNo;
+		}
+	};
+
+	/*
+	 *
+	 *Edit function
+	 *
+	 */
+
+	function editPage(id,dd) {
+		openNav()
+		$("#cancel").show();
+		$("#save").show();
+		$("#add").hide();
+		$("#delete").hide();
+
+		$.ajax({
+			type : "GET",
+			url : "exit-details-edit?id=" + id,
+			async : false,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#employeeExit").val(response.body.employeeExit);
+					$("#empID").val(response.body.empID);
+					$("#empName").val(response.body.empID);
+
+					var empName = response.body.empID;
+					var designation = response.body.designation;
+
+					if (empName) {
+
+						getDesignation();
+
+						$.ajax({
+							type : 'GET',
+							url : 'exit-emp-job-ajax?name=' + empName,
+							contentType : false,
+							success : function(response) {
+								if (response.message == "success") {
+
+								}
+							},
+							error : function(e) {
+
+							}
+						});
+					} else {
+						$("#designation").empty();
+						var option = $("<option></option>");
+						$(option).val(null);
+						$(option).html("Select");
+						$("#designation").append(option);
+					}
+				}
+				$("#designationId").val(response.body.designationId);
+				$("#designation").val(response.body.designation);
+				$("#noticePeriod").val(response.body.noticePeriod);
+				$('#salary').val(response.body.salary);
+				$('#resignDate').val(response.body.resignDate);
+				$('#releaseDate').val(response.body.releaseDate);
+				$('#recovery').val(response.body.recovery);
+				$('#bonus').val(response.body.bonus);
+				$('#reason').val(response.body.reason);
+				$('#empStatus').val(response.body.empStatus);
+				var empStatus = response.body.empStatus;
+				if (empStatus === 'Active') {
+
+					$('#empStatus').prop('checked', true)
+
+				} else {
+					$('#empStatus').prop('checked', false)
+				}
+
+			}
+		});
+	}
+
+	/*
+	 *Initiate function
+	 */
+	var initiateId = " ";
+	var clrStatus = " ";
+	function initiate() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+
+		initiateId = "";
+
+		var rowCount = 0;
+
+		if (selectedRows.length > 0) {
+
+			var financeEmpId = selectedRows[0].empID;
+			$("#financeEmpId").val(financeEmpId);
+
+			var financeEmpName = selectedRows[0].empName;
+			$("#financeEmpName").val(financeEmpName);
+
+			var financeDeptId = selectedRows[0].deptId;
+			$("#financeDeptId").val(financeDeptId);
+
+			var financeDeptName = selectedRows[0].deptName;
+			$("#financeDeptName").val(financeDeptName);
+
+			var financeEmpManager = selectedRows[0].managerName;
+			$("#financeEmpManager").val(financeEmpManager);
+
+			var financeManagerId = selectedRows[0].managerId;
+			$("#financeManagerId").val(financeManagerId);
+
+			var exitIdF = selectedRows[0].employeeExit;
+			$("#exitIdF").html(exitIdF);
+
+			var exitId = selectedRows[0].employeeExit;
+			$("#employeeExit").val(exitId);
+			initiateId = selectedRows[0].empID;
+			clrStatus = selectedRows[0].empClrncStatus;
+			empStatus = selectedRows[0].empStatus;
+			
+			selectedRows.forEach(function() {
+				rowCount = rowCount + 1;
+			});
+		}
+//Button show hide
+		if (rowCount > 0) {
+			$("#initiate").attr("disabled", true);
+			$("#delete").attr("disabled", false);
+			$("#add").hide();
+			
+			if (rowCount == 1) {
+				$("#initiate").attr("disabled", false);
+			}
+			
+			if (rowCount == 1 && clrStatus == 0) {
+				$("#finance").attr("disabled", false);
+			} else {
+				$("#finance").attr("disabled", true);
+			}
+			if(rowCount == 1 && empStatus == 'Inactive'){
+				$("#initiate").attr("disabled", true);
+				$("#delete").attr("disabled", true);
+				$("#add").hide();
+				$("#finance").attr("disabled", true);
+			}
+		} else {
+			$("#add").show();
+			$("#delete").attr("disabled", true)
+			$("#initiate").attr("disabled", true);
+			$("#finance").attr("disabled", true);
+
+		}
+	}
+
+	/*
+	 * Add Initiate Details function
+	 */
+
+	function addInitiate() {
+
+		gridOptions1.api.setRowData();
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+
+		//Restrict Initated User to give the clearance(Disabled in dropdown)
+		var id = selectedRows[0].empID
+		var op = document.getElementById("clearanceBy").getElementsByTagName(
+				"option");
+
+		for (var i = 0; i < op.length; i++) {
+			if (op[i].value == id) {
+				op[i].disabled = true;
+			}
+		}
+
+		var empId = selectedRows[0].empID;
+		var empName = selectedRows[0].empName;
+		var deptName = selectedRows[0].deptName;
+		var managerName = selectedRows[0].managerName;
+		var managerId = selectedRows[0].managerId;
+		var deptId = selectedRows[0].deptId;
+
+		$("#empInitId").val(empId);
+		$("#empInitName").val(empName);
+
+		if (deptName == null) {
+			$("#deptName").val("N/A");
+			$("#deptId").val(deptId);
+		} else {
+			$("#deptName").val(deptName);
+			$("#deptId").val(deptId);
+		}
+
+		if (managerName == null) {
+			$("#managerName").val("N/A");
+			$("#managerId").val(managerId);
+
+		} else {
+			$("#managerName").val(managerName);
+			$("#managerId").val(managerId);
+
+		}
+		//Child table clearance Details
+
+		$
+				.ajax({
+					type : "GET",
+					url : "exit-get-clrnc-details?id=" + empId,
+					async : false,
+					success : function(response) {
+						if (response.message == "Success") {
+
+							if (response.body[0].initId != null) {
+								$("#initiateId1").html(response.body[0].initId);
+
+								$("#clearanceDeptName").val(
+										response.body[0].clearanceDeptName);
+								$("#clearanceBy").val(
+										response.body[0].clearancePName);
+								$("#clearanceCmnt").val(
+										response.body[0].clearanceCmnt);
+								var data = [];
+								for (var i = 0; i < response.body.length; i++)
+									data.push(response.body[i]);
+								gridOptions1.api.setRowData(data);
+							} else {
+								$("#initiateId1").html("");
+							}
+						}
+					}
+
+				});
+		$("#main_content").hide();
+		$("#btnDtls").hide();
+		$("#demo").show();
+
+	}
+	function cancelInit() {
+
+		agGrid.simpleHttpRequest({
+			url : "exit-view-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+		$("#main_content").show();
+		$("#btnDtls").show();
+		$("#demo").hide();
+		$("#initiate").attr("disabled", true);
+
+	}
+
+	//Add details for Exit Management
+
+	var obj = {};
+
+	function addDetails() {
+		obj = {};
+		obj.employeeExit = $("#employeeExit").val();
+		obj.empID = $("#empID").val();
+		obj.designation = $("#designation").val();
+		obj.noticePeriod = $("#noticePeriod").val();
+		obj.salary = $("#salary").val();
+		obj.resignDate = $("#resignDate").val();
+		obj.releaseDate = $("#releaseDate").val();
+		obj.recovery = $("#recovery").val();
+		obj.bonus = $("#bonus").val();
+		obj.reason = $("#reason").val();
+		obj.empStatus = $("#empStatus:checkbox:checked").val();
+		if (obj.empStatus == undefined) {
+
+			obj.empStatus = "0";
+
+		} else {
+			obj.empStatus = "1";
+		}
+
+		obj.managerId = $("#managerId").val();
+		obj.managerName = $("#managerName").val();
+		obj.deptId = $("#deptId").val();
+		obj.deptName = $("#deptName").val();
+
+		var validation = true;
+
+		if (obj.empID == null || obj.empID == "") {
+			validation = validationUpdated("Employee Name Required", "empID");
+		}
+		if (obj.designation == null || obj.designation == "") {
+			validation = validationUpdated("Designation Required",
+					"designation");
+		}
+		if (obj.noticePeriod == null || obj.noticePeriod == "") {
+			validation = validationUpdated("Notice Period Required",
+					"noticePeriod");
+		}
+		if (obj.salary == null || obj.salary == "") {
+			validation = validationUpdated("Salary Required", "salary");
+		}
+		if (obj.resignDate == null || obj.resignDate == "") {
+			validation = validationUpdated("Resign Date Required", "resignDate");
+		}
+		if (obj.releaseDate == null || obj.releaseDate == "") {
+
+			validation = validationUpdated("Release Date Required",
+					"releaseDate");
+		}
+		if (obj.recovery == null || obj.recovery == "") {
+
+			validation = validationUpdated("Recovery Required", "recovery");
+		}
+		if (obj.bonus == null || obj.bonus == "") {
+
+			validation = validationUpdated("Bonus Required", "bonus");
+		}
+		if (obj.reason == null || obj.reason == "") {
+
+			validation = validationUpdated("Reason Required", "reason");
+		}
+
+		if (obj.empStatus == null || obj.empStatus == "") {
+
+			validation = validationUpdated("Status Required", "empStatus");
+		}
+
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "exit-add-details",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					if (response.message == "Success") {
+						$("#add").show();
+						$("#myGrid").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#form").hide();
+						$("#new").hide();
+             console.log(obj)
+						closeNav();
+
+						agGrid.simpleHttpRequest({
+							url : "exit-view-through-ajax"
+						}).then(function(data) {
+							gridOptions.api.setRowData(data);
+						});
+
+					}
+				},
+				error : function(data) {
+				}
+			})
+		}
+	}
+
+	/*
+	 *Delete Exit Management
+	 */
+
+	var deleteId = " ";
+	function deleteDetails() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		
+		deleteId = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+
+			deleteId = deleteId + '"' + selectedRows[i].employeeExit + '",';
+		}
+		deleteId = deleteId.substring(0, deleteId.length - 1);
+		deleteData();
+	}
+
+	function deleteData() {
+		$.ajax({
+			type : "GET",
+			url : "exit-details-delete?deleteId=" + deleteId,
+			async : false,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "exit-view-through-ajax"
+					}).then(function(data) {
+						gridOptions.api.setRowData(data);
+					});
+					$('#delete').attr("disabled", true);
+				}
+			},
+			error : function(data) {
+			}
+
+		});
+	}
+
+	// Get Designation List
+
+	function getDesignation() {
+		var empName = $("#empID").val();
+		if (empName) {
+
+			$("#designation").empty();
+			$.ajax({
+				type : 'GET',
+				url : 'exit-emp-job-ajax?name=' + empName,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$("#designation").append(option);
+						}
+					}
+				},
+				error : function(e) {
+
+				}
+			});
+		} else {
+			$("#designation").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("Select");
+			$("#designation").append(option);
+
+		}
+
+	}
+
+	/*
+	 *Add Clearance 
+	 */
+	var clrnc = [];
+	var data = 1;
+	function saveClrncDetails() {
+		var editRow = $("#editRow").val();
+		var obj = {};
+		var validation = true;
+		obj.slNo = data;
+		obj.clearanceDeptName = $("#clearanceDeptName :selected").text();
+		obj.clearanceDeptId = $("#clearanceDeptName").val();
+		obj.clearanceBy = $("#clearanceBy").val();
+		obj.clearancePName = $("#clearanceBy :selected").text();
+		obj.clearanceCmnt = $("#clearanceCmnt").val();
+		obj.clearanceStatus = $("#clearanceStatus:checkbox:checked").val();
+		if (obj.clearanceStatus == undefined) {
+
+			obj.clearanceStatus = "Inactive";
+
+		} else {
+			obj.clearanceStatus = "Active";
+		}
+
+		if (obj.clearanceDeptId == null || obj.clearanceDeptId == "") {
+			validation = validationUpdated("Clearance Department Required",
+					"clearanceDeptName");
+		}
+		if (obj.clearanceBy == null || obj.clearanceBy == "") {
+			validation = validationUpdated("Clearance Person Required",
+					"clearanceBy");
+		}
+		if (obj.clearanceCmnt == null || obj.clearanceCmnt == "") {
+			validation = validationUpdated("Clearance Comment Required",
+					"clearanceCmnt");
+		}
+		if (obj.clearanceStatus == null || obj.clearanceStatus == "") {
+			validation = validationUpdated("Clearance Status",
+					"clearanceStatus");
+		}
+
+		if (validation) {
+
+			gridOptions1.api.forEachNode(function(rowNode, index) {
+
+				if (!editRow) {
+					data = data + 1;
+				} else {
+					data = editRow;
+				}
+			});
+
+			if (editRow) {
+
+				var rowNode = gridOptions1.api.getRowNode(editRow);
+				rowNode.setData(obj);
+			} else {
+
+				gridOptions1.api.forEachNode(function(rowNode, index) {
+					clrnc.push(rowNode.data);
+				});
+				clrnc.push(obj)
+				gridOptions1.api.setRowData(clrnc);
+			}
+
+			$("#clearanceDeptName").val("");
+			$("#clearanceBy").val("");
+			$("#clearanceCmnt").val("");
+			$("#clearanceStatus").prop("checked", true);
+			$("#editRow").val(null);
+			closeNavClrnc()
+
+		}
+	}
+
+	function saveData() {
+
+		var datas = [];
+
+		if (gridOptions1.api.getDisplayedRowCount() > 0) {
+			gridOptions1.api.forEachNode(function(rowNode, index) {
+				var details = rowNode.data;
+				details.initId = $("#initiateId1").html();
+				details.employeeExit = $("#employeeExit").val();
+				details.empID = $("#empInitId").val();
+				details.empName = $("#empInitName").val();
+				details.managerId = $("#managerId").val();
+				details.deptId = $("#deptId").val();
+
+				datas.push(details);
+			});
+		} else {
+			var details = {};
+
+			details.initId = $("#initId").val();
+			details.employeeExit = $("#employeeExit").val();
+			$("#employeeExit").val(response.body.employeeExit);
+			details.empID = $("#empInitId").val();
+			details.empName = $("#empInitName").val();
+			details.managerId = $("#managerId").val();
+			details.deptId = $("#deptId").val();
+
+			datas.push(details);
+		}
+		for (var i = 0; i < datas.length; i++) {
+			if (datas[i].clearanceStatus == "Inactive"
+					|| datas[i].clearanceStatus == undefined) {
+				datas[i].clearanceStatus = "0";
+
+			} else {
+				datas[i].clearanceStatus = "1";
+			}
+		}
+		saveCleaqranceDetails(datas);
+	}
+
+	function saveCleaqranceDetails(datas) {
+		$.ajax({
+			type : "POST",
+			url : "exit-save-initiate",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#initiateId1").html(response.body[0].initId);
+				}
+
+			},
+			error : function(datas) {
+			}
+		})
+
+	}
+
+	//Open Nav for Exit Management
+	function openNav() {
+
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("main_content").style.width = "75%";
+		$("#cancel").show();
+		$("#save").show();
+		$('#delete').hide();
+	}
+	//Open Nav for Clearance
+	function openNavClrnc() {
+
+		$("#clearanceDeptName").val("");
+		$("#clearanceDeptName").val("");
+		$("#clearanceBy").val("");
+		$("#clearanceCmnt").val("");
+		$("#clearanceStatus").prop("checked", true);
+		$("#editRow").val("");
+
+		document.getElementById("mySidenavClrnc").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("main_contentClrnc").style.width = "75%";
+		$("#cancelClr").show();
+		$("#saveClrnc").show();
+		$('#delete').hide();
+	}
+	//Close Nav for Exit Management
+	function closeNav() {
+		$("#empID").val("");
+		$("#empName").val("");
+		$("#designation").val("");
+		$("#noticePeriod").val("");
+		$("#salary").val("");
+		$("#resignDate").val("");
+		$("#releaseDate").val("");
+		$("#bonus").val("");
+		$("#reason").val("");
+		$("#status").prop("checked", true);
+
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+
+	//Close Nav for Clearance
+	function closeNavClrnc() {
+		document.getElementById("mySidenavClrnc").style.width = "0";
+		document.getElementById("main_contentClrnc").style.width = "100%";
+	}
+
+	function add() {
+
+		$("#empID").val("");
+		$("#empName").val("");
+		$("#designationId").val("");
+		$("#designation").val("");
+		$("#noticePeriod").val("");
+		$("#salary").val("");
+		$("#resignDate").val("");
+		$("#releaseDate").val("");
+		$("#bonus").val("");
+		$("#reason").val("");
+		$("#status").prop("checked", true);
+
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#cancel").show();
+		$("#save").show();
+		$("#form").show();
+		$("#delete").hide();
+
+	}
+
+	function addClrnc() {
+
+		$("#clearanceDeptName").val("");
+		$("#clearanceBy").val("");
+		$("#clearanceCmnt").val("");
+		$("#clearanceStatus").prop("checked", true);
+
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#cancel").show();
+		$("#save").show();
+		$("#form").show();
+		$("#delete").hide();
+
+	}
+
+	function cancel() {
+		$("#initiate").hide();
+		$("#add").show();
+		$("#myGrid").show();
+		$("#cancel").hide();
+		$("#save").hide();
+		$("#form").hide();
+		$("#delete").show();
+
+		agGrid.simpleHttpRequest({
+			url : "exit-view-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+
+	}
+
+	// for editing child table of Initiate
+
+	function editRow(slNo) {
+		var rowNode = gridOptions1.api.getRowNode(slNo);
+		//console.log(rowNode)
+		openNavClrnc();
+
+		$("#editRow").val(slNo);
+		$("#clearanceDeptName").val(rowNode.data.clearanceDeptId);
+		$("#clearanceBy").val(rowNode.data.clearanceBy);
+		$("#clearanceCmnt").val(rowNode.data.clearanceCmnt);
+		$("#clearanceStatus").val(rowNode.data.clearanceStatus);
+		var clrncStatus = rowNode.data.clearanceStatus;
+		if (clrncStatus === 'Active') {
+
+			$('#clearanceStatus').prop('checked', true)
+
+		} else {
+			$('#clearanceStatus').prop('checked', false)
+		}
+
+	}
+	function cancleFinance() {
+		$("#myGrid").show();
+		$("#fin").hide();
+		$("#finance").show();
+		$("#initiate").show();
+		$("#delete").show();
+		$("#add").show();
+		$("#cancleFinance").hide();
+
+		agGrid.simpleHttpRequest({
+			url : "exit-view-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+
+	}
+	function finance() {
+		$("#myGrid").hide();
+		$("#fin").show();
+		$("#finance").hide();
+		$("#initiate").hide();
+		$("#delete").hide();
+		$("#add").hide();
+		$("#cancleFinance").show();
+
+	}
+
+	var finanaceObj = {};
+	function saveFinance() {
+		finanaceObj = {};
+		finanaceObj.financeId = $("#financeId").val();
+		finanaceObj.employeeIdF = $("#financeEmpId").val();
+		finanaceObj.empNameF = $("#financeEmpName").val();
+		finanaceObj.managerF = $("#financeManagerId").val();
+		finanaceObj.managerNameF = $("#financeEmpManager").val();
+		finanaceObj.empDepartmentF = $("#financeDeptId").val();
+		finanaceObj.empDepartmentNameF = $("#financeDeptName").val();
+		finanaceObj.noticePeriodF = $("#financeNoticePeriod").val();
+		finanaceObj.salaryF = $("#financeSalary").val();
+		finanaceObj.bonusF = $("#financeBonus").val();
+		finanaceObj.recoveryF = $("#financerecovery").val();
+		finanaceObj.other = $("#financeOther").val();
+		finanaceObj.comment = $("#financeCmnt").val();
+		finanaceObj.employeeExit = $("#exitIdF").html();
+
+		var validation = true;
+
+		if (finanaceObj.empNameF == null || finanaceObj.empNameF == "") {
+			validation = validationUpdated("Employee Name Required", "empNameF");
+		}
+		if (finanaceObj.managerNameF == null || finanaceObj.managerNameF == "") {
+			validation = validationUpdated("Manager name Required",
+					"financeEmpManager");
+		}
+		if (finanaceObj.empDepartmentNameF == null
+				|| finanaceObj.empDepartmentNameF == "") {
+			validation = validationUpdated("Department name Required",
+					"financeDeptName");
+		}
+		if (finanaceObj.noticePeriodF == null
+				|| finanaceObj.noticePeriodF == "") {
+			validation = validationUpdated("Notice Period Required",
+					"financeNoticePeriod");
+		}
+		if (finanaceObj.salaryF == null || finanaceObj.salaryF == "") {
+			validation = validationUpdated("Salary Required", "financeSalary");
+		}
+		if (finanaceObj.bonusF == null || finanaceObj.bonusF == "") {
+
+			validation = validationUpdated("Bonus Required", "financeBonus");
+		}
+		if (finanaceObj.recoveryF == null || finanaceObj.recoveryF == "") {
+
+			validation = validationUpdated("Recovery Required",
+					"financerecovery");
+		}
+
+		if (finanaceObj.other == null || finanaceObj.other == "") {
+
+			validation = validationUpdated("Other Required", "financeOther");
+		}
+
+		if (finanaceObj.comment == null || finanaceObj.comment == "") {
+
+			validation = validationUpdated("Comment Required", "financeCmnt");
+		}
+		console.log(finanaceObj);
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "exit-add-finance-details",
+				contentType : "application/json",
+				data : JSON.stringify(finanaceObj),
+				success : function(response) {
+					if (response.message == "Success") {
+						$("#add").hide();
+						$("#myGrid").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#fin").hide();
+
+						agGrid.simpleHttpRequest({
+							url : "exit-view-through-ajax"
+						}).then(function(data) {
+							gridOptions.api.setRowData(data);
+						});
+					}
+				},
+				error : function(data) {
+				}
+			})
+		}
+	}
+</script>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+				<div class="content_padding">
+					<div class="row" id="btnDtls">
+						<div class="col-md-12 buttonsec btn-hs">
+							<button class="btn1" id="add" onclick="openNav()">New</button>
+							<button class="btn2" id="initiate" onclick="addInitiate()">Initiate</button>
+							<button class="btn3" id="delete" onclick="deleteDetails()">Delete</button>
+							<button class="btn2" id="finance" onclick="finance()">Finance</button>
+
+						</div>
+					</div>
+					<div id="main_content">
+						<div id="mySidenav" class="sidenav">
+							<div class="slidebox">
+
+								<div class="row">
+									<div class="col-md-12 buttonsec btn-hs">
+										<button class="btn1" type="submit" id="save" form="form"
+											value="add" onclick="addDetails()">Save</button>
+										<button class="btn4" id="cancel" onclick="closeNav()">Cancel</button>
+										<!-- <button class="btn3" id="delete" onclick="DeleteDetails()">Delete</button> -->
+									</div>
+								</div>
+
+
+								<div class="row">
+									<input type="hidden" id="employeeExit">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Employee Name</label>
+											<div class="select">
+												<select id="empID" onchange="getDesignation()">
+													<option value="">--Select--</option>
+													<option th:each="c,iter:${namelist}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Designation</label>
+											<div class="select">
+												<select id="designation">
+													<option value="">--Select--</option>
+													<option th:each="c,iter:${designationList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Notice Period</label> <input type="text"
+												class="form-control" id="noticePeriod" autocomplete="off">
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Salary</label> <input type="text"
+												class="form-control" id="salary" autocomplete="off">
+										</div>
+									</div>
+
+									<!-- <div class="col-md-6">
+										<div class="form-group">
+											<label>Resign Date</label> <input type="text" id="resignDate"
+												class="form-control" onblur="removeValid(event)"
+												th:attr="onkeyup=|formatDate('resignDate','${session.DATEFORMAT_JS}')|">
+											<i class="ti-calendar picker_calendar" id="resignDateCalendar"></i>
+										</div>
+									</div> -->
+									
+									<div class="col-md-6">
+									<div class="form-group">
+										<label>Resign Date</label> <input type="text" id="resignDate"
+											autocomplete="off" class="form-control"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('resignDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="resignDateCalendar"></i>
+									</div>
+								</div>
+								
+									<!-- <div class="col-md-6">
+										<label>Resign Date</label> <input type="text"
+											id="resignDate" class="form-control"
+											th:attr="onkeyup=|formatDate('resignDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+									</div> -->
+									
+									<div class="col-md-6">
+									<div class="form-group">
+										<label>Release Date</label> <input type="text" id="releaseDate"
+											autocomplete="off" class="form-control"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('releaseDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="releaseDateCalendar"></i>
+									</div>
+								</div>
+
+									<!-- <div class="col-md-6">
+										<label>Release Date</label> <input type="text"
+											id="releaseDate" class="form-control"
+											th:attr="onkeyup=|formatDate('releaseDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="dateCalendar"></i>
+									</div>
+ -->
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Recovery</label> <input type="text"
+												class="form-control" id="recovery" autocomplete="off">
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Bonus</label> <input type="text"
+												class="form-control" id="bonus" autocomplete="off">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group"></div>
+										<input type="checkbox" id="empStatus" checked name="active"
+											value="1"> <label for="1">Active</label>
+
+									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Reason</label>
+											<textarea class="form-control" id="reason" autocomplete="off"></textarea>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="myGrid" style="width: 100%; height: 500px;"
+							class="ag-theme-alpine"></div>
+					</div>
+
+					<div class="collapse" id="demo">
+						<div class="row">
+							<div class="col-md-3">
+								Initiate ID: <span id="initiateId1"></span>
+							</div>
+
+							<!-- 	<div class="col-md-3">
+								<div id="statusDiv">
+									<div class="hr4"></div>
+									<div class="main-div">
+										<div class="section2">
+											<div id="createdDiv" class="green-box">
+												<div class="green-box-heading">CREATED</div>
+												<div class="date" id="createdDate"></div>
+											</div>
+										</div>
+										<div class="section3">
+											<div id="activeDiv" class="green-box">
+												<div class="green-box-heading">ACTIVE</div>
+												<div class="date" id="activeDate"></div>
+											</div>
+										</div>
+										<div class="section4">
+											<div id="completeDiv" class="grey-box">
+												<div class="green-box-heading">COMPLETE</div>
+												<div class="date" id="completeDate"></div>
+											</div>
+										</div>
+										<div class="section5">
+											<div id="onHoldDiv" class="grey-box">
+												<div class="green-box-heading">ONHOLD</div>
+												<div class="date" id="onHoldDate"></div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div> -->
+
+							<div class="col-md-9 buttonsec btn-hs">
+								<button class="btn1" type="submit" id="saveInit" value="add"
+									onclick="saveData()">Save</button>
+								<button class="btn4" type="button" id="cancelInit" value="add"
+									onclick="cancelInit()">Cancel</button>
+							</div>
+						</div>
+
+						<input type="hidden" id="managerId"> <input type="hidden"
+							id="deptId"> <input type="hidden" id="initId">
+
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Employee ID</label> <input type="text"
+										class="form-control" id="empInitId"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Employee Name</label> <input type="text"
+										class="form-control" id="empInitName"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Department</label> <input type="text"
+										class="form-control" id="deptName"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<label>Manager</label> <input type="text" class="form-control"
+										id="managerName" style="border: none !important;"
+										disabled="disabled">
+								</div>
+							</div>
+						</div>
+
+						<div class="panel-group" id="accordion" role="tablist"
+							aria-multiselectable="true">
+
+							<div class="panel panel-default">
+								<div class="panel-heading active" role="tab" id="headingOne">
+									<h4 class="panel-title">
+										<a class="" role="button" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseOne"
+											aria-expanded="true" aria-controls="collapseOne">Clearance
+												Details</a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse"
+									role="tabpanel" aria-labelledby="headingOne">
+
+									<div id="main_contentClrnc">
+										<div id="mySidenavClrnc" class="sidenav">
+											<div class="slidebox">
+
+												<div class="row">
+													<div class="col-md-12 buttonsec btn-hs">
+														<button class="btn4" id="cancelClr"
+															onclick="closeNavClrnc()">Cancel</button>
+														<button class="btn1" type="submit" id="saveClrnc"
+															value="add" onclick="saveClrncDetails()">Save</button>
+													</div>
+												</div>
+
+												<input type="hidden" id="editRow"> <input
+													type="hidden" id="editClrncId">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Department Name</label>
+															<div class="select">
+																<select id="clearanceDeptName">
+																	<option value="">--Select--</option>
+																	<option th:each="c,iter:${deptlist}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Clearance By</label>
+															<div class="select">
+																<select id="clearanceBy">
+																	<option value="">--Select--</option>
+																	<option th:each="c,iter:${clrncPList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group"></div>
+														<input type="checkbox" id="clearanceStatus" checked
+															name="active" value="1" autocomplete="off"> <label
+															for="1">Clearance Status</label>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Clearance Comment</label>
+															<textarea class="form-control" id="clearanceCmnt"
+																autocomplete="off"></textarea>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12 buttonsec btn-hs">
+												<button class="btn1" id="addClearance"
+													onclick="openNavClrnc()">New</button>
+											</div>
+											<div id="myGridClearance" style="width: 100%; height: 300px;"
+												class="ag-theme-alpine"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Finance -->
+
+					<div class="collapse" id="fin">
+						<div class="row">
+						<div class="col-md-6">
+								Exit ID: <span id="exitIdF"></span>
+							</div>
+						
+							<div class="col-md-6 buttonsec btn-hs">
+								<button class="btn2" id="saveFinance" onclick="saveFinance()">Save</button>
+								<button class="btn4" id="cancelFinance"
+									onclick="cancleFinance()">Cancle</button>
+							</div>
+
+							<input type="hidden" id="financeId"> <input type="hidden"
+								id="financeEmpId"> <input type="hidden"
+								id="financeManagerId"> <input type="hidden"
+								id="financeDeptId">
+
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Employee Name</label> <input type="text"
+										class="form-control" id="financeEmpName"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Employee Manager</label> <input type="text"
+										class="form-control" id="financeEmpManager"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Employee Department</label> <input type="text"
+										class="form-control" id="financeDeptName"
+										style="border: none !important;" disabled="disabled">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Notice Period</label> <input type="text"
+										class="form-control" id="financeNoticePeriod"
+										autocomplete="off">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Salary</label> <input type="text"
+										class="form-control" id="financeSalary" autocomplete="off">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Bonus</label> <input type="text"
+										class="form-control" id="financeBonus" autocomplete="off">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Recovery</label> <input type="text"
+										class="form-control" id="financerecovery" autocomplete="off">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Other</label> <input type="text"
+										class="form-control" id="financeOther" autocomplete="off">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control" id="financeCmnt"
+										autocomplete="off"></textarea>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

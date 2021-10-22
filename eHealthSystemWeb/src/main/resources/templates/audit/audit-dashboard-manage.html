@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<title>Extend</title>
+<style>
+.hover-class {
+	cursor: pointer;
+}
+
+.btnDisable {
+	color: #ccc !important;
+}
+</style>
+
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+</style>
+<title>Insert title here</title>
+<script>
+
+$(document).ready(function() {
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	agGrid.simpleHttpRequest({
+		url : "audit-dashboard-manage-viewqq"
+	}).then(function(data) {
+		gridOptions.api.setRowData(data);
+	});
+
+			
+			$("#myGrid").show();
+			$("#btnDiv").show();
+			$("#addData").hide();
+			$("#tab1").hide();
+			
+			$("#accordion").hide();
+});
+		
+
+/************************            View Document             **************************/
+	//columnDefs
+	const columnDefs = [ {
+		headerName : 'Audit NO',
+		field : "auditInitiate",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=viewAudit("' + params.data.auditInitiate
+					+ '") href="javascript:void(0)">'
+					+ params.data.auditInitiate + '</a>';
+		}
+	}, {
+		headerName : 'Audit Type',
+		field : "auditType",
+	}, {
+		headerName : 'Financial Year',
+		field : "financialYear",
+	}, {
+		headerName : 'Status',
+		field : "auditStatus",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	}, {
+		headerName : 'Initiated Date',
+		field : "initiatedDate",
+	} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 250,
+			height : 10
+		},
+
+	};
+	function viewAudit(id){
+		
+		$("#myGrid").hide();
+		$("#tab1").show();
+		$("#searchRowDiv").hide();
+		$("#accordion").show();
+		$("#quickFilter").hide();
+		$("#totalReq").hide();
+		$("#cancelMail").hide();
+		$("#meetingIdSpan").html(id);
+		agGrid
+		.simpleHttpRequest({
+			url : 'audit-dashboard-manage-viewqq-view?id=' + id
+		})
+		.then(
+				function(data) {
+					
+					
+					console.log(data)
+					$("#meetingIdSpan").html(data[0].auditInitiate);
+					//$("#auditInitiate").val(data[0].auditInitiate);
+					$("#AuditType").val(data[0].auditType);
+					$("#auditor").val(data[0].auditorName);
+					$("#FinancialYear").val(data[0].financialYear);
+					$("#initiatedBy").val(data[0].initiatedBy);
+					$("#startDateShw").val(data[0].initiatedDate);
+					$("#LetterNo").val(data[0].letterNo);
+					//multiple8 commentck
+					//data.participantId =  participantName;
+					//CKEDITOR.instances['commentckshw'].setData(data[0].commentck); 
+				
+					var documentList = data[0].documentList;
+					if (documentList != null && documentList != "") {
+						alert("hi")
+						for (var i = 0; i < documentList.length; i++) {
+							//alert(documentList.length)
+							var tbl = '<tr>'
+								+ '<td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+								+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option>  </select> </div></td>'
+								+ '<td><div class="form-group"> <input type="text" style="border: none !important;"disabled="disabled" value="'+documentList[i].documnentName+'" class="form-control docNoclss" id="docnoid_0'+i+'"> </div></td>'
+								+ '<td><div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_'+i+'" id="uploadFor_'+i+'">  </label>'
+								+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_'
+								+ i
+								+ '"name="userImage" onchange="saveMultiFile(event)" /> </div>'
+								+ '</div> <input type="hidden" id="uploadHidden_'+i+'" value="'+documentList[i].fileName+'" class="uploadHidCls">'
+								+ '<div id="uploadedBillDiv_'+i+'" align="center" class="uploadedBillCls"><div class="uploadicon position-l">'
+								+ documentList[i].action
+								+ '</div></div>'
+								+ '<div id="imageName_'+i+'" class="imageName">'
+								+ documentList[i].fileName
+								+ '</div>'
+								+ '<input type="hidden" id="editId_'+i+'" value="'+ documentList[i].auditInitiate+'">'
+								+ '<div id="dltImage_'+i+'" class="custom-file-delete"></div> </td>'
+								+ '</tr>';
+
+						$("#doctbodyDataShw").append(tbl);
+						
+					}
+					} else  {
+						//$("#doctbodyData").empty();
+						var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+								+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+								+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoid_0"  onblur="checkForDuplicateEntry(event)"></div></td>'
+								+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_0" id="uploadFor_0"> <i class="ti-plus" id="clickImg_0"></i> </label>'
+								+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_0" name="userImage" onchange="saveMultiFile(event)" /></div> </div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">'
+								+ '<div id="uploadedBillDiv_0" align="center" class="uploadedBillCls"></div> <div id="imageName_0" class="imageName"></div><div id="dltImage_0" class="dltImage" ></div><input type="hidden" id="editId_0></td>'
+								+ '</tr>';
+						$("#doctbodyDataShw").append(tbl);
+					} 
+					console.log('rohan3')
+	 });
+	}
+	function onQuickFilterChanged() {
+		gridOptions.api.setQuickFilter(document.getElementById('quickFilter').value);
+}
+
+function cancelBar() {
+var id = document.getElementById("closeKey");
+id.style.display = "block";
+
+if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+id.style.display = "none";
+}
+}
+function saveMultiFile(event) {
+	
+	var AssignItemQty = event.currentTarget.value;
+	var currentFldId = event.currentTarget.getAttribute('id');
+	var l = currentFldId.split("_");
+	var counter = l[1];
+	var currentFldId = "#" + currentFldId;
+
+	var uFile = $(currentFldId)[0].files[0];
+	var fileName = event.currentTarget.value;
+	var lastIndex = fileName.lastIndexOf("\\");
+	if (lastIndex >= 0) {
+		fileName = fileName.substring(lastIndex + 1);
+	}
+	var extension = fileName.split(".");
+
+	var iURL = URL.createObjectURL(uFile);
+	$("#uploadedBillDiv_" + counter).html("");
+	if (extension[1] != null && extension[1] != "") {
+		$("#uploadHidden_" + counter).val('');
+	}
+	if (extension[1] == "jpg" || extension[1] == "png"
+			|| extension[1] == "jpeg") {
+		var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-picture-o'></i></a></span>";
+	} else if (extension[1] == "pdf") {
+		var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-pdf-o'></i> </a></span>";
+	} else if (extension[1] == "xls" || extension[1] == "xlsx") {
+		var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-excel-o'></i></a></span>";
+	} else if (extension[1] == "doc" || extension[1] == "dox"
+			|| extension[1] == "docx") {
+		var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-word-o'></i></a></span>";
+	} else {
+		var LightImg = "<span class='uploadicon position-l '> </div>";
+	}
+	var dltImg = "<i class='ti-close position-l rmv1' onclick='openDeleteConfirm()'></i>";
+	$("#uploadedBillDiv_" + counter).html(LightImg);
+	$("#imageName_" + counter).html(fileName);
+	$("#dltImage_" + counter).html(dltImg);
+	$("#dltImage_" + counter).addClass("custom-file-delete");
+
+	$("#clickImg_" + counter).removeClass("ti-plus");
+	$("#clickImg_" + counter).addClass("ti-pencil");
+
+}
+
+function addMore1() {
+
+	var lengthOfTableRow = $("#doctbodyDataShw").children('tr').length;
+	var cloneHtml = $("#docTbl tbody tr:first").clone();
+
+	$("#docTbl tbody").append($("#docTbl tbody tr:first").clone());
+	$("#myTable tbody tr td:last").html("");
+	//var addMore = '<button type="button" class="btn btn-primary tr_clone_add" name="add" onclick="addMore1();"><span class="ti-plus"></span></button>&nbsp;'
+
+	$("#docTbl tbody tr:last").find(".documentclss").val("");
+	$("#docTbl tbody tr:last").find(".docNoclss").val("");
+	$("#docTbl tbody tr:last").find(".documentclssup").val("");
+	$("#docTbl tbody tr:last").find(".uploadedBillCls").empty();
+	$("#docTbl tbody tr:last").find(".uploadHidCls").empty();
+	$("#docTbl tbody tr:last").find(".uploadHidCls").val('');
+	$("#docTbl tbody tr:last").find(".imageName").empty();
+	$("#docTbl tbody tr:last").find(".dltImage").empty();
+	
+	var j = 0;
+	 $("#docTbl > #doctbodyDataShw > tr").each(function(i) {
+
+		var selectInput = $(this).find('select');
+		var textInput = $(this).find('input');
+		var fileInput = $(this).find('file');
+		var divInput = $(this).find('div');
+		var label = $(this).find('label');
+		var iInput = $(this).find('i');
+		
+		selectInput.eq(0).attr('id', "docid_" + i);
+		textInput.eq(1).attr('id', "docnoid_" + i);
+		label.eq(1).attr('for', "uploadDoc_" + i);
+		iInput.eq(0).attr('id', "clickImg_" + i);
+		textInput.eq(2).attr('id', "uploadDoc_" + i);
+		textInput.eq(3).attr('id', "uploadHidden_" + i);
+		divInput.eq(4).attr('id', "uploadedBillDiv_" + i);
+		divInput.eq(5).attr('id', "imageName_" + i);
+		divInput.eq(6).attr('id', "dltImage_" + i); 
+		
+		j++;
+	}) 
+	$("#clickImg_" + (j - 1)).removeClass("ti-pencil");
+	$("#clickImg_" + (j - 1)).addClass("ti-plus"); 
+
+}
+$('#docTbl').on('click', '.rmv1', function() {
+	openDeleteConfirm();
+	var value = $(this).parent("div").attr("id");
+	$("#dltValue").val(value);
+});
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+
+						<div class="row margin_topbot" id="searchRowDiv">
+
+							<div class="input-style row">
+								<input type="text" placeholder="Search.." name="search"
+									class="searchboxinput" onkeyup="cancelBar()"
+									oninput="onQuickFilterChanged()" id="quickFilter">
+								<div class="searchicon">
+									<a href="javascript:void(0)"><span
+										style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+										id="closeKey"
+										onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+										class="close_i"><i class="ti-close srchicon"></i></span></a><a
+										href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row" id="totalRowDiv">
+							<div class="col-md-12">
+								<div class="font-design" id="totalReq">
+									Audit  Details (<span></span>)
+								</div>
+							</div>
+					
+						</div>
+						
+						<div id="myGrid" style="height: 500px; width: 100%;"
+							class="ag-theme-alpine"></div>
+			
+<div class="col-md-12" id="bttn">
+											Audit ID: <span id="meetingIdSpan"></span>
+
+										</div>
+						<!-- 	<div class="row" id="tab1">
+							<div class="col-md-12" id="bttn">
+											Audit ID: <span id="meetingIdSpan"></span>
+
+										</div>
+							
+							
+							  <input type="hidden" id="auditInitiate">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Audit Type</label> <input type="text"
+											class="form-control" id="AuditType"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+	
+															
+	<div class="col-md-6">
+									<div class="form-group">
+										<label>Financial Year</label> <input type="text"
+											class="form-control" id="FinancialYear"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							
+							
+						<div class="col-md-6">
+									<div class="form-group">
+										<label>Auditor</label> <input type="text"
+											class="form-control" id="auditor"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							
+							<div class="col-md-6">
+									<div class="form-group">
+										<label>Initiated By</label> <input type="text"
+											class="form-control" id="initiatedBy"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							<div class="col-md-6">
+									<div class="form-group">
+										<label> Date</label> <input type="text"
+											class="form-control" id="startDateShw"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Letter No</label> <input type="text"
+											class="form-control" id="LetterNo"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							</div> -->
+
+<div class="panel-group" id="accordion" role="tablist"
+											aria-multiselectable="true">
+<div class="panel panel-default">
+												<div class="panel-heading" role="tab" id="headingone" >
+													<h4 class="panel-title">
+														<a role="button" data-toggle="collapse"
+															data-parent="#accordion" href="#collapseone"
+															aria-expanded="true" aria-controls="collapseone">
+															
+														Audit Initiation Details
+														 </a>
+													</h4>
+												</div>
+												<div id="collapseone" class="panel-collapse collapse "
+													role="tabpanel" aria-labelledby="headingone">
+													<div class="row" id="tab1">
+							
+							
+							
+							  <input type="hidden" id="auditInitiate">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Audit Type</label> <input type="text"
+											class="form-control" id="AuditType"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+	
+															
+	<div class="col-md-6">
+									<div class="form-group">
+										<label>Financial Year</label> <input type="text"
+											class="form-control" id="FinancialYear"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							
+							
+						<div class="col-md-6">
+									<div class="form-group">
+										<label>Auditor</label> <input type="text"
+											class="form-control" id="auditor"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							
+							<div class="col-md-6">
+									<div class="form-group">
+										<label>Initiated By</label> <input type="text"
+											class="form-control" id="initiatedBy"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							<div class="col-md-6">
+									<div class="form-group">
+										<label> Date</label> <input type="text"
+											class="form-control" id="startDateShw"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Letter No</label> <input type="text"
+											class="form-control" id="LetterNo"
+											style="border: none !important;" disabled="disabled">
+									</div>
+								</div>
+							</div>
+												</div>
+											</div>
+	<div class="panel panel-default" style="width: 100%;">
+								<div class="panel-heading" role="tab" id="headingFour">
+									<h4 class="panel-title">
+										<a class="collapsed mainSecond" role="button"
+											data-toggle="collapse" data-parent="#accordion"
+											href="#collapseFour" aria-expanded="true"
+											aria-controls="collapseFour"> OTHER DOCUMENTS </a>
+									</h4>
+								</div>
+								<div id="collapseFour" class="panel-collapse collapse show"
+									role="tabpanel" aria-labelledby="headingFour">
+									<div class="row">
+										
+									</div>
+									<table id="docTbl" cellspacing="7" cellpadding="7">
+										<thead>
+											<tr class="tr_clone">
+												<!-- <th align="center"></th> -->
+
+												<th width="320">Document Name</th>
+												<th width="380">Attachment</th>
+											</tr>
+										</thead>
+										<tbody id="doctbodyDataShw">
+													
+										</tbody>
+									</table>
+								</div>
+							</div>
+</div>
+
+						</div>
+						
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+</body>
+</html>

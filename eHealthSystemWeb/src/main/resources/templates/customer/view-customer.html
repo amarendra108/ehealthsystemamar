@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+
+<script>
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		$("#Cancel").hide();
+		$("#addData").hide();
+		$("#save").hide();
+		$("#hideimg").hide();
+		$('#delete').attr("disabled", true);
+		gridOptions.api.setRowData();
+		
+		agGrid.simpleHttpRequest({
+			url : "view-customer-through-ajax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalCandidate').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		});
+		
+		
+
+				var dateFormat = localStorage.getItem("dateFormat");
+
+						$("#toDateCalendar").datetimepicker({
+							format : dateFormat,
+							closeOnDateSelect : true,
+							timepicker : false,
+						}).on("change", function() {
+							$('#CustUpdatedOn').val($(this).val());
+						})
+
+						$('#CustUpdatedOn').blur(function() {
+							$("#toDateCalendar").val($(this).val());
+						})
+
+						$("#state")
+								.on(
+										'change',
+										function() {
+											var state = $(this).val();
+											if (state) {
+
+												$
+														.ajax({
+															type : 'GET',
+															url : 'view-customer-district-ajax?id='
+																	+ state,
+															contentType : false,
+															success : function(
+																	response) {
+																if (response.message == "success") {
+																	$(
+																			"#district")
+																			.empty();
+
+																	var option = $("<option></option>");
+																	$(option)
+																			.val(
+																					null);
+																	$(option)
+																			.html(
+																					"Select");
+																	$(
+																			"#district")
+																			.append(
+																					option);
+																	for (var i = 0; i < response.body.length; i++) {
+																		var option = $("<option></option>");
+																		$(
+																				option)
+																				.val(
+																						response.body[i].key);
+																		$(
+																				option)
+																				.html(
+																						response.body[i].name);
+																		$(
+																				"#district")
+																				.append(
+																						option);
+																	}
+																}
+															},
+															error : function(e) {
+																alert("error");
+															}
+														});
+											} else {
+												$("#tdistrict").empty();
+												var option = $("<option></option>");
+												$(option).val(null);
+												$(option).html("Select");
+												$("#district").append(option);
+											}
+										});
+						$("#country").on('change',function() {
+											var country = $(this).val();
+											//alert(country);
+											if (country) {
+												//alert(country);
+												$("#district").empty();
+												var option = $("<option></option>");
+												$(option).val(null);
+												$(option).html("Select");
+												$("#district").append(option);
+												$
+														.ajax({
+															type : "GET",
+															url : "view-customer-stateName-ajax?id="
+																	+ country,
+															success : function(
+																	response) {
+																if (response.message == "success") {
+																	$("#state")
+																			.empty();
+																	console
+																			.log("In State")
+																	var option = $("<option></option>");
+																	$(option)
+																			.val(
+																					null);
+																	$(option)
+																			.html(
+																					"Select");
+																	$("#state")
+																			.append(
+																					option);
+																	console
+																			.log(response.body)
+																	for (var i = 0; i < response.body.length; i++) {
+																		var option = $("<option></option>");
+																		$(
+																				option)
+																				.val(
+																						response.body[i].key);
+																		$(
+																				option)
+																				.html(
+																						response.body[i].name);
+																		$(
+																				"#state")
+																				.append(
+																						option);
+																	}
+																}
+															},
+															error : function(e) {
+																alert("error");
+															}
+														});
+											} else {
+												$("#state").empty();
+												var option = $("<option></option>");
+												$(option).val(null);
+												$(option).html("Select");
+												$("#state").append(option);
+												$("#state").empty();
+												var option = $("<option></option>");
+												$(option).val(null);
+												$(option).html("Select");
+												$("#district").append(option);
+											}
+										});
+
+						$("#save")
+								.click(
+										function() {
+											//alert("Error")
+											var obj = {};
+											obj.custId = $("#custId").val();
+											obj.custName = $("#custName").val();
+											obj.custEmail = $("#custEmail")
+													.val();
+											obj.custPhone = $("#custPhone")
+													.val();
+											obj.custAddress = $("#custAddress")
+													.val();
+											obj.custCity = $("#custCity").val();
+											obj.district = $("#district").val();
+											obj.state = $("#state").val();
+											obj.country = $("#country").val();
+											obj.custZipCode = $("#custZipCode")
+													.val();
+											obj.custGSTNo = $("#custGSTNo")
+													.val();
+											obj.contactPerson = $(
+													"#contactPerson").val();
+											obj.custActive = $(
+													"#custActive:checkbox:checked")
+													.val();
+											//alert(obj.custActive);
+											if (obj.custActive == undefined) {
+												//alert("hello");	
+												obj.custActive = "0";
+
+											} else {
+												obj.custActive = "1";
+											}
+											obj.custCreatedBy = $(
+													"#custCreatedBy").val();
+											obj.custUpdatedOn = $(
+													"#custUpdatedOn").val();
+											$('#imgLoc').attr('src', '');
+											$('#imgLoc')
+													.attr('src',
+															'../assets/images/noimage.jpg');
+
+											var validation = true;
+
+											if (obj.custName == null
+													|| obj.custName == "") {
+												validation = validationUpdated(
+														"Name Requied",
+														"custName");
+												//console.log("validat name " + validation)
+											}
+
+											if (obj.custEmail == null
+													|| obj.custEmail == "") {
+												validation = validationUpdated(
+														"Email Requied",
+														"custEmail");
+												//console.log("validat Email name " + validation)
+											}
+
+											if (obj.custPhone == null
+													|| obj.custPhone == "") {
+												validation = validationUpdated(
+														"Phone No Requied",
+														"custPhone");
+												//console.log("validat ph name " + validation)
+											}
+
+											if (obj.custAddress == null
+													|| obj.custAddress == "") {
+												validation = validationUpdated(
+														"Address Requied",
+														"custAddress");
+												//console.log("validat address  " + validation)
+											}
+											if (obj.custCity == null
+													|| obj.custCity == "") {
+												validation = validationUpdated(
+														"City Required",
+														"custCity");
+												//console.log("validat city  " + validation)
+											}
+
+											if (obj.district == null
+													|| obj.district == "") {
+												validation = validationUpdated(
+														"district Requied",
+														"district");
+												//console.log("validat dist  " + validation)
+											}
+											if (obj.state == null
+													|| obj.state == "") {
+												validation = validationUpdated(
+														"state Requied",
+														"state");
+												//console.log("validat state  " + validation)
+											}
+											if (obj.country == null
+													|| obj.country == "") {
+												validation = validationUpdated(
+														"country Requied",
+														"country");
+												//console.log("validat country  " + validation)
+											}
+											if (obj.custZipCode == null
+													|| obj.custZipCode == "") {
+												validation = validationUpdated(
+														"Zip Code Requied",
+														"custZipCode");
+												//console.log("validat Zip  " + validation)
+											}
+											if (obj.custGSTNo == null
+													|| obj.custGSTNo == "") {
+												validation = validationUpdated(
+														"GST No Requied",
+														"custGSTNo");
+												//console.log("validat GST  " + validation)
+											}
+											if (obj.contactPerson == null
+													|| obj.contactPerson == "") {
+												validation = validationUpdated(
+														"contact Person Requied",
+														"contactPerson");
+												//console.log("validat CP  " + validation)
+											}
+
+											//console.log("validation " + validation + JSON.stringify(obj))
+											if (validation) {
+												$
+														.ajax({
+															type : "POST",
+															url : "view-customer-add",
+															contentType : "application/json",
+															data : JSON
+																	.stringify(obj),
+
+															success : function(
+																	response) {
+																console
+																		.log(response);
+																if (response.message == "Success") {
+
+																	$(
+																			'#hideTbl')
+																			.hide();
+																	$("#add")
+																			.show();
+																	$("#myGrid")
+																			.show();
+																	$("#cancel")
+																			.hide();
+																	$("#save")
+																			.hide();
+																	$("#demo")
+																			.hide();
+																	$(
+																			"#addData")
+																			.hide();
+																	$(
+																			"#hideimg")
+																			.hide();
+																	$("#delete")
+																			.show();
+
+																	agGrid
+																			.simpleHttpRequest(
+																					{
+																						url : "view-customer-through-ajax"
+																					})
+																			.then(
+																					function(
+																							data) {
+																						var len = data.length;
+																						$(
+																								'#totalCandidate')
+																								.find(
+																										'span')
+																								.html(
+																										len);
+																						gridOptions.api
+																								.setRowData(data);
+																					});
+																}
+															},
+															error : function(
+																	data) {
+
+																console
+																		.log(data);
+															}
+														})
+
+											}
+
+										})
+
+					});
+	var columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+			{
+				headerName : "CustomerId",
+				field : "custId",
+				cellRenderer : function(params) {
+					return '<a id="" onclick=edit("' + params.data.custId
+							+ '") href="javascript:void(0)">'
+							+ params.data.custId + '</a>';
+				}
+			}, {
+				headerName : 'Customer Name',
+				field : "custName"
+			}, {
+				headerName : ' Customer Email',
+				field : "custEmail"
+			}, {
+				headerName : 'Phone No',
+				field : "custPhone",
+				type : 'rightAligned',
+				
+			}, {
+				headerName : 'Address',
+				field : "custAddress"
+			}, {
+				headerName : 'City',
+				field : "custCity"
+			}, {
+				headerName : 'District',
+				field : "district"
+			}, {
+				headerName : 'State',
+				field : "state"
+			}, {
+				headerName : 'country',
+				field : "country"
+			}, {
+				headerName : 'Zip Code',
+				field : "custZipCode"
+			}, {
+				headerName : 'Gst No',
+				field : "custGSTNo",
+				type : 'rightAligned',
+				valueFormatter : currencyFormatter
+			}, {
+				headerName : 'Contact Person',
+				field : "contactPerson"
+			},{
+				headerName : 'Image',
+				field : "fileCustomer"
+			}, {
+				headerName : 'Status',
+				field : "custActive",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Created By',
+				field : "custCreatedBy"
+			}, {
+				headerName : 'Updated On',
+				field : "custUpdatedOn",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			} ];
+
+	var gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelect,
+
+		suppressRowClickSelection : true,
+
+		getRowNodeId : function(data) {
+			return data.custId;
+		}
+	};
+
+	
+
+	var deleteId = "";
+	function rowSelect() {
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+		deleteId = "";
+
+		for (var i = 0; i < selectedRows.length; i++) {
+			deleteId = deleteId + '"' + selectedRows[i].custId + '",';
+		}
+
+		deleteId = deleteId.substring(0, deleteId.length - 1);
+		//console.log(deleteId)
+		var rowCount = 0;
+
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr("disabled", false);
+
+		} else {
+			$('#delete').attr("disabled", true);
+		}
+	}
+
+	function cancelModalCustomerBtn() {
+		$("#deleteModalCustomerBtn").removeAttr("disabled");
+		$('#deleteCustomer').modal('hide');
+	}
+
+	function deleteCust() {
+		//alert("Hy")
+
+		$('#deleteCustModel').modal('show');
+	}
+
+	function deleteCustonClick() {
+		//alert("aa")
+		$.ajax({
+			type : "GET",
+			url : "view-customer-delete?deleteId=" + deleteId,
+			success : function(response) {
+				if (response.message == "success") {
+					cancelModalCustomerBtn();
+					agGrid.simpleHttpRequest({
+						url : "view-customer-through-ajax"
+					}).then(function(data) {
+						gridOptions.api.setRowData(data);
+					});
+
+				}
+			}
+
+		});
+		$('#delete').attr("disabled", true);
+	}
+
+	function add() {
+		$('#hideTbl').hide();
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#save").show();
+		$("#Cancel").show();
+		$("#addData").show();
+		$("#hideimg").show();
+		$("#totalCandidate").hide();
+		$("#dwnld").hide();
+		$("#upld").hide();
+
+		$("#custId").val("");
+		$("#custName").val("");
+		$("#custEmail").val("");
+		$("#custPhone").val("");
+		$("#custAddress").val("");
+		$("#custCity").val("");
+		$("#district").val("");
+		$("#state").val("");
+		$("#country").val("");
+		$("#custZipCode").val("");
+		$("#custGSTNo").val("");
+		$("#contactPerson").val("");
+		$("#custActive").val("");
+		$("#custCreatedBy").val("");
+		$("#custUpdatedOn").val("");
+		$('#delete').attr("disabled", true);
+
+	}
+	function Cancel() {
+		$("#add").show();
+		$("#myGrid").show();
+		$("#save").hide();
+		$("#Cancel").hide();
+		$("#addData").hide();
+		$('#hideTbl').show();
+		$("#hideimg").hide();
+		$("#totalCandidate").show();
+		$("#dwnld").show();
+		$("#upld").show();
+		$("#delete").show();
+	}
+
+	function edit(id) {
+
+		add()
+
+		$.ajax({
+					type : "GET",
+					url : "view-customer-edit?id=" + id,
+					success : function(response) {
+						if (response.message == "Success") {
+							add()
+
+							$("#custId").val(response.body.custId);
+							$("#custName").val(response.body.custName);
+							$("#custEmail").val(response.body.custEmail);
+							$("#custPhone").val(response.body.custPhone);
+							$("#custAddress").val(response.body.custAddress);
+							$("#custCity").val(response.body.custCity);
+							$("#country").val(response.body.country);
+							getStateDataOnEdit(response.body.state);
+							getDistDataEdit(response.body.state,
+									response.body.district);
+
+							$("#custZipCode").val(response.body.custZipCode);
+							$("#custGSTNo").val(response.body.custGSTNo);
+							$("#contactPerson")
+									.val(response.body.contactPerson);
+							$('#custActive').val(response.body.custActive);
+							var custActive = response.body.custActive;
+							if (custActive === '0') {
+
+								$('#custActive').prop('checked', false)
+
+							} else {
+								$('#custActive').prop('checked', true)
+							}
+
+							$('#imgLoc').attr('src', '');
+							if (response.body.fileCustomer != null
+									&& response.body.fileCustomer != "") {
+								$('#imgLoc').attr('src',
+										response.body.fileCustomer);
+							} else {
+								$('#imgLoc').attr('src',
+										'../assets/images/noimage.jpg');
+							}
+
+							$("#save").show();
+							$("#demo").show();
+							$("#addData").show();
+							$("#hideimg").show();
+
+						}
+					}
+				});
+		$('#delete').attr("disabled", true);
+
+	}
+
+	function getDistDataEdit(state, district) {
+		if (state) {
+
+			$.ajax({
+				type : 'GET',
+				url : 'view-customer-district-ajax?id=' + state,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#district").empty();
+
+						var option = $("<option></option>");
+						$(option).val(null);
+						$(option).html("Select");
+						$("#district").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$("#district").append(option);
+						}
+						$("#district").val(district);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#tdistrict").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("Select");
+			$("#district").append(option);
+		}
+	}
+
+	function getStateDataOnEdit(stateId) {
+		var country = $("#country").val();
+		if (country) {
+			//alert(country);
+			$("#district").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("Select");
+			$("#district").append(option);
+			$.ajax({
+				type : "GET",
+				url : "view-customer-stateName-ajax?id=" + country,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option></option>");
+						$(option).val(null);
+						$(option).html("Select");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$("#state").append(option);
+						}
+						$("#state").val(stateId);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("Select");
+			$("#state").append(option);
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("Select");
+			$("#district").append(option);
+		}
+	}
+
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgLoc').attr('src', '');
+		$('#imgLoc').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "view-customer-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	function deleteFile() {
+
+		$('#imgLoc').attr('src', '');
+		$('#imgLoc').attr('src', '../assets/images/noimage.jpg');
+
+		var fileData = new FormData();
+
+		fileData.append('file', 'none');
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "view-customer-delete-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			/* data        : fileData,  */
+			processData : false,
+			cache : false,
+			success : function(response) {
+				console.log("ABC")
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<div class="row margin_topbot" id="hideTbl">
+							<div class="btn-hs">
+								<div class="input-style row">
+									<input type="text" id="searchBar" placeholder="Search.."
+										name="search" class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()">
+									<div class="searchicon">
+										<a href="#"><span style="display: none" id="closeKey"
+											onclick="gridVendorOptions.api.setQuickFilter(null);$('#searchBar').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i">X</span></a> <a href="#"><i
+											class="fa fa-search"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+
+							<div class="col-md-7 btn-hs">
+								<div class="font-design" id="totalCandidate">
+									CUSTOMER LIST (<span></span>)
+								</div>
+							</div>
+							<div class="col-md-5 buttonsec btn-hs">
+
+								<button class="btn4" id=dwnld>Download</button>
+								<button class="btn4" id=upld>Upload</button>
+								<div class="buttongap"></div>
+								<button id="save" onclick="save()" class="btn1">save</button>
+								<button class="btn4" id=Cancel onclick="Cancel()">Cancel</button>
+
+								<button onclick="add()" class="btn1" id="add">New</button>
+								<button onclick="deleteCust()" class="btn3" id="delete">delete</button>
+							</div>
+						</div>
+						<div id="myGrid" style="height: 500px; width: 1090px;"
+							class="ag-theme-alpine"></div>
+
+						<div class="row innersticky_contentgap">
+
+							<div class="col-md-3" id=hideimg>
+								<div class="hvrbox">
+									<img src="../assets/images/noimage.jpg" id="imgLoc"
+										alt="Location" class="hvrbox-layer_bottom img-fluid"
+										style="height: 203px; width: 241px;">
+									<div class="hvrbox-layer_top">
+										<div class="hvrbox-text">
+											<input type="file" id="fileUpload" hidden
+												onchange="saveFile();" /> <span><label
+												for="fileUpload"><i class="ti-files"
+													style="cursor: pointer;"></i> </label></span>
+											<span><i class="fa fa-trash red"
+												onclick="deleteFile();"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-9">
+								<div class="row" id="addData">
+
+									<input type="hidden" id="custId">
+
+									<div class="col-md-6">
+										<input type="hidden" id="CustUpdatedOn"> <i
+											id="toDateCalendar"></i>
+									</div>
+
+									<div class="col-lg-8">
+										<div class="form-group">
+											<label>Customer Name</label> <input type="text" id="custName"
+												placeholder="Customer Name" class="form-control">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<input type="checkbox" class="loc-chb" name="isActive"
+												id="custActive" value="1" checked> <label
+												style="margin-top: 10px;">Active</label>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>Customer Email</label> <input type="text"
+												id="custEmail" placeholder="Customer Email"
+												class="form-control">
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>Phone Number</label> <input type="text" id="custPhone"
+												placeholder="Phn No" class="form-control">
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>Contact Person Name</label> <input type="text"
+												id="contactPerson" placeholder="Contact Person Name"
+												class="form-control">
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>GST No</label> <input type="text" id="custGSTNo"
+												placeholder="GST No" class="form-control">
+										</div>
+									</div>
+									<div class="col-lg-8">
+										<div class="form-group">
+											<label>Address</label>
+											<textarea id="custAddress"></textarea>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>City</label> <input type="text" id="custCity"
+												placeholder="City" class="form-control">
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>District</label>
+											<div class="select">
+												<select id="district">
+													<option value="">Select</option>
+													<option th:each="c,iter:${distList}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>State</label>
+											<div class="select">
+												<select id="state">
+													<option value="">Select</option>
+													<option th:each="c,iter:${stateList}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>Country</label>
+											<div class="select">
+												<select id="country">
+													<option value="">Select</option>
+													<option th:each="c,iter:${countrylist}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div class="form-group">
+											<label>Zip Code</label> <input type="text" id="custZipCode"
+												placeholder="Zip Code" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="deleteCustModel" class="modal fade show"
+							aria-modal="true">
+							<div class="modal-dialog modal-confirm">
+								<div class="modal-content">
+									<div class="modal-header flex-column">
+										<button type="button" class="close" data-dismiss="modal"
+											aria-hidden="true" onclick="cancelModalCustomerBtn()">
+											<i class="ti-close modal-close"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<p>Do you really want to delete these records? This
+											process cannot be undone.</p>
+									</div>
+									<div class="modal-footer justify-content-center"
+										style="margin-top: -30px;">
+
+										<button type="button" class="btn1" data-dismiss="modal"
+											onclick="cancelModalCustomerBtn();">Cancel</button>
+										<button type="button" class="btn3" data-dismiss="modal"
+											onclick="deleteCustonClick()">Delete</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

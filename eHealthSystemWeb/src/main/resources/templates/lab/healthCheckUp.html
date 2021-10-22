@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+
+//Document Ready For Page load
+$(document).ready(function() {
+	
+var dateFormat = localStorage.getItem("dateFormat");
+$("#fromDateCalendar").datetimepicker({
+	format : 'Y-m-d',
+	closeOnDateSelect : true,
+	timepicker : false,
+}).on("change", function() {
+	$('#appointmentDate').val($(this).val());
+})
+
+$('#appointmentDate').blur(function() {
+	$("#fromDateCalendar").val($(this).val());
+})
+
+$("#fromDateCalendar1").datetimepicker({
+	format : 'Y-m-d',
+	closeOnDateSelect : true,
+	timepicker : false,
+}).on("change", function() {
+	$('#currentDate').val($(this).val());
+})
+$('#currentDate').blur(function() {
+	$("#fromDateCalendar1").val($(this).val());
+})
+
+$("#toDateCalendarTime").datetimepicker({
+	format : 'H:i',
+	closeOnDateSelect : false,
+	timepicker : true,
+	datepicker : false,
+	step: 15
+}).on("change", function() {
+	$('#appointmentTime').val($(this).val());
+})
+
+$('#appointmentTime').blur(function() {
+	$("#toDateCalendarTime").val($(this).val());
+})
+
+ var date = (new Date()).toISOString().split('T')[0];
+		$("#punchinDate").val(date); 
+
+});
+$(document).ready(function() {
+	$("#tab21").hide();
+	$("#add").show();
+	$("#tab11").hide();
+	$("#edit").hide();
+	$("#deletes").hide();
+	$("#add").hide();
+	var gridDiv2 = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv2, gridOptions2);
+	
+	 agGrid.simpleHttpRequest({
+			url : "view-health-checkup-through-ajax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions2.api.setRowData(data);
+		}); 
+});
+
+
+
+var columnDefs2 = [
+	{
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},
+	 {
+		headerName : "UHID No",
+		field : "uHIdNo"
+	}, {
+		 
+		headerName : "Name",
+		field : "name"
+	}, {
+		headerName : "Age",
+		field : "age"
+	}, {
+		headerName : 'Gender',
+		field : "eGender",
+
+	}, {
+		headerName : "Status",
+		field : "status",
+		cellRenderer : function(params) {
+			if (params.data.status == 0) {
+			return 'Booked';
+			}  else {
+			return 'Approved';
+			}
+			}
+	},];
+
+var gridOptions2 = {
+	columnDefs : columnDefs2,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 235,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	suppressRowClickSelection : true,	
+
+};
+
+function add(){
+	$("#tab23").hide();
+	$("#tab21").show();
+	$("#tab11").hide();
+	$("#deletes").show();
+	$("#add").show();
+	$("#myGrid").hide();
+	$("#add1").hide();
+}
+
+
+function cancelEmp(){
+	$("#tab11").hide();
+	$("#myGrid").show();
+	$("#add1").show();
+	$("#add").hide();
+	$("#deletes").hide();
+	$("#tab21").hide();
+	$("#tab23").show();
+}
+/* Function For Save
+
+ */
+
+function addDetails(){
+	 var obj ={};
+	 obj.healthId=$("#healthId").val();
+	 	
+		 obj.patientId = $("#patientId").val();		
+		 obj.appointmentDate = $("#appointmentDate").val();	
+		 obj.appointmentTime = $("#appointmentTime").val();	
+		
+			 var validation = true;
+		
+			if(obj.patientId==null || obj.patientId==""){
+				validation=validationUpdated("Patient Id Required","patientId");
+			}
+			if(obj.appointmentDate==null || obj.appointmentDate==""){
+				validation=validationUpdated("Appointment Date Required","appointmentDate");
+			}
+			if(obj.appointmentTime==null || obj.appointmentTime==""){
+				validation=validationUpdated("Appointment Time Required","appointmentTime");
+			}
+		
+			
+			if(validation){			
+			$.ajax({				
+			type : "POST",
+			url : "view-health-checkup-add",
+			contentType : "application/json",
+			data : JSON.stringify(obj),
+			success : function(response){
+			if(response.message == "Success"){
+			$("#myGrid").show();
+			$("#tab11").hide();
+			$("#tab21").hide();
+			$("#deletes").hide();
+			$("#add").hide();
+			$("#add1").show();
+			$("#tab23").show();
+			 agGrid.simpleHttpRequest({
+					url : "view-health-checkup-through-ajax"
+				}).then(function(data) {
+					var len = data.length;
+					$('#totalReq').find('span').html(len);
+					gridOptions2.api.setRowData(data);
+				}); 
+			}
+			},error : function(data){
+			console.log(data);
+			}
+			})
+			} 	 
+	}
+	
+
+//AutoSearch for organization Name
+
+function getUhidNoList() {
+	$("#tab11").hide();
+	
+	var search = $("#uHIdNo").val();
+	
+	if(search == ""){
+		$("#suggesstion-box1_").hide();
+	}
+	
+	if (search) {
+		
+		$
+				.ajax({
+					type : "POST",
+					url : "view-health-checkup-autosearch",
+					dataType : 'json',
+					contentType : 'application/json',
+					data : search,
+					success : function(response) {
+						if (response.message == "success") {
+							if (response.body.length != 0) {
+								$("#search").css("background", "#FFF");
+								var content = '<ul id="autocomplete-list1" style="margin-left:-40px;font-weight:100;font-size:14px;color:#ccc;height: 200px;">';
+								for (var i = 0; i < response.body.length; i++) {
+									content += '<li class="autocompletedata cp" onClick="selectAutocompleteValue1(\''
+											+ response.body[i].patientId
+											+ '\',\''
+											+ response.body[i].state
+											+ '\',\''
+											+ response.body[i].eGender
+											+ '\',\''
+											+ response.body[i].mobileNo
+											+ '\')">'
+											+ response.body[i].patientId
+											+ '</li>';
+								}
+								content += '</ul>';
+								$("#suggesstion-box1_").show();
+								$("#suggesstion-box1_").html(content);
+
+							} else {
+								$("#search").css("background", "#FFF");
+								var content = '<div id="autocomplete-list1">';
+								content += '<div onClick="selectAutocompleteValue()">'
+										+ "No Data Found" + '</div>';
+								content += '</div>';
+								$("#suggesstion-box1_").show();
+								$("#suggesstion-box1_").html(content);
+							}
+						}
+					},
+					error : function(data) {
+						console.log(data);
+					}
+				})
+	}
+
+}
+function selectAutocompleteValue1(patientId,state,eGender,mobileNo) {
+
+	if (uHIdNo) {
+		$("#tab11").show();
+		$("#uHIdNo").val(patientId);
+		$("#patientId").val(patientId);
+		$("#state").val(state);
+		$("#eGender").val(eGender);
+		$("#mobileNo").val(mobileNo);
+		$("#search").val(patientId);
+		$("#search").attr('data-procat', uHIdNo);
+		$("#suggesstion-box1_").hide();
+
+	} else {
+		$("#uHIdNo").val("");
+		$("#patientId").val("");
+		$("#state").val("");
+		$("#eGender").val("");
+		$("#mobileNo").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+
+	}
+}
+function selectAutocompleteValue() {
+
+	$("#uHIdNo").val("");
+	$("#patientId").val("");
+	$("#state").val("");
+	$("#eGender").val("");
+	$("#mobileNo").val("");
+	$("#search").val("");
+	$("#search").attr('data-procat', "");
+	$("#suggesstion-box1_").hide();
+
+}
+
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="maincontentsec">
+						
+
+							<div class="row">
+								<div class="col-md-5 buttonsec btn-hs"></div>
+								<div class="col-md-7 buttonsec btn-hs">
+									<button id="add" class="btn1" onclick="addDetails()">SAVE</button>
+									<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+									
+								</div>
+							</div>
+							<div>
+								<div class="row">
+
+									<div class="col-md-6  btn-hs">
+										<div class="font-design" >Health Check Up</div>
+									</div>
+								</div>
+								<div id="tab21">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label> Enter UHID No</label> <input type="text" id="uHIdNo"
+													class="form-control" onkeyup='getUhidNoList()' onclick='onChangeFunction()'
+													placeholder="Enter UHID No..." autocomplete="off">
+												<div id="suggesstion-box1_" class="sugg-cls"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="tab23">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label> Date</label> <input type="text" id="punchinDate"
+													class="form-control" placeholder="Current Date" style="border: none !important;" disabled="disabled">
+												
+											</div>
+										</div>
+										<div class="col-md-6 btn-hs">
+										<div class="font-design" id="totalReq">
+							            Health Check-Up LIST(<span></span>)</div>
+							            </div>
+										<div class="col-md-6 buttonsec btn-hs">
+											<button id="add1" class="btn1" onclick="add()">NEW</button>
+										</div>
+									</div>
+								</div>
+
+								<div id="tab11">
+									<div class="row" id="addData">
+										<input type="hidden" id="healthId">
+
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Patient Id</label> <input type="text"
+													name="patientId" value="" placeholder="Patient Id"
+													class="form-control" style="border: none !important;" disabled="disabled" id="patientId" >
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>State</label> <input type="text" id="state"
+													placeholder="State" class="form-control"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Gender</label> <input type="text" id="eGender"
+													placeholder="Gender" class="form-control"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Mobile No</label> <input type="text" id="mobileNo"
+													placeholder="Mobile No" class="form-control"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Appointment Date</label> <input type="text"
+													id="appointmentDate" class="form-control"
+													placeholder="Policy Start Date" onblur="removeValid(event)"
+													th:attr="onkeyup=|formatDate('appointmentDate','${session.DATEFORMAT_JS}')|">
+												<i class="ti-calendar picker_calendar" id="fromDateCalendar"></i>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Appointment Time</label> <input type="text"
+													id="appointmentTime" class="form-control"
+													placeholder="Policy End Date" onblur="removeValid(event)"
+													th:attr="onkeyup=|formatDate('appointmentTime','${session.DATEFORMAT_JS}')|">
+												<i class="ti-calendar picker_calendar"
+													id="toDateCalendarTime"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="myGrid" style="width: 100%; height: 500px;"
+									class="ag-theme-alpine"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+</body>
+</html>

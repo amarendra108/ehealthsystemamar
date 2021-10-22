@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="generator" content="Hugo 0.80.0">
+
+<link rel="canonical"
+	href="https://getbootstrap.com/docs/5.0/examples/starter-template/">
+
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="public/print_icard/assets/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<style>
+      @font-face
+      {
+         font-family: 'Conv_Segoe UI';
+	  src: url('fonts/Segoe UI.eot');
+	  src: local('☺'), url('fonts/Segoe UI.woff') format('woff'), url('fonts/Segoe UI.ttf') format('truetype'), url('fonts/Segoe UI.svg') format('svg');
+	  font-weight: normal;
+	  font-style: normal;}
+	  body
+	  {
+	    font-family: 'Conv_Segoe UI',Sans-Serif;
+	  }
+      .logo{
+        padding: 8px 14px 0px;
+      }
+      .logo img{
+        height: 42px;
+        position: absolute;
+        right: 20px;
+        top: 2px;
+      }
+      .right-text
+      {
+        color: #333;
+       font-size: 14px;
+       line-height: 11px;
+       padding-bottom: 5px;
+      }
+      .right-notext{
+        color: #000;
+       font-size: 20px;
+       line-height: 22px;
+      /*  -webkit-text-stroke:1px #878787;
+       -webkit-text-fill-color:transparent; */
+      }
+      .right-text strong
+      {
+        color: #0341b9;
+      }
+
+.card-bg {
+	background: url("../assets/eHealth/images/frontend_card.jpg"), no-repeat
+		center center;
+        width:360px;
+        height:204px;
+        margin:10px auto;
+        position:relative;
+      }
+
+     .card-bgbk {
+	background: url("../assets/eHealth/images/backend_card.jpg"), no-repeat
+		center center;
+        width:360px;
+        height:204px;
+        margin:10px auto;
+        position:relative;
+      }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      .topgap
+      {
+        padding-top:0px;
+        line-height: 12px;
+        padding-left: 10px;
+      } 
+      .cardholder_img
+      {
+        padding-top: 0px;
+        padding-left: 10px;
+      }
+      .cardholder_img img
+      {
+        border-radius: 5px;
+      }
+      .barcd-img .bar-pd{
+        margin: 0px 8px 0px;
+       }
+      .state{
+        font-size: 16px;
+        font-weight: 700;
+        color: #000;
+        padding-left: 10px;
+      }
+      .ehealth{
+        font-size: 14px;
+        color: #0341b9;
+        padding-left: 10px;
+       }
+       .btm-text{
+        font-size: 13px;
+        font-weight: 700;
+        color: #000;
+       }
+              .barcode{
+        position: absolute;
+        right: 10px;
+       }
+       .odisha-text{
+        font-size: 20px;
+        font-weight: bold;
+        padding: 8px 0px;
+        color: #0142bb;
+        text-align: left;
+       }
+       .flw-step{
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+        text-align: left;}
+        .step{
+        font-size: 10px;
+        font-weight: bold;
+        color: #000;
+        text-align: left;
+        margin: 5px 0px;}
+        .step span{
+          margin-right: 7px;
+        }
+        .help{
+        font-size: 20px;
+        font-weight: bold;
+        color: #0142bb;
+        padding-top: 7px;
+        text-align: left;
+       }
+        .odisha-text2{
+        font-size: 14px;
+        color: #0142bb;
+        text-align: left;
+        line-height: 14px;
+       }
+       .btm-img img{
+        position: absolute;
+        bottom: 16px;
+        height: 48px;
+        right: 21px;
+       }
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      /* -------------------malesiya------------------ */
+      .mlrt-notext{
+       color: #c80000;
+       font-size: 20px;
+       line-height: 15px;
+       text-align: right;
+       padding-right: 8px;
+       padding-top: 6px;
+       font-weight: bold;
+       /*-webkit-text-stroke:1px #878787;
+       -webkit-text-fill-color:transparent;*/
+      }
+      .mlcard-bg{
+        background:url("../assets/eHealth/images/malaysia_card.jpg"), no-repeat center center;
+        width:360px;
+        height:225px;
+        margin:10px auto;
+        position:relative;
+      }
+      .mlcard-bgbk{
+        background:url("../assets/eHealth/images/malaysia_back.jpg"),  no-repeat center center;
+        width:360px;
+        height:225px;
+        margin:10px auto;
+        position:relative;
+      }
+      .ml-topgap
+      {
+        padding-top:52px;
+        line-height: 12px;
+        padding-left: 10px;
+      } 
+       .name{
+           font-size: 10px;
+          color: #3c3c3c;
+          text-transform: uppercase;
+          padding-top: 2px;
+          padding-bottom: 1px;
+       }
+       .mn-name{
+        font-size: 13px;
+        color: #00004f;
+        text-transform: uppercase;
+        font-weight: bold;
+
+       }
+       .user img{
+        position: absolute;
+        right: 9px;
+        height: 83px;
+        top: 87px;
+        border-radius: 5px;
+       }
+       .signature{
+        background-color: #dedcdf;
+        padding: 10px;
+        position: absolute;
+        bottom: 17px;
+        right: 9px;
+        height: 12px;
+        width: 122px;
+       }
+       .right-text
+       {
+       font-weight:bold;
+       }
+       .signature img{
+        position: absolute;
+        bottom: 1px;
+        right: 2px;
+        height: 30px;
+       }
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+</style>
+
+<!-- Custom styles for this template -->
+<!-- 
+<link href="public/print_icard/custom.css" rel="stylesheet"> -->
+</head>
+<body>
+	<div class="container" th:if="${#strings.substring(cardDetails.eHealthCardNo, 0, 2)}=='91'">
+
+		<div>
+			<a role="button" class="btn btn-primary" href="/user/ehealthcard-download-pdf">Generate PDF</a>
+		</div>
+		<div class="card-bg">
+		    <div class="logo" align="right"><img  id="stateLogo" th:attr="src=|../assets/images/statelogo/${cardDetails.stateLogo}|"></div>
+		     <div class="state" th:text="${cardDetails.stateName}"></div> 
+		    <div class="ehealth">eHealthSystem</div>
+			<!-- <input type="text" th:src="${profileimg}"> -->
+			 
+			<!--   <img id="statecm" src="assets/images/cm_odisha.jpg" class="img-fluid"> -->
+			<div class="cardholder_img">
+				<img th:src="${profileimg}" height="75"
+					width="75">
+					
+			</div>
+			<div class="topgap">
+				<div class="row">
+
+					<table width="100%">
+						<tr>
+							<td class="right-text" colspan="2" th:text="${cardDetails.cardHldrName}"></td>
+						</tr>
+
+						<tr>
+							<td class="right-text" width="86">Valid From :</td>
+							<td class="right-text" th:text="${cardDetails.date}"></td>
+						</tr>
+
+						<tr>
+							<td colspan="2" class="right-notext" th:text="${cardDetails.eHealthCardNo}"></td>
+						</tr>
+			            <tr>
+			              <td colspan="2" class="btm-text">Globally Accessible Health Record System</td>
+			            </tr>
+					</table>
+
+				</div>
+			</div>
+
+
+		</div>
+		<div class="card-bgbk" align="right">
+			<div class="cardholder_img barcd-img">
+			<div class="cardholder_img barcd-img">
+      <div class="barcode">
+        <img th:src="${qRCode}" height="50" width="55"  style="padding-top: 10px;">
+       <!--  <img  id="stateLogo" th:attr="src=|../assets/images/statelogo/${cardDetails.stateLogo}|" class="bar-pd" height="42"> -->
+      </div>
+      <div class="odisha-text" >Government of <span th:text="${cardDetails.stateName}"></span></div>
+      <div class="flw-step">Steps to Follow in case of Emergency</div>
+      <div class="step"><span>1)</span>   Visit at www.ehealthsystem.com</div>
+      <div class="step"><span>2)</span>   Doctor should login as a guest user accessing information</div>
+      <div class="step"><span>3)</span>   Enter 16 Digit UHID Card Number</div>
+      <div class="step"><span>4)</span>   Get access to healthInformation of the card holder</div>
+
+      <div class="help">Help Line: 1800 123 456</div>
+      <div class="odisha-text2">www.ehealthsystem.com</div>
+      <div  class="btm-img"><img src="../assets/eHealth/images/btm-img.png"></div>
+     </div>
+				<!-- <img th:src="${qRCode}" height="50" width="55"  style="padding-top: 10px;">
+				<img  id="stateLogo" th:attr="src=|../assets/images/statelogo/${cardDetails.stateLogo}|" class="bar-pd" height="42">  -->
+			</div>
+		</div>
+	</div>
+	<!-- /.container -->
+	<!--  <script src="public/print_icard/assets/dist/js/bootstrap.bundle.min.js"></script> -->
+	
+	
+	
+	
+	
+	<div class="container" th:unless="${#strings.substring(cardDetails.eHealthCardNo, 0, 2)}=='91'">
+    <div>
+      <a role="button" class="btn btn-primary" href="#">Generate PDF</a>
+    </div>
+    <div class="mlcard-bg">
+    <div class="ml-topgap">
+      <div class="user">
+        <img src="../assets/eHealth/images/user.jpg">
+      </div>
+    <div class="row">
+     <table width="100%" cellspacing="5">
+
+             <tr>
+              <td class="mlrt-notext">4658 7894 8378 4566</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="name">Full Name</div>
+                <div class="mn-name">Warganegara Lelaki</div>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td>
+                <div class="name">Date of Birth</div>
+                <div class="mn-name">19/9/94</div>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td>
+                <div class="name">Nationality</div>
+                <div class="mn-name">Malaysia</div>
+              </td>
+            </tr>
+        
+            <tr>
+              <td>
+                <div class="name">Place of Birth</div>
+                <div class="mn-name">Kedah,Malaysia</div>
+              </td>
+            </tr>
+          </table>
+         
+    </div>
+    <div class="signature">
+        <img src="../assets/eHealth/images/sinature.jpg">
+      </div>
+    </div>
+   </div>
+  <div class="mlcard-bgbk" align="right">
+    <div class="cardholder_img barcd-img">
+
+     <!--  <img src="barcode.png" height="50" width="55" style="padding-top: 10px;">
+      <img src="odisha.png" class="bar-pd" height="42"> -->
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

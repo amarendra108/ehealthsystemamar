@@ -1,0 +1,3509 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Welcome To Extend</title>
+<style>
+.ulCls {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #e6e9ed;
+}
+
+.a {
+	float: left;
+}
+
+.a a {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color: #4d94ff;
+	color: white;
+}
+
+.active1 {
+	background-color: #4d94ff;
+}
+
+.form-control1:disabled, .form-control[readonly] {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+
+.form-control {
+	height: 35px;
+	border-radius: 3px;
+	box-shadow: none;
+	/* border-color: #000000; */
+	font-family: 'Roboto', sans-serif;
+}
+</style>
+<!-- ******************       Call Details/All Tickets       *****************************************************************-->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		//view agent ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket_throughAjax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		});
+
+		$("#myGrid").show();
+		/*   $("#delete").attr("disabled", true); */
+	});
+
+	const columnDefs = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelAll("' + params.data.ticketId
+							+ ',' + params.data.callQueueId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			}, {
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			}, {
+				headerName : 'Call Queue',
+				field : "callQueue",
+			}, {
+				headerName : 'Call Reason',
+				field : "callReason"
+			}, {
+				headerName : 'Agent',
+				field : "agentId"
+			}, {
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, /* {
+								headerName : 'Call Queue Id',
+								field : "callQueueId"
+							}, */
+	];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 170,
+			height : 10
+		},
+	};
+
+	// Modal View for All Call Details
+	function viewInModelAll(id) {
+		var main_index = id;
+		var main_index1 = id.split(",");
+		var index = main_index1[0];
+		var cId = main_index1[1];
+
+		//alert(id)
+		//alert(index)
+		// alert(cId)
+		if (cId == "CQ001") {
+			//alert(cId)
+			//alert(index)
+			$.ajax({
+				type : "POST",
+				url : "view-agentTicket-modalViewGenEnq?id=" + index,
+				dataType : 'json',
+				contentType : 'application/json',
+				data : index,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$('#phoneGenEnq').val(response.body.phoneNo);
+						$('#customerNameGenEnq')
+								.val(response.body.customerName);
+						$('#customerLocationGenEnq').val(
+								response.body.customerLocation);
+						$('#callQueueGenEnq').val(response.body.callQueue);
+						$('#callReasonGenEnq').val(response.body.callReason);
+						$('#productTypeGenEnq').val(response.body.productType);
+						$('#commentGenEnq').val(response.body.commentBox);
+
+						$('#myModalGenEnq').modal('show');
+						$('#tableGenEnq').append(table);
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+
+		} else if (cId == "CQ002") {
+
+			//alert(cId)
+			$.ajax({
+				type : "POST",
+				url : "view-agentTicket-modalViewSerReq",
+				dataType : 'json',
+				contentType : 'application/json',
+				data : index,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$('#phoneSerReq').val(response.body.phoneNo);
+						$('#customerNameSerReq')
+								.val(response.body.customerName);
+						$('#customerLocationSerReq').val(
+								response.body.customerLocation);
+						$('#callQueueSerReq').val(response.body.callQueue);
+						$('#callReasonSerReq').val(response.body.callReason);
+						$('#productTypeSerReq').val(response.body.productType);
+						$('#serviceCenterSerReq').val(
+								response.body.serviceCenter);
+						$('#commentSerReq').val(response.body.commentBox);
+
+						$('#myModalSerReq').modal('show');
+						$('#tableSerReq').append(table);
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+
+		} else if (cId == "CQ003") {
+			//alert(cId)
+		
+			$.ajax({
+				type : "POST",
+				url : "view-agentTicket-modalViewComp",
+				dataType : 'json',
+				contentType : 'application/json',
+				data : index,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$('#phoneComp').val(response.body.phoneNo);
+						$('#customerNameComp').val(response.body.customerName);
+						$('#customerLocationComp').val(
+								response.body.customerLocation);
+						$('#callQueueComp').val(response.body.callQueue);
+						$('#callReasonComp').val(response.body.callReason);
+						$('#productTypeComp').val(response.body.productType);
+						$('#servicecenterComp')
+								.val(response.body.serviceCenter);
+						$('#complainCategoryComp').val(
+								response.body.complaintCategory);
+						$('#complainDescriptionComp').val(
+								response.body.complaintDesc);
+						$('#commentComp').val(response.body.commentBox);
+
+						$('#myModalComp').modal('show');
+						$('#tableComp').append(table);
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+		}
+
+		else if (cId == "CQ004") {
+			//alert(cId)
+			$.ajax({
+				type : "POST",
+				url : "view-agentTicket-modalViewSale",
+				dataType : 'json',
+				contentType : 'application/json',
+				data : index,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$('#phoneSale').val(response.body.phoneNo);
+						$('#customerNameSale').val(response.body.customerName);
+						$('#customerLocationSale').val(
+								response.body.customerLocation);
+						$('#callQueueSale').val(response.body.callQueue);
+						$('#callReasonSale').val(response.body.callReason);
+						$('#productTypeSale').val(response.body.productType);
+						$('#serviceCenterSale')
+								.val(response.body.serviceCenter);
+						$('#quantitySale').val(response.body.saleQuantity);
+						$('#salesDescriptionSale').val(response.body.saleDesc);
+						$('#commentSale').val(response.body.commentBox);
+
+						$('#myModalSale').modal('show');
+						$('#tableSale').append(table);
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+		}
+
+		else if (cId == "CQ005") {
+			//alert(cId)
+			$
+					.ajax({
+						type : "POST",
+						url : "view-agentTicket-modalViewMktgReq",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : index,
+						success : function(response) {
+							if (response.message == "success") {
+
+								$('#phoneMktgReq').val(response.body.phoneNo);
+								$('#customerNameMktgReq').val(
+										response.body.customerName);
+								$('#customerLocationMktgReq').val(
+										response.body.customerLocation);
+								$('#callQueueMktgReq').val(
+										response.body.callQueue);
+								$('#callReasonMktgReq').val(
+										response.body.callReason);
+								$('#productTypeMktgReq').val(
+										response.body.productType);
+								$('#serviceCenterMktgReq').val(
+										response.body.serviceCenter);
+								$('#quantityMktgReq').val(
+										response.body.marketingQuantity);
+								$('#marketingDescriptionMktgReq').val(
+										response.body.marketingDesc);
+								$('#commentMktgReq').val(
+										response.body.commentBox);
+
+								$('#myModalMktgReq').modal('show');
+								$('#tableMktgReq').append(table);
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		} else {
+			swal({
+				title : "Error",
+				type : "success",
+			})
+		}
+	}
+
+	/* function deleteDetails() {
+	 $("#delete").attr("disabled", false);
+
+	 } */
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	//<!-- ******************       Add Ticket Details       *****************************************************************-->
+
+	// function for add
+
+	var obj = {};
+
+	function addDetails() {
+		obj = {};
+		obj.customerId = $("#customerId").val();
+		obj.ticketId = $("#ticketId").val();
+		obj.phoneNo = $("#phoneNo").val();
+		obj.customerName = $("#customerName").val();
+		obj.customerLocation = $("#customerLocation").val();
+		obj.industrialType = $("#industrialType").val();
+		obj.customerType = $("#customerType").val();
+		obj.alternatePhoneNo = $("#alternatePhoneNo").val();
+		obj.email = $("#email").val();
+		obj.callDisconnected = $("#callDisconnected").val();
+		obj.callQueue = $("#callQueue").val();
+		obj.callReason = $("#callReason").val();
+		obj.productType = $("#productType").val();
+		obj.commentBox = $("#commentBox").val();
+		obj.serviceCenter = $("#serviceCenter").val();
+		obj.complaintCategory = $("#complaintCategory").val();
+		obj.complaintDesc = $("#complaintDesc").val();
+		obj.complainLocation = $("#complainLocation").val();
+		obj.complainAssist = $("#complainAssist").val();
+		obj.saleDesc = $("#saleDesc").val();
+		obj.saleQuantity = $("#saleQuantity").val();
+		obj.marketingDesc = $("#marketingDesc").val();
+		obj.marketingQuantity = $("#marketingQuantity").val();
+
+		console.log(obj)
+		var validation = true;
+
+		if (obj.phoneNo == null || obj.phoneNo == "") {
+			validation = validationUpdated("Phone No Required", "phoneNo");
+		}
+		if (obj.customerName == null || obj.customerName == "") {
+			validation = validationUpdated("Customer Name Required",
+					"customerName");
+		}
+		if (obj.customerLocation == null || obj.customerLocation == "") {
+			validation = validationUpdated("Customer Location Required",
+					"customerLocation");
+		}
+		if (obj.industrialType == null || obj.industrialType == "") {
+			validation = validationUpdated("Industrial Type Required",
+					"industrialType");
+		}
+		if (obj.customerType == null || obj.customerType == "") {
+			validation = validationUpdated("Customer Type Required",
+					"customerType");
+		}
+		if (obj.email == null || obj.email == "") {
+			validation = validationUpdated("email Required", "email");
+		}
+		if (obj.callDisconnected == null || obj.callDisconnected == "") {
+			validation = validationUpdated("call Disconnected status Required",
+					"callDisconnected");
+		}
+		if (obj.callQueue == null || obj.callQueue == "") {
+
+			validation = validationUpdated("call Queue  Required", "callQueue");
+		}
+		if (obj.callReason == null || obj.callReason == "") {
+			validation = validationUpdated("call Reason Required", "callReason");
+		}
+		if (obj.productType == null || obj.productType == "") {
+
+			validation = validationUpdated("product Type Required",
+					"productType");
+		}
+
+		if (validation) {
+			//alert("Hii")
+			$.ajax({
+				type : "POST",
+				url : "view-agentTicket_addDetails",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					//console.log(response);
+					if (response.message == "Success") {
+
+						$("#add").show();
+						$("#myGrid").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#form").hide();
+						$("#new").hide();
+
+						closeNav();
+
+						//view All Call details ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket_throughAjax"
+						}).then(function(data) {
+							gridOptions.api.setRowData(data);
+						});
+						//view General Enquiry ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket-generalEnquiry"
+						}).then(function(data) {
+							var len = data.length;
+							$('#headingOne').find('span').html(len);
+							gridOptionsGenEnq.api.setRowData(data);
+						});
+						//view Service request ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket-serviceRquest"
+						}).then(function(data) {
+							var len = data.length;
+							$('#headingTwo').find('span').html(len);
+							gridOptionsSerReq.api.setRowData(data);
+						});
+						//view Complaint ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket-complaint"
+						}).then(function(data) {
+							var len = data.length;
+							$('#headingThree').find('span').html(len);
+							gridOptionsComp.api.setRowData(data);
+						});
+						//view Sales ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket-sales"
+						}).then(function(data) {
+							var len = data.length;
+							$('#headingFour').find('span').html(len);
+							gridOptionsSale.api.setRowData(data);
+						});
+						//view Marketing request ticket
+						agGrid.simpleHttpRequest({
+							url : "view-agentTicket-marketingRequest"
+						}).then(function(data) {
+							var len = data.length;
+							$('#headingFive').find('span').html(len);
+							gridOptionsMktgReq.api.setRowData(data);
+						});
+
+					}
+				},
+				error : function(data) {
+				}
+			})
+		}
+	}
+
+	function openNav() {
+
+		document.getElementById("mySidenav").style.cssText = "width: 450px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("main_content").style.width = "69%";
+		//document.getElementById("myGrid").style.width = "69%";
+
+		document.getElementById("collapseOne").style.width = "69%";
+		document.getElementById("headingOne").style.width = "69%";
+		document.getElementById("collapseTwo").style.width = "69%";
+		document.getElementById("headingTwo").style.width = "69%";
+		document.getElementById("collapseThree").style.width = "69%";
+		document.getElementById("headingThree").style.width = "69%";
+		document.getElementById("collapseFour").style.width = "69%";
+		document.getElementById("headingFour").style.width = "69%";
+		document.getElementById("collapseFive").style.width = "69%";
+		document.getElementById("headingFive").style.width = "69%";
+
+		$("#add").hide();
+		$("#save").show();
+		$("#cancel").show();
+		
+		/*  $('#add').attr("disabled", true); */
+	}
+
+	function closeNav() {
+		$("#add").show();
+
+		$("#phoneNo").val("");
+		$("#customerName").val("");
+		$("#customerLocation").val("");
+		$("#industrialType").val("");
+		$("#customerType").val("");
+		$("#alternatePhoneNo").val("");
+		$("#email").val("");
+		$("#callDisconnected").val();
+		$("#callQueue").val("");
+		$("#callReason").val("");
+		$("#productType").val("");
+		$("#commentBox").val("");
+		$("#serviceCenter").val("");
+		$("#complaintCategory").val("");
+		$("#complaintDesc").val("");
+		$("#complainLocation").val("");
+		$("#complainLocation").val("");
+		$("#saleDesc").val("");
+		$("#saleQuantity").val("");
+		$("#marketingDesc").val("");
+		$("#marketingQuantity").val("");
+
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		document.getElementById("headingFive").style.width = "100%";
+	}
+</script>
+<script>
+	/* Onchange function for get call reason from call queue */
+	function callReasonChange() {
+		var dd = $("#callQueue").val();
+		//alert("callQueue=="+dd);
+		if (dd) {
+			$
+					.ajax({
+						type : "POST",
+						url : "view-agentTicket-getCallReason",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : $("#callQueue").val(),
+						success : function(response) {
+							if (response.message == "success") {
+								console.log(response);
+								//alert("JHUJUI")
+								$("#callReason").empty();
+
+								$("#callReason")
+										.append(
+												$("<option value='NULL'>--Select--</option>"));
+
+								for (var i = 0; i < response.body.length; i++) {
+									var option = "<option value='" + response.body[i].key + "'>"
+											+ response.body[i].name
+											+ "</option>";
+
+									$("#callReason").append(option);
+								}
+
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		} else {
+			$("#callReason").empty();
+			$("#callReason").append($("<option value>--Select--</option>"));
+
+		}
+	}
+
+	//autocomplete of customer details from mobile no
+	function custAutoCompleteMob() {
+		$
+				.ajax({
+					type : "POST",
+					url : "view-agentTicket-add-customerautofill",
+					dataType : 'json',
+					contentType : 'application/json',
+					data : $("#phoneNo").val(),
+					success : function(response) {
+						if (response.message == "success") {
+							console.log(response);
+							if (response.body.length != 0) {
+								console.log("if: " + response);
+								$("#phoneNo").css("background", "#FFF");
+								var content = '<ul id="autocomplete-list">';
+								for (var i = 0; i < response.body.length; i++) {
+									content += '<li onClick="selectAutocompleteValue(\''
+											+ response.body[i].customerId
+											+ '\',\''
+											+ response.body[i].phoneNo
+											+ '\',\''
+											+ response.body[i].customerName
+											+ '\',\''
+											+ response.body[i].customerLocation
+											+ '\',\''
+											+ response.body[i].industrialType
+											+ '\',\''
+											+ response.body[i].customerType
+											+ '\',\''
+											+ response.body[i].alternatePhoneNo
+											+ '\',\''
+											+ response.body[i].email
+											+ '\')">'
+											+ response.body[i].phoneNo
+											+ '</li>';
+								}
+								content += '</ul>';
+								$("#suggesstion-box").show();
+								$("#suggesstion-box").html(content);
+
+							} else {
+								$("#suggesstion-box").hide();
+
+							}
+						}
+					},
+					error : function(data) {
+						console.log(data);
+					}
+				})
+	}
+
+	function selectAutocompleteValue(customerId, phoneNo, customerName,
+			customerLocation, industrialType, customerType, alternatePhoneNo,
+			email) {
+		if (phoneNo) {
+			//alert(userMob);
+			$("#customerId").val(customerId);
+			$("#phoneNo").val(phoneNo);
+			//$("#phoneNo").attr('data-procat', phoneNo);
+			$("#customerName").val(customerName);
+			$("#customerLocation").val(customerLocation);
+			$("#industrialType").val(industrialType);
+			$("#customerType").val(customerType);
+			$("#alternatePhoneNo").val(alternatePhoneNo);
+			$("#email").val(email);
+			$("#suggesstion-box").hide();
+		} else {
+			//$("#customerId").val(customerId);
+			$("#phoneNo").val("");
+			//$("#phoneNo").attr('data-procat', "");
+			$("#customerName").val("");
+			$("#customerLocation").val("");
+			$("#industrialType").val("");
+			$("#customerType").val("");
+			$("#alternatePhoneNo").val("");
+			$("#email").val("");
+			$("#suggesstion-box").hide();
+		}
+	}
+	$(document).ready(function() {
+		var phoneNumber = $('#phoneNo').val();
+		if (phoneNumber) {
+			$('#phoneNo').attr('readonly', 'readonly');
+		}
+		var callqueue = $('#callQueue').val();
+		if (callqueue) {
+			$('#callQueue').attr('readonly', 'readonly');
+		}
+	})
+
+	$(document).ready(function() {
+		/* for edit */
+		var ticketid = $('#ticketId').val();
+		if (ticketid) {
+			var callQueue = $('#callQueue').val();
+			/*  for general query request */
+			if (callQueue == "CQ001") {
+				$("#modalDiv").hide();
+				$("#modalDiv1").hide();
+				$("#complaint").hide();
+				$("#complaintDescription").hide();
+				$("#personResponsible").hide();
+				$("#complaintLoc").hide();
+				$("#saleDescription").hide();
+				$("#salequantity").hide();
+				$("#marketingdesc").hide();
+				$("#marketingquantity").hide();
+			}
+			/*  for service request */
+			if (callQueue == "CQ002") {
+				$("#modalDiv1").show();
+				$("#complaint").hide();
+				$("#complaintDescription").hide();
+				$("#personResponsible").hide();
+				$("#complaintLoc").hide();
+				$("#saleDescription").hide();
+				$("#salequantity").hide();
+				$("#marketingdesc").hide();
+				$("#marketingquantity").hide();
+			}
+			/*  for complaint category */
+			if (callQueue == "CQ003") {
+				$("#complaint").show();
+				$("#modalDiv1").hide();
+				$("#complaintDescription").show();
+				$("#personResponsible").show();
+				$("#complaintLoc").show();
+				$("#saleDescription").hide();
+				$("#salequantity").hide();
+				$("#marketingdesc").hide();
+				$("#marketingquantity").hide();
+			}
+			/*  for sales */
+			if (callQueue == "CQ004") {
+				$("#complaint").hide();
+				$("#modalDiv1").hide();
+				$("#complaintDescription").hide();
+				$("#personResponsible").hide();
+				$("#complaintLoc").hide();
+				$("#saleDescription").show();
+				$("#salequantity").show();
+				$("#marketingdesc").hide();
+				$("#marketingquantity").hide();
+			}
+			/*  for marketing */
+			if (callQueue == "CQ005") {
+				$("#complaint").hide();
+				$("#modalDiv1").hide();
+				$("#complaintDescription").hide();
+				$("#personResponsible").hide();
+				$("#complaintLoc").hide();
+				$("#saleDescription").hide();
+				$("#salequantity").hide();
+				$("#marketingdesc").show();
+				$("#marketingquantity").show();
+			}
+		} else {
+			$("#modalDiv").hide();
+			$("#modalDiv1").hide();
+			$("#complaint").hide();
+			$("#complaintDescription").hide();
+			$("#personResponsible").hide();
+			$("#complaintLoc").hide();
+			$("#saleDescription").hide();
+			$("#salequantity").hide();
+			$("#marketingdesc").hide();
+			$("#marketingquantity").hide();
+
+			/* for add */
+
+			$("#callQueue").on("change", function() {
+				var callQueue = $(this).val();
+
+				if (callQueue == 'CQ001') {
+					$("#modalDiv").hide();
+				} else {
+					$("#modalDiv").show();
+
+				}
+
+				if (callQueue == 'CQ002') {
+					//$("#modalDiv").show();
+					$("#modalDiv1").show();
+					$("#complaintCategory").val("");
+					$('#complaintDescription').val("");
+					$('#complainLocation').val("");
+					$('#complainAssist').val("");
+					$('#saleDescription').val("");
+					$('#saleQuantity').val("");
+					$('#marketingdesc').val("");
+					$('#marketingquantity').val("");
+				} else {
+					//$("#modalDiv").hide();
+					$("#modalDiv1").hide();
+				}
+				if (callQueue == 'CQ003') {
+					//$("#modalDiv").show();
+					$("#complaint").show();
+					$("#complaintDescription").show();
+					$("#personResponsible").show();
+					$("#complaintLoc").show();
+					$('#saleDescription').val("");
+					$('#saleQuantity').val("");
+					$('#marketingdesc').val("");
+					$('#marketingquantity').val("");
+				} else {
+					//$("#modalDiv").hide();
+					$("#complaint").hide();
+					$("#complaintDescription").hide();
+					$("#personResponsible").hide();
+					$("#complaintLoc").hide();
+
+				}
+				if (callQueue == 'CQ004') {
+					//$("#modalDiv").show();
+					$("#saleDescription").show();
+					$("#salequantity").show();
+					$("#complaintCategory").val("");
+					$('#complaintDescription').val("");
+					$('#complainLocation').val("");
+					$('#complainAssist').val("");
+					$('#marketingdesc').val("");
+					$('#marketingquantity').val("");
+				} else {
+					//$("#modalDiv").hide();
+					$("#saleDescription").hide();
+					$("#salequantity").hide();
+				}
+				if (callQueue == 'CQ005') {
+					//$("#modalDiv").show();
+					$("#marketingdesc").show();
+					$("#marketingquantity").show();
+					$("#complaintCategory").val("");
+					$('#complaintDescription').val("");
+					$('#complainLocation').val("");
+					$('#complainAssist').val("");
+					$('#saleDescription').val("");
+					$('#saleQuantity').val("");
+				} else {
+					//$("#modalDiv").hide();
+					$("#marketingdesc").hide();
+					$("#marketingquantity").hide();
+				}
+			});
+		}
+	});
+</script>
+<!-- ******************       General Enquiry       *****************************************************************-->
+<!--  View General Enquiry -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivGenEnq = document.querySelector('#myGridGenEnq');
+		new agGrid.Grid(gridDivGenEnq, gridOptionsGenEnq);
+
+		//view general ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket-generalEnquiry"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingOne').find('span').html(len);
+			gridOptionsGenEnq.api.setRowData(data);
+		});
+
+		$("#myGridGenEnq").show();
+
+	});
+
+	const columnDefsGenEnq = [
+		
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelGenEnq("'
+							+ params.data.ticketId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agentId"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsGenEnq(\""
+							+ params.data.ticketId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 55px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+				}
+			}, ];
+
+	const gridOptionsGenEnq = {
+		columnDefs : columnDefsGenEnq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 10
+		},
+	};
+	//modal view for General Enquiry	
+	function viewInModelGenEnq(index) {
+		//alert(index)
+		$('#tableGenEnq').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-modalViewGenEnq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneGenEnq').val(response.body.phoneNo);
+					$('#customerNameGenEnq').val(response.body.customerName);
+					$('#customerLocationGenEnq').val(
+							response.body.customerLocation);
+					$('#callQueueGenEnq').val(response.body.callQueue);
+					$('#callReasonGenEnq').val(response.body.callReason);
+					$('#productTypeGenEnq').val(response.body.productType);
+					$('#commentGenEnq').val(response.body.commentBox);
+
+					$('#myModalGenEnq').modal('show');
+					$('#tableGenEnq').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+
+	/* comment for General Enquiry	 */
+
+	function viewCommentsGenEnq(index) {
+
+		document.getElementById("commentSidenav1").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("collapseOne").style.width = "79%";
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#add").hide();
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("collapseTwo").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("collapseThree").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("collapseFour").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("collapseFive").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-commentViewGenEnq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicket').val(response.body.ticketId);
+					$("#ticketStatus").val(response.body.ticketStatus);
+					$("#lastcomment").val(response.body.commentBox);
+					$("#lastDate").val(response.body.lastDate);
+					$("#ageing").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav1() {
+		$("#comments").val("");
+		$("#Status").val("");
+
+		$("#add").show();
+		document.getElementById("main_content").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		//document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitGenEnq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicket").val());
+											var comment = $("#comments").val();
+											var status = $("#Status").val();
+											if (!blankValidation("comments",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation("Status",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-agentTicket-addCommentsGenEnq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav1();
+																//view general ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-agentTicket-generalEnquiry"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingOne')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsGenEnq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+</script>
+<!-- ******************       Service Request       *****************************************************************-->
+<!--  View Service Request -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivSerReq = document.querySelector('#myGridSerReq');
+		new agGrid.Grid(gridDivSerReq, gridOptionsSerReq);
+
+		//view service ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket-serviceRquest"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingTwo').find('span').html(len);
+			gridOptionsSerReq.api.setRowData(data);
+		});
+
+		$("#myGridSerReq").show();
+
+	});
+
+	const columnDefsSerReq = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelSerReq("'
+							+ params.data.ticketId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agentId"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsSerReq(\""
+							+ params.data.ticketId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 55px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+				}
+			}, ];
+
+	const gridOptionsSerReq = {
+		columnDefs : columnDefsSerReq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 10
+		},
+	};
+	//modal view for service request	
+	function viewInModelSerReq(index) {
+		//alert(index)
+		$('#tableSerReq').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-modalViewSerReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneSerReq').val(response.body.phoneNo);
+					$('#customerNameSerReq').val(response.body.customerName);
+					$('#customerLocationSerReq').val(
+							response.body.customerLocation);
+					$('#callQueueSerReq').val(response.body.callQueue);
+					$('#callReasonSerReq').val(response.body.callReason);
+					$('#productTypeSerReq').val(response.body.productType);
+					$('#serviceCenterSerReq').val(response.body.serviceCenter);
+					$('#commentSerReq').val(response.body.commentBox);
+
+					$('#myModalSerReq').modal('show');
+					$('#tableSerReq').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Service Request	 */
+
+	function viewCommentsSerReq(index) {
+		document.getElementById("commentSidenav2").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("collapseTwo").style.width = "79%";
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#add").hide();
+
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("collapseOne").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("collapseThree").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("collapseFour").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("collapseFive").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-commentModalViewSerReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicketSerReq').val(response.body.ticketId);
+					$("#ticketStatusSerReq").val(response.body.ticketStatus);
+					$("#lastcommentSerReq").val(response.body.commentBox);
+					$("#lastDateSerReq").val(response.body.lastDate);
+					$("#ageingSerReq").val(response.body.ageing);
+					;
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav2() {
+
+		$("#commentsSerReq").val("");
+		$("#StatusSerReq").val("");
+		
+		$("#add").show();
+		document.getElementById("main_content").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		//document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitSerReq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicketSerReq").val());
+											var comment = $("#commentsSerReq")
+													.val();
+											var status = $("#StatusSerReq")
+													.val();
+											if (!blankValidation(
+													"commentsSerReq",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"StatusSerReq",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-agentTicket-addCommentsSerReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav2();
+																//view service ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-agentTicket-serviceRquest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingTwo')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSerReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+</script>
+<!-- ******************       Complaints       *****************************************************************-->
+<!--  View Complaint -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivComp = document.querySelector('#myGridComp');
+		new agGrid.Grid(gridDivComp, gridOptionsComp);
+
+		//view comp ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket-complaint"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingThree').find('span').html(len);
+			gridOptionsComp.api.setRowData(data);
+		});
+
+		$("#myGridComp").show();
+
+	});
+
+	const columnDefsComp = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelComp("'
+							+ params.data.ticketId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agentId"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsComp(\""
+							+ params.data.ticketId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 55px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+				}
+			}, ];
+
+	const gridOptionsComp = {
+		columnDefs : columnDefsComp,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 10
+		},
+	};
+	//modal view for complaint	
+	function viewInModelComp(index) {
+		//alert(index)
+		$('#tableComp').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-modalViewComp",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneComp').val(response.body.phoneNo);
+					$('#customerNameComp').val(response.body.customerName);
+					$('#customerLocationComp').val(
+							response.body.customerLocation);
+					$('#callQueueComp').val(response.body.callQueue);
+					$('#callReasonComp').val(response.body.callReason);
+					$('#productTypeComp').val(response.body.productType);
+					$('#servicecenterComp').val(response.body.serviceCenter);
+					$('#complainCategoryComp').val(
+							response.body.complaintCategory);
+					$('#complainDescriptionComp').val(
+							response.body.complaintDesc);
+					$('#commentComp').val(response.body.commentBox);
+
+					$('#myModalComp').modal('show');
+					$('#tableComp').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Service Request	 */
+
+	function viewCommentsComp(index) {
+		document.getElementById("commentSidenav3").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("collapseThree").style.width = "79%";
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#add").hide();
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("collapseTwo").style.width = "79%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("collapseOne").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("collapseFour").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("collapseFive").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-commentModalViewComp",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicketComp').val(response.body.ticketId);
+					$("#ticketStatusComp").val(response.body.ticketStatus);
+					$("#lastcommentComp").val(response.body.commentBox);
+					$("#lastDateComp").val(response.body.lastDate);
+					$("#ageingComp").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav3() {
+
+		$("#commentsComp").val("");
+		$("#StatusComp").val("");
+
+		$("#add").show();
+		document.getElementById("main_content").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		//document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitComp")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicketComp").val());
+											var comment = $("#commentsComp")
+													.val();
+											var status = $("#StatusComp").val();
+											if (!blankValidation(
+													"commentsComp",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation("StatusComp",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-agentTicket-addCommentsComp?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav3();
+																//view comp ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-agentTicket-complaint"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingThree')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsComp.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+</script>
+<!-- ******************       Sales       *****************************************************************-->
+<!--  View Sales -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivSale = document.querySelector('#myGridSale');
+		new agGrid.Grid(gridDivSale, gridOptionsSale);
+
+		//view sale ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket-sales"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingFour').find('span').html(len);
+			gridOptionsSale.api.setRowData(data);
+		});
+
+		$("#myGridSale").show();
+
+	});
+
+	const columnDefsSale = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelSale("'
+							+ params.data.ticketId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agentId"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsSale(\""
+							+ params.data.ticketId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 55px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+				}
+			}, ];
+
+	const gridOptionsSale = {
+		columnDefs : columnDefsSale,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 10
+		},
+	};
+	//modal view for Sales	
+	function viewInModelSale(index) {
+		//alert(index)
+		$('#tableSale').empty();
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-modalViewSale",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+
+					$('#phoneSale').val(response.body.phoneNo);
+					$('#customerNameSale').val(response.body.customerName);
+					$('#customerLocationSale').val(
+							response.body.customerLocation);
+					$('#callQueueSale').val(response.body.callQueue);
+					$('#callReasonSale').val(response.body.callReason);
+					$('#productTypeSale').val(response.body.productType);
+					$('#serviceCenterSale').val(response.body.serviceCenter);
+					$('#quantitySale').val(response.body.saleQuantity);
+					$('#salesDescriptionSale').val(response.body.saleDesc);
+					$('#commentSale').val(response.body.commentBox);
+
+					$('#myModalSale').modal('show');
+					$('#tableSale').append(table);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	/* comment for Sale	 */
+
+	function viewCommentsSale(index) {
+		document.getElementById("commentSidenav4").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("collapseFour").style.width = "79%";
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#add").hide();
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("collapseTwo").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("collapseThree").style.width = "79%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("collapseOne").style.width = "79%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("collapseFive").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-commentModalViewSale",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicketSale').val(response.body.ticketId);
+					$("#ticketStatusSale").val(response.body.ticketStatus);
+					$("#lastcommentSale").val(response.body.commentBox);
+					$("#lastDateSale").val(response.body.lastDate);
+					$("#ageingSale").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav4() {
+
+		$("#commentsSale").val("");
+		$("#StatusSale").val("");
+
+		$("#add").show();
+		document.getElementById("main_content").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		//document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitSale")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicketSale").val());
+											var comment = $("#commentSales")
+													.val();
+											var status = $("#StatusSale").val();
+											if (!blankValidation(
+													"commentsSale",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation("StatusSale",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-agentTicket-addCommentsSale?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav4();
+																//view sale ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-agentTicket-sales"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFour')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsSale.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+</script>
+<!-- ****************   Marketing Request      ***********************-->
+<!--  View Marketing Request -->
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+
+		var gridDivMktgReq = document.querySelector('#myGridMktgReq');
+		new agGrid.Grid(gridDivMktgReq, gridOptionsMktgReq);
+
+		//view mktg ticket
+		agGrid.simpleHttpRequest({
+			url : "view-agentTicket-marketingRequest"
+		}).then(function(data) {
+			var len = data.length;
+			$('#headingFive').find('span').html(len);
+			gridOptionsMktgReq.api.setRowData(data);
+		});
+
+		$("#myGridMktgReq").show();
+
+	});
+
+	const columnDefsMktgReq = [
+			{
+				headerName : 'Id',
+				field : "ticketId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewInModelMktgReq("'
+							+ params.data.ticketId
+							+ '") href="javascript:void(0)">'
+							+ params.data.ticketId + '</a>';
+				}
+			},
+			{
+				headerName : 'Phone',
+				field : "phoneNo",
+				cellStyle : {
+					textAlign : 'right'
+				}
+			},
+			{
+				headerName : 'Call Queue',
+				field : "callQueue",
+			},
+			{
+				headerName : 'Call Reason',
+				field : "callReason"
+			},
+			{
+				headerName : 'Agent',
+				field : "agentId"
+			},
+			{
+				headerName : 'Ticket Status',
+				field : "ticketStatus",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : 'Date',
+				field : "dateTime",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			},
+			{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='viewCommentsMktgReq(\""
+							+ params.data.ticketId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 55px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+				}
+			},
+	];
+
+	const gridOptionsMktgReq = {
+		columnDefs : columnDefsMktgReq,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 10
+		},
+	};
+	//modal view for Marketing Request	
+	function viewInModelMktgReq(index) {
+		//alert(index)
+		$('#tableMktgReq').empty();
+
+		$
+				.ajax({
+					type : "POST",
+					url : "view-agentTicket-modalViewMktgReq",
+					dataType : 'json',
+					contentType : 'application/json',
+					data : index,
+					success : function(response) {
+						if (response.message == "success") {
+
+							$('#phoneMktgReq').val(response.body.phoneNo);
+							$('#customerNameMktgReq').val(
+									response.body.customerName);
+							$('#customerLocationMktgReq').val(
+									response.body.customerLocation);
+							$('#callQueueMktgReq').val(response.body.callQueue);
+							$('#callReasonMktgReq').val(
+									response.body.callReason);
+							$('#productTypeMktgReq').val(
+									response.body.productType);
+							$('#serviceCenterMktgReq').val(
+									response.body.serviceCenter);
+							$('#quantityMktgReq').val(
+									response.body.marketingQuantity);
+							$('#marketingDescriptionMktgReq').val(
+									response.body.marketingDesc);
+							$('#commentMktgReq').val(response.body.commentBox);
+
+							$('#myModalMktgReq').modal('show');
+							$('#tableMktgReq').append(table);
+						}
+					},
+					error : function(data) {
+						console.log(data);
+					}
+				})
+
+	}
+	/* comment for Mktg	 */
+
+	function viewCommentsMktgReq(index) {
+		document.getElementById("commentSidenav5").style.cssText = "width: 330px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("headingFive").style.width = "79%";
+		document.getElementById("collapseFive").style.width = "79%";
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#add").hide();
+
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "79%";
+		document.getElementById("collapseTwo").style.width = "79%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "79%";
+		document.getElementById("collapseThree").style.width = "79%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "79%";
+		document.getElementById("collapseFour").style.width = "79%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "79%";
+		document.getElementById("collapseOne").style.width = "79%";
+
+		$.ajax({
+			type : "POST",
+			url : "view-agentTicket-commentModalViewMktgReq",
+			dataType : 'json',
+			contentType : 'application/json',
+			data : index,
+			success : function(response) {
+				if (response.message == "success") {
+					$('#hidTicketMktgReq').val(response.body.ticketId);
+					$("#ticketStatusMktgReq").val(response.body.ticketStatus);
+					$("#lastcommentMktgReq").val(response.body.commentBox);
+					$("#lastDateMktgReq").val(response.body.lastDate);
+					$("#ageingMktgReq").val(response.body.ageing);
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	//close comment side nav
+	function commentCloseNav5() {
+
+		$("#commentsMktgReq").val("");
+		$("#StatusMktgReq").val("");
+
+		$("#add").show();
+		document.getElementById("main_content").style.width = "100%";
+		document.getElementById("commentSidenav1").style.width = "0";
+		document.getElementById("headingOne").style.width = "100%";
+		document.getElementById("collapseOne").style.width = "100%";
+		document.getElementById("commentSidenav2").style.width = "0";
+		document.getElementById("headingTwo").style.width = "100%";
+		document.getElementById("collapseTwo").style.width = "100%";
+		document.getElementById("commentSidenav3").style.width = "0";
+		document.getElementById("headingThree").style.width = "100%";
+		document.getElementById("collapseThree").style.width = "100%";
+		document.getElementById("commentSidenav4").style.width = "0";
+		document.getElementById("headingFour").style.width = "100%";
+		document.getElementById("collapseFour").style.width = "100%";
+		document.getElementById("commentSidenav5").style.width = "0";
+		document.getElementById("headingFive").style.width = "100%";
+		document.getElementById("collapseFive").style.width = "100%";
+		//document.getElementById("myGridMktgReq").style.width = "100%";
+	}
+	//add Comment
+	$(document)
+			.ready(
+					function() {
+
+						$("#submitMktgReq")
+								.click(
+										function() {
+											var ticketId = window.btoa($(
+													"#hidTicketMktgReq").val());
+											var comment = $("#commentsMktgReq")
+													.val();
+											var status = $("#StatusMktgReq")
+													.val();
+											if (!blankValidation(
+													"commentsMktgReq",
+													"TextField",
+													"Comment can not be left blank"))
+												return false;
+											if (!blankValidation(
+													"StatusMktgReq",
+													"TextField",
+													"Status  can not be left blank"))
+												return false;
+
+											$
+													.ajax({
+														type : "GET",
+														url : "/ticket/view-agentTicket-addCommentsMktgReq?id="
+																+ ticketId
+																+ "&comment="
+																+ comment
+																+ "&status="
+																+ status,
+														success : function(
+																response) {
+
+															if (response.message == "success") {
+
+																commentCloseNav5();
+																//view mktg ticket
+																agGrid
+																		.simpleHttpRequest(
+																				{
+																					url : "view-agentTicket-marketingRequest"
+																				})
+																		.then(
+																				function(
+																						data) {
+																					var len = data.length;
+																					$(
+																							'#headingFive')
+																							.find(
+																									'span')
+																							.html(
+																									len);
+																					gridOptionsMktgReq.api
+																							.setRowData(data);
+																				});
+
+															} else {
+																swal({
+																	title : response.code,
+																	text : response.message,
+																	type : "warning"
+																})
+															}
+														},
+														error : function(data) {
+															console.log(data);
+														}
+													})
+
+										})
+					});
+</script>
+<!-- ****************    Start Body Parts       ***********************-->
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+				<div class="content_padding">
+					<div class="card-title">
+						<h4>All Ticket</h4>
+					</div>
+					<div class="row margin_topbot" id="searchRowDiv">
+
+						<div class="input-style row">
+							<input type="text" placeholder="Search.." name="search"
+								class="searchboxinput" onkeyup="cancelBar()"
+								oninput="onQuickFilterChanged()" id="quickFilter">
+							<div class="searchicon">
+								<a href="javascript:void(0)"><span
+									style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+									id="closeKey"
+									onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+									class="close_i"><i class="ti-close srchicon"></i></span></a><a
+									href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+
+						<div class="col-md-5  btn-hs">
+							<div class="font-design" id="totalReq">
+								Call Details (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-7 buttonsec btn-hs">
+							<button class="btn1" id="add" onclick="openNav()">New</button>
+						</div>
+					</div>
+					<div id="main_content">
+						<div id="mySidenav" class="sidenav">
+							<div class="slidebox">
+
+								<div class="row">
+								<div class="col-md-9">
+													<div class="edit">Add Tickets Details</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="closeNav()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+									<div class="col-md-12 buttonsec btn-hs">
+									<button class="btn4" id="cancel" onclick="closeNav()">Cancel</button>
+										<button class="btn1" type="submit" id="save" form="form"
+											value="add" onclick="addDetails()">Save</button>
+										
+
+									</div>
+								</div>
+
+
+								<div class="row">
+									<div class="col-lg-6">
+										<h4>Customer Details</h4>
+
+										<div class="form-group">
+											<input type="hidden" id="customerId" /> <input type="hidden"
+												id="ticketId" /> <label>Telephone No</label> <input
+												type="text" class="form-control" id="phoneNo"
+												onkeyup="custAutoCompleteMob();" />
+											<div id="suggesstion-box"></div>
+										</div>
+										<div class="form-group">
+											<label>Customer Name</label> <input type="text"
+												class="form-control" id="customerName" />
+
+										</div>
+										<div class="form-group">
+											<label>Customer Location</label>
+											<div class="select">
+												<select id="customerLocation">
+													<option value="">-- Select Location --</option>
+													<option th:each="c,iter:${userLocationList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Industrial Type</label>
+											<div class="select">
+												<select id="industrialType">
+													<option value="">-- Select Industrial Type --</option>
+													<option th:each="c,iter:${industrialTypeList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Customer Type</label>
+											<div class="select">
+												<select id="customerType">
+													<option value="">-- Select Customer Type --</option>
+													<option th:each="c,iter:${userTypeList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label>Alternate Mobile no</label> <input type="text"
+												class="form-control" id="alternatePhoneNo" />
+
+										</div>
+										<div class="form-group">
+											<label>Email</label> <input type="text" class="form-control"
+												id="email" />
+										</div>
+
+									</div>
+									<div class="col-lg-6">
+										<h4>Call Details</h4>
+
+										<div class="form-group">
+											<label>Call Disconnected</label><br> <label
+												class="radio-inline"> <input type="radio"
+												name="calldisconnected" value=false id="callDisconnected">NO
+											</label> <label class="radio-inline"> <input type="radio"
+												name="calldisconnected" value=true id="callDisconnected">YES
+											</label>
+										</div>
+										<div class="form-group">
+											<label>Call Queue</label>
+											<div class="select">
+												<select id="callQueue" onkeyup="check()"
+													onChange="callReasonChange()">
+													<option value="">-- Select Call Queue --</option>
+													<option th:each="c,iter:${callQueueList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label>Call Reason</label>
+											<div class="select">
+												<select id="callReason">
+													<option value="">-- Select Call Reason --</option>
+													<option th:each="c,iter:${callReasonList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label>Product Type</label>
+											<div class="select">
+												<select id="productType">
+													<option value="">-- Select Product Type --</option>
+													<option th:each="c,iter:${productTypeList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label> Comment Box </label>
+											<textarea class="form-control textarea" id="commentBox"></textarea>
+
+										</div>
+
+
+										<div class="form-group" id="modalDiv">
+											<label>Service Center</label>
+											<div class="select">
+												<select id="serviceCenter">
+													<option value="">-- Select Service Center --</option>
+													<option th:each="c,iter:${serviceCenterList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group" id="modalDiv1"></div>
+										<div class="form-group" id="complaint">
+											<label>Complaint Category</label>
+											<div class="select">
+												<select id="complaintCategory">
+													<option value="">-- Select Complaint Category --</option>
+													<option th:each="c,iter:${complaintCategoryList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group" id="complaintDescription">
+											<label> Complaint description</label>
+											<textarea class="form-control textarea" id="complaintDesc"></textarea>
+
+										</div>
+										<div class="form-group" id="complaintLoc">
+											<label>Complaint Location</label>
+											<div class="select">
+												<select id="complainLocation">
+													<option value="">-- Select Complaint Location --</option>
+													<option th:each="c,iter:${complaintLocationList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group" id="personResponsible">
+											<label> Possible Person Who Assist Them</label> <input
+												type="text" class="form-control" id="complainAssist" />
+
+										</div>
+										<div class="form-group" id="saleDescription">
+											<label> Sale Description</label>
+											<textarea class="form-control textarea" id="saleDesc"></textarea>
+
+										</div>
+										<div class="form-group" id="salequantity">
+											<label> Quantity</label> <input type="text"
+												class="form-control" id="saleQuantity" />
+
+										</div>
+										<div class="form-group" id="marketingdesc">
+											<label> Marketing Description</label>
+											<textarea class="form-control textarea" id="marketingDesc"></textarea>
+
+										</div>
+										<div class="form-group" id="marketingquantity">
+											<label>Marketing Quantity</label> <input type="text"
+												class="form-control" id="marketingQuantity" />
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="myGrid" style="width: 100%; height: 500px;"
+							class="ag-theme-alpine"></div>
+					</div>
+
+
+					<!-- 	main div start here -->
+					<div id="main">
+
+						<!-- 	sidenave for General Enquiry Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingOne">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseOne"
+												aria-expanded="false" aria-controls="collapseOne">
+												General Enquiry(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav1" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav1()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav1()">CANCEL</button>
+														<button class="btn1" id="submitGenEnq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatus">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcomment"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDate">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageing">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="comments"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="Status">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<div id="collapseOne" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingOne">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridGenEnq" style="width: 100%; height: 100px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for General Enquiry End here -->
+						<!-- 	sidenave for Service request Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingTwo">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseTwo"
+												aria-expanded="false" aria-controls="collapseTwo">
+												Service Request(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav2" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav2()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav2()">CANCEL</button>
+														<button class="btn1" id="submitSerReq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicketSerReq">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentSerReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ageingSerReq">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsSerReq"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusSerReq">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<div id="collapseTwo" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingTwo">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridSerReq" style="width: 100%; height: 100px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Service request End here -->
+
+						<!-- 	sidenave for Complaints Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingThree">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseThree"
+												aria-expanded="false" aria-controls="collapseThree">
+												Complaints(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav3" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav3()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav3()">CANCEL</button>
+														<button class="btn1" id="submitComp">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentComp"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageingComp">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsComp"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusComp">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<div id="collapseThree" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingThree">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridComp" style="width: 100%; height: 100px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Complaints End here -->
+
+						<!-- 	sidenave for Sales Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingFour">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseFour"
+												aria-expanded="false" aria-controls="collapseFour">
+												Sales(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav4" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav4()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav4()">CANCEL</button>
+														<button class="btn1" id="submitSale">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicketSale">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatusSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcommentSale"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDateSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageingSale">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="commentsSale"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="StatusSale">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<div id="collapseFour" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingFour">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<div id="myGridSale" style="width: 100%; height: 100px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Sales End here -->
+
+						<!-- 	sidenave for Marketing Request Start here -->
+						<div class="wrapper center-block">
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingFive">
+										<h4 class="panel-title">
+											<a class="collapsed" role="button" data-toggle="collapse"
+												data-parent="#accordion" href="#collapseFive"
+												aria-expanded="false" aria-controls="collapseFive">
+												Marketing Request(<span></span>)
+											</a>
+										</h4>
+									</div>
+									<!-- <start mySidenav  comment> -->
+									<div id="commentSidenav1" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="edit">Give Comments</div>
+												</div>
+												<div class="col-md-3">
+													<div class="arrow">
+														<a href="javascript:void(0)" class="closebtn"
+															onclick="commentCloseNav1()"><i
+															class="ti-arrow-right"></i></a>
+													</div>
+												</div>
+
+
+												<div class="chartbtnsec1">
+													<div align="right">
+														<button class="btn4" onclick="commentCloseNav1()">CANCEL</button>
+														<button class="btn1" id="submitGenEnq">SAVE</button>
+													</div>
+												</div>
+												<input type="hidden" id="hidTicket">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Status</label> <input class="form-control"
+															type="text" readonly="readonly" value=""
+															id="ticketStatus">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." readonly="readonly"
+															id="lastcomment"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Last Date Updated</label> <input
+															class="form-control" type="text" readonly="readonly"
+															value="" id="lastDate">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Ageing</label> <input class="form-control"
+															type="text" readonly="readonly" value="" id="ageing">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Comments</label>
+														<textarea class="form-control textarea" rows="3"
+															placeholder="Enter ..." id="comments"></textarea>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Status</label>
+														<div class="select">
+															<select id="Status">
+																<option value="">--Select Status--</option>
+																<option th:each="c,iter:${statusList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- <End mySidenav  comment> -->
+									<div id="collapseFive" class="panel-collapse collapse"
+										role="tabpanel" aria-labelledby="headingFive">
+										<div class="row">
+
+											<div class="col-md-5 btn-hs1">
+												<div class="font-design"></div>
+											</div>
+										</div>
+										<!-- <start mySidenav  comment> -->
+										<div id="commentSidenav5" class="sidenav">
+											<div class="slidebox">
+												<div class="row">
+													<div class="col-md-9">
+														<div class="edit">Give Comments</div>
+													</div>
+													<div class="col-md-3">
+														<div class="arrow">
+															<a href="javascript:void(0)" class="closebtn"
+																onclick="commentCloseNav5()"><i
+																class="ti-arrow-right"></i></a>
+														</div>
+													</div>
+
+
+													<div class="chartbtnsec1">
+														<div align="right">
+															<button class="btn4" onclick="commentCloseNav5()">CANCEL</button>
+															<button class="btn1" id="submitMktgReq">SAVE</button>
+														</div>
+													</div>
+													<input type="hidden" id="hidTicketMktgReq">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Last Status</label> <input class="form-control"
+																type="text" readonly="readonly" value=""
+																id="ticketStatusMktgReq">
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Last Comments</label>
+															<textarea class="form-control textarea" rows="3"
+																placeholder="Enter ..." readonly="readonly"
+																id="lastcommentMktgReq"></textarea>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Last Date Updated</label> <input
+																class="form-control" type="text" readonly="readonly"
+																value="" id="lastDateMktgReq">
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Ageing</label> <input class="form-control"
+																type="text" readonly="readonly" value=""
+																id="ageingMktgReq">
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Comments</label>
+															<textarea class="form-control textarea" rows="3"
+																placeholder="Enter ..." id="commentsMktgReq"></textarea>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Status</label>
+															<div class="select">
+																<select id="StatusMktgReq">
+																	<option value="">--Select Status--</option>
+																	<option th:each="c,iter:${statusList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- <End mySidenav  comment> -->
+										<div id="myGridMktgReq" style="width: 100%; height: 100px;"
+											class="ag-theme-alpine"></div>
+
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- 	sidenave for Marketing Request End here -->
+					</div>
+
+					<!-- 	main div end here -->
+
+
+				</div>
+			</div>
+		</div>
+		<!---General Enquiry Modal Start-->
+		<div id="myModalGenEnq" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneGenEnq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameGenEnq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationGenEnq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueGenEnq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonGenEnq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeGenEnq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentGenEnq"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--General Enquiry Modal End-->
+
+
+		<!-- service request Modal Start-->
+		<div id="myModalSerReq" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 61%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonSerReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterSerReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentSerReq"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+		<!-- Service Request Modal End-->
+
+		<!-- Complaint  Modal Start-->
+		<div id="myModalComp" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 72%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneComp" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonComp" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeComp" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="servicecenterComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Complain Category</label> <input class="form-control"
+										type="text" id="complainCategoryComp" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Complaint Description</label>
+									<textarea class="form-control textarea"
+										id="complainDescriptionComp" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentComp"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Complaint  Modal End-->
+
+		<!--Sales  Modal Start-->
+		<div id="myModalSale" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 78%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+							<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneSale" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationSale" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonSale" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeSale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterSale" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Quantity</label> <input class="form-control" type="text"
+										id="quantitySale" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Sales Description</label>
+									<textarea class="form-control textarea"
+										id="salesDescriptionSale" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentSale"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<!-- Sales  Modal End-->
+		<!-- Marketing Request Modal Start-->
+		<div id="myModalMktgReq" class="modal fade" role="dialog">
+			<div class="modal-dialog"
+				style="margin: 30px auto; position: relative; top: 80%; transform: translateY(-50%) !important; width: 70%;">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Ticket Details</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<i class="ti-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- text input -->
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Phone</label> <input class="form-control"
+										type="text" id="phoneMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Name</label> <input class="form-control"
+										type="text" id="customerNameMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Customer Location</label> <input class="form-control"
+										type="text" id="customerLocationMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Queue</label> <input class="form-control"
+										type="text" id="callQueueMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Call Reason</label> <input class="form-control"
+										type="text" id="callReasonMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Product Type</label> <input class="form-control"
+										type="text" id="productTypeMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Service Center</label> <input class="form-control"
+										type="text" id="serviceCenterMktgReq" disabled="disabled"
+										value="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Quantity</label> <input class="form-control" type="text"
+										id="quantityMktgReq" disabled="disabled" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Marketing Description</label>
+									<textarea class="form-control textarea"
+										id="marketingDescriptionMktgReq" disabled="disabled"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Comment</label>
+									<textarea class="form-control textarea" id="commentMktgReq"
+										disabled="disabled"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--Marketing Request Modal End-->
+	</div>
+</body>
+</html>

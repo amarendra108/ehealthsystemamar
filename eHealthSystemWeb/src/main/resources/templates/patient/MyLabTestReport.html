@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">
+.highcharts-exporting-group {
+	display: none;
+}
+
+.slidebox {
+	padding: 14px;
+	margin-top: 0px;
+	margin: 0px 10px;
+}
+
+.btn1 {
+    border: none;
+    border-radius: 4px;
+    font-size: 9px;
+    background-color: #6dccb9;
+    color: #fff !important;
+    margin-left: 5px;
+    margin-bottom: 8px;
+    width: 117px !important;
+    height: 28px;
+    line-height: 12px;
+    float: right;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* .form-group label {
+	font-size: 12px;
+	position: relative;
+	top: 4px;
+} */
+.holdCls {
+	background-color: rgb(0, 143, 0);
+}
+
+.bg_white {
+	background: #ffffff !important;
+}
+</style>
+
+<script type="text/javascript">
+	function openNav() {
+		document.getElementById("mySidenav").style.cssText = "width: 290px; position: absolute; right:-30px; overflow: hidden; height:auto; top:280px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#shiftId").val('');
+		$("#empId").val('');
+		$("#remark").val('');
+	}
+
+	var count1 = 0;
+	function allCheck1() {
+		count1++;
+
+		if (count1 == 1) {
+			$('.checkCls1').prop("checked", true);
+		} else {
+			count1 = 0;
+			$('.checkCls1').prop("checked", false);
+		}
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+		if ($('#searchBar').val() == null || $('#searchBar').val() == "") {
+			id.style.display = "none";
+		}
+	}
+</script>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		activityOptions.api.setRowData();
+
+		// date format FROM date
+
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#fromDate').val($(this).val());
+		})
+
+		$('#fromDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+
+		$("#fromDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#fromDate').val($(this).val());
+		})
+
+		$('#fromDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+
+		//     date format TO date
+
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#toDate').val($(this).val());
+		})
+
+		$('#toDate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#toDate').val($(this).val());
+		})
+
+		$('#toDate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+
+		//changeOpt();
+
+		$("#statusDiv").hide();
+		$('#reqDltBtn').attr('disabled', true);
+		$('#reqCopyBtn').attr('disabled', true);
+		$('#reqAppvBtn').attr('disabled', true);
+
+		$('.collapse').on('show.bs.collapse', function() {
+			$(this).siblings('.panel-heading').addClass('active');
+		});
+
+		$('.collapse').on('hide.bs.collapse', function() {
+			$(this).siblings('.panel-heading').removeClass('active');
+		});
+		$("#newBtn").click(function() {
+			$("#myGrid").hide();
+			$("#reqTable").hide();
+			$(".btn-hs").hide();
+			$("#demo").show();
+		})
+
+		$("#cancelBtn").click(function() {
+			$("#reqTable").show();
+			$(".btn-hs").show();
+			$("#myGrid").show();
+			$("#demo").hide();
+			agGrid.simpleHttpRequest({
+				url : 'view-patient-consultation-view-employee'
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq').find('span').html(len);
+				gridOptions.api.setRowData(data);
+			});
+			$("#employeeId").val('');
+			$("#firstName").val('');
+			$("#departmantId").val('');
+			$("#sectionId").val('');
+			$("#scheduleId").val('');
+			$("#fromDate").val('');
+			$("#toDate").val('');
+			$("#shiftId").val('');
+			$("#empId").val('');
+			$("#remark").val('');
+			$("#rowEdit").val(null);
+		});
+
+	});
+</script>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		agGrid.simpleHttpRequest({
+			url : 'view-patient-consultation-view-employee'
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+
+			gridOptions.api.setRowData(data);
+		});
+	});
+
+	//master save data
+
+	function masterSaveData() {
+		/* if (validFormData() && validProductData()) { */
+		var datas = [];
+		var rowCount = activityOptions.api.getDisplayedRowCount();
+		
+		if(rowCount > 0){
+		
+		activityOptions.api.forEachNode(function(rowNode, index) {
+			
+			var item = rowNode.data;
+            
+			item.shiftScheduleId = $("#sId").text();
+			item.fromDate = $("#fromDate").val();
+			item.toDate = $("#toDate").val();
+			item.scheduleId = $("#scheduleId").val();
+			item.departmantId = $("#departmantId").val();
+			item.sectionId = $("#sectionId").val();
+			item.subComponentId = localStorage.getItem('activity');
+			datas.push(item);
+			
+		   });
+		}
+		else {
+			alert("else");
+			var item = {};
+			
+			item.shiftScheduleId = $("#sId").text();
+			item.fromDate = $("#fromDate").val();
+			item.toDate = $("#toDate").val();
+			item.scheduleId = $("#scheduleId").val();
+			item.departmantId = $("#departmantId").val();
+			item.sectionId = $("#sectionId").val();
+		
+			datas.push(item);
+		}
+		saveRequisition(datas);
+		console.log(datas);
+	}
+
+	function saveRequisition(datas) {
+		
+		console.log(datas)
+		$('.loader').show();
+		$("body").addClass("overlay");
+		$.ajax({
+			type : "POST",
+			url : "schedule-management-add-schedule-details",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				$('.loader').hide();
+				$("body").removeClass("overlay");
+				if (response.message == "Success") {
+					$("#messageParagraph").text("Data Saved Successfully");
+					$("#msgOkModal").removeClass("btn3");
+					$("#msgOkModal").addClass("btn1");
+					$("#msgModal").modal('show');
+					activityOptions.api.setRowData(response.body);
+					console.log(datas);
+				} else {
+					$('.loader').hide();
+					$("body").removeClass("overlay");
+				}
+			},
+			error : function(data) {
+				$('.loader').hide();
+				$("body").removeClass("overlay");
+			}
+		})  //ajax ends
+	}
+
+	$("#newBtn").click(function() {
+		$("#myGrid").hide();
+		$("#reqTable").hide();
+		$(".btn-hs").hide();
+		$("#demo").show();
+	})
+
+	var columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+			{
+				headerName : "LabsTest Id",
+				field : "shiftScheduleId",
+				cellRenderer : function(params) {
+					return '<a onclick=editShift("'
+							+ params.data.shiftScheduleId
+							+ '") href="javascript:void(0)">'
+							+ params.data.shiftScheduleId + '</a>';
+
+				}
+			}, {
+				headerName : "Patient Name",
+				field : "fromDate"
+			}, {
+				headerName : "Test Name",
+				field : "departmant"
+			}, {
+				headerName : "Date & Time",
+				field : "sectionId"
+			},  {
+				headerName : "Doctor Name",
+				field : "fromDate"
+			}, {
+				headerName : "Details",
+				field : "createdBy"
+			},{
+				headerName : "Status",
+				field : "schedule"
+			}, ];
+
+	// for activity table
+
+	var activityDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				sortable : false,
+				filter : false,
+				resizable : true,
+				width : 30
+			},
+			{
+				headerName : "Appointment ID",
+				field : "orderId",
+				width : 100,
+				cellRenderer : function(params) {
+					return '<a onclick=editRow("' + params.data.orderId
+							+ '") href="javascript:void(0)">'
+							+ params.data.orderId + '</a>';
+				}
+			}, {
+				headerName : "Date Time",
+				field : "shift"
+			}, {
+				headerName : "Status",
+				field : "shiftId",
+				hide : true
+			}, {
+				headerName : "Doctor Name",
+				field : "empName",
+				width : 300
+			}, {
+				headerName : "Employee Id",
+				field : "empId",
+				hide : true
+			}, {
+				headerName : "Specialty",
+				field : "remark",
+				width : 300
+			}, ];
+
+	// let the grid know which columns and what data to use
+	var gridOptions = {
+		columnDefs : columnDefs,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 153
+		},
+		onSelectionChanged : onSelectionChanged,
+	};
+
+	// let the grid know which columns and what data to use product table
+	var activityOptions = {
+		columnDefs : activityDefs,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 200
+		},
+		getRowNodeId : function(data) {
+			return data.orderId;
+		}
+	};
+
+	function onSelectionChanged() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#reqDltBtn').attr('disabled', false);
+		} else {
+			$('#reqDltBtn').attr('disabled', true);
+		}
+
+	}
+
+	// for editing child table of shift 
+	function editRow(rowNo) {
+		var rowNode = activityOptions.api.getRowNode(rowNo);
+
+		openNav();
+
+		$("#rowEdit").val(rowNo);
+		$("#shiftId").val(rowNode.data.shiftId);
+		$("#empId").val(rowNode.data.empId);
+		$("#remark").val(rowNode.data.remark);
+
+	}
+
+	//editing the employee shift details parent table
+
+	function editShift(shiftScheduleId) {
+		$("#myGrid").hide();
+		$("#reqTable").hide();
+		$(".btn-hs").hide();
+		$("#demo").show();
+		$('.loader').show();
+		$("body").addClass("overlay");
+		agGrid.simpleHttpRequest(
+				{
+					url : 'schedule-management-edit-employee-trough-ajax?id='+shiftScheduleId
+				}).then(function(data) {
+				
+			$("#sId").html(data[0].shiftScheduleId);
+			$("#fromDate").val(data[0].fromDate);
+			$("#toDate").val(data[0].toDate);
+			$("#scheduleId").val(data[0].scheduleId);
+			$("#departmantId").val(data[0].departmantId);
+			$("#sectionId").val(data[0].sectionId);
+	
+			if(data[0].shiftId != null){
+				activityOptions.api.setRowData(data);
+			}
+			
+			$('.loader').hide();
+			$("body").removeClass("overlay");
+		});
+		
+	}
+
+	// delete Schedule 
+
+	function deleteOnclick() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var selectedRowsString = '';
+		selectedRows.forEach(function(selectedRow, index) {
+			if (index > 0) {
+				selectedRowsString += ',';
+			}
+			selectedRowsString += selectedRow.shiftScheduleId;
+		});
+		if (selectedRowsString) {
+			var item = {};
+			item.shiftScheduleId = selectedRowsString;
+			$('.loader').show();
+			$("body").addClass("overlay");
+			$.ajax({
+				type : "POST",
+				url : "schedule-management-delete-th-ajax",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(item),
+				success : function(response) {
+					$('.loader').hide();
+					$('.modal').hide();
+					if (response.message == "Success") {
+						agGrid.simpleHttpRequest({
+							url : 'view-patient-consultation-view-employee'
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+							console.log(JSON.stringify(data))
+						});
+
+						$('.loader').hide();
+						$("body").addClass("overlay");
+					} else {
+						swal({
+							title : response.code,
+							text : response.message,
+							type : "warning"
+						})
+					}
+				},
+				error : function(data) {
+					console.log(data)
+				}
+			})
+		} else {
+			$("#alert").modal('show');
+			document.getElementById("textId").innerHTML = "Please Select Atleast one Record !";
+		}
+
+	}
+
+	// delete selected record from ag grid
+	function deleteDetailsOnclick() {
+		$('.modal').hide();
+		var selectedRows = activityOptions.api.getSelectedRows();
+		activityOptions.api.applyTransaction({
+			remove : selectedRows
+		});
+		cancelModalProductBtn();
+	}
+
+	//for closeing modal box for dlt  product
+	function cancelModalProductBtn() {
+		$("#deleteModalBtn").removeAttr("disabled");
+		$('#deleteDetails').modal('hide');
+	}
+
+	function deleteFun() {
+		$('#delete').modal('show');
+	}
+
+	function deleteDetails() {
+		$('#deleteDetails').modal('show');
+	}
+
+	function cancelModalBtn() {
+		$("#deleteModalBtn").removeAttr("disabled");
+	}
+
+	// save data in aggrid table sidenav save
+
+	function saveTableData() {
+		var item = {};
+		var valid = true;
+		var data = 1;
+		var rowEdit = $("#rowEdit").val();
+		/* var valid = validSideBarData(); */
+		if (true) {
+
+			activityOptions.api.forEachNode(function(rowNode, index) {
+				if (!rowEdit) {
+					data = data + 1;
+				}
+			});
+
+			item.shiftId = $("#shiftId").val();
+			item.shift = $("#shiftId").find('option:selected').text();
+			item.empId = $("#empId").val();
+			item.empName = $("#empId").find('option:selected').text();
+			item.remark = $("#remark").val();
+			item.orderId = data;
+			var datas = [];
+
+			if (rowEdit) {
+
+				var rowNode = activityOptions.api.getRowNode(rowEdit);
+				rowNode.setData(item);
+			} else {
+
+				activityOptions.api.forEachNode(function(rowNode, index) {
+					datas.push(rowNode.data);
+				});
+
+				datas.push(item)
+				activityOptions.api.setRowData(datas);
+			}
+
+			closeNav();
+			$("#shiftId").val('');
+			$("#empId").val('');
+			$("#remark").val('');
+			$("#rowEdit").val(null);
+		}
+	}
+
+	// setup the grid after the page has finished loading
+	document.addEventListener('DOMContentLoaded', function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		var gridDiv = document.querySelector('#activity');
+		new agGrid.Grid(gridDiv, activityOptions);
+
+	});
+
+	function switchPage() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var selectedRowsString = '';
+		selectedRows.forEach(function(selectedRow, index) {
+			if (index > 0) {
+				selectedRowsString += ',';
+			}
+			selectedRowsString += selectedRow.itemId;
+		});
+		$('.loader').show();
+		$("body").addClass("overlay");
+		$('.loader').hide();
+		$("body").removeClass("overlay");
+	}
+</script>
+
+</head>
+<body>
+
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<div class="row margin_topbot">
+							<div class="btn-hs">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="#"><span style="display: none" id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i">X</span></a><a href="#"><i
+											class="fa fa-search"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" id="reqTable">
+
+							<div class="col-md-6 btn-hs">
+								<div class="font-design" id="totalReq">
+									LABS TEST REPORT LIST
+								</div>
+							</div>
+							<div class="col-md-6 buttonsec btn-hs">
+
+								<button class="btn4">DOWNLOAD</button>
+								<button class="btn4">View</button>
+								<div class="buttongap"></div>
+								  
+							</div>
+
+						</div>
+
+						<div id="myGrid" style="width: 100%; height: 120px;"
+							class="ag-theme-alpine"></div>
+							
+					
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

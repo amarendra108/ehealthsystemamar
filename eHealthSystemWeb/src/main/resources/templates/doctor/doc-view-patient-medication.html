@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript">
+	/* 
+	 *
+	 Current Test details 
+	 *
+	 */
+	$(document).ready(function() {
+
+		var gridDivTest = document.querySelector('#myGridTest');
+		new agGrid.Grid(gridDivTest, gridOptionsTest);
+		agGrid.simpleHttpRequest({
+			url : "doctor-patient-medication-test-details"
+		}).then(function(data1) {
+			gridOptionsTest.api.setRowData(data1);
+		});
+
+	});
+
+	/* 
+	 *
+	 Current medicine details 
+	 *
+	 */
+	$(document).ready(function() {
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		agGrid.simpleHttpRequest({
+			url : "doctor-patient-medication-current"
+		}).then(function(data1) {
+			gridOptions1.api.setRowData(data1);
+		});
+
+	});
+
+	/* 
+	 *
+	 Doctor Prescribed medicine details 
+	 *
+	 */
+
+	$(document)
+			.ready(
+					function() {
+						$
+								.ajax({
+									type : "GET",
+									url : "doctor-patient-medication-view-doctor-details",
+									success : function(response) {
+										if (response.message == "Success") {
+											var dataset6 = [];
+											dataset6 = response.body;
+											for (var i = 0; i < dataset6.length; i++) {
+												var accData = "";
+												accData = '<div class="panel panel-default">'
+														+ '<div class="panel-heading" role="tab" id="heading_'+i+'">'
+														+ '<h1 class="panel-title">'
+														+ '<a class="collapsed mainSecond" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'
+														+ dataset6[i].doctor
+														+ '  '
+														+ dataset6[i].priscriptionDate
+														+ '</a></h1>'
+														+ '</div>'
+														+ '<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">'
+														+ '<div class="row" id="main_acc">'
+														+ '<div class="col-md-12">'
+														+ '<div id="myGrid_'
+														+ i
+														+ '" style="width: 100%; height: 200px;" class="ag-theme-alpine"></div>'
+														+ '</div>'
+														+ '</div>'
+														+ '</div>' + '</div>';
+
+												$("#accDataDiv").empty();
+												$("#accDataDiv").after(accData);
+												aggridCall(
+														JSON
+																.stringify(dataset6[i].prescriptionList),
+														i)
+											}
+										}
+
+									}
+
+								});
+					});
+
+	$(document).ready(function() {
+		
+		var dateFormat = localStorage.getItem("dateFormat");
+
+		//dosage Date
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			minDate : 0,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#toDate').val($(this).val());
+		})
+
+		$('#toDate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+
+		//dosage Date
+		$("#fromDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			minDate : 0,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#fromDate').val($(this).val());
+		})
+
+		$('#fromDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+	});
+
+	function aggridCall(list, i) {
+		var columnDefs = [ {
+			headerCheckboxSelection : true,
+			headerCheckboxSelectionFilteredOnly : true,
+			checkboxSelection : true,
+			width : 10,
+			sortable : false,
+			filter : false,
+			resizable : true
+		}, {
+			headerName : " Name",
+			field : "medicineName",
+			width : 175
+		}, {
+			headerName : "Type",
+			field : "medType",
+			width : 175
+		}, {
+			headerName : "Dosage",
+			field : "dosage",
+			width : 175
+		}, {
+			headerName : "Morning",
+			field : "morning",
+			width : 150
+		}, {
+			headerName : "AfterNoon",
+			field : "afterNoon",
+			width : 150
+		}, {
+			headerName : "Evening",
+			field : "evening",
+			width : 150
+		}, {
+			headerName : "Remarks",
+			field : "prescrRemark",
+			width : 150
+		},
+
+		];
+		eval("var gridOptions"
+				+ i
+				+ "= { columnDefs : columnDefs, defaultColDef : { sortable : true, filter : true, resizable : true, width : 700.5, height : 10 },  rowSelection : 'multiple', suppressRowClickSelection : true, };");
+		var n = "gridOptions" + i;
+		var newGrid = "gridOptions" + i;
+		newGrid = eval("gridOptions" + i);
+		var gridDiv = document.querySelector('#myGrid_' + i);
+		new agGrid.Grid(gridDiv, newGrid);
+		newGrid.api.setRowData(JSON.parse(list));
+
+	}
+	/* 
+	 *
+	Current medicine details 
+	 *
+	 */
+
+	var columnDefs1 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : " Name",
+		field : "medicineName",
+
+	}, {
+		headerName : "medType",
+		field : "medType",
+
+	}, {
+		headerName : "Dosage",
+		field : "dosage",
+
+	}, {
+		headerName : "Morning",
+		field : "morning",
+
+	}, {
+		headerName : "AfterNoon",
+		field : "afterNoon",
+
+	}, {
+		headerName : "Evening",
+		field : "evening",
+
+	}, {
+		headerName : "Doctor",
+		field : "doctor",
+	}
+
+	];
+	var gridOptions1 = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 168,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		supressRowClickSelection : true,
+	};
+
+	/* 
+	 *
+	Current medicine open close nav 
+	 *
+	 */
+
+	function openNav() {
+		$("#newBtn").attr("disabled", true);
+		$("#medId").val("");
+		$("#medName").val("");
+		$("#medType").val("");
+		$("#dosage").val("");
+		$("#toDate").val("");
+		$("#fromDate").val("");
+		$("#morning").val("");
+		$("#afternoon").val("");
+		$("#evening").val("");
+		$("#remarks").val("");
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;top: 107px;";
+		document.getElementById("main_content").style.width = "72%";
+	}
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+
+	/* 
+	 *
+	Current medicine open close nav 
+	 *
+	 */
+
+	function openNavTest() {
+		$("#deleteBttnTest").attr("disabled", true);
+		$("#newBtnTest").attr("disabled", true);
+		$("#tesrId").val("");
+		$("#testName").val("");
+		$("#testType").val("");
+		$("#testRemarks").val("");
+		document.getElementById("mySidenavTest").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;top: 397px;";
+		document.getElementById("main_content").style.width = "72%";
+	}
+
+	function closeNavTest() {
+		$("#deleteBttnTest").attr("disabled", false);
+		$("#newBtnTest").attr("disabled", false);
+		document.getElementById("mySidenavTest").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+
+	/* 
+	 *
+	All Patient Details
+	 *
+	 */
+
+	var columnDefsPatient = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 5,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : " UHealthNo",
+		field : "eHealthNo",
+
+	}, {
+		headerName : "PatientName",
+		field : "patientName",
+
+	}, {
+		headerName : "Address",
+		field : "address",
+
+	}, {
+		headerName : "Mobile No.",
+		field : "mobNo",
+
+	}
+
+	];
+	var gridOptionsPatient = {
+		columnDefs : columnDefsPatient,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 700.5,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		supressRowClickSelection : true,
+
+	};
+
+	/* 
+	 *
+	Current Test details 
+	 *
+	 */
+
+	var columnDefsTest = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : "Test Name",
+		field : "testName",
+	}, {
+		headerName : "Test Group",
+		field : "testGroup",
+	}, {
+		headerName : "Test date",
+		field : "testDate",
+	}, {
+		headerName : "Remarks",
+		field : "testRemarks",
+	}, {
+		headerName : "testDoctor",
+		field : "doctorId",
+	} ];
+
+	var gridOptionsTest = {
+		columnDefs : columnDefsTest,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 235,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		supressRowClickSelection : true,
+	};
+
+	$(document).ready(function() {
+		var userRole = $("#userRole").val();
+		if (userRole[1] == 2) {
+			$("#newBtn").show();
+			$("#deleteBttn").show();
+
+			$("#newBtnTest").show();
+			$("#deleteBttnTest").show();
+		} else {
+			$("#deleteBttn").hide();
+			$("#newBtn").hide();
+
+			$("#deleteBttnTest").hide();
+			$("#newBtnTest").hide();
+		}
+
+		var gridDivPatient = document.querySelector('#myGridPatient');
+		new agGrid.Grid(gridDivPatient, gridOptionsPatient);
+
+		agGrid.simpleHttpRequest({
+			url : "doctor-patient-medication-Details"
+		}).then(function(data) {
+			gridOptionsPatient.api.setRowData(data);
+		});
+
+	});
+	var columnDefsPatient = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : " eHealthNo",
+		field : "eHealthNo",
+		width : 292
+	}, {
+		headerName : "PatientName",
+		field : "patientName",
+		width : 292
+	}, {
+		headerName : "Address",
+		field : "address",
+		width : 292
+	}, {
+		headerName : "Mobile No.",
+		field : "mobNo",
+		width : 292
+	}
+
+	];
+
+	var gridOptionsPatient = {
+		columnDefs : columnDefsPatient,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		supressRowClickSelection : true,
+
+	};
+	//Get Medicine List
+
+	function getMedcineList() {
+		var search = $("#medName").val();
+		if (search == "") {
+			$("#suggesstion-box1_").hide();
+			$("#medId").val("");
+		}
+
+		if (search) {
+			$
+					.ajax({
+						type : "POST",
+						url : "doctor-patient-medication-Details",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutocompleteValue1(\''
+												+ response.body[i].medId
+												+ '\',\''
+												+ response.body[i].medicineName
+												+ '\')">'
+												+ response.body[i].medicineName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list1">';
+									content += '<div onClick="selectAutocompleteValue()">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+
+	function selectAutocompleteValue1(medId, medicineName) {
+		if (medId) {
+
+			$("#medId").val(medId);
+			$("#medName").val(medicineName);
+			$("#search").val(medicineName);
+			$("#search").attr('data-procat', medId);
+			$("#suggesstion-box1_").hide();
+
+		} else {
+			$("#medId").val("");
+			$("#medName").val("");
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box1_").hide();
+
+		}
+	}
+
+	function selectAutocompleteValue() {
+
+		$("#medId").val("");
+		$("#medName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+
+	}
+
+	/* 
+	 *Get Test List(Auto search)
+	 */
+	function getTestNameList() {
+		var search = $("#testName").val();
+		if (search == "") {
+			$("#suggesstion-box2_").hide();
+			$("#testName").val("");
+			$("#testGroup").val("");
+		}
+
+		if (search) {
+			$
+					.ajax({
+						type : "POST",
+						url : "doctor-patient-medication-test-autosearch",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list2" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutocompleteValueTest1(\''
+												+ response.body[i].testGroup
+												+ '\',\''
+												+ response.body[i].testName
+												+ '\',\''
+												+ response.body[i].concatTest
+												+ '\')">'
+												+ response.body[i].concatTest
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box2_").show();
+									$("#suggesstion-box2_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list2">';
+									content += '<div onClick="selectAutocompleteValueTest()">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box2_").show();
+									$("#suggesstion-box2_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+
+	function selectAutocompleteValueTest1(testGroup, testName, concatTest) {
+		if (concatTest) {
+			$("#testConcat").val(testName);
+			$("#testGroup").val(testGroup);
+			$("#testName").val(concatTest);
+			$("#search").val(concatTest);
+			$("#search").attr('data-procat', concatTest);
+			$("#suggesstion-box2_").hide();
+
+		} else {
+			$("#testConcat").val("");
+			$("#testName").val("");
+			$("#testGroup").val("");
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box2_").hide();
+
+		}
+	}
+
+	function selectAutocompleteValueTest() {
+
+		$("#medId").val("");
+		$("#medName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box2_").hide();
+
+	}
+	//testName  testConcat testGroup
+
+	var obj = {};
+	function addMedication() {
+
+		obj = {};
+		obj.medId = $("#medId").val();
+		obj.medicineName = $("#medName").val();
+		obj.medType = $("#medType").val();
+		obj.fromDate = $("#fromDate").val();
+		obj.toDate = $("#toDate").val();
+		obj.morning = $("#morning").val();
+		obj.afterNoon = $("#afternoon").val();
+		obj.evening = $("#evening").val();
+		obj.remarks = $("#remarks").val();
+
+		var validation = true;
+
+		if (obj.medName == null || obj.medName == "") {
+			validation = validationUpdated("Medicine Name Required", "medName");
+		}
+
+		if (obj.morning == null || obj.morning == "") {
+			validation = validationUpdated("Dosage Details Required", "morning");
+		}
+		if (obj.afternoon == null || obj.afternoon == "") {
+			validation = validationUpdated("Dosage Details Required",
+					"afternoon");
+		}
+		if (obj.evening == null || obj.evening == "") {
+
+			validation = validationUpdated("Dosage Details Required", "evening");
+		}
+
+		if (validation) {
+			$
+					.ajax({
+						type : "POST",
+						url : "doctor-patient-medication-addDetails",
+						contentType : "application/json",
+						data : JSON.stringify(obj),
+						success : function(response) {
+							if (response.message == "Success") {
+								closeNav();
+								$("#mySidenav").hide();
+								$("#newBtn").attr("disabled", false);
+								agGrid.simpleHttpRequest(
+												{
+													url : "doctor-patient-medication-current"
+												}).then(function(data1) {
+											gridOptions1.api.setRowData(data1);
+										});
+
+							}
+						},
+						error : function(data) {
+						}
+					})
+		}
+	}
+
+	//Add Test Name And Test Group
+
+	var obj = {};
+	function addTestDetails() {
+		obj = {};
+		obj.testName = $("#testConcat").val();
+		obj.testGroup = $("#testGroup").val();
+		obj.testRemarks = $("#testRemarks").val();
+		var validation = true;
+
+		if (obj.testGroup == null || obj.testGroup == "") {
+			validation = validationUpdated("Test Group Required", "testGroup");
+		}
+
+		if (validation) {
+			$
+					.ajax({
+						type : "POST",
+						url : "doctor-patient-medication-addTestDetails",
+						contentType : "application/json",
+						data : JSON.stringify(obj),
+						success : function(response) {
+							if (response.message == "Success") {
+								closeNav();
+								$("#newBtnTest").attr("disabled", false);
+								$("#mySidenavTest").hide();
+								agGrid.simpleHttpRequest({
+									url : "doctor-patient-medication-test-details"
+								}).then(function(data1) {
+									gridOptionsTest.api.setRowData(data1);
+								});
+
+							}
+						},
+						error : function(data) {
+						}
+					})
+		}
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					
+						<input type="hidden" id="userRole"
+							th:value="${session.USER_ROLES}">
+						<div class="maincontentsec">
+							<div class="panel-heading active" role="tab" id="headingOne">
+								<div class="font-design">MEDICATION</div>
+							</div>
+							<div id="main_content">
+								<div class="wrapper center-block">
+									<div class="panel-group prevclassacc" id="accordion"
+										role="tablist" aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingone">
+												<h1 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion" href="#collapseone"
+														aria-expanded="true" aria-controls="collapseone">
+														Current Medicine </a>
+												</h1>
+											</div>
+											<div id="collapseone" class="panel-collapse collapse "
+												role="tabpanel" aria-labelledby="headingone">
+												<div class="row">
+													<div class="col-md-12">
+														<!-- <button class="btn3" data-toggle="modal"
+															data-target="#delete" id="deleteBttn">DELETE</button> -->
+														<button class="btn1" id="newBtn" onclick="openNav()">NEW</button>
+													</div>
+													<div class="col-md-12">
+														<div id="myGrid1" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+
+													</div>
+													<div class="col-md-12">
+														<!-- <button class="btn3" data-toggle="modal"
+															data-target="#delete" id="deleteBttnTest">DELETE</button> -->
+														<button class="btn2" id="newBtnTest"
+															onclick="openNavTest()">NEW</button>
+													</div>
+													<div class="col-md-12">
+
+														<!-- Grid for test details -->
+														<div id="myGridTest" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div id="mySidenav" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+
+												<div class="chartbtnsec">
+													<div align="right">
+														<button class="btn4" onclick="closeNav()">CANCEL</button>
+														<button class="btn1" id="addMedication"
+															onclick="addMedication()">SAVE</button>
+
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Medicine Name</label><input type="hidden"
+															id="medId"> <input type="text" id="medName"
+															class="form-control" onkeyup='getMedcineList()'
+															placeholder="Enter Some Characters Of Medicine ..."
+															autocomplete="off">
+														<div id="suggesstion-box1_" class="sugg-cls"></div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+
+														<label>Type</label>
+														<div class="select">
+															<select class="form-control countryclss" id="medType">
+																<option value="">-Select-</option>
+																<option th:each="c,iter:${medTypeList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Dosage days</label> 
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<div class="form-group">
+													<label>from</label>
+														 <input type="text"
+															id="fromDate" autocomplete="off" class="form-control"
+															onblur="removeValid(event)"
+															th:attr="onkeyup=|formatDate('fromDate','${session.DATEFORMAT_JS}')|">
+														<i class="ti-calendar picker_calendar"
+															id="fromDateCalendar"></i>
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>To</label> <input type="text" id="toDate"
+															autocomplete="off" class="form-control"
+															onblur="removeValid(event)"
+															th:attr="onkeyup=|formatDate('toDate','${session.DATEFORMAT_JS}')|">
+														<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+													</div>
+												</div>
+
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Morning</label><input type="text" id="morning"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Afternoon</label> <input type="text" id="afternoon"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Evening</label><input type="text" id="evening"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Remarks</label>
+														<textarea id="remarks" class="form-control"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 
+									Side nav for  test
+									 -->
+									<div id="mySidenavTest" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+
+												<div class="chartbtnsec">
+													<div align="right">
+														<button class="btn4" onclick="closeNavTest()">CANCEL</button>
+														<button class="btn1" id="addTestDetails"
+															onclick="addTestDetails()">SAVE</button>
+
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<input type="hidden" id="testConcat"> <label>Test
+															Name</label> <input type="text" id="testName"
+															class="form-control" onkeyup='getTestNameList()'
+															placeholder="Enter Atleast 3 Character Of Medicine ..."
+															autocomplete="off">
+														<div id="suggesstion-box2_" class="sugg-cls"></div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+
+														<label>Group</label> <input type="text" id="testGroup"
+															class="form-control" readOnly>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Remarks</label>
+														<textarea id="testRemarks" class="form-control"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!--doctor details -->
+									<div id="accDataDiv">
+										<div id="#myGrid" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+									</div>
+									<!-- doctor details -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+ 
+<head>
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+  min-width: 310px; 
+  max-width: 800px;
+  margin: 1em auto;
+}
+
+#container {
+  height: 400px;
+}
+
+.highcharts-data-table table {
+  font-family: 'HelveticaNeue';
+  font-weight: 100;
+  border-collapse: collapse;
+  border: 1px solid #EBEBEB;
+  margin: 10px auto;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+.highcharts-data-table caption {
+  padding: 1em 0;
+  font-size: 1.2em;
+  color: #555;
+}
+.highcharts-data-table th {
+  font-weight: 600;
+  padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+  padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+  background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+  background: #f1f7ff;
+}
+
+
+.btnDisable
+{
+  color: #ccc!important;
+}
+
+
+.jdpicker_w .date_selector .month_nav {
+    float: left;
+    width: 56%;
+}
+.jdpicker_w .date_selector .month_nav, .jdpicker_w .date_selector .year_nav {
+    margin: 0 0 3px 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    text-align: center;
+}
+.jdpicker_w .date_selector * {
+    width: auto;
+    height: auto;
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    font-size: 12px;
+}
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0px;
+    padding: 0px;
+}
+* {
+    /* font-size: 1em; */
+    margin: 0;
+    outline: medium none;
+    padding: 0;
+    text-decoration: none;
+}
+user agent stylesheet
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+user agent stylesheet
+table {
+    border-collapse: separate;
+    text-indent: initial;
+    border-spacing: 2px;
+}
+.box-dr-lab-top-pharm {
+    border: 1px #dedede solid;
+    margin: 13px 0 0 0;
+    background: #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #666;
+    height: 361px;
+    box-shadow: 0 0 1px #888888;
+}
+</style>
+
+<script type="text/javascript">
+
+ 
+	function myMedicineList(){
+	
+	$('#myModal').modal('show');
+}
+	
+  $(document).ready(
+          function() {
+            
+           
+            $("#barChartInv1").addClass("btnDisable");
+            $("#barChartInv2").addClass("btnDisable");
+            $("#pobarChartInv").addClass("btnDisable");
+          
+            
+           
+  Highcharts.chart('Hiring', {
+  chart: {
+    type: 'bar'
+  },
+  exporting: { enabled: false },
+  title: {
+    text: ''
+  },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    categories: ['Social Media', 'Job Boards', 'Website', 'Referal'],
+    title: {
+      text: null
+    }
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '',
+      align: 'high'
+    },
+    labels: {
+      overflow: 'justify'
+    }
+  },
+  tooltip: {
+    valueSuffix: ' millions'
+  },
+  plotOptions: {
+    bar: {
+      dataLabels: {
+        enabled: true
+      }
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'top',
+    x: -40,
+    y: 80,
+    floating: true,
+    borderWidth: 1,
+    backgroundColor:
+      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    shadow: true
+  },
+  credits: {
+    enabled: false
+  },
+  series: [ {
+    name: 'Shortlisted',
+    color:'#a2d5fd',
+     data: [516, 701, 536, 338]
+  },  {
+    name: 'Interviewed',
+    color:'#ffb3ba',
+    data: [133, 156, 347, 308]
+  },
+  {
+    name: 'Offered',
+    color:'#9cfdb1',
+    data: [20, 30, 25, 48]
+  },
+  {
+    name: 'Rejected',
+    color:'#ffdfba',
+    data: [60, 76, 47, 18]
+  } ]
+});
+
+
+
+
+Highcharts.chart(
+                    'Appdepartment',
+                    {
+                      chart : {
+                        backgroundColor: '#FFFFFF',
+                        type : 'column'
+                      },
+                      exporting: { enabled: false },
+                      title : {
+                        text : ''
+                      },
+                      subtitle : {
+                        text : ''
+                      },
+                      xAxis : {
+                        categories : [ 'Dep1', 'Dep2',
+                            'Dep3', 'Dep4', 'Dep5',
+                            'Dep6', 'Dep7', 'Dep8',
+                            'Dep9', 'Dep10', 'Dep11',
+                            'Dep12' ],
+                        crosshair : true
+                      },
+                      yAxis : {
+                        min : 0,
+                        title : {
+                          text : 'Application'
+                        }
+                      },
+                      tooltip : {
+                        headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+                            + '<td style="padding:0"><b>{point.y:.1f} unit</b></td></tr>',
+                        footerFormat : '</table>',
+                        shared : true,
+                        useHTML : true
+                      },
+                      plotOptions : {
+                        column : {
+                          pointPadding : 0.2,
+                          borderWidth : 0
+                        }
+                      },
+                      series : [
+                          {
+                            name : 'Received',
+                            color:'#89d6c6',
+                            data : [ 69, 71, 10,
+                                130, 114, 160,
+                                155, 72, 126,
+                                104, 92, 44 ]
+                          }]
+                         
+                	});
+
+
+      Highcharts.chart('paichart', {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      },
+      exporting: { enabled: false },
+      title: {
+        text: ''
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+          }
+        }
+      },
+      series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+          name: 'Finance',
+          color:'#d5d5d6',
+          y: 20.41,
+          sliced: true,
+          selected: true
+        }, {
+          name: 'Purchase',
+          color:'#9cfdb1',
+          y: 19.84
+        }, {
+          name: 'Sales',
+          color:'#d281fc',
+          y: 18.85
+        }, {
+          name: 'IT',
+          color:'#dafb95',
+          y: 14.67
+        }, {
+          name: 'Marketing',
+          color:'#fca2a2',
+          y: 16.18
+        }, {
+          name: 'Admin',
+          color:'#ffc8cb',
+          y: 10.64
+        }, {
+          name: 'Customer Service',
+          color:'#a2d5fd',
+          y: 5.6
+        }, {
+          name: 'Customer Support',
+          color:'#fdfa9c',
+          y: 8.2
+        }, {
+          name: 'Other',
+          color:'#acd5c0',
+          y: 2.61
+        }]
+      }]
+    });
+
+      $(document).ready(function() {
+
+    	    $('#invTableDiv1').hide();
+    	    $("#barChartInv1").click(function() {
+    	      $("#invTableDiv1").hide();
+    	      $("#invChartDiv1").show();
+    	      $("#barChartInv1").addClass("btnDisable");
+    	      $("#tableInv1").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv1").click(function() {
+    	      $("#invTableDiv1").show();
+    	      $("#invChartDiv1").hide();
+    	      $("#barChartInv1").removeClass("btnDisable");
+    	      $("#tableInv1").addClass("btnDisable");
+    	    })
+
+    	    $('#invTableDiv2').hide();
+    	    $("#barChartInv2").click(function() {
+    	      $("#invTableDiv2").hide();
+    	      $("#invChartDiv2").show();
+    	      $("#barChartInv2").addClass("btnDisable");
+    	      $("#tableInv2").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv2").click(function() {
+    	      $("#invTableDiv2").show();
+    	      $("#invChartDiv2").hide();
+    	      $("#barChartInv2").removeClass("btnDisable");
+    	      $("#tableInv2").addClass("btnDisable");
+    	    })
+    	    $('#poinvTableDiv').hide();
+    	    $("#pobarChartInv").click(function() {
+    	      $("#poinvTableDiv").hide();
+    	      $("#poinvChartDiv").show();
+    	      $("#pobarChartInv").addClass("btnDisable");
+    	      $("#potableInv").removeClass("btnDisable");
+    	    })
+    	    $("#potableInv").click(function() {
+    	      $("#poinvTableDiv").show();
+    	      $("#poinvChartDiv").hide();
+    	      $("#pobarChartInv").removeClass("btnDisable");
+    	      $("#potableInv").addClass("btnDisable");
+    	    })
+    	  })
+          })
+</script>
+
+</head>
+<body>
+<div layout:fragment="content" class="maincontent">
+    <!-- Main content -->
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="maincontentsec">
+          <div class="content_padding">
+          
+            <div class="dashboard_heading_new">
+              <div class="row">
+                <div class="col-md-4">
+                <span>Today's Appointment :1</span>  
+                <span>             Pending Requests :1</span>    
+                </div> 
+              </div>
+            </div>
+
+<div class="row">
+              <div class="col-md-8 margin_topbot20">
+                <div class="dashboard_box">
+                  <div class="dashboard_subheading">
+                    Schedule 
+                    <div class="float-right">
+                      <a href="#"><i class="ti-bar-chart"></i></a> <a href="#"><i
+                        class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <table class="table table-responsive table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Date Time</th>
+                            <th>Patient Name</th>
+                            <th>eHealthCard No</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+
+                         <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                         <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                       <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                          <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                         <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                           <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          
+                         <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                           <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                            <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          
+                          <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                           <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                          
+                         <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                           <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                          
+                        <tr>
+                            <td align="center">27-01-21 12:20PM</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123435345</td>
+                            <td align="center">
+	                            <span onclick="myMedicineList()">Requested</span>
+							</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4 margin_topbot20">
+                <div class="dashboard_box">
+                  <div class="dashboard_subheading">
+                    Inventory
+                    <div class="float-right">
+                      <a href="javascript:void(0)" id="barChartInv"><i
+                        class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+                        id="tableInv"><i class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+ <div class="box-dr-lab-top-pharm">
+                        <div class="box-heading">
+                            <table width="100%" border="0" cellspacing="9" cellpadding="0">
+                                <thead align="left">
+                                    <tr>
+                                        <th align="left">
+                                            <label class="left_label">Monthly Overview </label>
+                                        </th>
+                                        <th align="right">
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            <thead align="center">
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <br>
+                                            <input type="hidden" name="demo123" id="demo123" value="">
+                                            <div class="jdpicker_w"><input type="hidden" id="get" name="your_input_2" class="jdpicker" onchange="changedate(this.id);"><div class="date_selector" style="display:block; position:static; margin:0 auto"><div class="nav"><div class="error_msg"></div><p class="month_nav"><span class="button prev" title="[Page-Up]">«</span> <span class="month_name">July</span> <span class="button next" title="[Page-Down]">»</span></p><p class="year_nav"><span class="button prev" title="[Ctrl+Page-Up]">«</span> <span class="year_name" id="year_name">2021</span> <span class="button next" title="[Ctrl+Page-Down]">»</span></p></div><table><thead><tr><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th><th>S</th></tr></thead><tbody><tr><td class="unselected_month" date="2021/06/28">28</td><td class="unselected_month" date="2021/06/29">29</td><td class="unselected_month" date="2021/06/30">30</td> <td class="selectable_day double1" onclick="selDate(1,7,2021);" date="2021/07/01">1</td><td class="selectable_day double2" onclick="selDate(1,7,2021);" date="2021/07/01">1</td> <td class="selectable_day double1" onclick="selDate(2,7,2021);" date="2021/07/02">2</td><td class="selectable_day double2" onclick="selDate(2,7,2021);" date="2021/07/02">2</td> <td class="selectable_day double1" onclick="selDate(3,7,2021);" date="2021/07/03">3</td><td class="selectable_day double2" onclick="selDate(3,7,2021);" date="2021/07/03">3</td> <td class="selectable_day double1" onclick="selDate(4,7,2021);" date="2021/07/04">4</td><td class="selectable_day double2" onclick="selDate(4,7,2021);" date="2021/07/04">4</td></tr><tr> <td class="selectable_day double1" onclick="selDate(5,7,2021);" date="2021/07/05">5</td><td class="selectable_day double2" onclick="selDate(5,7,2021);" date="2021/07/05">5</td> <td class="selectable_day double1" onclick="selDate(6,7,2021);" date="2021/07/06">6</td><td class="selectable_day double2" onclick="selDate(6,7,2021);" date="2021/07/06">6</td> <td class="selectable_day double1" onclick="selDate(7,7,2021);" date="2021/07/07">7</td><td class="selectable_day double2" onclick="selDate(7,7,2021);" date="2021/07/07">7</td> <td class="selectable_day double1" onclick="selDate(8,7,2021);" date="2021/07/08">8</td><td class="selectable_day double2" onclick="selDate(8,7,2021);" date="2021/07/08">8</td> <td class="selectable_day double1" onclick="selDate(9,7,2021);" date="2021/07/09">9</td><td class="selectable_day double2" onclick="selDate(9,7,2021);" date="2021/07/09">9</td> <td class="selectable_day double1" onclick="selDate(10,7,2021);" date="2021/07/10">10</td><td class="selectable_day double2" onclick="selDate(10,7,2021);" date="2021/07/10">10</td> <td class="selectable_day double1" onclick="selDate(11,7,2021);" date="2021/07/11">11</td><td class="selectable_day double2" onclick="selDate(11,7,2021);" date="2021/07/11">11</td></tr><tr> <td class="selectable_day_a double1" onclick="selDate(12,7,2021);" date="2021/07/12">12</td><td class="selectable_day_a double2" onclick="selDate(12,7,2021);" date="2021/07/12">12</td> <td class="selectable_day double1" onclick="selDate(13,7,2021);" date="2021/07/13">13</td><td class="selectable_day double2" onclick="selDate(13,7,2021);" date="2021/07/13">13</td> <td class="selectable_day double1" onclick="selDate(14,7,2021);" date="2021/07/14">14</td><td class="selectable_day double2" onclick="selDate(14,7,2021);" date="2021/07/14">14</td> <td class="selectable_day double1" onclick="selDate(15,7,2021);" date="2021/07/15">15</td><td class="selectable_day double2" onclick="selDate(15,7,2021);" date="2021/07/15">15</td> <td class="selectable_day double1" onclick="selDate(16,7,2021);" date="2021/07/16">16</td><td class="selectable_day double2" onclick="selDate(16,7,2021);" date="2021/07/16">16</td> <td class="selectable_day double1" onclick="selDate(17,7,2021);" date="2021/07/17">17</td><td class="selectable_day double2" onclick="selDate(17,7,2021);" date="2021/07/17">17</td> <td class="selectable_day double1" onclick="selDate(18,7,2021);" date="2021/07/18">18</td><td class="selectable_day double2" onclick="selDate(18,7,2021);" date="2021/07/18">18</td></tr><tr> <td class="selectable_day double1 today" onclick="selDate(19,7,2021);" date="2021/07/19">19</td><td class="selectable_day double2 today" onclick="selDate(19,7,2021);" date="2021/07/19">19</td> <td class="selectable_day double1" onclick="selDate(20,7,2021);" date="2021/07/20">20</td><td class="selectable_day double2" onclick="selDate(20,7,2021);" date="2021/07/20">20</td> <td class="selectable_day double1" onclick="selDate(21,7,2021);" date="2021/07/21">21</td><td class="selectable_day double2" onclick="selDate(21,7,2021);" date="2021/07/21">21</td> <td class="selectable_day double1" onclick="selDate(22,7,2021);" date="2021/07/22">22</td><td class="selectable_day double2" onclick="selDate(22,7,2021);" date="2021/07/22">22</td> <td class="selectable_day double1" onclick="selDate(23,7,2021);" date="2021/07/23">23</td><td class="selectable_day double2" onclick="selDate(23,7,2021);" date="2021/07/23">23</td> <td class="selectable_day double1" onclick="selDate(24,7,2021);" date="2021/07/24">24</td><td class="selectable_day double2" onclick="selDate(24,7,2021);" date="2021/07/24">24</td> <td class="selectable_day double1" onclick="selDate(25,7,2021);" date="2021/07/25">25</td><td class="selectable_day double2" onclick="selDate(25,7,2021);" date="2021/07/25">25</td></tr><tr> <td class="selectable_day double1" onclick="selDate(26,7,2021);" date="2021/07/26">26</td><td class="selectable_day double2" onclick="selDate(26,7,2021);" date="2021/07/26">26</td> <td class="selectable_day double1" onclick="selDate(27,7,2021);" date="2021/07/27">27</td><td class="selectable_day double2" onclick="selDate(27,7,2021);" date="2021/07/27">27</td> <td class="selectable_day double1" onclick="selDate(28,7,2021);" date="2021/07/28">28</td><td class="selectable_day double2" onclick="selDate(28,7,2021);" date="2021/07/28">28</td> <td class="selectable_day double1" onclick="selDate(29,7,2021);" date="2021/07/29">29</td><td class="selectable_day double2" onclick="selDate(29,7,2021);" date="2021/07/29">29</td> <td class="selectable_day double1" onclick="selDate(30,7,2021);" date="2021/07/30">30</td><td class="selectable_day double2" onclick="selDate(30,7,2021);" date="2021/07/30">30</td> <td class="selectable_day double1" onclick="selDate(31,7,2021);" date="2021/07/31">31</td><td class="selectable_day double2" onclick="selDate(31,7,2021);" date="2021/07/31">31</td><td class="unselected_month" date="2021/08/01">1</td></tr></tbody></table></div></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <div class="green_babel_dr">
+                                            <img src="/Content/Dynamic/Dimages/green.jpg">&nbsp; Done
+                                        </div>
+
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <div class="yellow_babel_dr">
+                                            <img src="/Content/Dynamic/Dimages/yellow.jpg">&nbsp; Pending
+                                        </div>
+                                    </th>
+                                </tr>
+
+                        </thead></table>
+
+                    </div>
+                  
+                </div>
+              </div>
+
+
+         
+            </div>
+
+
+            <div class="clearfix"></div>
+
+
+           
+          </div>
+          
+           <!-- Modal Start-->
+					<div class="modal fade" id="myModal">
+						<div class="modal-dialog modal-lg"
+							style="margin-top: 130px; height: 900px;">
+							<div class="modal-content">
+
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title md-color">View Medicine List</h4>
+									<button type="button" class="close cp" data-dismiss="modal">&times;</button>
+								</div>
+								
+										<div>
+										<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th width="150">Name</th>
+        <th>Type</th>
+        <th>Dosage</th>
+        <th>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="th-text">Morning</div>
+            </div>
+            <div class="col-md-4">
+              <div class="th-text">Afternoon</div>
+            </div>
+            <div class="col-md-4">
+              <div class="th-text">Evening</div>
+            </div>
+          </div>
+        </th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center;"class="tb-uprcs" > <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">COMLAMINA</td>
+        <td style="text-align: center;">Tablet</td>
+        <td style="text-align: center;">5 Days</td>
+        <td>
+          <div class="row">
+            <div class="col-md-4" align="center">
+              <span class="badge badge-pill badge-info bdg-pd">1</span>
+            </div>
+            <div class="col-md-4" align="center">
+              <span class="badge badge-pill badge-info bdg-pd">0</span>
+            </div>
+            <div class="col-md-4" align="center">
+              <span class="badge badge-pill badge-info bdg-pd">1</span>
+            </div>
+          </div>
+        </td>
+        <td style="text-align: center;">10</td>
+      </tr>
+     
+    </tbody>
+    </table>
+										</div>
+
+								<!-- Modal body -->
+								<div class="modal-body">
+ 
+							 
+									<div class="col-md-12" id="paymentDetails"> 
+										<div class="row">
+										
+										
+											
+											 <div class="col-lg-6">
+												<div class="form-group" id="bankNamediv">
+													<label>Address</label> 
+													<textarea rows="" cols="">
+													Address for Patient's Home to delivery Ordered medicine
+													</textarea>
+												</div> 
+											</div>
+											
+											<div class="col-lg-6">
+												<div class="form-group" id="bankNamediv">
+													<label>Notes</label> 
+													<textarea rows="" cols="">
+													Address for Patient's Home to delivery Ordered medicine
+													</textarea>
+												</div> 
+											</div>
+												
+												<div class="form-group">
+												
+													
+													<button type="button" id="submitPayment" class="btn1"
+													onclick="addDetailsPayment();">Reject</button>
+													
+													<button type="button" id="submitPayment" class="btn2"
+													onclick="addDetailsPayment();">Confirm</button>
+
+												<!-- <button id="cancelpay" class="btn4" onclick="cancel()">CANCEL</button> -->
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Modal footer -->
+								<div class="modal-footer">
+									<div class="chartbtnsec">
+
+										<!-- <button class="btn4" data-dismiss="modal">CANCEL</button> -->
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- Modal End-->
+
+        </div>
+  </div>
+</div>
+  </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    //alert("s")
+  
+</script>
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+
+
+
+</body>
+</html>

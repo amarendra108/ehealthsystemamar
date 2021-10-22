@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+ 
+<head>
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+  min-width: 310px; 
+  max-width: 800px;
+  margin: 1em auto;
+}
+
+#container {
+  height: 400px;
+}
+
+.highcharts-data-table table {
+  font-family: 'HelveticaNeue';
+  font-weight: 100;
+  border-collapse: collapse;
+  border: 1px solid #EBEBEB;
+  margin: 10px auto;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+.highcharts-data-table caption {
+  padding: 1em 0;
+  font-size: 1.2em;
+  color: #555;
+}
+.highcharts-data-table th {
+  font-weight: 600;
+  padding: 0.5em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+  padding: 0.5em;
+}
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+  background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+  background: #f1f7ff;
+}
+
+
+.btnDisable
+{
+  color: #ccc!important;
+}
+</style>
+
+<script type="text/javascript">
+  $(document).ready(
+          function() {
+            
+           
+            $("#barChartInv1").addClass("btnDisable");
+            $("#barChartInv2").addClass("btnDisable");
+            $("#pobarChartInv").addClass("btnDisable");
+          
+            
+           
+  Highcharts.chart('Hiring', {
+  chart: {
+    type: 'bar'
+  },
+  exporting: { enabled: false },
+  title: {
+    text: ''
+  },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    categories: ['Social Media', 'Job Boards', 'Website', 'Referal'],
+    title: {
+      text: null
+    }
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '',
+      align: 'high'
+    },
+    labels: {
+      overflow: 'justify'
+    }
+  },
+  tooltip: {
+    valueSuffix: ' millions'
+  },
+  plotOptions: {
+    bar: {
+      dataLabels: {
+        enabled: true
+      }
+    }
+  },
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'top',
+    x: -40,
+    y: 80,
+    floating: true,
+    borderWidth: 1,
+    backgroundColor:
+      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    shadow: true
+  },
+  credits: {
+    enabled: false
+  },
+  series: [ {
+    name: 'Shortlisted',
+    color:'#a2d5fd',
+     data: [516, 701, 536, 338]
+  },  {
+    name: 'Interviewed',
+    color:'#ffb3ba',
+    data: [133, 156, 347, 308]
+  },
+  {
+    name: 'Offered',
+    color:'#9cfdb1',
+    data: [20, 30, 25, 48]
+  },
+  {
+    name: 'Rejected',
+    color:'#ffdfba',
+    data: [60, 76, 47, 18]
+  } ]
+});
+
+  /* Highcharts
+  .chart(
+      'Department',
+      {
+        chart : {
+          backgroundColor: '#FFFFFF',
+       type: 'pie'
+        },
+         exporting: { enabled: false },
+        title : {
+          text : ''
+        },
+        subtitle : {
+          text : ''
+        },
+        xAxis : {
+          categories : [ 'Account', 'Admin',
+              'Purchase', 'Customer Service', 'Customer Support',
+              'R&D', 'Marketing', 'IT',
+              'Sales', 'Finannce' ],
+          crosshair : true
+        },
+        yAxis : {
+          min : 0,
+          title : {
+            text : 'Requisition'
+          }
+        },
+        tooltip : {
+          headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+          pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+              + '<td style="padding:0"><b>{point.y:.1f} unit</b></td></tr>',
+          footerFormat : '</table>',
+          shared : true,
+          useHTML : true
+        },
+        plotOptions : {
+          column : {
+            pointPadding : 0.2,
+            borderWidth : 0
+          }
+        },
+        series : [
+            {
+              name : 'Level One',
+              color:'#ffdfba',
+              data : [ 49, 71, 106,
+                  129, 144, 56,
+                  135, 148, 136,
+                  194 ]
+
+            },
+            {
+              name : 'Level Two',
+              color:'#a2d5fd',
+              data : [ 83, 78, 98,
+                  93, 106, 84,
+                  105, 104, 91,
+                  83  ]
+
+            },
+            {
+              name : 'Level Three',
+              color:'#9cfdb1',
+              data : [ 48, 38, 39,
+                  41, 47, 48, 59,
+                  59, 52, 65]
+
+            } ]
+      }); */
+
+
+
+Highcharts.chart(
+                    'Appdepartment',
+                    {
+                      chart : {
+                        backgroundColor: '#FFFFFF',
+                        type : 'column'
+                      },
+                      exporting: { enabled: false },
+                      title : {
+                        text : ''
+                      },
+                      subtitle : {
+                        text : ''
+                      },
+                      xAxis : {
+                        categories : [ 'Dep1', 'Dep2',
+                            'Dep3', 'Dep4', 'Dep5',
+                            'Dep6', 'Dep7', 'Dep8',
+                            'Dep9', 'Dep10', 'Dep11',
+                            'Dep12' ],
+                        crosshair : true
+                      },
+                      yAxis : {
+                        min : 0,
+                        title : {
+                          text : 'Application'
+                        }
+                      },
+                      tooltip : {
+                        headerFormat : '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat : '<tr><td style="color:{series.color};padding:0">{series.name}: </td>'
+                            + '<td style="padding:0"><b>{point.y:.1f} unit</b></td></tr>',
+                        footerFormat : '</table>',
+                        shared : true,
+                        useHTML : true
+                      },
+                      plotOptions : {
+                        column : {
+                          pointPadding : 0.2,
+                          borderWidth : 0
+                        }
+                      },
+                      series : [
+                          {
+                            name : 'Received',
+                            color:'#89d6c6',
+                            data : [ 69, 71, 10,
+                                130, 114, 160,
+                                155, 72, 126,
+                                104, 92, 44 ]
+                          }]
+                         
+                	});
+
+         
+
+
+  
+ 
+
+
+      Highcharts.chart('paichart', {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      },
+      exporting: { enabled: false },
+      title: {
+        text: ''
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+          }
+        }
+      },
+      series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+          name: 'Finance',
+          color:'#d5d5d6',
+          y: 20.41,
+          sliced: true,
+          selected: true
+        }, {
+          name: 'Purchase',
+          color:'#9cfdb1',
+          y: 19.84
+        }, {
+          name: 'Sales',
+          color:'#d281fc',
+          y: 18.85
+        }, {
+          name: 'IT',
+          color:'#dafb95',
+          y: 14.67
+        }, {
+          name: 'Marketing',
+          color:'#fca2a2',
+          y: 16.18
+        }, {
+          name: 'Admin',
+          color:'#ffc8cb',
+          y: 10.64
+        }, {
+          name: 'Customer Service',
+          color:'#a2d5fd',
+          y: 5.6
+        }, {
+          name: 'Customer Support',
+          color:'#fdfa9c',
+          y: 8.2
+        }, {
+          name: 'Other',
+          color:'#acd5c0',
+          y: 2.61
+        }]
+      }]
+    });
+  
+
+
+      $(document).ready(function() {
+    	    /* $('#invTableDiv').hide();
+    	    $("#barChartInv").click(function() {
+    	      $("#invTableDiv").hide();
+    	      $("#invChartDiv").show();
+    	      $("#barChartInv").addClass("btnDisable");
+    	      $("#tableInv").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv").click(function() {
+    	      $("#invTableDiv").show();
+    	      $("#invChartDiv").hide();
+    	      $("#barChartInv").removeClass("btnDisable");
+    	      $("#tableInv").addClass("btnDisable");
+    	    }) */
+
+    	    $('#invTableDiv1').hide();
+    	    $("#barChartInv1").click(function() {
+    	      $("#invTableDiv1").hide();
+    	      $("#invChartDiv1").show();
+    	      $("#barChartInv1").addClass("btnDisable");
+    	      $("#tableInv1").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv1").click(function() {
+    	      $("#invTableDiv1").show();
+    	      $("#invChartDiv1").hide();
+    	      $("#barChartInv1").removeClass("btnDisable");
+    	      $("#tableInv1").addClass("btnDisable");
+    	    })
+
+    	    $('#invTableDiv2').hide();
+    	    $("#barChartInv2").click(function() {
+    	      $("#invTableDiv2").hide();
+    	      $("#invChartDiv2").show();
+    	      $("#barChartInv2").addClass("btnDisable");
+    	      $("#tableInv2").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv2").click(function() {
+    	      $("#invTableDiv2").show();
+    	      $("#invChartDiv2").hide();
+    	      $("#barChartInv2").removeClass("btnDisable");
+    	      $("#tableInv2").addClass("btnDisable");
+    	    })
+    	    $('#poinvTableDiv').hide();
+    	    $("#pobarChartInv").click(function() {
+    	      $("#poinvTableDiv").hide();
+    	      $("#poinvChartDiv").show();
+    	      $("#pobarChartInv").addClass("btnDisable");
+    	      $("#potableInv").removeClass("btnDisable");
+    	    })
+    	    $("#potableInv").click(function() {
+    	      $("#poinvTableDiv").show();
+    	      $("#poinvChartDiv").hide();
+    	      $("#pobarChartInv").removeClass("btnDisable");
+    	      $("#potableInv").addClass("btnDisable");
+    	    })
+    	  })
+          })
+</script>
+
+</head>
+<body>
+<div layout:fragment="content" class="maincontent">
+    <!-- Main content -->
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="maincontentsec">
+          <div class="content_padding">
+
+            <div class="dashboard_heading">
+              <div class="row">
+                <div class="col-md-4">
+                  Matrics until 04-Mar-2021
+                </div>
+                 <div class="col-md-4">
+                  <div class="buttongap"></div>
+                  <div class="buttongap"></div>
+                  <button class="btn4">Hire Cost</button>
+                  
+                  <button class="btn4">Interview</button>
+                 
+                  <button class="btn2">Positions</button>
+                  
+                </div>
+                <div class="col-md-4">
+                  <div class="row">
+                  <div class="col-md-6">
+                  <div>Select Period</div>
+                  </div>
+                  <div class="col-md-6">
+                  <div class="select">
+                    <select>
+                      <option>Feb 2021</option>
+                      <option>Jan 2021</option>
+                      <option>Dec 2020</option>
+                      <option>Nov 2020</option>
+                      <option>Oct 2020</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">
+                  <div>Level / Band</div>
+                  <div class="select">
+                    <select>
+                      <option>Level One</option>
+                      <option>Level Two</option>
+                      <option>Level Three</option>
+                    </select>
+                </div>
+                </div>
+                 <div class="col-md-2">
+                  <div>City</div>
+                  <div class="select">
+                    <select>
+                      <option>Bhubaneswar</option>
+                      <option>Cuttack</option>
+                      <option>Sambalpur</option>
+                      <option>Puri</option>
+                      <option>Jajpur</option>
+                    </select>
+                </div> 
+                </div>
+                <div class="col-md-2">
+                  <div>Recruiter</div>
+                  <div class="select">
+                    <select>
+                      <option>Pinaki Data</option>
+                      <option>Arnab Desai</option>
+                      <option>Aman Kumar</option>
+                     
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-2">
+                  <div>Type</div>
+                  <div class="select">
+                    <select>
+                      <option>SDE 1</option>
+                      <option>SDE 2</option>
+                      <option>PE 1</option>
+                      
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-2">
+                  <div>Location</div>
+                  <div class="select">
+                    <select>
+                      <option>Bhubaneswar</option>
+                      <option>Puri</option>
+                     <!--  <option>Dec 2020</option>
+                      <option>Nov 2020</option>
+                      <option>Oct 2020</option> -->
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-2">
+                  <div>Designation</div>
+                  <div class="select">
+                    <select>
+                      <option>Developer</option>
+                      <option>Seniour Designer</option>
+                      <option>Dec 2020</option>
+                      <option>Nov 2020</option>
+                      <option>Oct 2020</option>
+                    </select>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              
+              <div class="col-md-2">
+                <div class="box_yellow">
+                  <div class="inner-box-number">4,000</div>
+                  <div class="inner-box-text">Total Applicants TD</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="box_pink">
+                  <div class="inner-box-number">2,000</div>
+                  <div class="inner-box-text">Shortlisted TD</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="box_brown">
+                  <div class="inner-box-number">200</div>
+                  <div class="inner-box-text">Hired TD</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="box_green">
+                  <div class="inner-box-number">500</div>
+                  <div class="inner-box-text">Rejected TD</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="box_deepblue">
+                  <div class="inner-box-number">400</div>
+                  <div class="inner-box-text">Positions TD</div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="box_blue">
+                  <div class="inner-box-number">$ 170</div>
+                  <div class="inner-box-text">Cost To Hire TD</div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-6 margin_topbot20">
+                <div class="dashboard_box">
+                
+                
+                  <div class="dashboard_subheading">
+                    Requisition By Department  
+                    <div class="float-right">
+                      <a href="javascript:void(0)" id="barChartInv2"><i
+                        class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+                        id="tableInv2"><i class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  
+                 
+                 <div id="invChartDiv2">
+                  <div class="highcharts-figure">
+                    <div id="paichart" style="height:400px;"></div>
+                  </div>
+			  </div>				
+                  
+                 
+
+                   <div id="invTableDiv2">
+                    <table class="table table-responsive table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Req ID</th>
+                          <th>Title</th>
+                          <th>Department</th>
+                          <th>Applicants</th>
+                          <th>Shortlist</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>REQ00001</td>
+                          <td>Finance</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>REQ00002</td>
+                          <td>Linkedin</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Offered</td>
+                        </tr>
+                       <tr>
+                          <td>REQ00003</td>
+                          <td>Timesjob</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>REQ00004</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                        <tr>
+                          <td>REQ00005</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>REQ00006</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                         <tr>
+                          <td>REQ00007</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                         <tr>
+                          <td>REQ00008</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                         <tr>
+                          <td>REQ00009</td>
+                          <td>Indeed</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-6 margin_topbot20">
+                <div class="dashboard_box">
+                
+                
+                  <div class="dashboard_subheading">
+                    Application Recived By Source
+                    <div class="float-right">
+                      <a href="javascript:void(0)" id="barChartInv1"><i
+                        class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+                        id="tableInv1"><i class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+                  
+                  
+
+                  <div class="highcharts-figure" id="invChartDiv1">
+                    <div id="Hiring" style="height:400px;"></div>
+                  </div>
+
+                  <div class="row" id="invTableDiv1">
+                    <div class="col-lg-12">
+                     <table class="table table-responsive table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Vendor ID</th>
+                          <th>Vendor Name</th>
+                          <th>Location</th>
+                          <th>No. Of Candidate</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>VENDOR00001</td>
+                          <td>Monster</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>VENDOR00002</td>
+                          <td>Linkedin</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Offered</td>
+                        </tr>
+                       <tr>
+                          <td>VENDOR00003</td>
+                          <td>Timesjob</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>VENDOR00004</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                        <tr>
+                          <td>VENDOR00005</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                        <tr>
+                          <td>VENDOR00006</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                         <tr>
+                          <td>VENDOR00007</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                         <tr>
+                          <td>VENDOR00008</td>
+                          <td>Naukri</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Shortlisted</td>
+                        </tr>
+                         <tr>
+                          <td>VENDOR00009</td>
+                          <td>Indeed</td>
+                          <td>bhubaneswar</td>
+                          <td align="right">5</td>
+                          <td align="right">Requisition</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+          <!--   </div>
+
+            <div class="row"> -->
+              
+              <div class="col-md-6 margin_topbot20">
+                <div class="dashboard_box">
+                  <div class="dashboard_subheading">
+                    Application Recived By Department
+                    <div class="float-right">
+                      <a href="javascript:void(0)" id="pobarChartInv"><i
+                        class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+                        id="potableInv"><i class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+                  <div class="highcharts-figure" id="poinvChartDiv">
+                    <div id="Appdepartment" style="height:390px;"></div>
+                  </div>
+                  
+                  
+                  <div id="poinvTableDiv">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <table class="table table-responsive table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Requisition Id</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Priority</th>
+                            <th>Received Date</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>REQ0000001</td>
+                            <td>Test Req</td>
+                            <td>Direct</td>
+                            <td align="center">Immediate</td>
+                            <td align="center">27-01-21</td>
+                            <td align="center">Active</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">General</td>
+                            <td align="center">29-01-21</td>
+                            <td align="center">Inactive</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                  
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="dashboard_box graybox">
+                        <div class="inner-box-number">300</div>
+                        <div class="inner-box-text">Immidiate</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="dashboard_box graybox">
+                        <div class="inner-box-number">200</div>
+                        <div class="inner-box-text">General</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="dashboard_box graybox">
+                        <div class="inner-box-number">374</div>
+                        <div class="inner-box-text">High</div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 margin_topbot20">
+                <div class="dashboard_box">
+                  <div class="dashboard_subheading">
+                    Pending Invoices
+                    <div class="float-right">
+                      <a href="#"><i class="ti-bar-chart"></i></a> <a href="#"><i
+                        class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <table class="table table-responsive table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Vendor Name</th>
+                            <th>Bill Number</th>
+                            <th>Base Amount</th>
+                            <th>Amount Paid</th>
+                            <th>State</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                          <tr>
+                            <td align="center">27-01-21</td>
+                            <td>Sagar Agency</td>
+                            <td>ED123</td>
+                            <td align="Right">$ 2,000</td>
+                            <td align="Right">$ 1,000</td>
+                            <td align="center">Odisha</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 margin_topbot20">
+                <div class="dashboard_box">
+                  <div class="dashboard_subheading">
+                    Inventory
+                    <div class="float-right">
+                      <a href="javascript:void(0)" id="barChartInv"><i
+                        class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+                        id="tableInv"><i class="ti-layout-grid3"></i></a>
+                    </div>
+                  </div>
+
+                  <div class="highcharts-figure" id="invChartDiv">
+                    <div id="inventory" style="height: 440px;"></div>
+                  </div>
+                  <div class="row" id="invTableDiv">
+                    <div class="col-md-12">
+                      <table class="table table-responsive table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Product</th>
+                            <th>Warehouse</th>
+                            <th>UOM</th>
+                            <th>On Order</th>
+                            <th>On Hand</th>
+                            <th>On Transit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>REQ0000002</td>
+                            <td>Test2 Req</td>
+                            <td>Direct</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+
+                          <tr>
+                            <td>Electronics</td>
+                            <td>Laptop</td>
+                            <td>Main</td>
+                            <td align="center">50</td>
+                            <td align="center">30</td>
+                            <td align="center">20</td>
+                            <td align="center">20</td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+         
+            </div>
+          </div>
+
+        </div>
+  </div>
+</div>
+  </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    //alert("s")
+  
+</script>
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<title>Extend</title>
+<style>
+.btnDisable {
+	color: #ccc !important;
+}
+</style>
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+</style>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+
+						<div class="row">
+							<div class="col-md-2" >
+							<a th:href="${'/audit/audit-dashboard-link?id='+ auditTypeList[0].key+'&name='+auditTypeList[0].name}">
+								<div class="box_yellow">
+									<div class="inner-box-number">26</div>
+										<div class="inner-box-text" 
+										th:value='${auditTypeList[0].key}'>
+										Statutory Audit</div>
+								</div>
+								</a>
+							</div>
+							<div class="col-md-2">
+							<a th:href="${'/audit/audit-dashboard-link?id='+ auditTypeList[1].key+'&name='+auditTypeList[1].name}">
+								<div class="box_pink">
+									<div class="inner-box-number">31</div>
+									<div class="inner-box-text">Internal Audit</div>
+								</div>
+								</a>
+							</div>
+							<div class="col-md-2">
+							<a th:href="${'/audit/audit-dashboard-link-supplementary?id='+ auditTypeList[2].key+'&name='+auditTypeList[2].name}">
+								<div class="box_green">
+									<div class="inner-box-number">19</div>
+									<div class="inner-box-text">C & AG File</div>
+								</div>
+								</a>
+							</div>
+							<div class="col-md-2">
+							<a th:href="${'/audit/audit-dashboard-link?id='+ auditTypeList[3].key+'&name='+auditTypeList[3].name}">
+								<div class="box_blue">
+									<div class="inner-box-number">0</div>
+									<div class="inner-box-text">Any Other</div>
+								</div>
+								</a>
+							</div>
+							<div class="col-md-2">
+								<div class="box_brown">
+									<div class="inner-box-number">76</div>
+									<div class="inner-box-text">In Progress</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="box_green">
+									<div class="inner-box-number">0</div>
+									<div class="inner-box-text">Today's Case</div>
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

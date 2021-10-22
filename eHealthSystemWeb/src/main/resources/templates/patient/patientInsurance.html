@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+<title>Extend</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+
+//Document Ready For Page load
+$(document).ready(function() {
+	
+var dateFormat = localStorage.getItem("dateFormat");
+$("#fromDateCalendar").datetimepicker({
+	format : 'Y-m-d',
+	closeOnDateSelect : true,
+	timepicker : false,
+}).on("change", function() {
+	$('#policyStartDate').val($(this).val());
+})
+
+$('#policyStartDate').blur(function() {
+	$("#fromDateCalendar").val($(this).val());
+})
+
+	$("#fromDateCalendar1").datetimepicker({
+	format : 'Y-m-d',
+	closeOnDateSelect : true,
+	timepicker : false,
+}).on("change", function() {
+	$('#policyEndDate').val($(this).val());
+})
+
+$('#policyEndDate').blur(function() {
+	$("#fromDateCalendar1").val($(this).val());
+})
+
+	$("#fromDateCalendar2").datetimepicker({
+	format : 'Y-m-d',
+	closeOnDateSelect : true,
+	timepicker : false,
+}).on("change", function() {
+	$('#premiumDueDate').val($(this).val());
+})
+
+$('#premiumDueDate').blur(function() {
+	$("#fromDateCalendar2").val($(this).val());
+})
+});
+$(document).ready(function() {
+	$("#add").show();
+	$("#tab11").hide();
+	$("#edit").hide();
+	$("#deletes").hide();
+	$("#add").hide();
+	var gridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+});
+/* Function For Save
+
+ */
+
+function addDetails(){
+	 var obj ={};
+	 	obj.insuranceId = $("#insuranceId").val();
+		 obj.insuranceCompany = $("#insuranceCompany").val();		
+		 obj.insuranceType = $("#insuranceType").val();	
+		 obj.healthInsuranceType = $("#healthInsuranceType").val();	
+		 obj.thirdPartyAdmin = $("#thirdPartyAdmin").val();	
+		 obj.policyNo = $("#policyNo").val();	
+		 obj.premiumAmount = $("#premiumAmount").val();	
+		 obj.policyStartDate = $("#policyStartDate").val();	
+		 obj.policyEndDate = $("#policyEndDate").val();	
+		 obj.totalInsuranceAmount = $("#totalInsuranceAmount").val();	
+		 obj.sumAssuredAmount = $("#sumAssuredAmount").val();	
+		 obj.premiumDueDate = $("#premiumDueDate").val();	
+		 
+			console.log(obj)
+			 var validation = true;
+		
+			if(obj.insuranceCompany==null || obj.insuranceCompany==""){
+				validation=validationUpdated("Insurance Company Required","insuranceCompany");
+			}
+			if(obj.insuranceType==null || obj.insuranceType==""){
+				validation=validationUpdated("Insurance Type Required","insuranceType");
+			}
+			if(obj.healthInsuranceType==null || obj.healthInsuranceType==""){
+				validation=validationUpdated("Health Insurance Type Required","healthInsuranceType");
+			}
+			if(obj.thirdPartyAdmin==null || obj.thirdPartyAdmin==""){
+				validation=validationUpdated("Third Party Admin Required","thirdPartyAdmin");
+			}
+			if(obj.policyNo==null || obj.policyNo==""){
+				validation=validationUpdated("Policy No Required","policyNo");
+			}
+			if(obj.premiumAmount==null || obj.premiumAmount==""){
+				validation=validationUpdated("Premium Amount Required","premiumAmount");
+			}
+			
+			if(obj.policyStartDate==null || obj.policyStartDate==""){
+				validation=validationUpdated("Policy Start Date Required","policyStartDate");
+			}
+			if(obj.policyEndDate==null || obj.policyEndDate==""){
+				validation=validationUpdated("Policy End Date Required","policyEndDate");
+			}
+			if(obj.totalInsuranceAmount==null || obj.totalInsuranceAmount==""){
+				validation=validationUpdated("Total Insurance Amount Required","totalInsuranceAmount");
+			}
+			if(obj.sumAssuredAmount==null || obj.sumAssuredAmount==""){
+				validation=validationUpdated("Sum Assuered Amount Required","sumAssuredAmount");
+			}
+			
+			if(obj.premiumDueDate==null || obj.premiumDueDate==""){
+				validation=validationUpdated("Premium Due Date Required","premiumDueDate");
+			}
+			
+			
+			if(validation){			
+			$.ajax({				
+			type : "POST",
+			url : "view-patient-insurance-add",
+			contentType : "application/json",
+			data : JSON.stringify(obj),
+			success : function(response){
+			console.log(response);
+			if(response.message == "Success"){
+				console.log(response.message);
+			$("#myGrid").show();
+			$("#tab11").hide();
+			$("#deletes").hide();
+			$("#add").hide();
+			$("#add1").show();
+			 agGrid.simpleHttpRequest({
+					url : "view-patient-insurance-through-ajax"
+				}).then(function(data) {
+					var len = data.length;
+					$('#totalCandidate').find('span').html(len);
+					gridOptions2.api.setRowData(data);
+				}); 
+			}
+			},error : function(data){
+			console.log(data);
+			}
+			})
+			} 	 
+	}
+function add(){
+	$("#tab11").show();
+	$("#deletes").show();
+	$("#add").show();
+	$("#myGrid").hide();
+	$("#add1").hide();
+}
+function editInsurance(id) {
+	
+	$("#add").show();
+	$("#myGrid").hide();
+	$("#tab11").show();
+	$("#submit").show();
+	$("#demo").show();
+	$("#deletes").show();
+	$("#add1").hide();
+	agGrid.simpleHttpRequest({
+		url : 'view-patient-insurance-edit?id=' + id
+	}).then(
+			function(data) {
+				console.log(id)
+				$("#insuranceId").val(data[0].insuranceId);
+				$("#insuranceCompany").val(data[0].insuranceCompany);
+				$("#insuranceType").val(data[0].insuranceType)
+				$("#healthInsuranceType").val(data[0].healthInsuranceType);
+				$("#thirdPartyAdmin").val(data[0].thirdPartyAdmin);
+				$("#policyNo").val(data[0].policyNo);
+				$("#premiumAmount").val(data[0].premiumAmount);
+				$("#policyStartDate").val(data[0].policyStartDate);
+				$("#policyEndDate").val(data[0].policyEndDate);
+				$("#totalInsuranceAmount").val(data[0].totalInsuranceAmount);
+				$("#sumAssuredAmount").val(data[0].sumAssuredAmount);
+				$("#premiumDueDate").val(data[0].premiumDueDate);
+			});
+
+} 
+
+
+
+
+$(document).ready(function() {
+	var gridDiv2 = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv2, gridOptions2);
+	
+	 agGrid.simpleHttpRequest({
+			url : "view-patient-insurance-through-ajax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalCandidate').find('span').html(len);
+			gridOptions2.api.setRowData(data);
+		}); 
+	 
+	 
+});
+
+
+
+
+var columnDefs2 = [
+	{
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},
+	{
+		headerName : "Insurance ID",
+		field : "insuranceId",
+		cellRenderer : function(params) {
+			return '<a  onclick=editInsurance("' + params.data.insuranceId
+					+ '") href="javascript:void(0)">'
+					+ params.data.insuranceId + '</a>';
+		}
+	}, {
+		headerName : "Insurance Company",
+		field : "insuranceCompany"
+	},  {
+		headerName : 'Health Insurance Type',
+		field : "healthInsuranceType"
+	}, {
+		headerName : "Total Insurance Amount",
+		field : "totalInsuranceAmount"
+	}, {
+		headerName : 'Sum Assured Amount',
+		field : "sumAssuredAmount",
+		hide : true
+	}, {
+		headerName : "Premium Due Date",
+		field : "premiumDueDate"
+	},];
+
+var gridOptions2 = {
+	columnDefs : columnDefs2,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 300,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	suppressRowClickSelection : true,	
+
+};
+
+
+function cancelEmp(){
+	$("#tab11").hide();
+	$("#myGrid").show();
+	$("#add1").show();
+	$("#add").hide();
+	$("#deletes").hide();
+}	
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="maincontentsec">
+						
+						
+							<div class="row">
+								<div class="col-md-5 buttonsec btn-hs"></div>
+								<div class="col-md-7 buttonsec btn-hs">
+									<button id="add" class="btn1" onclick="addDetails()">SAVE</button>
+									<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+									<button id="add1" class="btn1" onclick="add()">NEW</button>
+								</div>
+							</div>
+							<div>
+<div class="row">
+
+										<div class="col-md-6  btn-hs">
+											<div class="font-design" id="totalEmp">MY INSURANCE</div>
+										</div>
+									</div>
+								<div id="tab11">
+									
+									<div class="row" id="addData">									
+								<input type="hidden" id="insuranceId">
+									
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Insurance Company</label> <input type="text" name="pets" value=""
+													placeholder="Insurance Company" class="form-control" id="insuranceCompany">
+											</div>
+										</div>
+										<div class="col-md-6">
+									<div class="form-group">
+										<label>Insurance Type</label> <input type="text"
+											id="insuranceType" placeholder="Insurance Type"
+											class="form-control">
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Health Insurance Type</label> <input type="text"
+											id="healthInsuranceType" placeholder="Health Insurance Type"
+											class="form-control">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Third Party Administrator</label> <input type="text"
+											id="thirdPartyAdmin" placeholder="Third Party Administrator"
+											class="form-control">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Policy No</label> <input type="text" id="policyNo"
+											placeholder="Policy No" class="form-control">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Premium Amount</label> <input type="text"
+											id="premiumAmount" placeholder="Premium Amount"
+											class="form-control">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Policy Start Date</label> <input type="text"
+											id="policyStartDate" class="form-control" placeholder="Policy Start Date"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('policyStartDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar"></i>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Policy End Date</label> <input type="text"
+											id="policyEndDate" class="form-control" placeholder="Policy End Date"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('policyEndDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar1"></i>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Total Insurance Amount</label> <input type="text"
+											id="totalInsuranceAmount"
+											placeholder="Total Insurance Amount" class="form-control">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Sum Assured Amount</label> <input type="text"
+											id="sumAssuredAmount" placeholder="Sum Assured Amount"
+											class="form-control">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Premium Due Date</label> <input type="text"
+											id="premiumDueDate" class="form-control" placeholder="Premium Due Date"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('premiumDueDate','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar2"></i>
+									</div>
+								</div>						
+							
+									</div>
+								</div>
+								<div id="myGrid" style="width: 100%; height: 500px;"
+							class="ag-theme-alpine"></div>
+							</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

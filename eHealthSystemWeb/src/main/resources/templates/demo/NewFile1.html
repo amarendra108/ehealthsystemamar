@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style>
+.modal-body table td input[type=checkbox] {
+    width: 0px;
+    margin-right: 16px;
+    position: relative;
+    top: 0px;
+     float: none; 
+}
+
+.firstnode {
+	color: #929292;
+	border-top: 1px solid transparent !important;
+	border-left: 1px solid transparent !important;
+	border-bottom: 1px solid transparent !important;
+	width: 320px;
+	font-size: 12px;
+    font-weight: 100;
+}
+
+.simple-tree-table-closed .simple-tree-table-icon:after {
+	content: "\f105" !important;
+	font-family: 'FontAwesome';
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+	transform: rotate(90deg);
+}
+
+.simple-tree-table-opened .simple-tree-table-icon:after {
+	content: "\f105" !important;
+	font-family: 'FontAwesome';
+	color: black;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.simple-tree-table-icon {
+	display: inline-block;
+	width: 1.5em;
+	line-height: 1.5em;
+	margin: 0.1em;
+	background-color: transparent;
+	text-align: center;
+	cursor: pointer;
+}
+</style>
+<script type="text/javascript" charset="utf-8">
+
+$(document).ready(function(){
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		$("#cancel").hide();
+		$("#save").hide();
+		$("#demo").hide();
+		$('#delete').attr("disabled", true); 
+		
+
+		agGrid.simpleHttpRequest({
+			url : "asset-code-view"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+		
+		//date	 
+		 var dateFormat = localStorage.getItem("dateFormat");
+		 $("#toDateCalendar").datetimepicker({
+				format : dateFormat,
+				closeOnDateSelect : true,
+				timepicker : false,
+			}).on("change", function() {
+				$('#dateOfPurchase').val($(this).val());
+			})
+			
+			 $('#dateOfPurchase').blur(function(){
+				$("#toDateCalendar").val($(this).val());
+			})
+			
+
+			$("#browseBtn").click(function() {
+				$("#myModal").modal('show');
+				//getCategoryList();
+			})
+			
+			$("#browseBtn2").click(function() {
+				$("#myModal1").modal('show');
+				//getCategoryList();
+			})
+	
+	//product category		
+		$("#browseBtn").click(function(){
+				
+				$(".benefitChk").prop("checked",false);
+				$("#productModName").val("");
+				$("#brand").val("");
+				$("#skuMod").val("");
+		    	$("#modelMod").val("");
+		    	$("#manufactureItemMod").val("");
+		    	$("#variationTypeMod").val("");
+		    	$("#variationValueMod").val("");
+		    	$("#unitMod").val("");
+				
+				$('.loader').show();
+		    	$("body").addClass("overlay");
+		    	$("#productDiv").modal("show");
+				$.ajax({
+			        type: "POST",
+			        url: "asset-code-get-product-cat-list",
+			        dataType: "json",
+			        contentType: "application/json",
+			        data: "a",
+			        success: function(response) {
+			        	if (response.message == "success") {
+			            	for(var i = 0; i < response.body.length; i++) {
+			            		var row = "";
+			            		if(response.body[i].categoryId == response.body[i].parentId) {
+			            			if(response.body[i].nodeCount > 0) {
+			            				
+			            				row = '<tr data-node-id="'+response.body[i].categoryId+'" class="abc" id="'+response.body[i].categoryId+'">'+
+			    						'<td class="firstnode" id=lbl_'+response.body[i].categoryId+'>'+response.body[i].categoryName+'</td></tr>';
+			            			} else {
+			            				row = '<tr data-node-id="'+response.body[i].categoryId+'" class="abc" id="'+response.body[i].categoryId+'">'+
+			    						'<td class="firstnode" id=lbl_'+response.body[i].categoryId+'><input class="benefitChk pc1-box" type="checkbox" id="ccCheck_'+ response.body[i].categoryId +'" value="'+ response.body[i].categoryId +
+			    						'" name="'+ response.body[i].categoryName +'" onchange=selectCheckBox("'+response.body[i].categoryId+'","'+response.body[i].catLevel+'")>'+response.body[i].categoryName+'</td></tr>';
+			            			}
+			            			
+			            		} else {
+			            			if(response.body[i].nodeCount > 0) {
+			            				row = '<tr data-node-id="'+response.body[i].categoryId+'" data-node-pid="'+response.body[i].parentId+'" class="abc" id="'+response.body[i].categoryId+'">'+
+			    						'<td class="firstnode" id=lbl_'+response.body[i].categoryId+'>'+response.body[i].categoryName+'</td></tr>';
+			            			} else {
+			            				
+			            					row = '<tr data-node-id="'+response.body[i].categoryId+'" data-node-pid="'+response.body[i].parentId+'" class="abc" id="'+response.body[i].categoryId+'">'+
+			        						'<td class="firstnode" id=lbl_'+response.body[i].categoryId+'><input class="benefitChk pc1-box" type="checkbox" id="ccCheck_'+ response.body[i].categoryId +'" value="'+ response.body[i].categoryId +'" name="'+
+			        						response.body[i].categoryName +'" onchange=selectCheckBox("'+response.body[i].categoryId+'","'+response.body[i].catLevel+'")>'+response.body[i].categoryName+'</td></tr>';
+			            			}
+			            		}
+								$("#costCeneterCBDiv").append(row);
+								
+			            	}
+			            	
+			            	$('.loader').hide();
+			            	$("body").removeClass("overlay");
+			            	
+			            	$('#basic').simpleTreeTable({
+			            	    expander: $('#expander'),
+			            	    collapser: $('#collapser'),
+			            	    store: 'session',
+			            		storeKey: 'simple-tree-table-basic'
+			            	});
+			            }
+			        }, error: function(data) {
+			        	console.log(data)
+			        	$('.loader').hide();
+			        	$("body").removeClass("overlay");
+			        	$("#productDiv").modal("show");
+			        }
+				});
+			})
+			
+
+	
+	
+	$("#browseBtn2").click(function(){
+			
+		$(".benefitChk").prop("checked",false);
+		$("#costCeneterCBDiv1").empty();
+    	
+		
+						$('.loader').show();
+						$("body").addClass("overlay");
+						$("#productDiv").modal("show");
+						
+								$.ajax({
+									type : "POST",
+									url : "asset-code-classification-view",
+									dataType : "json",
+									contentType : "application/json",
+									success : function(response) {
+										if (response.message == "success") {
+											//alert("hii")
+											console.log(response.body)
+											if (response.body.length > 0) {
+												for (var i = 0; i < response.body.length; i++) {
+													var row = "";
+													if (response.body[i].assetId == response.body[i].parentId) {
+														
+														if(response.body[i].nodeCount > 0) {
+															
+														row = '<tr data-node-id="' + response.body[i].assetId + '" class="abc" id="' + response.body[i].assetId + '">'
+																+ '<td class="firstnode tr-node-one" id=lbl_' + response.body[i].assetId + '>'
+																+ response.body[i].assetName + '</td></tr>';
+														}else{
+															row = '<tr data-node-id="'+response.body[i].assetId+'" class="abc" id="'+response.body[i].assetId+'">'+
+								    						'<td class="firstnode" id=lbl_'+response.body[i].assetId+'><input class="benefitChk pc1-box" type="checkbox" id="ccCheck_'+ 
+								    						response.body[i].assetId +'" value="'+ response.body[i].assetId +
+								    						'" name="'+ response.body[i].assetName +'" onchange=selectCheckBox("'+response.body[i].assetId+'","'+response.body[i].catLevel+'")>'
+								    						+response.body[i].assetName+'</td></tr>';
+														}
+																
+																
+													} else {
+														if(response.body[i].nodeCount > 0){
+														
+														row = '<tr data-node-id="' + response.body[i].assetId + '" data-node-pid="' + response.body[i].parentId + '" class="abc" id="' + response.body[i].assetId + '">'
+																+ '<td class="firstnode" id=lbl_' + response.body[i].assetId + '>'
+																+ response.body[i].assetName + '</td></tr>';
+																}else
+																	{
+																	row = '<tr data-node-id="'+response.body[i].assetId+'" data-node-pid="'
+																	+ response.body[i].parentId+'" class="abc" id="'+response.body[i].assetId+'">'+
+									        						'<td class="firstnode" id=lbl_'+response.body[i].assetId+'><input class="benefitChk pc1-box" type="checkbox" id="ccCheck_'+ 
+									        						response.body[i].assetId +'" value="'+ response.body[i].assetId +'" name="'+
+									        						response.body[i].assetName +'" onchange=selectCheckBox("'+response.body[i].assetId+'","'+response.body[i].catLevel+'")>'
+									        						+ response.body[i].assetName+'</td></tr>';
+																	}
+																
+													}
+													$("#costCeneterCBDiv1")
+															.append(row);
+												}
+
+												$('.loader').hide();
+												$("body")
+														.removeClass("overlay");
+
+												$('#basic1')
+														.simpleTreeTable(
+																{
+																	expander : $('#expander'),
+																	collapser : $('#collapser'),
+																	store : 'session',
+																	storeKey : 'simple-tree-table-basic'
+																});
+
+											}
+										} else {
+											$('.loader').hide();
+											$("body").removeClass("overlay");
+										}
+									},
+									error : function(response) {
+										console.log(response);
+										$('.loader').hide();
+										$("body").removeClass("overlay");
+										$("#productDiv").modal("show");
+									}
+								})
+							})
+
+					});
+
+	const columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : 'AssetCode ID',
+				field : "assetCode",
+				cellRenderer : function(params) {
+					return '<a onclick=editPage("' + params.data.assetCode
+							+ '") href="javascript:void(0)">'
+							+ params.data.assetCode + '</a>';
+				}
+			},
+
+			{
+				headerName : 'AssetCode Name',
+				field : "assetCodeName"
+			}, {
+				headerName : 'Item Name',
+				field : "itemName"/* , hide: true */
+			}, {
+				headerName : 'Item',
+				field : "item",
+				hide : true
+			}, {
+				headerName : 'Store',
+				field : "store"
+			}, {
+				headerName : 'Serial No',
+				field : "serialNo"
+			}, {
+				headerName : 'Date Of Purchase',
+				field : "dateOfPurchase"
+			}, {
+				headerName : 'Guarantee Period',
+				field : "guaranty"
+			}, {
+				headerName : 'Brand Name',
+				field : "brandName"
+			}, {
+				headerName : 'Customer PhoneNo',
+				field : "custPhone"
+			}, {
+				headerName : 'Customer Email',
+				field : "email"
+			}, {
+				headerName : 'Working Status',
+				field : "workingStatus"
+			}, {
+				headerName : 'Status',
+				field : "status"
+			}
+
+	];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 149,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelectAsset,
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.assetCode;
+		}
+	};
+
+	var deleteId = "";
+
+	function rowSelectAsset() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		console.log(selectedRows);
+
+		deleteId = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+
+			deleteId = deleteId + '"' + selectedRows[i].assetCode + '",';
+
+		}
+		deleteId = deleteId.substring(0, deleteId.length - 1);
+
+		var rowCount = 0;
+		selectedRows.forEach(function() {
+			rowCount = rowCount + 1;
+		});
+		if (rowCount > 0) {
+			$('#delete').attr("disabled", false);
+
+		} else {
+			$('#delete').attr("disabled", true);
+		}
+
+	}
+
+	function deleteAsset() {
+
+		$.ajax({
+			type : "GET",
+			url : "asset-code-delete?deleteId=" + deleteId,
+			async : false,
+			success : function(response) {
+				console.log(response)
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "asset-code-view"
+					}).then(function(data) {
+						gridOptions.api.setRowData(data);
+					});
+					$('#delete').attr("disabled", true);
+
+				}
+
+			},
+			error : function(data) {
+
+			}
+
+		});
+
+	}
+
+	function add() {
+
+		$("#assetCode").val("");
+		$("#sku").val("");
+		$("#assetCodeName").val("");
+		$("#item").val("");
+		$("#itemName").val("");
+		$("#store").val("");
+		$("#dateOfPurchase").val("");
+		$("#guaranty").val("");
+		$("#brandId").val("");
+		$("#brandName").val("");
+		$("#email").val("");
+		$("#custPhone").val("");
+		$("#description").val("");
+		$("#serialNo").val("");
+		$("#barcode").val("");
+		$("#category").val("");
+		$("#categoryName").val("");
+		$("#grnInvoice").val("");
+
+		$("#status").prop("checked", true);
+		$("#workingStatus").prop("checked", true);
+
+		$("#new").hide();
+		$("#myGrid").hide();
+		$("#cancel").show();
+		$("#save").show();
+		$("#demo").show();
+		$("#delete").hide();
+	}
+
+	function addDetails() {
+
+		var obj = {};
+		obj.assetCode = $("#assetCode").val();
+		obj.sku = $("#sku").val();
+		obj.assetCodeName = $("#assetCodeName").val();
+		obj.item = $("#item").val();
+		obj.itemName = $("#itemName").val();
+		obj.store = $("#store").val();
+		obj.dateOfPurchase = $("#dateOfPurchase").val();
+		obj.guaranty = $("#guaranty").val();
+		obj.brandId = $("#brandId").val();
+		obj.brandName = $("#brandName").val();
+		obj.email = $("#email").val();
+		obj.custPhone = $("#custPhone").val();
+		obj.description = $("#description").val();
+		obj.serialNo = $("#serialNo").val();
+		obj.barcode = $("#barcode").val();
+		obj.category = $("#category").val();
+		obj.categoryName = $("#categoryName").val();
+		obj.grnInvoice = $("#grnInvoice").val();
+
+		obj.workingStatus = $("#workingStatus:checkbox:checked").val();
+
+		if (obj.workingStatus == undefined) {
+			//alert("hello");
+			obj.workingStatus = "0";
+
+		} else {
+			obj.workingStatus = "1";
+		}
+
+		obj.status = $("#status:checkbox:checked").val();
+
+		if (obj.status == undefined) {
+			//alert("hello");
+			obj.status = "0";
+
+		} else {
+			obj.status = "1";
+		}
+
+		var validation = true;
+
+		if (obj.assetCodeName == null || obj.assetCodeName == "") {
+			validation = validationUpdated("assetCodeName Required",
+					"assetCodeName");
+		}
+		if (obj.itemName == null || obj.itemName == "") {
+			validation = validationUpdated("itemName Required", "itemName");
+		}
+		if (obj.store == null || obj.store == "") {
+			validation = validationUpdated("store Required", "store");
+		}
+		if (obj.dateOfPurchase == null || obj.dateOfPurchase == "") {
+			validation = validationUpdated("DateOfPurchase Required",
+					"dateOfPurchase");
+		}
+		if (obj.guaranty == null || obj.guaranty == "") {
+			validation = validationUpdated("guaranty Required", "guaranty");
+		}
+		if (obj.grnInvoice == null || obj.grnInvoice == "") {
+			validation = validationUpdated("grnInvoice Required", "grnInvoice");
+		}
+		if (obj.email == null || obj.email == "") {
+			validation = validationUpdated("email Required", "email");
+		}
+		if (obj.custPhone == null || obj.custPhone == "") {
+			validation = validationUpdated("Phone Required", "custPhone");
+		}
+		if (obj.description == null || obj.description == "") {
+			validation = validationUpdated("description Required",
+					"description");
+		}
+		if (obj.serialNo == null || obj.serialNo == "") {
+			validation = validationUpdated("serialNo Required", "serialNo");
+		}
+		if (obj.barcode == null || obj.barcode == "") {
+			validation = validationUpdated("barcode Required", "barcode");
+		}
+
+		if (obj.status == null || obj.status == "") {
+			validation = validationUpdated("Status Required", "status");
+		}
+
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "asset-code-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						$("#new").show();
+						$("#myGrid").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#demo").hide();
+						$("#delete").show();
+
+						agGrid.simpleHttpRequest({
+							url : "asset-code-view"
+						}).then(function(data) {
+							gridOptions.api.setRowData(data);
+						});
+					}
+				},
+				error : function(data) {
+
+					//console.log(data);
+				}
+			})
+		}
+	}
+
+	//edit
+	function editPage(id) {
+		$("#myGrid").hide();
+		$("#cancel").show();
+		$("#save").show();
+		$("#demo").show();
+		$("#new").hide();
+		$("#delete").hide();
+
+		$.ajax({
+			type : "GET",
+			url : "asset-code-edit?id=" + id,
+			async : false,
+			success : function(response) {
+				if (response.message == "Success") {
+
+					//console.log(response.body.state)
+
+					$("#assetCode").val(response.body.assetCode);
+					$("#sku").val(response.body.sku);
+					$("#assetCodeName").val(response.body.assetCodeName);
+					$("#item").val(response.body.item);
+					$('#itemName').val(response.body.itemName);
+					$('#store').val(response.body.store);
+					$('#dateOfPurchase').val(response.body.dateOfPurchase);
+					$('#guaranty').val(response.body.guaranty);
+					$('#brandId').val(response.body.brandId);
+					$('#brandName').val(response.body.brandName);
+					$('#email').val(response.body.email);
+					$('#custPhone').val(response.body.custPhone);
+					$('#description').val(response.body.description);
+					$('#serialNo').val(response.body.serialNo);
+					$('#barcode').val(response.body.barcode);
+					$('#category').val(response.body.category);
+					$('#categoryName').val(response.body.categoryName);
+					$('#grnInvoice').val(response.body.grnInvoice);
+
+					$('#status').val(response.body.status);
+					var status = response.body.status;
+					if (status === '0') {
+
+						$('#status').prop('checked', false)
+
+					} else {
+						$('#status').prop('checked', true)
+					}
+
+					var status = response.body.workingStatus;
+					if (status === '0') {
+
+						$('#workingStatus').prop('checked', false)
+
+					} else {
+						$('#workingStatus').prop('checked', true)
+					}
+
+				}
+
+			}
+
+		})
+	}
+	
+	function cancelModalBtn() {
+		$("#deleteModalBtn").removeAttr("disabled");
+	}
+
+	function getProductList() {
+		var search = $("#itemName").val();
+		if (search) {
+
+			$
+					.ajax({
+						type : "POST",
+						url : "asset-code-get-product-list",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								console.log(response);
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autosearch-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutosearchValue1(\''
+												+ response.body[i].item
+												+ '\',\''
+												+ response.body[i].itemName
+												+ '\',\''
+												+ response.body[i].category
+												+ '\',\''
+												+ response.body[i].categoryName
+												+ '\',\''
+												+ response.body[i].sku
+												+ '\',\''
+												+ response.body[i].brandId
+												+ '\',\''
+												+ response.body[i].brandName
+												+ '\')">'
+												+ response.body[i].itemName
+												+ '</li>';
+									}
+									console.log("Data===" + content)
+
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autosearch-list1">';
+									content += '<li onClick="selectAutocompleteValue()">'
+											+ "No Data Found" + '</li>';
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+	}
+
+	function selectAutosearchValue1(item, itemName, category, categoryName,
+			sku,brandId, brandName) {
+
+		if (item) {
+			$("#itemName").val(itemName);
+			$("#item").val(item);
+			$("#brandId").val(brandId);
+			$("#brandName").val(brandName);
+			$("#category").val(category);
+			$("#categoryName").val(categoryName);
+			$("#sku").val(sku);
+			$("#search").val(name)
+			$("#search").attr('data-procat', assetCode);
+			$("#suggesstion-box1_").hide();
+			//checkForDuplicate(key,counter);
+
+		} else {
+
+			$("#itemName").val("");
+			$("#item").val("");
+			$("#brandId").val("");
+			$("#brandName").val("");
+			$("#sku").val("");
+			$("#category").val('');
+			$("#categoryName").val('');
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box1_").hide();
+
+		}
+	}
+
+	function selectAutocompleteValue() {
+		$("#itemName").val("");
+		//$("#itemId").val("");
+		// $("#brandId").val("");
+		$("#brandName").val("");
+		$("#sku").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+
+	}
+
+	function selectProductVal() {
+	    $("#itemName").val($("#itemNameTemp").val());
+	    $("#item").val($("#itemIdTemp").val());
+	    $("#brandName").val($("#brandNameTemp").val());
+	    $("#brandId").val($("#brandIdTemp").val());
+	    $("#category").val($("#prodCatIdTemp").val());
+	    $("#categoryName").val($("#prodCatNameTemp").val());
+	    $("#sku").val($("#skuTemp").val());
+	    $("#search").val($("#itemNameTemp").val())
+	    $("#select_product").html('');
+	    $('#myModal').modal('hide');
+	}
+
+	function selectCheckBox(id, lvl) {
+		$("#select_product").empty();
+		getProductByCategory();
+
+		/* $(".pc1-box").prop("checked",false);
+		$("#cat_"+id).prop("checked",true); */
+
+		if (lvl == 'L1') {
+			var textDesc = $("#lbl_" + id).text();
+			$("#catDesc").text(textDesc);
+		} else {
+			var res = lvl.substring(1, 1000000);
+
+			var lastText = $("#lbl_" + id).text();
+			var textDesc = "";
+			for (i = res; i > 1; i--) {
+				var pUL = $("#lbl_" + id).parents("ul").attr("id");
+				pUL = pUL.substring(3, 10000000000000);
+				var newText = $("#lbl_" + pUL).text();
+				textDesc = newText + " > " + textDesc;
+				id = pUL;
+			}
+			textDesc = textDesc + lastText;
+			$("#catDesc").text(textDesc);
+		}
+	}
+	function getProductByCategory() {
+
+		$("#select_product").empty();
+		var valor = "";
+		$('input.pc1-box[type=checkbox]').each(function() {
+			if (this.checked)
+				valor = valor + $(this).val() + ",";
+		});
+
+		if (valor) {
+			$("#select_product").empty();
+			$
+					.ajax({
+						type : "POST",
+						url : "asset-code-get-product-by-cat",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : valor,
+						success : function(response) {
+							if (response.message == "success") {
+								console.log(response.body)
+								$("#select_product").empty();
+								var content = '';
+								for (var i = 0; i < response.body.length; i++) {
+
+									content += '<div class="autocompletedata cp product-item" id="'
+											+ response.body[i].productId
+											+ "_"
+											+ response.body[i].sku
+											+ '" onClick=selectActive("'
+											+ response.body[i].productId
+											+ "_"
+											+ response.body[i].sku
+											+ '","'
+											+ response.body[i].sku
+											+ '","'
+											+ response.body[i].productId
+											+ '","'
+											+ encodeURIComponent(response.body[i].productName)
+											+ '","'
+											+ response.body[i].brandId
+											+ '","'
+											+ response.body[i].brandName
+											+ '","'
+											+ response.body[i].productCatId
+											+ '","'
+											+ response.body[i].productCatName
+											+ '")>'
+											+ response.body[i].sku
+											+ " - "
+											+ response.body[i].brandName
+											+ " - "
+											+ response.body[i].productName
+											+ '</div>';
+								}
+								content += '</ul>';
+								$("#select_product").show();
+								$("#select_product").append(content);
+
+								var itemId = $("#itemId").val();
+								var skuId = $("#sku").html();
+
+								if (itemId) {
+									$("#" + itemId + "_" + skuId).addClass(
+											'productActive');
+								}
+
+							}
+						},
+						error : function(data) {
+
+						}
+					})
+		} else {
+			$("#select_product").empty();
+		}
+	}
+	
+	function selectActive(id, sku, productId, productName, brandId, brandName,
+		    prodCatId, prodCatName) {
+		    var splitArray = productName.split('%20');
+		    var finalString = "";
+		    for (i = 0; i < splitArray.length; i++) {
+		        finalString += splitArray[i] + " ";
+		    }
+		    $('.autocompletedata ').removeClass('productActive');
+		    $("#" + id).addClass('productActive');
+		    $("#itemNameTemp").val(finalString);
+		    $("#itemIdTemp").val(productId);
+		    $("#brandNameTemp").val(brandName);
+		    $("#brandIdTemp").val(brandId);
+		    $("#skuTemp").val(sku);
+		    $("#prodCatIdTemp").val(prodCatId);
+		    $("#prodCatNameTemp").val(prodCatName);
+		    $("#searchTemp").val(productName)
+
+		}
+	
+	function selectCheckBox1(id, lvl) {
+		$(".benefitChk").prop("checked", false);
+		$("#ccCheck_" + id).prop("checked", true);
+
+		if (id && lvl) {
+			if (lvl == 'L1') {
+
+				var textDesc = $("#lbl_" + id).text();
+				$("#productCatId").val(textDesc);
+			} else {
+
+				var res = lvl.substring(1, 1000000);
+
+				var lastText = $("#lbl_" + id).text();
+				var textDesc = "";
+				for (i = res; i > 1; i--) {
+					var pUL = $("#" + id).attr("data-node-pid");
+					//pUL = pUL.substring(3, 10000000000000);
+					var newText = $("#lbl_" + pUL).text();
+					console.log(newText + " " + i)
+					textDesc = newText + " > " + textDesc;
+					id = pUL;
+				}
+				textDesc = textDesc + lastText;
+				$("#productCatId").val(textDesc);
+			}
+		}
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+					<div class="row">
+							<div class="col-md-5 buttonsec btn-hs"></div>
+							<div class="col-md-7 buttonsec btn-hs">
+								<button class="btn1" id="new" onclick="add()">New</button>
+								<button class="btn3" id="delete" onclick="deleteAsset()">Delete</button>
+								 <button class="btn2" type="submit" id="save" form="form"
+									value="add" onclick="addDetails()">Save</button>
+								<button class="btn4" id="cancel" onclick="cancel()">Cancel</button>
+								
+							</div>
+						</div>
+
+						<div class="collapse" id="demo">
+							<input type="hidden" id="assetCode">
+							<div class="row">
+                              <div class="col-md-11">
+                              <div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label><b>Store</b></label>
+										<div class="select">
+											<select id="store">
+												<option value="">--Select--</option>
+												<option th:each="c,iter:${storelist}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-4">
+									<div class="form-group">
+										<label><b>Date Of Purchase</b></label> <input type="text" id="dateOfPurchase"
+											class="form-control"
+											th:attr="onkeyup=|formatDate('dateOfPurchase','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label><b>Classification</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="classification">
+									</div>
+								</div>
+								</div>
+								</div>
+								<div class="col-lg-1 mrt_6">
+									<div class="form-group">
+										<button id="browseBtn2" class="btn2">Browse</button>
+									</div>
+								</div>
+								</div>
+							<div class="row">
+                              <div class="col-md-11">
+                              <div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label><b>BarCode No.</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="barcode">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<input type="hidden" id="item" /> <label><b>Item
+												Name</b></label> <input type="text" autocomplete="off" class="form-control"
+											id="itemName" onkeyup="getProductList();" />
+										<div id="suggesstion-box1_"></div>
+										</div>
+
+									</div>
+										<div class="col-md-4">
+											<div class="form-group">
+												<input type="hidden" id="category"> <label><b>Item
+														Category</b></label> <input type="text" class="form-control"
+													autocomplete="off" id="categoryName">
+											</div>
+										</div>
+									</div>
+									</div>
+								<div class="col-lg-1 mrt_6">
+									<div class="form-group">
+										<button id="browseBtn" class="btn2">Browse</button>
+									</div>
+								
+								</div>
+							</div>
+							<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<label><b>SKU</b></label> <input type="text"
+										class="form-control" autocomplete="off" id="sku" >
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+								<input type="hidden" id="brandId">
+									<label><b>Brand Name</b></label> <input type="text"
+										class="form-control" autocomplete="off" id="brandName">
+								</div>
+							</div>
+
+							<div class="col-md-3">
+									<div class="form-group">
+										<label><b>GRN</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="grnInvoice">
+									</div>
+								</div>
+								
+										<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Asset Code Name</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="assetCodeName">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Customer Email</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="email">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Serial No</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="serialNo">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Customer Phone No</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="custPhone">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Guaranty Period</b></label> <input type="text"
+											class="form-control" autocomplete="off" id="guaranty">
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<label><b>Description</b></label>
+										<textarea class="form-control" id="description"></textarea>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+
+										<label><b>Working Status</b></label> <input type="checkbox"
+											id="workingStatus" class="check" name="active" value="1">
+									</div>
+								</div>
+								
+								<div class="col-md-3">
+									<div class="form-group">
+
+										<label><b>Status</b></label> <input type="checkbox"
+											id="status" class="check" name="active" value="1">
+									</div>
+								</div>
+								
+								</div>
+							</div>
+							</div>
+						</div>
+
+
+						<div id="myGrid" style="width: 100%; height: 500px;" class="ag-theme-alpine"></div>
+			<!-- modal -->
+						<div class="modal fade" id="myModal">
+						<div class="modal-dialog modal-lg" style="margin-top: 130px;">
+							<div class="modal-content">
+
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title md-color">Select Product</h4>
+									<button type="button" class="close cp" data-dismiss="modal">&times;</button>
+								</div>
+
+								<!-- Modal body -->
+
+								<!-- Modal body -->
+								<div class="modal-body modal-cat">
+									<div class="row">
+
+										<div class="col-md-6" df="0" style="height: 300px; overflow-y: scroll;">
+										<table id="basic"><tbody
+												id="costCeneterCBDiv"></tbody></table>
+										</div>
+										<div class="col-md-6" id="productCategorySelectDiv" df="0"
+											style="border-left: 1px solid #ccc;">
+											<div>
+												<div class="productlist">Select Product</div>
+												<div id="select_product"></div>
+												<input type="hidden" id="itemNameTemp" /> <input
+													type="hidden" id="itemIdTemp" /> <input type="hidden"
+													id="brandNameTemp" /> <input type="hidden"
+													id="brandIdTemp" /> <input type="hidden" id="skuTemp" />
+												<input type="hidden" id="prodCatIdTemp" /> <input
+													type="hidden" id="prodCatNameTemp" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- Modal footer -->
+								<div class="modal-footer">
+									<div class="chartbtnsec">
+										<button class="btn2" onclick="selectProductVal()">SELECT</button>
+										<button class="btn4" data-dismiss="modal">CANCEL</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- alert modal start -->
+					<div id="alert" class="modal fade show" aria-modal="true">
+						<div class="modal-dialog modal-confirm">
+							<div class="modal-content">
+								<div class="modal-header flex-column">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true" onclick="cancelModalBtn()">
+										<i class="ti-close modal-close"></i>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p id="textId"></p>
+								</div>
+								<div class="modal-footer justify-content-center"
+									style="margin-top: -30px;">
+
+									<button type="button" class="btn1" data-dismiss="modal">SELECT</button>
+									<!-- <button type="button" class="btn3" onclick="deleteOnclick()">Delete</button> -->
+								</div>
+							</div>
+						</div>
+					</div>
+						<div class="modal fade" id="myModal1">
+						<div class="modal-dialog modal-lg" style="margin-top: 130px;">
+							<div class="modal-content">
+
+								<!-- Modal Header -->
+								<div class="modal-header">
+									<h4 class="modal-title md-color">Select Classification</h4>
+									<button type="button" class="close cp" data-dismiss="modal">&times;</button>
+								</div>
+
+							
+								<!-- Modal body -->
+								<div class="modal-body modal-cat">
+									<div class="row">
+
+										<div class="col-md-6" df="0" style="height: 300px; overflow-y: scroll;">
+										<table id="basic1" class="simple-tree-table"><tbody
+												id="costCeneterCBDiv1"></tbody></table>
+										</div>
+										<div class="col-md-6" id="productCategorySelectDiv1" df="0"
+											style="border-left: 1px solid #ccc;">
+											<div style="height: 300px; overflow-y: scroll;">
+												<div class="productlist">Select Classification</div>
+												<!-- <div id="select_product1"></div>
+												<input type="hidden" id="itemNameTemp" /> <input
+													type="hidden" id="itemIdTemp" /> <input type="hidden"
+													id="brandNameTemp" /> <input type="hidden"
+													id="brandIdTemp" /> <input type="hidden" id="skuTemp" />
+												<input type="hidden" id="prodCatIdTemp" /> <input
+													type="hidden" id="prodCatNameTemp" /> -->
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	
+</body>
+</html>

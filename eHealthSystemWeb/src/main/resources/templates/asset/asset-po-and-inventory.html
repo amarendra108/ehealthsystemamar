@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script>
+
+
+	$(document).ready(function() {
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : "asset-po-view"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		
+		//date	 
+		 var dateFormat = localStorage.getItem("dateFormat");
+		 $("#toDateCalendar").datetimepicker({
+				format : dateFormat,
+				closeOnDateSelect : true,
+				timepicker : false,
+			}).on("change", function() {
+				$('#poDate').val($(this).val());
+			})
+			
+			 $('#poDate').blur(function(){
+				$("#toDateCalendar").val($(this).val());
+			})
+	});
+
+	/* ---------------------------ag grid------------------------------- */
+
+	const columnDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		suppressCellSelection : true,
+		suppressRowClickSelection : false,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : 'Asset Code',
+		field : "assetCode"
+	}, {
+		headerName : 'Classification',
+		field : "classification"
+	}, {
+		headerName : 'GRN',
+		field : "grnId"
+	}, {
+		headerName : 'PO',
+		field : "poId"
+	}, {
+		headerName : 'PO Date',
+		field : "poDate",cellStyle: {textAlign: 'center'}
+	}, {
+		headerName : 'Quotation',
+		field : "quotationId"
+	}, {
+		headerName : 'QR Code',
+		field : "qrCode"
+	} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 155,
+			height : 10
+		}
+	};
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+				<div class="content_padding">
+				<div id="myGrid" style="width: 100%; height: 500px;"
+						class="ag-theme-alpine"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

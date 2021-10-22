@@ -1,0 +1,3087 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>eHealth System</title>
+<link rel="stylesheet" title="blue" href="../assets/dm/css/blue.css">
+<!--   <link rel="alternate stylesheet" title="black" href="http://matrujyoti.in/public/assets/css/style.css"> -->
+
+<link rel="stylesheet"
+	href="../assets/eHealth/icon/themify-icons/themify-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+
+<link rel="stylesheet" href="../assets/css/extend/style-extend.css">
+<script src="../assets/eHealth/js/jquery/jquery.min.js"></script>
+<script src="../assets/js/newbootstrap.js"></script>
+<script src="../assets/dm/js/bundle.js"></script>
+<script src="../assets/dm/js/hoverable-collapse.js"></script>
+<script src="../assets/dm/js/misc.js"></script>
+<!-- endinject -->
+<!-- End custom js for this page -->
+
+<script>
+
+</script>
+<style type="text/css">
+body
+{
+  background: #f5f5f5;
+}
+.highcharts-point
+{
+width:15px!important;
+}
+ .grn-btn{
+    background:#00a330;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+    }
+.content-wrapper {
+    background: transparent;
+    padding: 2.50rem 2.25rem;
+    }
+.btnDisable
+{
+  color: #ccc!important;
+}
+.content-wrapper {
+    background: transparent;
+    padding: .50rem 1rem!important;
+}
+.card
+{
+background:#FFF;
+}
+.highcharts-plot-band 
+{display:none;
+}
+.card-body a{
+  color:#000;
+}
+.highcharts-axis-title
+{
+  display: none;
+}
+/*todaychanges*/
+.card
+{
+  margin:8px 0px;
+}
+.nav-menu .active {
+    color: #fff;
+    padding: 8px 15px;
+    font-weight: bold;
+    background: #f5f5f5;
+    border-radius: 6px;
+    line-height: 20px;
+    transition: all 0.5s;
+}
+.smlbox
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:5px;
+color: #333;
+}
+.smlbox1
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:11.5px 0px;
+color: #333;
+}
+select::after
+{
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 900;
+  content: "\f107";
+}
+.smlbox11
+{
+border-radius: 5px;
+padding: 10px;
+color: #0071c1;
+}
+.smlbox11 .title
+{
+  width: 100px!important;
+  color: #000;
+  float: left;
+}
+.smlbox2
+{
+background: transparent;
+border-radius: 5px;
+padding:5px 10px;
+margin:5px 0px;
+color: #FFF;
+}
+.smlbox2 span
+{
+  float:right;
+  text-align: right;
+}
+.mrt_5
+{
+  margin-top: 8px;
+}
+.text-left
+{
+  color:#0071c1;
+}
+.padding_8
+{
+  padding: 0px 8px;
+}
+.heading
+{
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+}
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 16px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 8px !important;
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+
+
+
+.card-title
+{
+  /*padding:10px 3px;
+  color: #333!important;*/
+  font-size: 16px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+/*.active
+{
+  background: #98cb4a;
+  border:1px solid #FFF;
+}*/
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+	position: relative;
+    top: -61px;
+    font-size: 30px;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-block
+}
+.card h4
+{font-size:30px;}
+.font-weight-normal {
+    font-size: 16px;
+}
+.profile
+{
+  /*border:2px solid #ccc;*/
+  border-radius: 80px;
+  height: 104px;
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.card-title2 {
+    /* padding: 10px 3px; */
+    color: #5b626b!important;
+    font-size: 16px;
+    font-weight: 500;
+}
+.card-dsn{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 315px;
+  border-bottom: 5px solid #913ccd;
+  border-radius: 5px;
+  overflow-y: scroll;
+    overflow-x: hidden;
+}
+.card-emergency{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f2b40c;
+  border-radius: 5px;
+
+}
+.card-family{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f15f74;
+  border-radius: 5px;
+
+}
+.card-profile{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  border-bottom: 5px solid #3000c6;
+  border-radius: 5px;
+
+}
+.mt-8{
+  margin-top: 8px;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+    .tbl-card {
+    background-color: #fff;
+    border-radius: 5px;
+    /*border-bottom: 5px solid #2ca8c2;*/
+    margin-bottom: 30px;
+    /*box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);*/
+    height: 315px;
+   }
+    .tbl-head{
+      font-size: 16px;
+      color: #fff;
+      background-color: #29bbe3!important;
+      padding: 5px 10px;
+      border-radius: 5px 5px 0px 0px;
+    }
+    .table thead th{
+      border:none;
+    }
+    .table td, .table th {
+     border-top:none; 
+}
+.inr-tbl{
+  padding: 10px;
+}
+.date-clnd{
+  border:1px solid #2d9f9e;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #5b626b!important;
+}
+.btm-txt{
+  background-color: #2ca8c2;
+  border-radius: 0px 0px 7px 7px;
+  color: #fff;
+  font-weight: 500;
+}
+.disble-clnd{
+  border:1px solid #cacaca;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #5b626b!important;
+}
+.disble-txt{
+  background-color: #cacaca;
+  border-radius: 0px 0px 7px 7px;
+  font-weight: 500;
+}
+.rlt-nm {
+    font-size: 16px;
+    color: #5b626b!important;
+    border-right: 2px solid #5b626b!important;
+    width: 165px;
+    float: left;
+}
+.rlt {
+    font-size: 16px;
+    color: #5b626b!important;
+    margin-left: 10px;
+}
+.ph-no {
+    font-size: 16px;
+    color: #5b626b!important;
+}
+.ph-no span {
+  /*color: #056fe2;*/
+  color:#5b626b!important;
+
+}
+.d-flex{
+  display: flex;
+}
+.user-dtlhd {
+              font-size: 16px;
+              color: #5b626b!important;
+              font-weight: 600;
+          }
+           .user-id {
+            font-size: 16px;
+            font-weight: 400;
+            /*color: #056fe2;*/
+			color:#6c757d!important;
+        }
+           
+           .mb-10{
+            margin-bottom: 10px;}
+
+    .since-txt{
+      font-size: 16px;
+      color: #000;
+    }
+    .since-txt span{
+      font-size: 16px;
+      color: #000;
+      margin-left: 10px;
+
+    }
+    .more{
+      text-align: right;
+      font-size: 16px;
+      color: #5b626b!important;
+      margin-right: 20px;
+      margin-bottom: 8px;
+    }
+    .rpt-nm {
+    font-size: 16px;
+    color: #5b626b!important;
+    }
+    .lab-name {
+        font-size: 16px;
+        /*color: #056fe2;*/
+		color:#5b626b!important;
+    }
+    .btn-book{
+          color: #fff;
+    background-color: #3000c6;
+    border-color: #3000c6;
+    }
+     .btn-book:hover{
+          color: #fff;
+    background-color: #5129ce;
+    border-color: #5129ce;
+    }
+    .prf-ht{
+      height: 621px;
+    }
+    .mecication-head {
+    font-size: 16px;
+    color: #fff;
+    background-color: #29bbe3!important;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0px 0px;
+}
+.md-tbl td,.md-tbl th {
+  padding: 6px 5px;
+}
+.md-tbl td {
+  /*color: #056fe2;*/
+   color: #5b626b!important;
+  font-size: 14px;
+}
+.mecication-card {
+    background-color: #fff;
+    border-radius: 5px;
+    /*border-bottom: 5px solid #117a75;*/
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%)!important;
+    box-shadow: 0 -3px 31px 0 rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 2%)!important;
+    height: 300px;
+    margin-top: -30px;
+}
+.mb-8 {
+    margin-bottom: 8px;
+}
+.user-dtlhd1 {
+    font-size: 14px;
+    color: #5b626b!important;
+    font-weight: 500;
+}
+.user-id1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #5b626b!important;
+}
+</style>
+<style>
+
+  .ag-theme-alpine .ag-header {
+    background-color: #ffffff!important;
+    border-bottom: solid 1px;
+    border-bottom-color: #babfc7;
+    border-bottom-color: var(--ag-border-color, #babfc7);
+}
+
+.ag-theme-alpine .ag-row {
+height:40px!important;
+}
+.ag-row
+{
+min-height:40px!important;
+}
+.ag-row-even
+{height:40px!important; display:block;
+}
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height:40px!important;
+}
+.ag-center-cols-container
+{
+height:500px!important;
+}
+/* .ag-center-cols-viewport
+{height:500px!important;
+} */
+ .ag-cell .photo 
+{
+border-radius:50px!important;
+height:50px!important;
+margin:0px!important;
+}
+.icon_view 
+{
+  font-size:16px;
+  color:#006ce2;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_edit
+{
+  font-size: 16px;
+  color:#013064;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_delete 
+{
+  font-size:16px;
+  color:#ed1c24;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.ag-cell .ag-cell-not-inline-editing .ag-cell-auto-height
+{
+min-height:50px!important;
+}
+.ag-cell .active {
+    background: #e6f1fc;
+    color: #02356c;
+}
+.ag-cell span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+}
+
+ .ag-cell a 
+ {
+    background:#228b22;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+}
+
+
+
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height: 40px!important;
+    color: #000!important;
+    font-weight: 500!important;
+}
+
+</style>
+ 
+</head>
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+		<nav
+			class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+			<div
+				class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+				<a class="navbar-brand brand-logo" href="javascript:void(0);"><img
+					th:attr='src=|assets/dm/img/logo.png|' alt="profile"></a> <a
+					class="navbar-brand brand-logo-mini" href="javascript:void(0);">
+				</a>
+
+
+			</div>
+
+			<div class="navbar-menu-wrapper d-flex align-items-stretch">
+				<button class="navbar-toggler navbar-toggler align-self-center"
+					type="button" data-toggle="minimize">
+					<span class="fa fa-bars"></span>
+				</button>
+				<div class="page-name">
+					<div class="row">
+						<div class="col-md-6">
+							<input type="hidden" id="dmdistrictId"
+								th:value="${cmDashboardGetIdd[0].name}"> <select
+								id="cmbDist" name="cmbDist"
+								onchange="setDataAndImage(this.value);">
+								<input type="hidden" id="stId"
+								th:value="${cmDashboardGetIdd[0].id}">
+							</select>
+						</div>
+						<a href="/cmdashboard"><div class="col-md-6 dashtext">DASHBOARD</div></a>
+					</div>
+				</div>
+				<ul class="navbar-nav navbar-nav-right">
+					<li>
+						<p class="header_txt">
+							<br>
+						</p>
+					</li>
+					<li class="nav-item nav-profile dropdown"><select>
+							<option>English</option>
+							<option>ଓଡ଼ିଆ</option>
+					</select></li>
+
+					<li class="nav-item nav-logout d-lg-block"><a href="/logout"
+						title="Sign Out" class="nav-link"> <i class="fa fa-power-off"
+							style="color: #FFF;"></i>
+					</a></li>
+				
+				
+				</ul>
+				<button
+					class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+					type="button" data-toggle="offcanvas">
+					<span class="mdi mdi-menu"></span>
+				</button>
+			</div>
+		</nav>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<nav class="sidebar sidebar-offcanvas" id="sidebar">
+				<div
+					class="nav-profile-text d-flex flex-column text-center logoname">
+					<div class="mb-2"></div>
+
+				</div>
+				<div align="center"
+					style="margin-top: 15px; font-size: 16px; color: #FFF;">
+					e-Swasthya</div>
+				<ul class="nav">
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+							<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/images/bihar.png"
+									alt="uttarakhand" class="img-fluid" style="border-radius: 50%;">
+							</div>
+
+							<div align="center" style="margin-top: 5px; font-size: 16px;">
+								Bihar Government</div>
+
+					</a></li>
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+							<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/images/minister/Bihar.jpg"
+									alt="sundargarh" class="img-fluid" style="border-radius: 50%;">
+							</div>
+							<div align="center" style="margin-top: 15px; font-size: 16px;">
+								Hon'ble Nitish Kumar</div>
+							<div align="center" style="margin-top: 5px; font-size: 16px;">Chief
+								Minister</div>
+							<div align="center" style="margin-top: 5px; font-size: 16px;">Bihar
+							</div>
+					</a></li>
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+							<div align="center">
+								<i class="fa fa-phone fa-5x"></i> <span
+									class="login-status online"></span>
+								<!--change to offline or busy as needed-->
+							</div>
+							<div class="clearfix  mb-2"></div>
+							<div class="nav-profile-text d-flex flex-column text-center">
+								<span class="font-weight-bold mb-2">Contact No.</span> <span
+									class="text-secondary text-small" style="font-size: 24px;">+91 9923848800</span>
+							</div>
+
+					</a></li>
+
+
+
+				</ul>
+			</nav>
+		
+	
+				<!-- partial -->
+				<div class="container-fluid">
+
+
+						<!-- partial -->
+					<div class="main-panel">
+						<div class="content-wrapper" id="showdashboard" style="display:none;">
+					
+								<div id="myGrid" style="width: 100%; height: 550px;" class="ag-theme-alpine"></div>
+							
+						</div>
+						<div class="content-wrapper" id="hidedashboard">
+							<input type="hidden" id="moduleList" value="[MOD001]">
+							<div class="row">
+								<div class="col-md-12">
+
+								<div class="row">
+								
+										<div class="col-md-3 stretch-card padding_5">
+
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #913ccd; height: 80px;">
+												<div class="card-body mini-stat-img">
+
+													<a href="#" onclick="hideDashboardContent('1')">
+														<div class="font-weight-normal">Total Registrations</div>
+														<h4 id="totalRegs"></h4> <i
+														class="fa fa-file fa-lg mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+
+										</div>
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #f15f74; height: 80px;">
+												<div class="card-body mini-stat-img">
+
+													<a href="#" onclick="hideDashboardContent('2')">
+														<div class="font-weight-normal">Total Tested</div>
+														<h4 id="total_tested"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #18af7e; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('3')">
+														<div class="font-weight-normal">Total Normal</div>
+														<h4 id="total_normal"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #839098; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('4')">
+														<div class="font-weight-normal">Total Abnormal</div>
+														<h4 id="total_abnrml"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #f2b40c; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('5')">
+														<div class="font-weight-normal">Total Highrisk</div>
+														<h4 id="total_highrisk"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #3000c6; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('6')">
+														<div class="font-weight-normal">Todays Registrations</div>
+														<h4 id="todays_regs"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #2ca8c2; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('2')">
+														<div class="font-weight-normal">Total Sample Collected</div>
+														<h4 id="total_smpl_clctd"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-3 stretch-card padding_5">
+											<div class="card card-img-holder text-white mini-stat"
+												style="background: #a93f40; height: 80px;">
+												<div class="card-body mini-stat-img">
+													<a href="#" onclick="hideDashboardContent('2')">
+														<div class="font-weight-normal">Total Sample Processed</div>
+														<h4 id="total_smpl_prcsd"></h4> <i
+														class="fa fa-file mdi-36px float-right icon"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<div class="row">
+
+										
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Gender Wise No
+																	of Patient</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example" id="genderwise">
+																<!-- <button type="button" class="type btn btn-primary" id="day" onclick="callGenderWisePatient('day')">Day</button>
+																<button type="button" class="type btn btn-primary" id="week" onclick="callGenderWisePatient('week')">Week</button>
+																<button type="button" class="type btn btn-default" id="month" onclick="callGenderWisePatient('month')">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="Progress"
+															style="height: 400px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Area wise Total
+																	Health Checkup</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example" id="areawise">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="screening"
+															style="height: 400px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Age Wise Total Health Check-up</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example" id="agewise">
+															<!-- 	<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+													<div style="width: 100%; clear: both;">
+														<figure class="highcharts-figure">
+															<div id="agewise_health" style="height: 400px;"></div>
+														</figure>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+
+
+
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Disease
+																	Male/Female</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example" id="diseaseMaleFemale">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+													<div style="width: 100%; clear: both;">
+														<figure class="highcharts-figure">
+															<div id="Disease" style="height: 400px;"></div>
+														</figure>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<!-- <div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Daily Health
+																	Checkup Count</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="dailycount"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div> -->
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Total Health
+																	Checkup Status</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="healthcheckup"
+															style="height: 420px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+										<!-- <div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Location wise
+																	Report</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="locationwisereport"
+															style="height: 420px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div> -->
+
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">High Risk Data
+																	Location Wise</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="highriskdata"
+															style="height: 420px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Test wise Health Check-up</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div style="width: 100%; clear: left;">
+														<div class="highcharts-figure" id="diseasewisetotal"
+															style="height: 420px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+
+
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Top Trending
+																	Disease</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<!-- <button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button> -->
+															</div>
+														</div>
+													</div>
+
+
+													<div
+														style="width: 100%; clear: left; height: 350px;">
+														<div class="highcharts-figure" id="toptrendingdisease"
+															style="height: 366px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div id="diseasewisepie"></div>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Total BP</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+													<div
+														style="width: 100%; overflow-y: hidden; overflow-x: scroll; white-space: nowrap;">
+														<div class="highcharts-figure" id="bp"
+															style="height: 350px;"></div>
+													</div>
+
+
+												</div>
+											</div>
+										</div>
+
+
+
+										 <div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Total Health
+																	checkup</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+													<div
+														style="width: 100%; overflow-y: hidden; overflow-x: scroll; white-space: nowrap;">
+														<div class="highcharts-figure" id="hcpie"
+															style="height: 350px;"></div>
+													</div>
+												</div>
+											</div>
+										</div> 
+
+										 <div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">Weight Wise
+																	Analysis</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+													<div
+														style="width: 100%; overflow-y: hidden; overflow-x: scroll; white-space: nowrap;">
+														<div class="highcharts-figure" id="weightpie"
+															style="height: 350px;"></div>
+													</div>
+												</div>
+											</div>
+										</div> 
+
+										 <div class="col-xl-6 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<div class="d-flex">
+														<div class="col-xl-7">
+															<h4 class="card-title mt-4">
+																<strong style="color: #007bff;">BMI</strong>
+															</h4>
+														</div>
+														<div class="col-xl-5">
+															<div class="btn-group" role="group"
+																aria-label="Basic example">
+																<button type="button" class="btn btn-primary">Day</button>
+																<button type="button" class="btn btn-primary">Week</button>
+																<button type="button" class="btn btn-default">Month</button>
+															</div>
+														</div>
+													</div>
+													<div
+														style="width: 100%; overflow-y: hidden; overflow-x: scroll; white-space: nowrap;">
+														<div class="highcharts-figure" id="bmi"
+															style="height: 350px;"></div>
+													</div>
+												</div>
+											</div>
+										</div> 
+										
+										<!-- <div class="col-xl-12 stretch-card padding_5">
+											<div class="card">
+												<div class="card-body">
+													<img src="assets/images/bihar_district_map.png" class="img-fluid">
+												</div>
+											</div>
+										</div> -->
+									</div>
+
+
+
+								</div>
+
+								<!-- partial -->
+							</div>
+							<!-- main-panel ends -->
+						</div>
+						<!-- page-body-wrapper ends -->
+					</div>
+					<!-- container-scroller -->
+					<!-- plugins:js -->
+					<!-- plugins:js -->
+
+					<!-- End custom js for this page -->
+				</div>
+			</div>
+		<!-- </div> -->
+
+		<div id="msgModal" class="modal fade show" aria-modal="true">
+			<div class="modal-dialog modal-confirm">
+				<div class="modal-content">
+					<div class="modal-header flex-column">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">
+							<i class="ti-close modal-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p id="messageParagraph"></p>
+					</div>
+					<div class="modal-footer justify-content-center"
+						style="margin-top: -8px;">
+						<button type="button" class="btn3" id="msgOkModal"
+							onclick="hideMsgModal()">Ok</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<!-- </div> -->
+	<!-- main-panel ends -->
+	<script src="../assets/js/extend/grid.js"></script>
+	<script src="../assets/js/extend/tree-table.js"></script>
+	<script src="../assets/js/extend/new-extend.js"></script>
+	<script src="../assets/js/extend/date-format.js"></script>
+	<script>
+	
+	var state = $("#stId").val();
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+	
+	today = yyyy + "-" + mm + "-" + dd;
+	//gender wise
+	function callGenderWisePatient(type) {
+		
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-genderWise-patientno?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				
+				if (response.message == "success") {
+					
+					
+					
+					var a = [];
+					for(var i = 0; i < response.body.length; i++) {
+						a.push(response.body[i].createdDate);
+					}
+					
+					var unique = a.filter((item, i, ar) => ar.indexOf(item) === i);
+					
+					var male = [];
+					var female = [];
+					for(var i = 0; i < response.body.length; i++) {
+						for(var j = 0; j < unique.length; j++) {
+							if(unique[j] == response.body[i].createdDate && response.body[i].gender == "MALE") {
+								male.push(parseInt(response.body[i].counter))
+							}
+							if(unique[j] == response.body[i].createdDate && response.body[i].gender == "FEMALE") {
+								female.push(parseInt(response.body[i].counter))
+							}
+						}
+					}
+					
+					
+					
+					Highcharts.chart('Progress', {
+					    chart: {
+					        type: 'areaspline'
+					    },
+					    title: {
+					        text: 'Average fruit consumption during one week'
+					    },
+					    legend: {
+					        layout: 'vertical',
+					        align: 'left',
+					        verticalAlign: 'top',
+					        x: 150,
+					        y: 100,
+					        floating: true,
+					        borderWidth: 1,
+					        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
+					    },
+					    xAxis: {
+					        categories: unique,
+					        plotBands: [{ // visualize the weekend
+					            from: 4.5,
+					            to: 6.5,
+					            color: 'rgba(68, 170, 213, .2)'
+					        }]
+					    },
+					    yAxis: {
+					        title: {
+					            text: 'Fruit units'
+					        }
+					    },
+					    exporting: {
+					        enabled: false
+					    },
+					    tooltip: {
+					        shared: true,
+					        valueSuffix: ' '
+					    },
+					    credits: {
+					        enabled: false
+					    },
+					    plotOptions: {
+					        areaspline: {
+					            fillOpacity: 0.5
+					        }
+					    },
+					    series: [{
+					        name: 'Male',
+					        data: male
+					    }, {
+					        name: 'Female',
+					        data: female
+					    }]
+					});
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	
+function callCountTestDetails(type) {
+		
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-count-testDetails?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				console.log(response);
+				if (response.message == "success") {
+					
+					console.log(response.body)
+					$("#totalRegs").text(response.body.totalRegs);
+					$("#total_tested").text(response.body.total_tested);
+					$("#total_normal").text(response.body.total_normal);
+					$("#total_abnrml").text(response.body.total_abnrml);
+					$("#total_highrisk").text(response.body.total_highrisk);
+					$("#todays_regs").text(response.body.todays_regs);
+					$("#total_smpl_clctd").text(response.body.total_tested);
+					$("#total_smpl_prcsd").text(response.body.total_tested);
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	
+function hideDashboardContent(id) {
+	$("#hidedashboard").hide();
+	$("#showdashboard").show();
+	getAgGridData(id);
+}
+
+function getAgGridData(id) {
+	var stateId = "";
+	 stateId=$("#stId").val();
+	 
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	gridOptions.api.setRowData();
+	
+	agGrid.simpleHttpRequest({
+		url : "cmdashboard-view-regd?stateId="+ stateId+"&typeId="+id,
+	}).then(function(data) {
+		gridOptions.api.setRowData(data);
+	});
+};
+
+var columnDefs = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+}, {
+	headerName : "UserId",
+	field : "ehealthId"
+}, {
+	headerName : "Name",
+	field : "patName",
+	width : 200,
+}, {
+	headerName : "Mobile",
+	field : "patMob",
+	width : 200,
+}, {
+	headerName : "Email id",
+	field : "email",
+	width : 200,
+	hide:true
+}, {
+	headerName : "Date",
+	field : "screeningDate",
+	width : 200,
+}, {
+
+
+	headerName : "Report",
+	field : "report",
+	width : 228,
+	cellRenderer: function(params) {
+    	console.log(params); 
+        s = "";
+        s = ' <a href="#" class="grn-btn" onclick="pdfGatePass(\''+params.data.ehealthId+'\',\''+params.data.screeningDate+'\')"><i class="ti ti-download"></i> Report</a>';
+        //s = ' <a href="#"  onclick="pdfGatePass(\''+params.data.ehealthId+'\')"><i class="ti ti-download"></i> Report</a>';
+         return s;
+	}
+		}];
+
+var gridOptions = {
+	columnDefs : columnDefs,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	suppressRowClickSelection : true,
+	
+
+};
+function pdfGatePass(id1,id2) {	
+	var id = window.btoa(id1);
+	window.open("/user/view-patient-test-report-pdf-download?id=" +id+'&id2='+id2 , '_blank');
+	//window.open("/user/view-patient-test-report-pdf-download?id=" +id , '_blank');
+}
+
+	//area wise
+	
+	
+	function callAreaWisePatient(type) {
+		
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-areaWise-patientno?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				
+				if (response.message == "success") {
+					
+					
+					
+					var area = [];
+					for(var i = 0; i < response.body.length; i++) {
+						area.push(response.body[i].area);
+					}
+					
+					
+					var count = [];
+					
+					for(var i = 0; i < response.body.length; i++) {
+						count.push(parseInt(response.body[i].counter));
+					}
+					
+					
+
+					Highcharts.chart('screening', {
+
+					    chart: {
+					        type: 'column',
+					    backgroundColor: 'transparent'
+					    },
+
+					    title: {
+					        text: ''
+					    },
+
+					    xAxis: {
+					        categories: area
+					    },
+
+					    yAxis: {
+					        allowDecimals: false,
+					        min: 0,
+					        title: {
+					            text: 'Number of fruits'
+					        }
+					    },
+
+					    tooltip: {
+					        pointFormat: '<span>{series.name}</span>: <b>{point.y}</b><br/>',
+					        shared: true
+					    },
+
+					    plotOptions: {
+					        column: {
+					            stacking: 'normal'
+					        }
+					    },
+					  
+					   credits: {
+					          enabled: false
+					           },
+					  exporting: { enabled: false },
+
+					    series: [{
+					        name: 'Health Checkup',
+					        color:'#4AAAF5',
+					        pointWidth:15,
+					        data: count,
+					        stack: 'Male'
+					    }
+					  
+					  ]
+					});
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	
+	
+	function callAgeWisePatient(type) {
+		
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-ageWise-patientno?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				
+				if (response.message == "success") {
+					
+					
+					
+					var age = [];
+					for(var i = 0; i < response.body.length; i++) {
+						age.push(response.body[i].age);
+					}
+					
+					
+					var count = [];
+					
+					for(var i = 0; i < response.body.length; i++) {
+						count.push(parseInt(response.body[i].counter));
+					}
+					
+					
+
+					Highcharts.chart('agewise_health', {
+						  chart: {
+						    type: 'bar'
+						  },
+						  title: {
+						    text: ''
+						  },
+						  exporting: { enabled: false },
+						  subtitle: {
+						    text: ''
+						  },
+						  xAxis: {
+						    categories: age,
+						    title: {
+						      text: null
+						    }
+						  },
+						  yAxis: {
+						    min: 0,
+						    title: {
+						      text: 'Population (millions)',
+						      align: 'high'
+						    },
+						    labels: {
+						      overflow: 'justify'
+						    }
+						  },
+						  tooltip: {
+						    valueSuffix: ' '
+						  },
+						  plotOptions: {
+						    bar: {
+						      dataLabels: {
+						        enabled: true
+						      }
+						    }
+						  },
+						  legend: {
+						    layout: 'vertical',
+						    align: 'right',
+						    verticalAlign: 'top',
+						    x: -40,
+						    y: 80,
+						    floating: true,
+						    borderWidth: 1,
+						    backgroundColor:
+						      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+						    shadow: true
+						  },
+						  credits: {
+						    enabled: false
+						  },
+						  series: [{
+						    name: ' ',
+						    data: count
+						  }]
+						});
+
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	
+	
+	function callDieaseWiseMaleFemalePatient(type){
+	$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-diseaseWise-patientno?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				
+				if (response.message == "success") {
+					
+					
+					
+						var a = [];
+					for(var i = 0; i < response.body.length; i++) {
+						a.push(response.body[i].testGroup);
+					}
+					
+					var unique = a.filter((item, i, ar) => ar.indexOf(item) === i);
+					console.log(unique)
+					console.log(response)
+					var male = [];
+					var female = [];
+					for(var i = 0; i < response.body.length; i++) {
+						for(var j = 0; j < unique.length; j++) {
+							console.log(unique[j])
+							if(unique[j] == response.body[i].testGroup && response.body[i].gender == "MALE") {
+								male.push(parseInt(response.body[i].counter))
+							}
+							if(unique[j] == response.body[i].testGroup &&  response.body[i].gender == "FEMALE") {
+								female.push(parseInt(response.body[i].counter))
+							}
+						}
+					}
+					
+					console.log(male);
+					console.log(female);
+					
+
+					Highcharts.chart('Disease', {
+					    chart: {
+					      backgroundColor: 'transparent',
+					        type: 'column'
+					    },
+					    title: {
+					        text: ''
+					    },
+					   
+					    xAxis: {
+					        categories:a,
+					        crosshair: true
+					    },
+					    yAxis: {
+					        min: 0,
+					        title: {
+					            text: '(mm)'
+					        }
+					    },
+					    tooltip: {
+					        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+					        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+					            '<td style="padding:0"><b>{point.y} </b></td></tr>',
+					        footerFormat: '</table>',
+					        shared: true,
+					        useHTML: true
+					    },
+					    plotOptions: {
+					        column: {
+					            pointPadding: 0.2,
+					            borderWidth: 0
+					        }
+					    },
+					  
+					   credits: {
+					          enabled: false
+					           },
+					  exporting: { enabled: false },
+					  
+					    series: [{
+					        name: 'Male',
+					    color:'#e78d05',
+					        data: male
+
+					    }, {
+					        name: 'Female',
+					    color:'#18af7e',
+					        data: female
+
+					    }]
+					});
+
+					
+					
+
+				}
+			},
+
+		});
+	}
+	
+	//top treanding disease report
+	function callTopTreandingDisease(type) {
+			
+			$(".type").removeClass("btn-primary btn-default");
+			
+			if(type == "day") {
+				$("#genderwise #day").addClass("btn-default");
+				$("#genderwise #month").addClass("btn-primary");
+				$("#genderwise #week").addClass("btn-primary");
+			}
+			if(type == "week") {
+				$("#genderwise #day").addClass("btn-primary");
+				$("#genderwise #month").addClass("btn-primary");
+				$("#genderwise #week").addClass("btn-default");
+			}
+			if(type == "month") {
+				$("#genderwise #day").addClass("btn-primary");
+				$("#genderwise #month").addClass("btn-default");
+				$("#genderwise #week").addClass("btn-primary");
+			}
+			
+			$.ajax({
+				type : "GET",
+				url : "cmdashboard-top-treanding-disease?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+				success : function(response) {
+					console.log(response);
+					if (response.message == "success") {
+						
+						console.log(response.body)
+						
+						var testGroup = [];
+						for(var i = 0; i < response.body.length; i++) {
+							testGroup.push(response.body[i].testGroup);
+						}
+						
+						
+						var count = [];
+						
+						for(var i = 0; i < response.body.length; i++) {
+							count.push(parseFloat(response.body[i].counter));
+						}
+						
+						console.log(count);
+
+						Highcharts.chart('toptrendingdisease', {
+						    chart: {
+						        type: 'bar',
+						        backgroundColor: 'transparent',
+						        color: 'black',
+						    },
+						    title: {
+						        text: ''
+						    },
+						    exporting: { enabled: false },
+						 credits: {
+						    enabled: false
+						    },
+						    xAxis: {
+						        categories:testGroup,
+						        title: {
+						            text: null
+						        }
+						         
+						    },
+						    yAxis: {
+						        min: 0,
+						        color: 'black',
+						        gridLineWidth: 0,
+						        title: {
+						            text: '',
+						            align: 'high'
+						        },
+						       labels: {
+						        format: '{value}'
+						       }
+						    },
+						    tooltip: {
+						        valueSuffix: ' '
+						    },
+						    plotOptions: {
+						        bar: {
+						            dataLabels: {
+						                enabled: true
+						            }
+						        }
+						    },
+						    
+
+						    series: [{
+						        colorByPoint: false,
+						        showInLegend: false,
+						        colorByPoint: true,
+						        dataLabels: {
+						            enabled: true,
+						            format: '{point.y:.1f}%'
+						          },
+						        data: count
+						    }
+						  
+						  ]
+						});
+
+
+
+						
+						
+
+					}
+				},
+
+			});
+	}
+	function callDiseaseWiseTotal(type){
+
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-dieaseWise-patientno?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				console.log(response);
+				if (response.message == "success") {
+					
+					console.log("hi")
+					console.log(response.body)
+					 
+					var disese = [];
+					for(var i = 0; i < response.body.length; i++) {
+						disese.push(response.body[i].testGroup);
+					}
+					
+					
+					var count = [];
+					
+					for(var i = 0; i < response.body.length; i++) {
+						count.push(parseInt(response.body[i].counter));
+					} 
+					/*diseasewisetotal*/
+
+					Highcharts.chart('diseasewisetotal', {
+					  chart: {
+					    type: 'column'
+					  },
+					  title: {
+					    text: ''  },
+					  subtitle: {
+					    text: ''
+					  },
+					  credits: {
+					          enabled: false
+					           },
+					  exporting: { enabled: false },
+					  xAxis: {
+					    categories:disese,
+					    crosshair: true
+					  },
+					  yAxis: {
+					    min: 0,
+					    title: {
+					      text: ''
+					    }
+					  },
+					  tooltip: {
+					    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+					    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+					      '<td style="padding:0"><b>{point.y:1f} </b></td></tr>',
+					    footerFormat: '</table>',
+					    shared: true,
+					    useHTML: true
+					  },
+					  plotOptions: {
+					    column: {
+					      pointPadding: 0.2,
+					      borderWidth: 0
+					    }
+					  },
+					  series: [{
+					    name: 'Disease',
+					    data: count
+
+					  }]
+					});
+				}
+			}
+		})
+	}
+	
+	//Total Health Check Up Status
+
+
+	function callTotalHealthCheckUpStatus(type) {
+		
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-total-health-checkup-status?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				console.log(response);
+				if (response.message == "success") {
+					
+					console.log(response.body)
+					
+					var riskStatus = [];
+					for(var i = 0; i < response.body.length; i++) {
+						riskStatus.push(response.body[i].riskStatus);
+					}
+					
+					
+					var count = [];
+					
+					for(var i = 0; i < response.body.length; i++) {
+						count.push(parseInt(response.body[i].counter));
+					}
+					
+					console.log(count);
+
+					Highcharts.chart('healthcheckup', {
+
+					    chart: {
+					        type: 'column',
+					    backgroundColor: 'transparent'
+					    },
+
+					    title: {
+					        text: ''
+					    },
+
+					    xAxis: {
+					        categories: riskStatus
+					    },
+
+					    yAxis: {
+					        allowDecimals: false,
+					        min: 0,
+					        title: {
+					            text: ''
+					        }
+					    },
+
+					    tooltip: {
+					        pointFormat: '<span>{series.name}</span>: <b>{point.y}</b><br/>',
+					        shared: true
+					    },
+
+					    plotOptions: {
+					        column: {
+					            stacking: 'normal'
+					        }
+					    },
+					  
+					   credits: {
+					          enabled: false
+					           },
+					  exporting: { enabled: false },
+
+					    series: [{
+					    	colorByPoint: true,
+					        name: 'Health Checkup',
+					     color:'#4AAAF5',
+					        data: count,
+					        stack: 'Male',
+					        pointWidth:15
+
+					    }
+					  
+					  ]
+					});
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	
+	//High Risk Data Location Wise
+
+
+	function callHighRiskLocationWise(type) {
+		//alert("hi")
+		$(".type").removeClass("btn-primary btn-default");
+		
+		if(type == "day") {
+			$("#genderwise #day").addClass("btn-default");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		if(type == "week") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-primary");
+			$("#genderwise #week").addClass("btn-default");
+		}
+		if(type == "month") {
+			$("#genderwise #day").addClass("btn-primary");
+			$("#genderwise #month").addClass("btn-default");
+			$("#genderwise #week").addClass("btn-primary");
+		}
+		
+		$.ajax({
+			type : "GET",
+			url : "cmdashboard-high-risk-data-location-wise?state="+ window.btoa(state) + "&date=" + window.btoa(today) + "&type=" + window.btoa(type),
+			success : function(response) {
+				console.log(response);
+				if (response.message == "success") {
+					
+					console.log("222222222"+response)
+					
+					var area = [];
+					for(var i = 0; i < response.body.length; i++) {
+						area.push(response.body[i].phc);
+					}
+					
+					
+					var count = [];
+					
+					for(var i = 0; i < response.body.length; i++) {
+						count.push(parseInt(response.body[i].counter));
+					}
+					
+					console.log(count);
+
+					Highcharts.chart('highriskdata', {
+
+					    chart: {
+					        type: 'column',
+					    backgroundColor: 'transparent'
+					    },
+
+					    title: {
+					        text: ''
+					    },
+
+					    xAxis: {
+					        categories: area
+					    },
+
+					    yAxis: {
+					        allowDecimals: false,
+					        min: 0,
+					        title: {
+					            text: 'Number of fruits'
+					        }
+					    },
+
+					    tooltip: {
+					        pointFormat: '<span>{series.name}</span>: <b>{point.y}</b><br/>',
+					        shared: true
+					    },
+
+					    plotOptions: {
+					        column: {
+					            stacking: 'normal'
+					        }
+					    },
+					  
+					   credits: {
+					          enabled: false
+					           },
+					  exporting: { enabled: false },
+
+					    series: [{
+					        name: 'Health Checkup',
+					        color:'#4AAAF5',
+					        pointWidth:15,
+					        data: count,
+					        stack: 'Male'
+
+					    }
+					  
+					  ]
+					});
+					
+					
+
+				}
+			},
+
+		});
+		
+	}
+	$(document).ready(function(){
+		
+		callGenderWisePatient('day');
+		callAreaWisePatient('day');
+		callAgeWisePatient('day');
+		callDieaseWiseMaleFemalePatient('day');
+		 callCountTestDetails('day');
+		 
+		  callTopTreandingDisease('day');
+		  callDiseaseWiseTotal('day');
+		  	callTotalHealthCheckUpStatus('day')
+		  	 callHighRiskLocationWise('day')
+		  	
+/* Highcharts.chart('toptrendingdisease', {
+    chart: {
+        type: 'bar',
+        backgroundColor: 'transparent',
+        color: 'black',
+    },
+    title: {
+        text: ''
+    },
+    exporting: { enabled: false },
+ credits: {
+    enabled: false
+    },
+    xAxis: {
+        categories: ['Cardiovascular Disease', 'Neonatal', 'Lower respiratory infections', 'Malaria', 'Diarrheal disease', 'Cancers','Tuberculosis','Diabetes','Nutritional disinfection','Protein-energy malnutrition','Digestive disease','Respiratory disease','Road Incidents','Liver diseases','Maternal deaths', 'Dementia','Homicide','Suicide','Kidney diseases','Drowning','Fire','Intestinal infectious disease','Hepatitis','Alcohol disorders','Drug disorders','Heat Related (hot and cold exposure)','Parkinson disease','Conflict','Natural disasters'],
+        title: {
+            text: null
+        }
+         
+    },
+    yAxis: {
+        min: 0,
+        color: 'black',
+        gridLineWidth: 0,
+        title: {
+            text: '',
+            align: 'high'
+        },
+       labels: {
+        format: '{value}'
+       }
+    },
+    tooltip: {
+        valueSuffix: ' '
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    
+
+    series: [{
+        colorByPoint: false,
+        showInLegend: false,
+        data: [12.38, 9.42, 8.45, 8.32, 7.87, 6.87, 5.23, 3.75, 2.72, 2.45, 2.4, 2, 1.9, 1.85, 1.72, 1.55, 1.33, 1.22, 1.11, 1.00, 0.99, 0.87,0.82, 0.77, 0.35, 0.22, 0.15, 0.09, 0.05, 0.02, 0.01]
+    }
+  
+  ]
+});
+		 */
+
+
+           
+/*locationwisereport*/
+
+/* Highcharts.chart('locationwisereport', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: ''  },
+  subtitle: {
+    text: ''
+  },
+  credits: {
+          enabled: false
+           },
+  exporting: { enabled: false },
+  xAxis: {
+    categories: [
+      'Total',
+      'DHH',
+      'Jarongali',
+      'Hemgiri',
+      'Lephiripada',
+      'Kadobahal',
+      'DAV MAC',
+      'Tilaknagar',
+      'Kerai',
+      'Rangadhipa'
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: ''
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'Disease',
+    data: [2700, 2400, 2000, 1700, 1400, 1111, 700, 300, 200, 400]
+
+  }]
+}); */
+
+/*diseasewisetotal*/
+
+Highcharts.chart('diseasewisetotal', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: ''  },
+  subtitle: {
+    text: ''
+  },
+  credits: {
+          enabled: false
+           },
+  exporting: { enabled: false },
+  xAxis: {
+    categories: [
+      'CBC',
+      'Liver',
+      'BP',
+      'BMI',
+      'Sugar',
+      'Cholesterol',
+      'Kidney',
+      'Urine Examination',
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: ''
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'Disease',
+    data: [2700, 2400, 2000, 1700, 1400, 1111, 700, 300]
+
+  }]
+});
+
+
+Highcharts.chart('highriskdata', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: ''  },
+  subtitle: {
+    text: ''
+  },
+  credits: {
+          enabled: false
+           },
+  exporting: { enabled: false },
+  xAxis: {
+    categories: [
+      'Chandi',
+      'Sarad Hospital',
+      'Kalyan Bigha',
+      'Lephiripada',
+      'Kadobahal',
+      'Rangadhipa',
+      'DAV MAC',
+      'Tilaknagar',
+      'Kerai'
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: ''
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'Disease',
+    data: [2700, 2400, 2000, 1700, 1400, 1111, 700, 300, 200]
+
+  }]
+});
+
+Highcharts.chart('healthcheckup', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: ''
+  },
+  subtitle: {
+    text: ''
+  },
+  credits: {
+          enabled: false
+           },
+  exporting: { enabled: false },
+  xAxis: {
+    categories: [
+      'Total',
+      'Normal',
+      'Low Risk',
+      'High Risk'
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: ''
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: 'Disease',
+    data: [2739, 1220, 1200, 319]
+
+  }]
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Highcharts.chart('dailycount', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: ''
+  },
+  credits: {
+      enabled: false
+       },
+exporting: { enabled: false },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    categories: [
+      '0 Checkup',
+      'upto2 Checkup',
+      'upto3 Checkup',
+      'upto4 Checkup',
+      'upto5 Checkup'
+    ],
+    crosshair: true
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: ''
+    }
+  },
+  tooltip: {
+    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+      '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+    footerFormat: '</table>',
+    shared: true,
+    useHTML: true
+  },
+  plotOptions: {
+    column: {
+      pointPadding: 0.2,
+      borderWidth: 0
+    }
+  },
+  series: [{
+    name: '0-18 Years',
+    data: [49.9, 71.5, 106.4, 129.2, 144.0]
+
+  }, {
+    name: '19-30 Years',
+    data: [83.6, 78.8, 98.5, 93.4, 106.0]
+
+  }, {
+    name: '31-40 Years',
+    data: [48.9, 38.8, 39.3, 41.4, 47.0]
+
+  }, {
+    name: '41-50 Years',
+    data: [42.4, 33.2, 34.5, 39.7, 52.6]
+  },
+  {
+    name: '51-60 Years',
+    data: [42.4, 33.2, 34.5, 39.7, 52.6]
+
+  },
+  {
+    name: 'Above 60',
+    data: [75.5, 57.4, 60.4, 47.6, 39.1]
+
+  }]
+});
+ */
+
+
+
+
+ Highcharts.chart('diseasewisepie', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: ''
+  },
+  exporting: { enabled: false },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: ''  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true
+    }
+  },
+  series: [{
+    name: 'Brands',
+    colorByPoint: true,
+    data: [{
+      name: 'Hypertention',
+      y: 30.41,
+      sliced: true,
+      selected: true
+    }, {
+      name: 'Sugar',
+      y: 21.84
+    }, {
+      name: 'Liver Diseases',
+      y: 10.85
+    }, {
+      name: 'Kidney Diseases',
+      y: 14.67
+    }, {
+      name: 'Cholesterol',
+      y: 4.18
+    }, {
+      name: 'Caltium',
+      y: 9.05
+    },
+    {
+      name: 'Potatium',
+      y: 7.05
+    },
+    {
+      name: 'hemoglobine',
+      y: 11.05
+    }]
+  }]
+}); 
+
+
+ Highcharts.chart('bp', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 60
+  },
+  exporting: { enabled: false },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: ''
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: 180,
+      endAngle: 90,
+      center: ['50%', '50%'],
+      size: '100%'
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Browser share',
+    innerSize: '50%',
+    data: [
+      ['Hypertention',65.9],
+      ['Hypotention', 34.1],
+      
+     
+    ]
+  }]
+}); 
+
+
+Highcharts.chart('hcpie', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 60
+  },
+  exporting: { enabled: false },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: ''
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: 180,
+      endAngle: 90,
+      center: ['50%', '50%'],
+      size: '100%'
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Browser share',
+    innerSize: '50%',
+    data: [
+      ['Normal',30.9],
+      ['Low Risk',25.1],
+      ['High Risk',15.9],
+      ['Critical', 28.1]
+      
+     
+    ]
+  }]
+});
+ 
+
+Highcharts.chart('weightpie', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 60
+  },
+  exporting: { enabled: false },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: ''
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: 180,
+      endAngle: 90,
+      center: ['50%', '50%'],
+      size: '100%'
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Browser share',
+    innerSize: '50%',
+    data: [
+      ['Overweight',20.5],
+      ['Underweight',20.5],
+      ['Obese',59.0],
+    ]
+  }]
+});
+
+
+Highcharts.chart('bmi', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: 0,
+    plotShadow: false
+  },
+  title: {
+    text: '',
+    align: 'center',
+    verticalAlign: 'middle',
+    y: 60
+  },
+  exporting: { enabled: false },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: ''
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        enabled: true,
+        distance: -50,
+        style: {
+          fontWeight: 'bold',
+          color: 'white'
+        }
+      },
+      startAngle: 180,
+      endAngle: 90,
+      center: ['50%','50%'],
+      size: '100%'
+    }
+  },
+  series: [{
+    type: 'pie',
+    name: 'Browser share',
+    innerSize: '50%',
+    data: [
+      ['Normal',20.5],
+      ['abnormal',20.5],
+      ['Total',59.0],
+    ]
+  }]
+});
+	})
+	
+	</script>
+</body>
+</html>

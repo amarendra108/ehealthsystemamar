@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script>
+
+$(document).ready(function(){
+	 var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+	
+	agGrid.simpleHttpRequest({
+		url : "asset-maintenance-policyview"
+	}).then(function(data) {
+		var len = data.length;
+		$('#totalReq').find('span').html(len);
+		gridOptions.api.setRowData(data);
+	})
+	
+	
+	/* ----------------------//date formater---------------------------- */
+
+	var dateFormat = localStorage.getItem("dateFormat");
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#performedDate').val($(this).val());
+		})
+
+		$('#performedDate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+		
+}); 	
+		
+	/* ----------------------------//search bar for mygrid--------------------------------- */
+
+
+	/*  function onQuickFilterChanged() {
+					gridOptions.api.setQuickFilter(document
+							.getElementById('quickFilter').value);
+				}
+
+				function cancelBar() {
+					var id = document.getElementById("closeKey");
+					id.style.display = "block";
+
+					if ($('#quickFilter').val() == null
+							|| $('#quickFilter').val() == "") {
+						id.style.display = "none";
+					}
+				} */
+
+			
+
+	
+	/* -----------------------------//ag Grid----------------------------------- */
+		
+	const columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				suppressCellSelection : true,
+				suppressRowClickSelection : false,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+
+			{
+				headerName : 'Policy ID',
+				field : "policyId",
+				cellRenderer : function(params) {
+					return '<a onclick=viewDetails("' + params.data.policyId
+							+ '") href="javascript:void(0)">'
+							+ params.data.policyId + '</a>';
+				}
+			}, {
+				headerName : 'Product ID',
+				field : "productId",
+				hide : true
+			}, {
+				headerName : 'Product Name',
+				field : "productName"
+			}, {
+				headerName : 'Product ID',
+				field : "productId",hide : true
+			}, {
+				headerName : 'Frequency ID',
+				field : "frequencyId",hide : true
+			}, {
+				headerName : 'Service Type ID',
+				field : "serviceTypeId",hide : true
+			}, {
+				headerName : 'Service Type',
+				field : "serviceType"
+			}, {
+				headerName : 'Service Name',
+				field : "serviceName"
+			}, {
+				headerName : 'Frequency',
+				field : "frequency",
+			}, {
+				headerName : 'Task to be performed',
+				field : "taskPerformed"
+			}
+
+	];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 180,
+			height : 10
+		},
+		getRowNodeId : function(data) {
+			return data.policyId;
+		}
+	};
+
+	
+	/* -----------------------//function for getting the data in sidenav through id--------------------------- */ 
+	
+	function viewDetails(id) {
+		var x = parseInt(id);
+		var rowNode = gridOptions.api.getRowNode(x);
+		var dataNode = rowNode.data;
+		
+		$("#policyId").val(dataNode.policyId);
+		$("#serviceType").val(dataNode.serviceType);
+		$("#serviceName").val(dataNode.serviceName);
+		$("#frequency").val(dataNode.frequency);
+		$('#taskPerformed').val(dataNode.taskPerformed);
+		$("#frequencyId").val(dataNode.frequencyId);
+		$('#serviceTypeId').val(dataNode.serviceTypeId);
+		$("#productId").val(dataNode.productId);
+		$("#assetCodeName").val("");
+		$("#assetCodeId").val("");
+		$("#performedDate").val("");
+		$("#price").val("");
+		$("#desc").val("");
+		
+		openNav();
+
+	}
+
+	
+	/* -------------------------// sidenav------------------------------ */
+	
+	function openNav() {
+
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("main_contentClrnc").style.width = "72%";
+		$("#myGrid").show();
+		$('#new').hide();
+		$('#cancel').show();
+		$('#save').show();
+		
+		
+	}
+
+	function closeNav() {
+		
+		$("#policyId").val("");
+		$("#serviceType").val("");
+		$("#serviceName").val("");
+		$("#frequency").val("");
+		$('#taskPerformed').val("");
+		$("#frequencyId").val("");
+		$('#serviceTypeId').val("");
+		$("#productId").val("");
+		$("#assetCodeName").val("");
+		$("#assetCodeId").val("");
+		$("#new").show();
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_contentClrnc").style.width = "100%";
+	}
+	
+	
+	
+	/* -----------------------------//Auto search asset list-------------------------------- */
+	
+	function getAssetList() {
+		var search = $("#assetCodeName").val();
+		
+		if(search == ""){
+			$("#suggesstion-box1_").hide();
+			}
+		
+		if (search) {
+
+					$.ajax({
+						type : "POST",
+						url : "asset-maintenance-list",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								//console.log(response);
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autosearch-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutosearchValue1(\''
+												+ response.body[i].assetCodeId
+												+ '\',\''
+												+ response.body[i].assetCodeName
+												+ '\')">'
+												+ response.body[i].assetCodeName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autosearch-list1">';
+									content += '<div onClick="selectAutocompleteValue()">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+				})
+		   }
+	   }
+	
+	
+	function selectAutosearchValue1(assetCodeId, assetCodeName) {
+
+		if (assetCodeId) {
+			
+				$("#assetCodeName").val(assetCodeName);
+				$("#assetCodeId").val(assetCodeId);
+				$("#search").val(assetCodeName)
+				$("#search").attr('data-procat', assetCodeId);
+				$("#suggesstion-box1_").hide();
+
+		} else {
+
+				$("#assetCodeName").val("");
+				$("#assetCodeId").val("");
+				$("#search").val("");
+				$("#search").attr('data-procat', "");
+				$("#suggesstion-box1_").hide();
+		}
+	}
+	
+	function selectAutocompleteValue() {
+		
+		$("#assetCodeName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+	} 
+	
+	
+	/* //----------------------------save all details----------------------------------- */
+	
+	function addDetails(){
+		
+		var obj = {};
+		obj.maintenanceId = $("#maintenanceId").val();
+		obj.serviceTypeId = $("#serviceTypeId").val();
+		obj.serviceName = $("#serviceName").val();
+		obj.frequencyId = $("#frequencyId").val();
+		obj.taskPerformed = $("#taskPerformed").val();
+		obj.assetCodeId = $("#assetCodeId").val();
+		obj.performedDate = $("#performedDate").val();
+		obj.policyId = $("#policyId").val();
+		obj.productId = $("#productId").val();
+		obj.price = $("#price").val();
+		obj.desc = $("#desc").val();
+		
+		var validation = true;
+
+		if (obj.performedDate == null || obj.performedDate == "") {
+			validation = validationUpdated("Performed Date Required",
+					"performedDate");
+		}
+		if (obj.price == null || obj.price == "") {
+			validation = validationUpdated("Price Required",
+					"price");
+		}
+		if (obj.desc == null || obj.desc == "") {
+			validation = validationUpdated("Description Required", "desc");
+		}
+		if (obj.assetCodeName == null || obj.assetCodeName == "") {
+			validation = validationUpdated("Asset Code Required", "assetCodeName");
+		}
+		
+		if (validation) {
+
+		
+			$.ajax({
+				type : "POST",
+				url : "asset-maintenance-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+						if (response.message == "Success") {
+									
+									closeNav();
+											
+									agGrid.simpleHttpRequest({
+										url : "asset-maintenance-policyview"
+									}).then(function(data) {
+										gridOptions.api.setRowData(data);
+									});
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+		}
+	}
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+				<div class="content_padding">
+
+	<!-- ------------------search bar for agGrid--------------------- -->
+		
+					<!-- <div class="row margin_topbot" id="searchRowDiv">
+						<div class="input-style row">
+							<input type="text" placeholder="Search.." name="search"
+								class="searchboxinput" onkeyup="cancelBar()"
+								oninput="onQuickFilterChanged()" id="quickFilter">
+							<div class="searchicon">
+								<a href="javascript:void(0)"><span
+									style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+									id="closeKey"
+									onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+									class="close_i"><i class="ti-close srchicon"></i></span></a><a
+									href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+							</div>
+						</div>
+					</div> -->
+
+					<div id="main_contentClrnc">
+					
+	<!-- ---------------------sideNav--------------------------  -->
+					
+							<div id="mySidenav" class="sidenav">
+								<input type="hidden" id="policyId"> 
+								<input type="hidden" id="productId">
+									<input type="hidden" id="serviceTypeId"> 
+									<input type="hidden" id="frequencyId">  
+								<div class="slidebox">
+									<div class="row">
+										<div class="col-md-12 buttonsec btn-hs">
+											<button class="btn1" id="save" onclick="addDetails()">Save</button>
+											<button class="btn4" id="cancel" onclick="closeNav()">Cancel</button>
+										</div>
+									</div>
+								<div class="row">
+									<div class="col-md-12">
+											<div class="form-group">
+												<label>Service Type</label>
+												<input type="hidden" id="serviceTypeId"> 
+												<input type="text"class="form-control" autocomplete="off" id="serviceType">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>Service Name</label> <input type="text"
+													class="form-control" autocomplete="off" id="serviceName">
+											</div>
+										</div>
+									</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Frequency</label> <input type="hidden"
+												id="frequencyId"> <input type="text"
+												class="form-control" autocomplete="off" id="frequency">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label>Task To Be Performed</label> <input type="text"
+													class="form-control" autocomplete="off" id="taskPerformed">
+											</div>
+										</div>
+									</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<input type="hidden" id="assetCodeId" /> <label>Asset
+												Code</label> <input type="text" autocomplete="off"
+												class="form-control" id="assetCodeName"
+												onkeyup="getAssetList();"/>
+											<div id="suggesstion-box1_" class="sugg-cls"></div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Performed Date</label> <input type="text"
+												id="performedDate" class="form-control"
+												th:attr="onkeyup=|formatDate('performedDate','${session.DATEFORMAT_JS}')|">
+											<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Price</label> <input type="text" class="form-control"
+												autocomplete="off" id="price">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Description</label> <input type="text"
+												class="form-control" autocomplete="off" id="desc">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+		<!-- -----------------------------AG Grid-------------------------------------- -->
+		
+						<div id="myGrid" style="width: 100%; height: 500px;"
+						class="ag-theme-alpine"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

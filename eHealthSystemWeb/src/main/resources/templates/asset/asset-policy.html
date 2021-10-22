@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script type="text/javascript" charset="utf-8">
+
+$(document).ready(function(){
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+		
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		$("#cancel").hide();
+		$("#save").hide();
+		//$("#demo").hide();
+		$('#delete').attr("disabled", true); 
+		
+
+		agGrid.simpleHttpRequest({
+			url : "asset-policy-product-list"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		})
+		
+		agGrid.simpleHttpRequest({
+			url : "asset-policy-view"
+		}).then(function(data) {
+			gridOptions1.api.setRowData(data);
+		})
+		
+		});
+		
+	var columnDefs = [ {
+	    headerCheckboxSelection: true,
+	    headerCheckboxSelectionFilteredOnly: true,
+	    checkboxSelection: true,
+	    width: 10,
+	    sortable: false,
+	    filter: false,
+	    resizable: true
+	}, 
+		{
+		    headerName: "SKU",
+		    field: "skuId",
+		   cellRenderer: function(params) {
+		        return '<a onclick=openDetails("' + params.data.skuId + '") href="javascript:void(0)">' + params.data.skuId + '</a>';
+		    } 
+		},
+		{
+		    headerName: "Brand",
+		    field: "brand"
+		},
+		{
+		    headerName: "Name",
+		    field: "productName"
+		},
+		{
+		    headerName: "Model",
+		    field: "model",
+		     cellStyle: {textAlign: 'right'}
+		},
+		{
+		    headerName: "Manufacture Item",
+		    field: "manufacture",
+		    cellStyle: {textAlign: 'right'}
+		},
+		{
+		    headerName: "Variantion Type",
+		    field: "variationType"
+		},
+		{
+		    headerName: "Variantion Value",
+		    field: "variationValue"
+		},
+		{
+		    headerName: "Category",
+		    field: "productCategoryText"
+		},
+		{
+		    headerName: "Mode",
+		    field: "mode"
+		},
+		{
+		    headerName: "UOM",
+		    field: "unit"
+		},
+		{
+		    headerName: "Purchase Price",
+		    field: "pPrice",
+		    cellStyle: {textAlign: 'right'}
+		},
+		{
+		    headerName: "Sale Price",
+		    field: "sPrice",
+		    cellStyle: {textAlign: 'right'}
+		},
+		{
+		    headerName: "Status",
+		    field: "productStatus",
+		    cellStyle: {textAlign: 'center'}
+		},
+		{
+		    headerName: "Create Date",
+		    field: "createdDate",
+		    cellStyle: {textAlign: 'center'}
+		}
+	];
+
+
+const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 149,
+			height : 10
+		},
+		 getRowNodeId : function(data) {
+	    	 return data.skuId;
+	    	 }
+		
+
+	};
+	
+const columnDefs1 = [
+	 {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	},
+	
+	{
+		headerName : 'Policy ID',
+		field : "policyId",
+		cellRenderer: function(params) {
+	        return '<a onclick=editPage("' + params.data.policyId + '") href="javascript:void(0)">' + params.data.policyId + '</a>';
+	    } 
+	},{
+		headerName : 'Service Type',
+		field : "serviceType"
+	}, {
+		headerName : 'Service Name',
+		field : "serviceName"
+	}, {
+		headerName : 'Frequency',
+		field : "frequency",
+		
+	}, {
+		headerName : 'Task to be performed',
+		field : "taskPerformed"
+	}
+
+];
+
+const gridOptions1 = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 220,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelectAsset,
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.policyId;
+		}
+		};
+	
+	function openDetails(id)
+	{
+		
+		var rowNode = gridOptions.api.getRowNode(id);
+		//console.log(rowNode);
+		$("#productId").html(rowNode.data.productId);
+		
+		$("#productName").html(rowNode.data.productName);
+		
+		
+		$("#demo").show();
+		$("#myGrid").hide();
+		$("#new").show();
+		$("#cancel").show();
+	}
+		
+	function editPage(id) {
+		openNav();
+		$("#myGrid").hide();
+		$("#cancel").show();
+		$("#save").show();
+		$("#demo").show();
+		$("#new").hide();
+		
+		//$("#delete").hide();
+
+		$.ajax({
+			type : "GET",
+			url : "asset-policy-edit?id=" + id,
+			async : false,
+			success : function(response) {
+				if (response.message == "Success") {
+		
+					$("#policyId").val(response.body.policyId);
+					$("#serviceType").val(response.body.serviceType);
+					$("#serviceName").val(response.body.serviceName);
+					$("#frequency").val(response.body.frequency);
+					$('#taskPerformed').val(response.body.taskPerformed);
+					
+				}
+		
+			}
+		
+		})
+}
+	
+	function openNav()
+	{
+		
+		$("#serviceName").val("");
+		$("#serviceType").val("");
+		$("#frequency").val("");
+		$("#taskPerformed").val("");
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;";
+		document.getElementById("main_contentClrnc").style.width = "72%";
+		$("#myGrid1").show();
+		$("#saveClrnc").show();
+		$('#delete').hide(); 
+		$('#new').hide(); 
+		$('#cancel').show();
+		$('#save').show();
+	}
+	
+	function closeNav()
+	{
+		$("#serviceName").val("");
+		$("#serviceType").val("");
+		$("#frequency").val("");
+		$("#taskPerformed").val("");
+		$("#new").show();
+		$('#delete').attr("disabled", true);
+		$("#delete").show();
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_contentClrnc").style.width = "100%";	
+	}
+	
+	function addDetails()
+	{
+		
+		var obj = {};
+		obj.policyId = $("#policyId").val();
+		//alert(obj.policyId);
+		obj.item = $("#productId").html();
+		//alert(obj.item)
+		obj.serviceName = $("#serviceName").val();
+		obj.serviceType = $("#serviceType").val();
+		obj.frequency = $("#frequency").val();
+		obj.taskPerformed = $("#taskPerformed").val();
+		
+		var validation = true;
+
+		if (obj.serviceName == null || obj.serviceName == "") {
+			validation = validationUpdated("Service Name Required","serviceName");
+		}
+		if (obj.serviceType == null || obj.serviceType == "") {
+			validation = validationUpdated("ServiceType Required", "serviceType");
+		}
+		if (obj.frequency == null || obj.frequency == "") {
+			validation = validationUpdated("Frequency Required", "frequency");
+		}
+		if (obj.taskPerformed == null || obj.taskPerformed == "") {
+			validation = validationUpdated("TaskPerformed Required","taskPerformed");
+		}
+		
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "asset-policy-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						
+						agGrid.simpleHttpRequest({
+							url : "asset-policy-view"
+						}).then(function(data) {
+							gridOptions1.api.setRowData(data);
+						});
+						closeNav();
+						$("#new").show();
+						$("#myGrid1").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#demo").show();
+						$("#mySidenav").hide();
+					}
+				},
+				error : function(data) {
+					console.log(data);
+				}
+			})
+		}
+	}
+	
+	var deleteId = "";
+
+	function rowSelectAsset() {
+		var selectedRows = gridOptions1.api.getSelectedRows();
+		//console.log(selectedRows);
+
+		deleteId = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+
+			deleteId = deleteId + '"' + selectedRows[i].policyId + '",';
+
+		}
+		deleteId = deleteId.substring(0, deleteId.length - 1);
+
+		var rowCount = 0;
+		selectedRows.forEach(function() {
+			rowCount = rowCount + 1;
+		});
+		if (rowCount > 0) {
+			$('#delete').attr("disabled", false);
+
+		} else {
+			$('#delete').attr("disabled", true);
+		}
+
+	}
+
+	
+	function deleteAsset() {
+
+		$.ajax({
+			type : "GET",
+			url : "asset-policy-delete?deleteId=" + deleteId,
+			async : false,
+			success : function(response) {
+				//console.log(response)
+				if (response.message == "Success")
+				{
+					agGrid.simpleHttpRequest({
+						url : "asset-policy-view"
+					}).then(function(data) {
+						gridOptions1.api.setRowData(data);
+					});
+					$('#delete').attr("disabled", true);
+
+				}
+
+			},
+			error : function(data) {
+
+			}
+
+		});
+
+	}
+
+	
+	
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="maincontentsec">
+			<div class="content_padding">
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+				<div class="collapse" id="demo">
+				<div class="mrt_btm_20">
+					<div class="row">
+						<div class="col-md-4 header_Id">						
+							PRODUCT  ID: <span id="productId"></span>
+						</div>
+						<div class="col-md-4 header_Id">	
+							PRODUCT  NAME: <span id="productName"></span>						
+						</div>
+					</div>
+				</div>	
+					<div id="main_contentClrnc">
+					
+					<div id="mySidenav" class="sidenav">
+					<input type="hidden" id="policyId">
+					<input type="hidden" id="productId">
+										<div class="slidebox">
+											<div class="row">
+												<div class="col-md-12 buttonsec btn-hs">
+													<button class="btn1" id="save" onclick="addDetails()">Save</button>
+													<button class="btn4" id="cancel" onclick="closeNav()">Cancel</button>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label><b>Service Type</b></label>
+														<div class="select">
+															<select id="serviceType">
+																<option value="">--Select--</option>
+																<option th:each="c,iter:${servicelist}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label><b>Service Name</b></label> <input type="text"
+															class="form-control" autocomplete="off" id="serviceName">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label><b>Frequency</b></label>
+														<div class="select">
+															<select id="frequency">
+																<option value="">--Select--</option>
+																<option th:each="c,iter:${frequencylist}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="form-group">
+														<label><b>Task To Be Performed</b></label> <input
+															type="text" class="form-control" autocomplete="off"
+															id="taskPerformed">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading active" role="tab" id="headingOne">
+										<h4 class="panel-title">
+											<a class="" role="button" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseOne"
+											aria-expanded="true" aria-controls="collapseOne"><b>Policy
+											Details</b></a>
+										</h4>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse show"
+										role="tabpanel" aria-labelledby="headingOne">
+										<div class="row">
+											<div class="col-md-12 buttonsec btn-hs">
+												<button class="btn1" id="new" onclick="openNav()">New</button>
+												<button class="btn3" id="delete" onclick="deleteAsset()">Delete</button>
+											</div>
+										</div>
+										<div id="myGrid1" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

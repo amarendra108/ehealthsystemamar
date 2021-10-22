@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<!--  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css"> -->
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+<style type="text/css">
+.fa-search {
+	position: relative;
+	color: #ccc;
+	padding-left: 0px;
+	float: right;
+	padding-top: 3px;
+	font-size: 20px;
+}
+
+.holdCls {
+	background-color: rgb(0, 143, 0);
+}
+
+.bg_white {
+	background: #ffffff !important;
+}
+
+.btn1 {
+	border: none;
+	border-radius: 4px;
+	font-size: 14px;
+	background-color: #007bff;
+	color: #fff !important;
+	margin-left: 5px;
+	margin-bottom: 8px;
+	width: 126px;
+	height: 38px;
+	line-height: 14px;
+	float: right;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.grn-btn {
+	background: #00a330;
+	color: #FFF;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	border-radius: 30px;
+	padding: 4px 10px 4px 10px;
+	text-decoration: none;
+	font-family: roboto;
+}
+
+.mt-50 {
+	margin-top: 50px;
+}
+
+.box {
+	background-color: rgb(172 234 248);
+	padding: 5px;
+	height: 56%;
+	width: 100%;
+	color: #000
+}
+
+.user-id {
+	font-size: 16px;
+	font-weight: 400;
+	color: #056fe2;
+	background-color: transparent;
+}
+
+.profile-img {
+	border-bottom: 1px dotted #000;
+}
+
+.profile-img img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50px;
+	margin-bottom: 15px;
+}
+
+.modal-content {
+	padding: 41px;
+}
+
+.modalmessage{
+	width: 500px;
+	height:auto;
+	margin:0 auto;
+}
+
+.mdl-inrcontent {
+	border: 1px dashed #056fe2;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+.border_none:focus {
+	outline: none;
+}
+
+.box {
+	cursor: pointer;
+}
+
+.rating {
+	float: left;
+}
+
+.rating:not(:checked)>input {
+	position: absolute;
+	top: -9999px;
+	clip: rect(0, 0, 0, 0);
+}
+
+.rating:not(:checked)>label {
+	float: right;
+	width: 1em;
+	padding: 0 .1em;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor: pointer;
+	font-size: 200%;
+	line-height: 1.2;
+	color: rgba(0, 0, 0, 0.6);
+	/*  text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating:not(:checked)>label:before {
+	content: '★ ';
+}
+
+.rating>input:checked ~ label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating:not(:checked)>label:hover, .rating:not(:checked)>label:hover ~
+	label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating>input:checked+label:hover, .rating>input:checked+label:hover ~
+	label, .rating>input:checked ~ label:hover, .rating>input:checked ~
+	label:hover ~ label, .rating>label:hover ~ input:checked ~ label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating>label:active {
+	position: relative;
+	top: 2px;
+	left: 2px;
+}
+
+/**************************************************************************/
+.rating2 {
+	float: left;
+}
+
+.rating2:not(:checked)>input {
+	position: absolute;
+	top: -9999px;
+	clip: rect(0, 0, 0, 0);
+}
+
+.rating2:not(:checked)>label {
+	float: right;
+	width: 1em;
+	padding: 0 .1em;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor: pointer;
+	font-size: 200%;
+	line-height: 1.2;
+	color: rgba(0, 0, 0, 0.6);
+	/*  text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating2:not(:checked)>label:before {
+	content: '★ ';
+}
+
+.rating2>input:checked ~ label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating2:not(:checked)>label:hover, .rating2:not(:checked)>label:hover 
+	~ label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating2>input:checked+label:hover, .rating2>input:checked+label:hover 
+	~ label, .rating2>input:checked ~ label:hover, .rating2>input:checked 
+	~ label:hover ~ label, .rating2>label:hover ~ input:checked ~ label {
+	color: #eedb00;
+	/*  text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5); */
+}
+
+.rating2>label:active {
+	position: relative;
+	top: 2px;
+	left: 2px;
+}
+
+.modal-scrl{
+    height: 550px;
+    overflow-y: scroll;}
+    
+.wrng-txt{
+text-align:center;
+font-weight:700;
+color: #ff0000;
+font-size:30px;
+}
+.wrn-icon i{
+    font-size: 40px;
+    color: red;
+}
+.btn-cancel {
+    color: #fff;
+    background-color: #909090;
+    border-color: #909090;
+}
+</style>
+
+
+
+<script type="text/javascript">
+	//setup the grid after the page has finished loading
+	$(document).ready(function() {
+		
+		$("#myGrid3His").hide();
+		$("#newBtn").hide();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		var gridDiv3 = document.querySelector('#myGrid3His');
+		new agGrid.Grid(gridDiv3, gridOptions3);
+		
+		var gridDiv3Ehs = document.querySelector('#myGrid3Ehs');
+		new agGrid.Grid(gridDiv3Ehs, gridOptions3Ehs);
+
+		var gridDiv4 = document.querySelector('#myGrid4');
+		new agGrid.Grid(gridDiv4, gridOptions4);
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-consultation-through-ajax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		});
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-consultation-through-more-thanone month-ajax"
+		}).then(function(data) {
+			gridOptions1.api.setRowData(data);
+		});
+		
+		
+		$("#appointmenAvailable").hide();
+		$("#appointmentNotAvailable").hide();
+		$("#myGrid4").hide();
+		$("#newBtn").attr("disabled", true);
+		
+		// var dateFormat = localStorage.getItem("dateFormat");
+
+		$("#appCalendar").datetimepicker({
+			format : 'Y-m-d',
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#appDate').val($(this).val());
+			checkAvailability();
+		})
+
+		$('#appDate').blur(function() {
+			$("#appCalendar").val($(this).val());
+		}) 
+		
+		$("#newBtnReg").css("background-color", "#007bff");
+		/* 
+		 var dateFormat = localStorage.getItem("dateFormat");
+			$("#appCalendar").datetimepicker({
+				format : dateFormat,
+				closeOnDateSelect : true,
+				timepicker : false,
+			}).on("change", function() {
+				$('#appDate').val($(this).val());
+				
+				checkAvailability();
+			})
+			
+			$('#appDate').blur(function(){
+				$("#appCalendar").val($(this).val());
+			}) */
+
+		
+	});
+	$(document).ready(function(){	
+		$("#dropDownHis").hide();
+		//function to get location from google map api
+		if (navigator.geolocation) {
+
+			navigator.geolocation.getCurrentPosition(showPosition);//here "showPosition" is a function which is declared outside this document.ready
+		} else {
+			console.log("browser not supported");
+		}
+		
+	})
+	// function showpOSITIN START(EHS)
+	function showPosition(position) {
+		
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		var locAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ latitude + "," + longitude
+				+ "&key=AIzaSyD-o-8txzrqCvKZaf35i-zILm2ooG851uE";
+		$.get({
+			url : locAPI,
+			success : function(data) {
+				var place = "";
+			 for(var i = 0; i < data.results[0].address_components.length; i++) {
+					if(data.results[0].address_components[i].types.includes('locality')) {
+						place = data.results[0].address_components[i].long_name
+					}
+				}  
+				
+				agGrid.simpleHttpRequest({
+					url : "view-patient-consultation-doctor-list-ehs?id=" + place,
+				}).then(function(data) {
+					console.log(data)
+					gridOptions3Ehs.api.setRowData(data);
+				});
+			}
+
+		});
+	}
+	
+	// function showpOSITIN START(HIS)
+	/* function showPositionHis(position) {
+		alert("Inside")
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		var locAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ latitude + "," + longitude
+				+ "&key=AIzaSyD-o-8txzrqCvKZaf35i-zILm2ooG851uE";
+		$.get({
+			url : locAPI,
+			success : function(data) {
+				var place = "";
+				for(var i = 0; i < data.results[0].address_components.length; i++) {
+					if(data.results[0].address_components[i].types.includes('locality')) {
+						place = data.results[0].address_components[i].long_name
+					}
+				}
+				//console.log(place)
+				
+				agGrid.simpleHttpRequest({
+					url : "view-patient-consultation-doctor-list-ehs?id=" + place,
+				}).then(function(data) {
+					gridOptions3.api.setRowData(data);
+				});
+			}
+
+		});
+	} */
+	
+	
+	//first grid
+	var columnDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Date",
+		field : "date"
+	}, {
+		headerName : "Time",
+		field : "time"
+	}, {
+		headerName : "Status",
+		field : "status"
+	}, {
+		headerName : "	Doctor Name",
+		field : "doctorName"
+	}, {
+		headerName : "Speciality",
+		field : "speciality"
+	}, {
+		headerName : "Notes",
+		field : "notes"
+	}, {
+	      headerName : "Rate Your Doctor",
+	      field : "status",
+	      width: 200,
+	      cellRenderer: function(params) {
+	        s = "";
+	        
+	        if (params.data.status == "Treated"){
+	        	s = ' <a href="javascript:void(0)" class="grn-btn" onclick="giveRating(\''+params.data.drid+'\')">Rate</a>';
+	        }
+	        else{
+	        	 s = ' <a  class="btn" > Rate</a>';
+	        }
+	        return s;
+	      }
+	} ];
+
+	// let the grid know which columns and what data to use
+	var gridOptions = {
+		columnDefs : columnDefs,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		rowHeight:40,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 170
+		}
+
+	};
+	function giveRating(id){
+		
+		
+		$("#doctorHiddenId").val(id);
+		$("#modalIdDoctorRating").modal('show')
+	}
+	
+	function submitRating() {
+		var ratingId = $("input:radio[name=giverating]:checked").val();
+		var doctorid = $("#doctorHiddenId").val();
+
+		$.ajax({
+			type : "GET",
+			url : "view-patient-consultation-save-rating?ratingid="+ratingId+"&doctorid="+doctorid,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#modalIdDoctorRating").modal('hide');
+				}
+			}
+		})
+	}
+	//second grid
+	var columnDefs1 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true,
+	}, {
+		headerName : "Date",
+		field : "date"
+	}, {
+		headerName : "Time",
+		field : "time"
+	}, {
+		headerName : "Status",
+		field : "status"
+	}, {
+		headerName : "	Doctor Name",
+		field : "doctorName"
+	}, {
+		headerName : "Speciality",
+		field : "speciality"
+	}, {
+		headerName : "Notes",
+		field : "notes"
+	} ];
+	// let the grid know which columns and what data to use
+	var gridOptions1 = {
+		columnDefs : columnDefs1,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		rowHeight : 40,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 200
+		}
+
+	};
+	//3rd grid
+
+	var columnDefs3 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true,
+
+			},
+			{
+				headerName : "drId",
+				field : "id",
+				hide : true
+			},
+			{
+				headerName : "Doctor Name",
+				field : "name",
+				/* cellRenderer : function(params) {
+					//console.log(params)
+					return '<a onclick=openDoctoorProfile("' + params.data.id
+							+ '") href="javascript:void(0)">'
+							+ params.data.name + '</a>';
+				} */
+			}, {
+				headerName : "Address",
+				field : "address",
+			}, {
+				headerName : "Pin",
+				field : "pin",
+				cellStyle:{
+					textAlign : 'center'
+				}
+				
+			}, {
+				headerName : "	Speciality",
+				field : "type"
+			}, {
+				headerName : "Hospital Name",
+				field : "hospitalid",
+					hide : true
+			} ];
+
+	var gridOptions3 = {
+		columnDefs : columnDefs3,
+		rowSelection : 'single',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		rowHeight : 40,
+		onSelectionChanged : rowSelectId,//function to disable or enable button
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 299
+		},
+
+	};
+	
+	
+	//3rd grid (For EHS)
+
+	var columnDefs3Ehs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true,
+
+			},
+			{
+				headerName : "drId",
+				field : "id",
+				hide : true
+			},
+			{
+				headerName : "Doctor Name",
+				field : "doctorName",
+				cellRenderer : function(params) {
+					//console.log(params)
+					return '<a onclick=openDoctoorProfile("' + params.data.id
+							+ '") href="javascript:void(0)">'
+							+ params.data.doctorName + '</a>';
+				}
+			}, {
+				headerName : "State",
+				field : "state"
+			}, {
+				headerName : "City",
+				field : "city"
+			}, {
+				headerName : "	Speciality",
+				field : "speciality"
+			}, {
+				headerName : "Hospital Name",
+				field : "hospital"
+			} ];
+
+	var gridOptions3Ehs = {
+		columnDefs : columnDefs3Ehs,
+		rowSelection : 'single',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		rowHeight : 40,
+		onSelectionChanged : rowSelectId,//function to disable or enable button
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 238
+		},
+
+	};
+	
+	
+	function openDoctoorProfile(doctorid) {
+		$("#modalIdDoctorProfile").modal('show');
+		$
+				.ajax({
+					type : "GET",
+					url : "view-patient-consultation-doctor-profile?id="
+							+ doctorid,
+					success : function(response) {
+						//console.log(response)
+						if (response.message == "Success") {
+
+							$('#imgLocs').attr('src', '');
+							if (response.body.fileDetails != null
+									&& response.body.fileDetails != "") {
+								$('#imgLocs').attr('src',
+										response.body.fileDetails);
+							} else {
+								$('#imgLocs').attr('src',
+										'../assets/images/noimage.jpg');
+							}
+							$("#firstnameid").val(response.body.drname);
+							$("#doctorGender").val(response.body.drGender);
+							$("#doctorOrgnisationId").val(
+									response.body.drOrganisation);
+							$("#doctorExprienceId").val(
+									response.body.drExprience);
+							$("#doctorSpecialityId").val(
+									response.body.drSpciality);
+							$("#doctorRatingId").val(response.body.drRating);
+
+							/* for (var i = 0; i < response.body.length; i++) {
+								var div2 = '<tr><td>'
+										+ response.body[i].qualification
+										+ '</td>' + '<td>'
+										+ response.body[i].specialization
+										+ '</td>' + '<td>';
+								$("#tbodyid3").append(div2)
+								
+							} */
+
+						}
+					},
+
+				});
+
+	}
+	var gridOptions4 = {
+		defaultColDef : {
+			sortable : true,
+			resizable : true,
+			filter : true,
+			width : 120
+		},
+		debug : true,
+		//rowData : null,
+		enableRangeSelection : true,
+		animateRows : true,
+		rowHeight : 40,
+		onCellClicked : function(event) {
+			bookslot(event);
+		}
+	} /*  */
+
+	function rowSelectId() {
+		$("#newBtn").attr("disabled", false);
+		var selectedRows = gridOptions.api.getSelectedRows();
+	}
+	//function for slot booking stars
+	function bookslot(e) {
+		$("#btnForPatientStatus").attr("disabled", true);
+		var doctorid = $("#doctorId").val();
+		$("#patientNote1").val("");
+		$("#slotdateId").val(e.data.date);
+		if (e.value == "" || e.value == null) {
+			$("#appointmentAvailable").hide();
+			$("#appointmentNotAvailable").show();
+			$('#myModal').modal('show');
+		} else {
+
+			$
+					.ajax({
+						type : "GET",
+						url : "view-patient-consultation-check-slot?time="
+								+ e.colDef.headerName + "&date=" + e.data.date
+								+ "&doctorid=" + doctorid,
+						contentType : false,
+						success : function(response) {
+							//console.log(response)
+							if (response.message == "success") {
+								$("#timeslotWise").empty();
+								for (i = 0; i < response.body.length; i++) {
+									var time = response.body[i].key;
+									var time1 = time.split(":");// splits that stat time 08:00:00
+									if (response.body[i].name == "0") {
+										var d = new Date(); // for now
+										var nowtimeHour = String(d.getHours())
+												.padStart(2, '0'); // length should be of 2 if not it will append '0' from start of the string
+										var nowtimeMinute = String(d.getMinutes()).padStart(2, '0');
+										var nowdate = String(d.getDate()).padStart(2, '0');
+										var nowmonth = String(d.getMonth() + 1).padStart(2, '0');
+
+										var nowtime = parseInt(nowtimeHour + ""+ nowtimeMinute);
+										var defaulttime = parseInt(time1[0]+ "" + time1[1]);
+										//console.log(nowtime)
+										//console.log($("#slotdateId").val())
+										if (nowtime > defaulttime
+												&& $("#slotdateId").val() == d.getFullYear()+ "-"+ nowmonth+ "-"+ nowdate) {
+											var div = '<div class="col-md-6 padding_5"><div class="box-appt" style="background-color: #ff0000;">'
+													+ time1[0]
+													+ ":"
+													+ time1[1]
+													+ '</div></div>';
+													console.log(div)
+											$("#timeslotWise").append(div);
+										} else {
+											var div = '<div class="col-md-6 padding_5"><div class="box slot_color" onclick=bookslottime("'
+													+ time1[0]
+													+ ":"
+													+ time1[1]
+													+ '");changeColor('
+													+ i
+													+ '); id="slotid_'
+													+ i
+													+ '">'
+													+ time1[0]
+													+ ":"
+													+ time1[1] + '</div></div>';
+											$("#timeslotWise").append(div);
+										}
+
+									} else {
+										var div = '<div class="col-md-6 padding_5"><div class="box-appt" style="background-color: #ff0000;">'
+												+ time1[0]
+												+ ":"
+												+ time1[1]
+												+ '</div></div>';
+
+										$("#timeslotWise").append(div);
+									}
+								}
+
+								$("#appointmentAvailable").show();
+								$("#appointmentNotAvailable").hide();
+
+							}
+						},
+						error : function(e) {
+							alert("error");
+						}
+					});
+			$('#myModal').modal('show');
+		}
+
+	}
+	//function for slot booking ends
+	//function to change slot color
+	function changeColor(id) {
+		var id1 = "#slotid_" + id;
+		$(".slot_color").css("background-color", "rgb(172 234 248)");
+		$(id1).css("background-color", "rgb(26 197 235)");
+	}
+	//function to book slot time
+	function bookslottime(time) {
+
+		$("#btnForPatientStatus").attr("disabled", false);
+		$("#bookslottimeId").val(time)
+	}
+	//function for search for mygrid3 starts
+	function onQuickFilterChanged() {
+		gridOptions3.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+	//function for search for mygrid3 ends
+
+	//function for book appointment button starts
+	function addNewConsultant() {
+	
+		$("#bookModal").modal('show');
+		var selectedRows = gridOptions3Ehs.api.getSelectedRows()
+		$("#docId").val(selectedRows[0].id)
+		$("#hosId").val(selectedRows[0].hospitalid)
+		$("#appDate").val('');
+		$("#notes").val('');
+		$("#timeWiseApp").html('');
+		
+
+
+	}
+	//function for book appointment button ends
+	
+	function checkAvailability(){
+		id1 = $('#docId').val();
+		date = $('#appDate').val();
+		id2 = formatDate(date);
+		id3 = $('#hosId').val();
+		
+		$.ajax({
+			type : 'GET',
+			url : 'view-patient-consultation-get-doctor-availabilityDate?doctor='+ id1+'&appointdate='+id2+'&hospitalid='+id3,
+			contentType : false,
+			success : function(response) {
+				$("#timeWiseApp").empty();
+				if (response.code == "success") {
+					for (var i = 0; i<24; i++) {
+					var time =response.body[i].name
+					var opdid =response.body[i].key
+						if(response.body[i].isbooked == false){
+							var firsttime=time.split('To');
+							var timeData=window.btoa(firsttime[1]);
+							var div = '<div class="col-md-6 padding_5"><div class="box-appt" style="background-color: rgb(79, 184, 65);"'
+							+'onclick=bookslottimeAppt("'+timeData+'",'+opdid+');changeColorAppt('
+							+ i
+							+ '); id="slotapttid_'+i+'">'
+								+ time
+								+ '</div></div>';
+								
+							$("#timeWiseApp").append(div);
+						}else{
+							var div = '<div class="col-md-6 padding_5"><div class="box-appt" style="background-color: #ff0000;">'
+								+ time
+								+ '</div></div>';
+								
+							$("#timeWiseApp").append(div);
+						}
+						
+					/* 	<div class="col-md-3">
+						<div class="box slot_color" id="appid_" style="background-color: rgb(79, 184, 65);">09:00 AM To 09:30 AM</div>
+						</div> */
+						
+					}
+			     
+			     
+				}
+			}
+		});
+	}
+	//function to book slot starts
+	function saveAppointment() {
+		var obj = {};
+		obj.formDate = $("#slotdateId").val();
+		obj.formTime = $("#bookslottimeId").val();
+		obj.doctor = $("#doctorId").val();
+		obj.notes = $("#patientNote1").val();
+		var validation = true;
+		if (obj.notes == null || obj.notes == "") {
+			validation = validationUpdated("Write a note", "patientNote1");
+		}
+		console.log(obj)
+		if (validation) {
+			$.ajax({
+						type : "POST",
+						url : "view-patient-consultation-add",
+						contentType : "application/json",
+						data : JSON.stringify(obj),
+						success : function(response) {
+							if (response.message == "Success")
+							
+							{	location.reload();
+								agGrid.simpleHttpRequest(
+												{
+													url : "view-patient-consultation-through-ajax"
+												}).then(
+												function(data) {
+													var len = data.length;
+													$('#totalReq').find('span')
+															.html(len);
+													gridOptions.api
+															.setRowData(data);
+												});
+
+								agGrid.simpleHttpRequest(
+												{
+													url : "view-patient-consultation-through-more-thanone month-ajax"
+												}).then(function(data) {
+											gridOptions1.api.setRowData(data);
+										});
+								//addNewConsultant();
+								$('#myModal').modal('hide');
+							}
+
+						},
+						error : function(data) {
+
+							console.log(data);
+						}
+					})
+		}
+
+	}
+	//function to book slot ends
+	//function to search doctor starts
+	function searchDoctor() {
+		var id = $("#search1").val();
+		/* var data1=[];
+		gridOptions3.api.setRowData(data1); */
+		//var id=$("#search1 option:selected").text();
+		
+		if(id != null && id != "") {
+			$(".formValidation").remove();
+			agGrid.simpleHttpRequest({
+				url : "view-patient-consultation-doctor-list?id=" + id,
+				//url :'https://1331.co.in/api/Doc/GetDocList?speciality=' + id,
+			}).then(function(data) {
+				gridOptions3.api.setRowData(data);
+			});
+		} else {
+			var data1 = [];
+			gridOptions3.api.setRowData(data1);
+		}
+		
+	}
+	//function to search doctor ends
+	
+	function closeModalBookAptt(){
+		$("#appDate").val('');
+	}
+	
+	function bookslottimeAppt(timeData,opdid){
+		var obj = {};
+		date1=$("#appDate").val();
+		date_response = formatDate(date1);
+		obj.date=date_response;
+		obj.time=timeData;
+		obj.opdid=opdid;
+		obj.doctor=$("#docId").val();
+		obj.notes=$("#notes").val();
+		obj.hospitalid=$("#hosId").val();
+	$.ajax({
+		type : "POST",
+		url : "view-patient-consultation-add-slotDetails",
+		contentType : "application/json",
+		data : JSON.stringify(obj),
+		success : function(response) {
+			if (response.code == "success") {
+				
+				$('#bookModal').modal('hide');
+				$('#successMessage').html(response.message);
+				
+				
+			}else{
+				$('#bookModal').modal('hide');
+				$('#bookModalMessage').modal('show');
+				$('#successMessage').html(response.message);
+				
+			}
+
+		},
+		error : function(data) {
+
+			console.log(data);
+		}
+	})
+		
+	}
+	//function to close modal after message
+	function cancelModalMessage(){
+		$('#bookModalMessage').modal('hide');
+	}
+	//function for slot color change
+	function changeColorAppt(id) {
+		var id1 = "#slotapttid_" + id;
+		$(".slot_color").css("background-color", "#4fb841");
+		$(id1).css("background-color", "blue");
+	}
+	//function for date format	
+	function formatDate(d) 
+    {
+      var date = new Date(d);
+
+     if ( isNaN( date .getTime() ) ) 
+     {
+        return d;
+     }
+     else
+    {
+      
+      var month = new Array();
+      month[0] = "Jan";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Apr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Aug";
+      month[8] = "Sept";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dec";
+
+      day = date.getDate();
+      
+      if(day < 10)
+      {
+         day = "0"+day;
+      }
+      
+      return    day  + "-" +month[date.getMonth()] + "-" + date.getFullYear();
+      }
+        
+     }
+	//function for ehs dropdown
+	function viewRegistered(){
+		$("#newBtnReg").css("background-color", "#007bff");
+		$("#newBtnOther").css("background-color", "#b4b4b4");
+		$("#newBtn").hide();
+		$("#newBtnEhs").show();
+		$("#dropDownHis").hide();
+		$("#dropDownEhs").show();
+		$("#myGrid3His").hide();
+		$("#myGrid3Ehs").show();
+		$("#search1").val('');
+		$("#searchEhs").val('');
+		//showPositionEhs(position);
+		
+	}
+	//function for his dropdown
+	function viewOthers(){
+		$("#newBtnOther").css("background-color", "#007bff");
+		$("#newBtnReg").css("background-color", "#b4b4b4");
+		$("#newBtn").show();
+		$("#newBtnEhs").hide();
+		$("#dropDownHis").show();
+		$("#dropDownEhs").hide();
+		$("#myGrid3His").show();
+		$("#myGrid3Ehs").hide();
+		$("#search1").val('');
+		$("#searchEhs").val('');
+		
+		var id = $("#search1").val();
+		
+		var validation =true;
+		if(id == null || id == "") {
+			validation = validationUpdated("Speciality Required", "search1");
+		}
+		if(validation) {
+			searchDoctorEhs();
+		} else {
+			
+			var data = [];
+			gridOptions3.api.setRowData(data);
+		}
+		
+	}
+	//function for Ehs dr list
+	function searchDoctorEhs(){
+		var id = $("#search1").val();
+		
+		agGrid.simpleHttpRequest({
+			url : "view-patient-consultation-doctor-list-ehs?id=" + id,
+		
+		}).then(function(data) {
+			gridOptions3.api.setRowData(data);
+		});
+	}
+	//function for Ehs slot list
+	function addNewConsultantEhs(){
+		$("#myGrid4").show();
+		var selectedRows = gridOptions3Ehs.api.getSelectedRows()
+		$("#doctorId").val(selectedRows[0].id)
+		$("#myGrid4").find(".ag-header-expand-icon").remove();
+
+		$.ajax({
+			type : "POST",
+			url : "view-patient-consultation-get-time-slot",
+			dataType : "json",
+			contentType : "application/json",
+			data : "a",
+			success : function(response) {
+				if (response.message == "success") {
+					var columnDefs4 = [ {
+						headerName : 'Date',
+						field : 'date',
+						pinned : 'left',
+						width : 100,
+					} ];
+					for (var i = 0; i < response.body.length; i++) {
+						columnDefs4.push({
+							headerName : response.body[i].name,
+							field : response.body[i].key
+						});
+					}
+					gridOptions4.api.setColumnDefs(columnDefs4);
+				}
+			}
+		});
+		
+		agGrid.simpleHttpRequest(
+				{
+					url : "view-patient-consultation-avaibality?doctorid="
+							+ selectedRows[0].id,
+				}).then(function(data) {
+			var datas = [];
+			gridOptions4.api.setRowData(data);
+			gridOptions4.api.forEachNode(function(rowNode, index) {
+				obj = {};
+				obj['date'] = rowNode.data.date;
+				obj['time'] = rowNode.data.time;
+				//console.log(rowNode.data.timeinterval.length);
+				for (i = 0; i < rowNode.data.timeinterval.length; i++) {
+					obj[rowNode.data.timeinterval[i].code] = "Available";
+				}
+				datas.push(obj);
+			});
+			var d1 = [];
+			gridOptions4.api.hideOverlay();
+			gridOptions4.api.setRowData(datas);
+		});
+		
+		
+	}
+</script>
+</head>
+<body>
+
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div >
+				<div class="maincontentsec">
+					<div id="viewTable">
+
+						<div class="row" id="reqTable">
+
+							<div class="col-md-6 btn-hs">
+								<div class="font-design" id="totalReq">
+									SCHEDULE LIST (<span></span>)
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-4 font-design">
+								RECENT Less than one month<span></span>
+							</div>
+
+						</div>
+
+						<div id="myGrid" style="width: 100%; height: 210px;"
+							class="ag-theme-alpine"></div>
+						<div class="row">
+							<div class="col-md-4 font-design">
+								Previous more than one month<span></span>
+							</div>
+
+						</div>
+
+						<div id="myGrid1" style="width: 100%; height: 210px;"
+							class="ag-theme-alpine"></div>
+                   
+						<div id="main_content">
+						 
+							<div class="wrapper center-block">
+								<div class="panel-group" id="accordion1" role="tablist"
+									aria-multiselectable="true">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingone">
+											<h1 class="panel-title">
+												<a role="button" data-toggle="collapse"
+													data-parent="#accordion1" href="#collapseone"
+													aria-expanded="true" aria-controls="collapseone"> Book
+													Appointment</a>
+											</h1>
+										</div>
+
+										<div id="collapseone" class="panel-collapse collapse "
+											role="tabpanel" aria-labelledby="headingone">
+
+
+											<div class="row">
+												<!-- <div class="col-md-3 margin_topbot">
+
+													<div class="select" id="dropDownHis">
+														<select id="search1" onchange="searchDoctor();"
+															class="form-control">
+															<option value="">--Select Doctor Speciality --</option>
+															<option th:each="c,iter:${specialityList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div>
+													
+													<div class="select" id="dropDownEhs">
+														<select id="searchEhs" onchange="searchDoctorEhs();"
+															class="form-control">
+															<option value="">--Select Doctor Speciality --</option>
+															<option th:each="c,iter:${specialityList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div>
+												</div>
+
+												<div class="col-md-6 margin_topbot">
+													<div class="btn-hs">
+
+														<div class="input-style row" style="HEIGHT: 38PX;">
+															<input type="text"
+																placeholder="Search anything from Below Table..."
+																name="search" class="searchboxinput"
+																onkeyup="cancelBar()" oninput="onQuickFilterChanged()"
+																id="quickFilter"
+																STYLE="PADDING-TOP: 11PX; FONT-SIZE: 14PX; height: 26px !important;">
+															<div class="searchicon">
+																<a href="#"><span style="display: none"
+																	id="closeKey"
+																	onclick="gridOptions3.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+																	class="close_i">X</span></a><a href="#"><i
+																	class="fa fa-search"></i></a>
+															</div>
+															
+														</div>
+													</div>
+												</div> -->
+												
+												
+												<!-- Button for both api(HIS) -->
+												<div class="col-md-12 margin_topbot">
+													
+														<button class="btn-grey" id="newBtnOther"
+														onclick="viewOthers();">Others</button>
+														
+														<button class="btn-grey" id="newBtnReg"
+														onclick="viewRegistered();">Registered</button>
+												</div>
+												
+												
+												<div class="col-md-12 buttonsec btn-hs">
+													<button class="btn1" id="newBtn"
+														onclick="addNewConsultant();">Book An Appointment</button>
+														
+														<button class="btn1" id="newBtnEhs"
+														onclick="addNewConsultantEhs();">Book An Appointment</button>
+												</div>
+												<div class="col-md-12">
+													<div id="myGrid3His" style="width: 100%; height: 300px;"
+														class="ag-theme-alpine"></div>
+														
+														<div id="myGrid3Ehs" style="width: 100%; height: 300px;"
+														class="ag-theme-alpine"></div>
+												</div>
+												<!-- 
+												<div class="col-md-12">
+													<div id="myGrid3Ehs" style="width: 100%; height: 300px;"
+														class="ag-theme-alpine"></div>
+												</div> -->
+												
+
+												<div class="clearfix"></div>
+												<div class="col-md-12" style="margin-top: 5%;">
+													<div id="myGrid4" style="width: 100%; height: 200px;"
+														class="ag-theme-alpine"></div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+
+							</div>
+						</div>
+
+						<!-- all hiddein id -->
+						<input type="hidden" id="doctorId">
+						<!--"amar12345"-->
+						<input type="hidden" id="bookslottimeId"> <input
+							type="hidden" id="slotdateId">
+						<!-- all hiddein id ends -->
+						<!-- Modal Start for Doctor availability -->
+						<div id="bookModal" class="modal fade" role="dialog">
+							<div class="modal-dialog"
+								style="margin: 30px auto; position: relative; top: 40%; transform: translateY(-50%) !important; width: 100%;">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Book An Appointment</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close" onclick="closeModalBookAptt()">
+											<i class="ti-close"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<div id="availabilityDate">
+											<input type="hidden" id="docId"> <input type="hidden"
+												id="hosId">
+											<div class="row">
+												<div class="col-md-12">
+												<div class="form-group">
+													<input type="text" id="appDate" class="form-control"
+														th:attr="onkeyup=|formatDate('appDate','${session.DATEFORMAT_JS}')|"
+														readonly  placeholder="Please select appointment date"> <i class="ti-calendar picker_calendar"
+														id="appCalendar" style="top: 15px;"></i>
+												</div></div>
+												
+												<div class="col-md-12">
+													<div class="form-group">
+														<input class="form-control" type="text" id="notes" placeholder="Patient Notes"
+														value="">
+													</div>
+												</div>
+												
+											</div>
+											
+											<div class="row" id="timeWiseApp">
+												
+<!-- 												<div class="col-md-3">
+												<div class="box slot_color" id="appid_" style="background-color: rgb(79, 184, 65);">09:00 AM To 09:30 AM</div>
+												</div>
+ -->											
+												
+											</div>
+
+
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+						
+			<!-- 	Model for success -->
+						
+						<div id="bookModalMessage" class="modal fade" role="dialog">
+							<div class="modal-dialog modal-lg"
+								style="margin: 30px auto; position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+								<!-- Modal content-->
+								<div class="modal-content modalmessage">
+									<!-- <div class="modal-header">
+										<h4 class="modal-title">Book An Appointment</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close" onclick="closeModalBookAptt()">
+											<i class="ti-close"></i>
+										</button>
+									</div> -->
+									
+									<div class="modal-body wrn-icon">
+									<div class="row">
+									<div class="col-md-12">
+										<div id="responseMessage">
+										<div align="center"><i class="ti ti-alert"></i></div>
+											<div id="successMessage" class="wrng-txt">
+											</div>
+											
+										</div>
+										</div>
+										<div class="col-md-12" align="center">
+													<button class="btn btn-cancel" id="ModalMessage"
+														onclick="cancelModalMessage()">Cancel</button>
+												</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+						
+						
+						
+						
+						
+						
+						
+						<!-- Modal End for Doctor availability -->
+						<!-- Modal Start for slot Booking-->
+						<div id="myModal" class="modal fade" role="dialog">
+							<div class="modal-dialog"
+								style="margin: 30px auto; position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Book Appointment Request</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<i class="ti-close"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<!-- text input -->
+										<div id="appointmentAvailable">
+											<div class="row" id="timeslotWise">
+												<!-- <div class="col-md-2"><div class="box" >10:00</div></div> -->
+											</div>
+
+											<div class="row">
+												<div class="col-md-5">
+													<div class="form-group">
+														<label>Patient Notes :</label>
+													</div>
+												</div>
+												<div class="col-md-5">
+													<input class="form-control" type="text" id="patientNote1"
+														value="">
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-md-12 buttonsec btn-hs">
+													<button class="btn1" id="btnForPatientStatus"
+														onclick="saveAppointment()">Book Appointment</button>
+												</div>
+											</div>
+
+
+										</div>
+										<div id="appointmentNotAvailable">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Appointment Not available</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- Modal End for slot Booking-->
+						<!-- Modal Start for doctor profile-->
+						<div id="modalIdDoctorProfile" class="modal fade show"
+							role="dialog">
+							<div class="modal-dialog"
+								style="position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Doctor Profile</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<i class="ti-close"></i>
+										</button>
+									</div>
+									<div class="mdl-inrcontent">
+										<div class="modal-body">
+											<!-- text input -->
+											<div class="profile_sec">
+												<div class="profile-img" align="center">
+													<img th:src="${drProfDoc}" id="imgLocs"></img>
+
+												</div>
+
+												<div class="user-nm" id="nameDtls"></div>
+												<div class="user-dtl" id=editperinfo>
+													<div class="row">
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Name :</div>
+
+																<input type="text" class="user-id border_none" readonly
+																	id="firstnameid"> <input type="hidden"
+																	id="userId">
+															</div>
+														</div>
+
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Gender :</div>
+
+																<input type="text" class="user-id border_none" readonly
+																	id="doctorGender">
+															</div>
+														</div>
+
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Organization :</div>
+
+																<input type="text" class="user-id border_none" readonly
+																	id="doctorOrgnisationId">
+															</div>
+														</div>
+
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Exprience in Year:</div>
+
+																<input type="text" class="user-id border_none" readonly
+																	id="doctorExprienceId">
+															</div>
+														</div>
+
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Speciality :</div>
+
+																<input type="text" class="user-id border_none" readonly
+																	id="doctorSpecialityId">
+															</div>
+														</div>
+
+														<div class="col-md-6">
+															<div class="mb-10">
+																<div class="user-dtlhd">Rating :</div>
+
+																<div class="form-group">
+
+																	<fieldset class="rating">
+																		<input type="radio" class="rating" id="star5"
+																			name="rating" value="5" /><label for="star5"
+																			title="High">5 stars</label> <input type="radio"
+																			class="rating1" id="star4" name="rating" value="4" /><label
+																			for="star4" title="High">4 stars</label> <input
+																			type="radio" class="rating1" id="star3" name="rating"
+																			value="3" /><label for="star3" title="High">3
+																			stars</label> <input type="radio" class="rating1" id="star2"
+																			name="rating" value="2" /><label for="star2"
+																			title="Medium">2 stars</label> <input type="radio"
+																			class="rating1" id="star1" name="rating" value="1" /><label
+																			for="star1" title="Low">1 star</label>
+																	</fieldset>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Modal End for doctor profile-->
+					<!-- Modal Start for doctor rating-->
+					<div id="modalIdDoctorRating" class="modal fade show" role="dialog">
+						<div class="modal-dialog"
+							style="position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="mdl-inrcontent">
+									<!-- <div class="modal-header">
+										<h4 class="modal-title">Rating</h4>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<i class="ti-close"></i>
+										</button>
+									</div> -->
+									<div class="modal-body">
+										<!-- text input -->
+
+										<input type="hidden" id="doctorHiddenId">
+
+										<div class="row">
+
+											<div class="col-md-12">
+												<div class="mb-10">
+													<div class="form-group">
+														<div class="user-dtlhd">Rating :</div>
+
+
+
+														<fieldset class="rating2">
+															<input type="radio" class="rating2" id="star55"
+																name="giverating" value="5" /><label for="star55"
+																title="High">5 stars</label> <input type="radio"
+																class="rating3" id="star44" name="giverating" value="4" /><label
+																for="star44" title="High">4 stars</label> <input
+																type="radio" class="rating3" id="star33"
+																name="giverating" value="3" /><label for="star33"
+																title="High">3 stars</label> <input type="radio"
+																class="rating3" id="star22" name="giverating" value="2" /><label
+																for="star22" title="Medium">2 stars</label> <input
+																type="radio" class="rating3" id="star11"
+																name="giverating" value="1" /><label for="star11"
+																title="Low">1 star</label>
+														</fieldset>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+										<div class="row" style="margin-top: 13px;">
+											<div class="col-md-12 buttonsec btn-hs">
+												<button class="btn1" id="ratingBtn"
+													onclick="submitRating();">Submit Rating</button>
+											</div>
+										</div>
+									</div>
+
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- Modal End for doctor profile-->
+		</div>
+	</div>
+
+
+
+
+	</div>
+	</div>
+	</div>
+
+</body>
+</html>

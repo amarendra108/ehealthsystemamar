@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	$(document).ready(function() {
+		$("#deleteOpdMaster").attr("disabled", true);
+		$("#editOpdMaster").attr("disabled", true);
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+		gridOptions.api.setRowData();
+
+		agGrid.simpleHttpRequest({
+			url : 'doctor-opd-view-details',
+		}).then(function(data) {
+			//console.log(data);
+			gridOptions.api.setRowData(data);
+		})
+
+		var dateFormat = localStorage.getItem("dateFormat");
+
+		//opd Date
+		$("#opdDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			minDate : 0,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#opdDate').val($(this).val());
+		})
+
+		$('#opdDate').blur(function() {
+			$("#opdDateCalendar").val($(this).val());
+		})
+
+		//from time
+		$("#fromTimeCalendarTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#fromTime').val($(this).val());
+		})
+
+		$('#fromTime').blur(function() {
+			$("#fromTimeCalendarTime").val($(this).val());
+		})
+
+		//to time
+		$("#toTimeCalendarTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#toTime').val($(this).val());
+		})
+
+		$('#toTime').blur(function() {
+			$("#toTimeCalendarTime").val($(this).val());
+		})
+
+		//$('#edit1').hide();
+
+	});
+
+	const columnDefs = [
+			{
+				headerCheckboxSelection : false,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+
+			{
+				headerName : 'Opd Id',
+				field : "opdId",
+				hide : true
+			},
+			{
+
+				headerName : 'Opd Date',
+				field : "opdDate",
+				cellRenderer : function(params) {
+
+					return '<a  onclick=editopdDtls("' + params.data.opdId
+							+ '") href="javascript:void(0)">'
+							+ params.data.opdDate + '</a>';
+					//console.log(params)
+				}
+			}, {
+
+				headerName : 'Opd Day',
+				field : "opdDay"
+			},
+
+			{
+				headerName : 'From Time',
+				field : "fromTime"
+			}, {
+				headerName : 'To Time',
+				field : "toTime"
+
+			} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelectForDelete,
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.opdId;
+		}
+	};
+var deleteallId = "";
+	function rowSelectForDelete() {
+		$("#addOpdMaster").hide();
+		var selectedRows = gridOptions.api.getSelectedRows();
+		//console.log(selectedRows);
+		deleteId = '';
+		for (var i = 0; i < selectedRows.length; i++) {
+
+			deleteId = deleteId + '' + selectedRows[i].opdId
+					+ ',';
+		}
+		if(deleteId.length>0){
+			$("#deleteOpdMaster").attr("disabled", false);
+		}else{
+			$("#deleteOpdMaster").attr("disabled", true);
+			$("#addOpdMaster").show();
+		}
+		deleteId = deleteId.substring(0, deleteId.length - 1);
+		deleteallId = deleteId;
+	}
+	
+	var idEdit = "";
+	function editopdDtls(id) {
+		idEdit = id;
+		$("#editOpdMaster").attr("disabled", false);
+		$("#editOpdMaster").show();
+		$("#addOpdMaster").hide();
+		
+		
+	}
+
+	function editopdDetails() {
+		
+		$("#addOpdMaster").hide();
+		openNav();
+		$("#editOpdMaster").hide();
+
+		agGrid.simpleHttpRequest({
+			url : 'doctor-opd-details-edit?id=' + idEdit
+		}).then(function(data) {
+			$("#opdId").val(data[0].opdId);
+			$("#opdDate").val(data[0].opdDate);
+			$("#fromTime").val(data[0].fromTime)
+			$("#toTime").val(data[0].toTime);
+			$("#remarks").val(data[0].remarks);
+
+		});
+
+	}
+
+	function openNav() {
+		$('#addOpdMaster').hide();
+		$("#opdDate").val("");
+		$("#fromTime").val("");
+		$("#toTime").val("");
+		$("#remarks").val("");
+		$("#opdId").val("");
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;top: 50px;";
+		document.getElementById("main_content").style.width = "72%";
+	}
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		$("#opdDate").val('');
+		$("#fromTime").val('');
+		$("#toTime").val('');
+		$("#remarks").val('');
+
+	}
+
+	// save opd function
+	var obj = {};
+	function addOpd() {
+
+		obj = {};
+		obj.opdId = $("#opdId").val();
+		obj.opdDate = $("#opdDate").val();
+		obj.fromTime = $("#fromTime").val();
+		obj.toTime = $("#toTime").val();
+		obj.remarks = $("#remarks").val();
+		obj.opdDay = $("#opdDay").val();
+
+		var validation = true;
+
+		if (obj.opdDate == null || obj.opdDate == "") {
+			validation = validationUpdated("Opd Date Required", "opdDate");
+		}
+
+		if (obj.fromTime == null || obj.fromTime == "") {
+			validation = validationUpdated("From Time Required", "fromTime");
+		}
+		if (obj.toTime == null || obj.toTime == "") {
+			validation = validationUpdated("To Time Required", "toTime");
+		}
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "doctor-opd-add-details",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					//console.log(response);
+					if (response.message == "Success") {
+						closeNav();
+
+						$("#mySidenav").hide();
+						agGrid.simpleHttpRequest({
+							url : "doctor-opd-view-details"
+						}).then(function(data1) {
+							gridOptions.api.setRowData(data1);
+						});
+						$('#addOpdMaster').show();
+
+					}
+				},
+				error : function(data) {
+				}
+			})
+		}
+	}
+	
+	// delete opd function
+
+		var deleteId = " ";
+	
+	function deleteOpdDetails(){
+		var dltit = deleteallId;
+		$.ajax({
+			type : "GET",
+			url : "doctor-opd-delete-details?id=" + dltit,
+			async: false,
+			success : function(response) {
+				//console.log("hi")
+				//console.log(response)
+			if (response.message == "Success") {
+				agGrid.simpleHttpRequest({
+					url : 'doctor-opd-view-details',
+				}).then(function(data) {
+					//console.log(data);
+					gridOptions.api.setRowData(data);
+				})
+				$('#addOpdMaster').show();
+				$('#deleteOpdMaster').attr("disabled", true);
+				$('#addOpdMaster').attr("disabled", false);
+					
+			}
+					
+			},
+			error : function(data) {
+			
+			}
+			
+	 });
+		}
+
+
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+				<div class="main-panel">
+					<div class="content-wrapper">
+					<div class="row">
+						<div class="maincontentsec">
+							<div class="content_padding">
+								<div class="col-md-12">
+									<div class="row">
+
+										<div class="col-md-6">OPD VIEW</div>
+										<div class="col-md-6 buttonsec btn-hs">
+
+											<button id="addOpdMaster" class="btn1" onclick="openNav()">New</button>
+											<button id="editOpdMaster" class="btn2"
+												onclick="editopdDetails()">Edit</button>
+											<button id="deleteOpdMaster" class="btn3"
+												onclick="deleteOpdDetails()">Delete</button>
+										</div>
+									</div>
+
+
+								</div>
+								<div id="main_content">
+								<div id="myGrid" style="width: 100%; height: 450px;"
+									class="ag-theme-alpine"></div>
+
+								<div id="mySidenav" class="sidenav">
+									<div class="slidebox">
+										<div class="row">
+											<div class="chartbtnsec">
+												<div align="right">
+													<button class="btn4" onclick="closeNav()">CANCEL</button>
+													<button class="btn1" id="addOpdDetails" onclick="addOpd()">SAVE</button>
+
+												</div>
+											</div>
+										</div>
+										<div class="row">
+
+
+											<input type="hidden" id=opdId>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>OPD DATE</label> <input type="text" id="opdDate"
+														autocomplete="off" class="form-control"
+														onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('opdDate','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar" id="opdDateCalendar"></i>
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>FROM TIME</label> <input type="text" id="fromTime"
+														autocomplete="off" class="form-control"
+														onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('fromTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="fromTimeCalendarTime"></i>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>TO TIME</label> <input type="text" id="toTime"
+														autocomplete="off" class="form-control"
+														onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('toTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="toTimeCalendarTime"></i>
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Remarks</label> <input id="remarks"
+														class="form-control" />
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

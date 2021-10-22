@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+                <script src = "https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.0.1/highcharts.js"></script>
+               
+<script>
+
+
+$(document).ready(function(){
+	$.ajax({
+		type : 'GET',
+		url : 'customer-dashboard-graph',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			if (response.body.length != 0) {
+				customerGraph(response.body, [], '');
+	        } else {
+	        	customerGraph("", [], '');
+	            //swal('No Data Found For Monthly Wise Production.');
+	        }
+			
+			
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'customer-dashboard-Store-graph',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			
+			if (response.body.length != 0) {
+				storeGraph(response.body, [], '');
+	        } else {
+	        	storeGraph("", [], '');
+	            //swal('No Data Found For Monthly Wise Production.');
+	        }
+			
+			
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+})
+$(document).ready(function(){
+	 $('#cusTableDiv').hide();
+    	    $("#barChartInv2").click(function() {
+    	      $("#cusTableDiv").hide();
+    	      $("#cusChartDiv2").show();
+    	      $("#barChartInv2").addClass("btnDisable");
+    	      $("#tableInv2").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv2").click(function() {
+    	      $("#cusTableDiv").show();
+    	      $("#cusChartDiv2").hide();
+    	      $("#barChartInv2").removeClass("btnDisable");
+    	      $("#tableInv2").addClass("btnDisable");
+    	    })
+})
+
+</script>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+
+					<div class="row">
+						<div class="col-md-2">
+							<div class="box_yellow">
+								<div class="inner-box-number" th:utext=${totalOrder[0].key} >4,000</div>
+								<div class="inner-box-text">Total Order</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_green">
+								<div class="inner-box-number" th:utext=${totalQuotion[0].key}>4,000</div>
+								<div class="inner-box-text">Total Quotation</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_pink">
+								<div class="inner-box-number" th:utext=${totalcustomer[0].key}>4,000</div>
+								<div class="inner-box-text">Total Customer</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_blue">
+								<div class="inner-box-number" th:utext=${totalSalesInvoice[0].key}>4,000</div>
+								<div class="inner-box-text">Total Invoice</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_deepblue">
+								<div class="inner-box-number" >4,000</div>
+								<div class="inner-box-text"> Invoice payments done</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_brown">
+								<div class="inner-box-number" >4,000</div>
+								<div class="inner-box-text"> Invoice payments yet to done</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">		
+							<div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Customer Report
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv1"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv1"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+									<div class="highcharts-figure" id="invChartDiv">
+										<div id="customer1" style="height: 440px;"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Store report
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv2"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv2"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+									<div class="highcharts-figure" id="cusChartDiv2">
+										<div id="customer2" style="height: 440px;"></div>
+									</div>
+								<div class="row" id="cusTableDiv">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Store</th>
+													<th>Sales Invoice Amount</th>
+													<th>Sales Order</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${customerStore}">
+													<td th:text="${c.cityname}"></td>
+													<td th:text="${c.invoiceAmt}"></td>
+													<td th:text="${c.salesOrderAmt}"></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+							</div>
+					 <div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Invoice and order report
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv2"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv2"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+								<div class="row" id="cusTableDiv3">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Customer Name</th>
+													<th>Total Invoice Amount</th>
+													<th>Total Order</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${customerReport}">
+													<td th:text="${c.store}"></td>
+													<td th:text="${c.totalInvoiceAmt}"></td>
+													<td th:text="${c.totalQuotation}"></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+							</div> 
+					</div>
+
+					</div>
+				</div>
+		</div>
+	</div>
+
+</body>
+</head>
+</html>

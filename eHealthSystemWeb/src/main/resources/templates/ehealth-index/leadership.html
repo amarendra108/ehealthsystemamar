@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>eHealthsystem</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+
+<!-- Favicons -->
+<link href="../index-assets/img/favicon.png" rel="icon">
+<link href="../index-assets/img/apple-touch-icon.png"
+	rel="apple-touch-icon">
+
+<!-- Vendor CSS Files -->
+<link href="../index-assets/vendor/animate.css/animate.min.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/bootstrap-icons/bootstrap-icons.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/boxicons/css/boxicons.min.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/fontawesome-free/css/all.min.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/glightbox/css/glightbox.min.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/remixicon/remixicon.css"
+	rel="stylesheet">
+<link href="../index-assets/vendor/swiper/swiper-bundle.min.css"
+	rel="stylesheet">
+<!--  Main CSS File -->
+<link href="../index-assets/css/style.css" rel="stylesheet">
+
+<script src="../index-assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lib/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+function registration(){
+	var state =$("#stateId").val();
+	 var stateName = $("#stateId option:selected").text();
+     var logo = $("#stateId option:selected").attr("image");
+     var cm = $("#stateId option:selected").attr("logo");
+	 if(state!=3936){
+		 window.location.href = '/address-wise-registration?country='+99+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    }else{
+    	window.location.href = '/address-wise-registration?country='+246+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    } 
+}
+function malaysiaRegistration(){
+	var country =$("#countryId").val();
+	var state =$("#stateId").val();
+	 var stateName ='Malaysia';
+     var logo = 'malaysia-logo1.png';
+     var cm = 'malaysiapm.jpg';
+	 if(country){
+		
+		 window.location.href = '/address-wise-registration?country='+131+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    } 
+}
+</script>
+</head>
+
+<body>
+
+	<!-- ======= Top Bar ======= -->
+	<div id="topbar" class="d-flex align-items-center fixed-top">
+		<div class="container d-flex justify-content-between">
+			<div class="contact-info d-flex align-items-center">
+				<i class="bi bi-envelope"></i> <a
+					href="mailto:contact@ehealthsystems.in">contact@ehealthsystem.com</a>
+				<i class="bi bi-phone"></i> +91 20 25656552
+			</div>
+			<div class="d-none d-lg-flex social-links align-items-center">
+               	<button type="button" class="btn btn-cnt btn-sm" data-toggle="modal"
+					data-target="#countryModal">Select Country</button>
+				<!-- <a href="#" class="twitter"><i class="bi bi-twitter"></i></a> -->
+				<a href="https://www.facebook.com/eHealthSystemTechnologies"
+					class="facebook" target="blank"><i class="bi bi-facebook"></i></a>
+				<!--  <a href="#" class="instagram"><i class="bi bi-instagram"></i></a> -->
+				<a href="https://in.linkedin.com/in/ehealthsystem" class="linkedin"
+					target="blank"><i class="bi bi-linkedin"></i></a>
+			</div>
+		</div>
+	</div>
+
+	<!-- ======= Header ======= -->
+	<header id="header" class="fixed-top">
+		<div class="container d-flex align-items-center">
+
+
+			<a href="/" class="logo me-auto"><img
+				src="../index-assets/img/logo.png" alt="" class="img-fluid"></a>
+
+			<nav id="navbar" class="navbar order-last order-lg-0">
+				<ul>
+					<li><a class="nav-link scrollto" href="/about-us">About
+							Us</a></li>
+					<li class="dropdown"><a><span>Offering</span> <i
+							class="bi bi-chevron-down"></i></a>
+						<ul>
+							<li><a href="/offering-healthInformation">One
+									Health Portal Health Information Exchange Platform</a></li>
+							<li><a href="/offering-preventive-healthCheckup">Preventive
+									Health Check-up of Resident with Analytics</a></li>
+							<li><a href="/offering-mother-childTracking">Mother & Child
+									Tracking System connected to Cord Blood-Bank</a></li>
+							<li><a href="/offering-covid19">COVID-19
+									Vaccination/Quarantine Tracker with Realtime Analytics</a></li>
+							<li><a href="/offering-vaccineTracker">Vaccine/
+									Immunization Tracker </a></li>
+							<li><a href="/offering-advanceStemCell">Advanced Stem Cell
+									R&D Center</a></li>
+							<li><a href="/offering-singleIdentity-digitalSmartCard">Single
+									Identity Digital Smart Card for Residents</a></li>
+							<li><a href="/offering-hivc">Health In formatics Network
+									Value Chain</a></li>
+							<li><a href="/offering-hdms">Health Data Management Solutions</a></li>
+						</ul></li>
+
+					<li><a class="nav-link scrollto" href="/leadership">Leadership</a></li>
+					<li><a class="nav-link scrollto" href="/what-we-offer">What
+							We Offer</a></li>
+					<li><a class="nav-link scrollto" href="/faq">FAQ</a></li>
+					<li><a class="nav-link scrollto" href="/news">News</a></li>
+					<li><a class="nav-link scrollto" href="/contact-us">Contact
+							Us</a></li>
+					<li class="mrg-lft"><a class="appointment-btn scrollto" data-toggle="modal"
+						data-target="#exampleModal" href="#">Register
+							Us</a></li>
+					<li><a class="appointment-btn scrollto" href="/login">Login
+							Us</a></li>
+				</ul>
+				<i class="bi bi-list mobile-nav-toggle"></i>
+			</nav>
+		</div>
+	</header>
+	<!-- End Header -->
+
+	<!-- ======= Hero Section ======= -->
+
+	<!-- End Hero -->
+
+	<main id="main">
+
+		<!-- ======= Why Us Section ======= -->
+		<section class="why-us">
+			<div class="container">
+				<div class="section-title">
+					<h2>Leadership</h2>
+				</div>
+
+
+				<div class='container mx-auto mt-5 col-md-12'>
+
+					<div class="row justify-content-center pb-5">
+						<div class="card col-md-3">
+							<div class="card-content">
+								<div class="card-body p-0">
+									<div class="profile">
+										<img src="../index-assets/img/team1.jpg">
+									</div>
+									<div class="leaders_dtl">
+										<div class="membername">
+											Mr. Nilesh Kanade<br /> <small>Founder &amp;
+												Chairman</small>
+										</div>
+										<div class="card-subtitle">
+											<p>
+												<small class="text-muted"> Mr. Nilesh Kanade,
+													Founder &amp; Chairman, eHealthSystem, is a visionary
+													entrepreneur who built his career from modest beginnings.</small>
+											</p>
+
+											<div align="center">
+												<a class="more" data-toggle="modal"
+													data-target="#exampleModalLong">More</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card col-md-3">
+							<div class="card-content">
+								<div class="card-body p-0">
+									<div class="profile">
+										<img src="../index-assets/img/team2.jpg">
+									</div>
+									<div class="leaders_dtl">
+										<div class="membername">
+											Mr. Bhagwan Kothawale <br /> <small>Executive
+												Director</small>
+										</div>
+										<div class="card-subtitle">
+											<p>
+												<small class="text-muted">Mr. Bhagwan Kothawale has
+													an experience of 32 years in sales & marketing in Bajaj
+													Auto limited, as the Chairman. </small>
+											</p>
+											<div align="center">
+												<a class="more" data-toggle="modal"
+													data-target="#exampleModalLong1">More</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card col-md-3">
+							<div class="card-content">
+								<div class="card-body p-0">
+									<div class="profile">
+										<img src="../index-assets/img/team4.jpg">
+									</div>
+									<div class="leaders_dtl">
+										<div class="membername">
+											Prof. M Moni <br /> <small>Principal Advisor</small>
+										</div>
+										<div class="card-subtitle">
+											<p>
+												<small class="text-muted">Professor Madaswamy Moni
+													is the Director General (Retd), National Informatics
+													Centre, a premier Institution of Government of India..</small>
+											</p>
+											<div align="center">
+												<a class="more" data-toggle="modal"
+													data-target="#exampleModalLong3">More</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card col-md-3">
+							<div class="card-content">
+								<div class="card-body p-0">
+									<div class="profile">
+										<img src="../index-assets/img/team3.jpg">
+									</div>
+									<div class="leaders_dtl">
+										<div class="membername">
+											Mr.Tushar Tomar<br /> <small>COO</small>
+										</div>
+										<div class="card-subtitle">
+											<p>
+												<small class="text-muted">Focuses on strategic
+													direction and manages critical client and partner
+													relationships. Tushar is an entrepreneur at heart .</small>
+											</p>
+											<div align="center">
+												<a class="more" data-toggle="modal"
+													data-target="#exampleModalLong2">More</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</section>
+
+	</main>
+	<!-- End #main -->
+
+	<!-- ======= Footer ======= -->
+	<footer id="footer">
+
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-4 col-md-4 footer-contact">
+						<img src="../index-assets/img/logo.png" alt="" class="img-fluid"
+							style="width: 200px;">
+						<p style="margin-top: 15px;">
+							<strong>Corporate Office :</strong>
+						</p>
+						<p>
+							1073, Bhosale Mystiqa, <br>Gokhale Road, Model Colony,<br>
+							Pune - 411016, (MH) INDIA<br>
+							<br> <strong>Phone:</strong> +91 20 25656552<br> <strong>Email:</strong>
+							contact@ehealthsystems.in
+
+						</p>
+					</div>
+
+
+
+						<div class="col-lg-4 col-md-4 footer-links">
+						<h4>Offering</h4>
+						<ul>
+							<li><i class="bx bx-chevron-right"></i> <a href="/offering-vaccineTracker">Vaccine/
+									Immunization Tracker </a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/offering-healthInformation">Health
+									Information Exchange </a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/offering-hdms">Product
+									Management</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/offering-hivc">Health In formatics Network Value Chain</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/offering-advanceStemCell">Advanced Stem Cell R&D Center</a></li>
+
+							
+						</ul>
+					</div>
+
+					<div class="col-lg-4 col-md-4 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+
+							<li><i class="bx bx-chevron-right"></i> <a href="/about-us">About
+									us</a></li>
+							
+							<li><i class="bx bx-chevron-right"></i> <a href="/leadership">Leadership</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/what-we-offer">What
+									We Offer</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/contact-us">Contact
+									Us</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container d-md-flex py-4">
+
+			<div class="me-md-auto text-center text-md-start">
+				<div class="copyright">
+					&copy; 2021 Copyright <strong><span>eHealthSystem
+							Technologies</span></strong>. All Rights Reserved
+				</div>
+
+			</div>
+			<div class="social-links text-center text-md-right pt-3 pt-md-0">
+				<!-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a> -->
+				<a href="https://www.facebook.com/eHealthSystemTechnologies"
+					class="facebook"><i class="bx bxl-facebook"></i></a>
+				<!-- <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a> -->
+				<a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+			</div>
+		</div>
+	</footer>
+	<!-- End Footer -->
+
+	<div class="modal fade" id="exampleModalLong" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					Mr. Nilesh Kanade, Founder &amp; Chairman, eHealthSystem, is a
+					visionary entrepreneur who built his career from modest beginnings.
+					<br>
+					<br> Through effective business planning, creative techniques,
+					innovative ideas &amp; in-depth knowledge of a diverse business
+					environment, he succeeded in leading the company globally.<br>
+					<br> Mr. Kanade’s articulated vision encompasses personalized
+					health care for individual needs ensuring the highest stand ards of
+					quality while maintaining affordability. <br>
+					<br> He endeavours to strengthen the base of health care
+					services by bridging the gap between the latest global research
+					innovations, health data and clinical applications should reach
+					Rural India. His personal mission is to improve the health of an
+					individual by fostering an environment and “doorstep” services
+					through personalized health care. He is committed to generating
+					value for society in fundamental and advanced arts, science and
+					technology.<br>
+					<br>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="exampleModalLong1" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">Mr. Bhagwan Kothawale Executive
+					Director Mr. Bhagwan Kothawale has an experience of 32 years in
+					sales & marketing in Bajaj Auto limited, as the Chairman and
+					Founder director Aarthasiddhi Credit Society, in working as
+					Marketing Advisor for MafCos and Honorary Secretary educational
+					institution Sant Mai Junior College Of Art, Science and Commerce.</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModalLong2" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					Mr. Tushar Tomar Focuses on strategic direction and manages
+					critical client and partner relationships. Tushar is an
+					entrepreneur at heart and has 28 years of diversified experience
+					having established numerous successful business enterprises in the
+					US and at home.<br>
+					<br> During last three decades has founded many successful
+					information technology companies in the USA. He has worked with
+					clients around the globe to design and implement complex,
+					large-scale, highly available enterprise architectures. His clients
+					included PepsiCo, Accenture, AT&T, NEC, Verizon, Hanes, Graceway
+					Pharmacy, Ball Horticulture, Chrysler, Shell, Chamberlain Group,
+					among others. <br>
+					<br> Has obtained B-Tech in Computer Science from India and MS
+					in Computer Science and MBA from USA.<br>
+					<br>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="exampleModalLong3" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body" style="height: 400px; overflow-y: scroll;">
+					Pro. M Moni Professor Madaswamy Moni is the Director General
+					(Retd), National Informatics Centre, a premier Institution of
+					Government of India in the areas of e-Governance and Informatics
+					development. <br>
+					<br> Professor Moni is a Distinguished Technocrat and Eminent
+					Informatics Scientist in the area of “e-Governance, Informatics and
+					Agricultural Informatics” in India and has been a PIONEER. “Played
+					a significant role in taking e-Governance in India and strived
+					hard, thought strategically for long-term solutions, fought ground
+					realities and challenges faced the country, yet devised ways to
+					succeed” … This is how the Good Governance Magazine (September
+					Issue 2011) described and identified him as “e-People” of September
+					2011. During his tenure as Deputy Director General in NIC, he was
+					sent on Official Mission by the Ministry of External Affairs to Lao
+					PDR and Timor Leste, to prepare and submit Project Proposal on
+					e-Governance Programme. He has visited many African, European and
+					Asian Countries, including USA and Canada, on various Technical
+					Missions. <br>
+					<br> Professor Moni has more than 40 years of experience in
+					the field of e-Governance and Informatics, having held prestigious
+					assignments, including sharing important responsibilities as
+					Principal Systems Analyst to the Former Finance Minister of India,
+					Hon’ble Shri V. P. Singh, during 1985-88. <br>
+					<br> Professor M. Moni was the Chairman of the Task Force on
+					IT in Agriculture of the Government of Jharkhand 2007-08; and the
+					Chairman of Sub-Group on “IT and ICT usage in Agricultural data, at
+					Agro-Climatic level, and also in Small Area farm business” of
+					National Statistical Commission, Government of India, 2011. His
+					Publications have generated academic and research interests in the
+					areas of regional development, agricultural development and
+					informatics development. He was instrumental for ICT for District
+					Administration (DISNIC Programme: e-Government) in +512 Districts
+					during 1987-91 and ICT for Agriculture (ICT4Ag) from 1995-2013 in
+					India. These ICT Projects have been internationally recognized. His
+					article titled “Capacity Building and E-Governance in Agriculture
+					and Rural Development: An Informatics Blueprint for Developing
+					Countries’ in African-Asian Journal of Rural Development, Volume
+					48, No. 2, 2015, pp. 7-63, has been well received.<br>
+					<br> Founder Project Director of District Information System
+					Programme of NIC (DISNIC) 1987 in 28 development sectors
+					(Agriculture, Livestock, Fisheries, Irrigation, Health, Education,
+					Industries, SC development, ST development, Micro-level planning
+					etc.), and operationalized, during 1980s, in about 520+ districts
+					in India. The DISNIC Programme 1987 has been the “front-runner” of
+					the present day “e-Governance Programme” of India. Instrumental in
+					conceiving and operationalizing many national ICT projects viz.,
+					AgRIS, AGRISNET, AGMARKNET, SEEDNET, HORTNET, APHNET, FISHNET,
+					NADRS (National Animal Disease Monitoring System) Project etc in
+					the Agricultural Sector in India. He was instrumental in
+					visualizing, designing and operationalizing “IntraNIC” for National
+					Informatics Centre (Government of India) using SharePoint Portal
+					Software Tool in 2002. This was the frontrunner for Internets
+					Development for various Ministries later, and then Portal
+					Development using Open Source Technologies Software later. <br>
+					<br> Instrumental in visualizing the development Schemes under
+					the Eleventh Plan (2007-12) of National Informatics Centre (NIC):
+					GRID (Grass Root Informatics Development) Project, SMART VILLAGE
+					Project and SMART ISLAND Project. Instrumental in conceptualizing
+					NADRS (National Animal Disease Reporting System) Project for
+					implementation in about 7032 locations for strengthening the Animal
+					disease surveillance and monitoring system in the country.
+					Conceptualized the need for establishing a “National Centre for
+					Farm Health Management Research Studies” to understand an
+					integrated view of Plant health, Animal Health, Soil Health and
+					water Quality for agricultural productivity increase.<br>
+					<br> Prof. M. Moni is the Former Secretary General, Bhoovigyan
+					Vikas Foundation, New Delhi, founded in 2000 CE for Earth Sciences
+					Development, Sustainable Development and Earth Care Policy Studies,
+					in developing Countries. A Distinguished Fellow and the Co-Chairman
+					of Bhoovigyan Vikas Foundation (BVF), New Delhi. As the Secretary
+					General, Prof. M. Moni was instrumental in organizing the following
+					Conferences: -<br>
+					<ul>
+						<li>Earth Day Celebrations and 1st International Conference
+							on Sustainable Development and Sustainable Life Styles, 21-23
+							April 2001, New Delhi</li>
+						<li>2nd International Conference on Sustainable Agriculture,
+							Water Resources Development & Earth Care Policies, 18-20,
+							December 2002, New Delhi</li>
+						<li>3rd International Conference on Rural India: Achieving
+							Millennium Development Tools and Grassroots Development, 10-12,
+							November 2005 [M. Moni (2005): Rural India: Different Meaning to
+							Different People – A Discussion Paper]</li>
+					</ul>
+					<br>
+					<br> In the National Symposium on “Paradigm Shift in
+					Geography”, Organized by A. M. Khwaja Chair, Jamia Milia Islamia,
+					New Delhi, 28-29, November 2011, his Keynote Address “Paradigm
+					Shift in Geography: Challenges and Opportunities” was well
+					received, instrumental for creating a debate on establishing a
+					“National University of Geography” in India to build up enough
+					“Capacity Building for Sustainable Development”, and published in
+					the Proceedings (pp 1-40). He was also the Member Secretary of the
+					Task Force on “Agricultural Resources Information System (AgRIS)
+					–2000” under the National Natural Resources Management System
+					(Department of Space, Government of India).<br>
+					<br> Professor Moni is the Recipient of Seva Ratna Award 2004
+					(The Centenarian Trust, Chennai) and Bhoogol Bhushan Award 2006
+					(The Deccan Geographical Society India, Pune) for ICT for
+					Agricultural Development (ICT4Ag) in India, and also nominated to
+					the Technology Museum Award, USA 2004 and 2005 for visualizing and
+					operationalizing the AGMARKNET Project in India. Indian Council of
+					Food and Agriculture (ICFA) decorated Prof. Moni with its
+					prestigious “ICT Leadership Award” during Agriculture Leadership
+					Conclave 2019 held in July 2019 at New Delhi, and “Life Time
+					Achievement Award 2020” by Global Outreach Research & Education
+					Association (GOREA) in 5th Global Outreach Conference on Modern
+					Approaches for SMART Agriculture (MASA-2020, “Outstanding
+					Contribution to Community” Certificate, presented by Indian
+					education Network at 9th Annual Higher Education Summit, held on
+					25th February 2021 at Le Meridian Hotel, New Delhi; Bharat Ratna
+					Atal Bihari Vajpayee Tribute to Titans of Technology: Furthering
+					the Indic Atmanirbharta - Conferred for lifelong contribution to
+					the Indian Information Technology while being in National
+					Informatics Centre & Thereafter, National Technology Day 2021, 11th
+					Day of May 2021 by Re:think India, New Delhi; Guru Golwalkar
+					Tribute to the GURUS of Atmanirbhar Bharat - Professor Moni
+					Madaswamy on Guru Purnima Day, July 24th, 2021, by Re: think India,
+					New Delhi.<br>
+					<br> Professor Moni is the Chairman of ICFA’s Working Group on
+					ICT (www.icfa.org.in); Member, Indigram Labs Foundation Advisory
+					Board, Delhi (www.indigramlabs.org); Hon. Chairman, AHIMSA Chennai
+					(an NGO involved Agricultural and Rural Developmental Activities in
+					Tamil Nadu) – www.ahimsact.com.; Advisor to ICCo India
+					(www.iccoindia.org), New Delhi. He was, earlier, the one of its
+					Vice-President and Board Member of the Asian Federation of
+					Information Technology in Agriculture (AFITA), Tokyo.<br>
+					<br> After retirement from the Government Service, Professor
+					Moni has been become the Professor Emeritus and Chairman, Centre
+					for Agricultural Informatics and e-Governance Research Studies
+					(CAIRS) 2013; and instrumental for establishing Centre for
+					AgriBusiness and Disaster Management Studies (CADMS) 2017, Centre
+					for Industry 4.0 Technology Studies and Applications (CITSA) 2018
+					and Centre for Informatics development Studies and
+					Applications(CIDSA) in 2019, in Shobhit Deemed University Meerut
+					(NCR Delhi, Uttar Pradesh). The University provides Agricultural
+					Informatics Programme at M.Tech/B.Tech level, MBA in Agri Business
+					Management, and also Diploma on e-Governance in Farming Sector.
+					CAIRS is the first centre in India. <br>
+					<br> In December 2018, Prof. M. Moni has been invited to be
+					the Chairman of the “Working Group of BRICS Biomedical Informatics,
+					India’’, by Professor Shamil Akhmedov, Chairman of BRICS-Biomed
+					Consortium and Deputy Director for Innovation Research Institute of
+					Cardiology of Tomsk National Research Medical Center (Russian
+					Academy of Science). He has accepted the Invitation.<br>
+					<br> Prof. M. Moni was formerly Chief Advisor (IT), Department
+					of Agriculture, Cooperation & Farmers Welfare, Government of India,
+					New Delhi, and has been associated as the Group Leader of two
+					sub-Groups on Volume-11: Empowering the Farmers through Extension
+					and Knowledge Dissemination, and Volume 12: Digital Technology in
+					Agriculture (Chapters 7-10), for formulating Draft for the “Report
+					on Doubling Farmers Income by 2022” (DFI-2022) of the Ministry of
+					Agriculture and Farmers Welfare. Instrumental for visualizing
+					following strategic recommendations as DFI-2022 Mission Mode
+					Programmes: - <br>
+					<br> 1. Digitalised Agriculture: Digital Technology and
+					Innovation in Agriculture: Digital India, Make in India, Skill
+					India and StartUp India Programmes for Transformational Reforms in
+					Agricultural Sector (SMART Irrigated, SMART Rainfed and SMART
+					Tribal Agri Systems)<br>
+					<br> 2. Digitalised Agro-Met Advisories & Agricultural Risk
+					Management Solution;<br> 3. Digitalized Agricultural Resources
+					Information System and Micro-Level Planning for achieving SMART
+					VILLAGE & SMART FARMING;<br> 4. Digitalized Agricultural Value
+					Chain from “Farms” to “Profits” – nearly about 400 Commodities;<br>
+					5. Digitalised Access to Inputs, Technology, Knowledge, Skill,
+					Agricultural Finance, Credit, Marketing and Agribusiness
+					Management, to Farmers; <br> 6. Digitalized Integrated Land
+					and Water Management System – Per Drop More Crop; <br> 7.
+					Digitalized Farm Health Management for reduction of Farmers’
+					Losses.<br>
+					<br> Prof. M. Moni was Advisor (IT) in Delhi Development
+					Authority (DDA), Ministry of Housing and Urban Affairs, Government
+					of India during the period of January 2017 to March 2020. He has
+					recently become Principal Advisor to eHealthSystem Technologies
+					LLP, Pune (Maharashtra), which is promoting One Health - Eco Health
+					System components. <br>
+					<br> His Articles titled: (i) “e-Governance in Farming Sector:
+					A Roadmap to enhance Agricultural and Food Security”, Section –
+					III, Chapter 13 in the Book titled “Modi’s Odyssey: Digital India,
+					Developed India” - Sameer Kochhar (Eds), December 2015, Publication
+					of SKOCH Group, Gurgaon, NCR Delhi, received vast readership. <br>
+					<br> Prof. M. Moni moderates two Weekly Webinar Series -
+					National Webinar Series on Doubling Farmers’ Income by 2022
+					(Atmanirbhar Bharat in Agriculture) on Thursdays, and International
+					Webinar Series on Open Source Digital Technologies towards
+					Self-Reliant India (Atmanirbhar Bharat) on Saturdays. Both the
+					Webinar Series have completed their 40th Edition by 14th August
+					2021.<br>
+					<br> Prof. M. Moni is a Technocrat, Academician, Researcher,
+					Author, Project Developer, Project Implementer, Organization
+					builder, Optimist and above all, a Man of Missionary Zeal. <br>
+					<br>
+
+					<!-- He can be reached at moni@shobhituniversity.ac.in and moni@nic.in. -->
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="preloader"></div>
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<!-- Modal -->
+
+	<div class="modal fade" id="exampleModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					<div class="select">
+						<select id="stateId" class="form-control"
+							onchange="registration()">
+							<option value="">----Select State----</option>
+							<option th:each="c,iter:${stateList}" th:value="${c.key}"
+								th:logo="${c.code}" th:image="${c.image}" th:text="${c.name}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="modal fade" id="countryModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					<div class="select">
+						<select id="countryId" class="form-control"
+							onchange="malaysiaRegistration()">
+							<option value="">----Select Country----</option>
+							<option value="131">Malaysia</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Vendor JS Files -->
+	<script
+		src="../index-assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../index-assets/vendor/glightbox/js/glightbox.min.js"></script>
+	<script src="../index-assets/vendor/purecounter/purecounter.js"></script>
+	<script src="../index-assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+	<!-- Template Main JS File -->
+	<script src="../index-assets/js/main.js"></script>
+
+</body>
+
+</html>

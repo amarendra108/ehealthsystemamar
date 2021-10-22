@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+$(document).ready(function() {
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	var gridDiv1 = document.querySelector('#myGrid1');
+	new agGrid.Grid(gridDiv1, gridOptions1);
+
+	var gridDiv2 = document.querySelector('#myGrid2');
+	new agGrid.Grid(gridDiv2, gridOptions2);
+
+ 	var gridDiv5 = document.querySelector('#myGrid5');
+	new agGrid.Grid(gridDiv5, gridOptions5);
+
+	var gridDiv6 = document.querySelector('#myGrid6');
+	new agGrid.Grid(gridDiv6, gridOptions6);
+
+	/* var gridDiv7 = document.querySelector('#myGrid7');
+	new agGrid.Grid(gridDiv7, gridOptions7);
+ */
+	gridOptions.api.setRowData();
+	gridOptions1.api.setRowData();
+	gridOptions2.api.setRowData();
+	gridOptions5.api.setRowData();
+	gridOptions6.api.setRowData();
+	//gridOptions7.api.setRowData();
+});
+
+var columnDefs = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+
+}, {
+	headerName : "Pan Card No",
+	field : "address"
+}, {
+	headerName : "Passport No",
+	field : "countryid",
+
+}, {
+	headerName : "Aadhaar Card No",
+	field : "stateid",
+
+}, {
+	headerName : "Votar Card No",
+	field : "cityid",
+
+}, {
+	headerName : "License No",
+	field : "zipCode"
+	
+
+}, {
+	headerName : "License Authority",
+	field : "email"
+
+
+
+},
+
+];
+
+var gridOptions = {
+	columnDefs : columnDefs,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	//onSelectionChanged : rowSelect,
+
+	suppressRowClickSelection : true,
+
+/* getRowNodeId : function(data) {
+	return data.custId;
+} */
+};
+
+var columnDefs1 = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+
+}, {
+	headerName : "Name",
+	field : "eName",
+		width: 10,
+	    minWidth: 350,
+	    maxWidth: 1000,
+}, {
+	headerName : "Relation",
+	field : "eRealtion",
+	width: 10,
+    minWidth: 350,
+    maxWidth: 1000,
+	
+
+}, {
+	headerName : "Mobile No",
+	field : "eMobNo",
+	width: 10,
+    minWidth: 350,
+    maxWidth: 1000,
+
+},
+
+];
+
+var gridOptions1 = {
+	columnDefs : columnDefs1,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	//onSelectionChanged : rowSelect,
+
+	suppressRowClickSelection : true,
+
+/* getRowNodeId : function(data) {
+	return data.custId;
+} */
+};
+
+var columnDefs2 = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+
+}, {
+	headerName : "Name",
+	field : "docName",
+		width: 90,
+	    minWidth: 350,
+	    maxWidth: 1000,
+}, {
+	headerName : "Speciality",
+	field : "docSpeciality",
+		width: 90,
+	    minWidth: 350,
+	    maxWidth: 1000,
+}, {
+	headerName : "Mobile No",
+	field : "docMobNo",
+	width: 90,
+    minWidth: 350,
+    maxWidth: 1000,
+},
+
+];
+
+var gridOptions2 = {
+	columnDefs : columnDefs2,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	//onSelectionChanged : rowSelect,
+
+	suppressRowClickSelection : true,
+
+/* getRowNodeId : function(data) {
+	return data.custId;
+} */
+};
+
+var columnDefs5 = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+
+}, {
+	headerName : "Home Adress",
+	field : "docName",
+		width: 10,
+	    minWidth: 350,
+	    maxWidth: 1000,
+}, {
+	headerName : "Phone",
+	field : "docSpeciality",
+		width: 10,
+	    minWidth: 350,
+	    maxWidth: 1000,
+}, {
+	headerName : "Email",
+	field : "docMobNo",
+	width:10,
+    minWidth: 350,
+    maxWidth: 1000,
+},
+
+];
+
+var gridOptions5= {
+	columnDefs : columnDefs5,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	//onSelectionChanged : rowSelect,
+
+	suppressRowClickSelection : true,
+
+/* getRowNodeId : function(data) {
+	return data.custId;
+} */
+};
+
+
+var columnDefs6 = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+
+}, {
+	headerName : "Qualification",
+	field : "allerName",
+	width: 90,
+    minWidth: 550,
+    maxWidth: 1000,
+	 
+}, {
+	headerName : "Specialization",
+	field : "alergenType",
+	width: 90,
+    minWidth: 550,
+    maxWidth: 1000,
+	
+}
+
+];
+
+var gridOptions6 = {
+	columnDefs : columnDefs6,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	
+	suppressRowClickSelection : true,
+
+
+};
+
+/* var columnDefs7 = [ {
+	headerName : "Name",
+	field : "bName",
+	
+}, {
+	headerName : "Reason",
+	field : "breson",
+	
+}, {
+	headerName : "Implanted Date",
+	field : "implantDate",
+	type : "rightAligned"
+
+}, ];
+
+var gridOptions7 = {
+	columnDefs : columnDefs7,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 249,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	suppressRowClickSelection : true
+//onSelectionChanged: onSelectionChangedinsurance
+};
+ */
+
+</script>
+
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+
+
+					<div class="maincontentsec">
+						<div class="content_padding">
+							<div id="profile">
+								<div class="innerstickybg">
+									<div class="row">
+										<div class="col-md-6 btn-hs"></div>
+										<div class="col-md-12" align="right">
+											<button class="btn4" id="profilecancelbtn"
+												onclick="cancleBtn()">Cancel</button>
+											<button class="btn1" id="saveEmployee">Save</button>
+										</div>
+									</div>
+								</div>
+
+								<div class="innercontent">
+									<div class="row">
+
+
+										<div class="col-md-3" id=hideimg>
+											<div class="hvrbox">
+												<img src="../assets/images/noimage.jpg" id="imgLoc"
+													alt="Location" class="hvrbox-layer_bottom img-fluid"
+													style="height: 203px; width: 241px;">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text">
+														<input type="file" id="fileUpload" hidden
+															onchange="saveFile();" /> <span><label
+															for="fileUpload"><i class="ti-files"
+																style="cursor: pointer;"></i> </label></span> <span><i
+															class="fa fa-trash red" onclick="deleteFile();"></i></span>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-2" id="candidateDetailsBar">
+
+											<div class="name" id="nameDtls"></div>
+											<div class="name" id="uhidsNo"></div>
+										</div>
+
+										<div class="col-md-7">&nbsp;</div>
+
+										<div class="col-md-12">
+											<div id="main">
+												<div class="panel-group" id="accordion" role="tablist"
+													aria-multiselectable="true">
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingone"
+															onclick="closeAllNav()">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapseone"
+																	aria-expanded="true" aria-controls="collapseone">
+																	PERSONAL INFORMATION </a>
+															</h4>
+														</div>
+														<div id="collapseone" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingone">
+															<div class="row form-box mb-10">
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>First Name</label> <input type="text"
+																			class="form-control" placeholder="First Name"
+																			id="firstnameid"> <input type="hidden"
+																			id="userId" onkeyup="edit">
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Last Name</label> <input type="text"
+																			placeholder="Last Name" class="form-control"
+																			id="lastnameid">
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>UHID Card NO</label> <input type="text"
+																			class="form-control" placeholder="UHID Card NO"
+																			id="uhidNo">
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Blood Group</label>
+																		<div class="select">
+																			<select class="form-control" id="bloodgroupid">
+																				<option value="">Select</option>
+																				<option th:each="c,iter:${bloodgroupList}"
+																					th:value="${c.key}" th:text="${c.name}"></option>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>DOB</label> <input type="text" id="dobid"
+																			class="form-control"
+																			th:attr="onkeyup=|formatDate('dobid','${session.DATEFORMAT_JS}')|">
+																		<i class="ti-calendar picker_calendar"
+																			id="dobidCalendar"></i>
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Age</label> <input type="text"
+																			class="form-control" placeholder="age">
+																	</div>
+																</div>
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Gender</label>
+																		<div class="select">
+																			<select class="form-control" id="genderid">
+																				<option value="">Select</option>
+																				<option th:each="c,iter:${genderTypeList}"
+																					th:value="${c.key}" th:text="${c.name}"></option>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Marital Status</label>
+																		<div class="select">
+																			<select class="form-control" id="maritalstatusid">
+																				<option value="">Select</option>
+																				<option th:each="c,iter:${maritalstatusList}"
+																					th:value="${c.key}" th:text="${c.name}"></option>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="col-md-4">
+																	<div class="form-group">
+																		<label>Occupation</label> <input type="text"
+																			class="form-control" placeholder="Occupation"
+																			id="occupation">
+																	</div>
+																</div>
+
+															</div>
+														</div>
+													</div>
+													
+
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingthree">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapseContact"
+																	aria-expanded="true" aria-controls="collapsethree">
+																	Emergency Contact </a>
+															</h4>
+														</div>
+														<div id="collapseContact" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingthree">
+
+
+
+
+															<div class="row">
+																<div class="col-md-8">
+																	<div class="font-design"></div>
+																</div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="editEmerCon()">Edit</button>
+																</div>
+															</div>
+
+															<div id="myGrid1" style="width: 100%; height: 100px;"
+																class="ag-theme-alpine"></div>
+
+														</div>
+													</div>
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingfour">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapseDoctor"
+																	aria-expanded="true" aria-controls="collapsefour">
+																	Family Doctor </a>
+															</h4>
+														</div>
+														<div id="collapseDoctor" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingfour">
+
+
+
+
+															<div class="row">
+																<div class="col-md-8">
+																	<div class="font-design"></div>
+																</div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="editFam()">Edit</button>
+																</div>
+															</div>
+
+															<div id="myGrid2" style="width: 100%; height: 100px;"
+																class="ag-theme-alpine"></div>
+
+														</div>
+
+													</div>
+													
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingtwo">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapseaddress"
+																	aria-expanded="true" aria-controls="collapsetwo">
+																	My Identification </a>
+															</h4>
+														</div>
+														<div id="collapseaddress" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingtwo">
+
+
+
+															<div class="row">
+																<div class="col-md-8">
+																	<div class="font-design"></div>
+																</div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="editAdd">Edit</button>
+																</div>
+															</div>
+
+															<div id="myGrid" style="width: 100%; height: 100px;"
+																class="ag-theme-alpine"></div>
+
+														</div>
+													</div>
+													
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingfive">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapsecntdtls"
+																	aria-expanded="true" aria-controls="collapsefive">
+																	Contact Details </a>
+															</h4>
+														</div>
+														<div id="collapsecntdtls" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingfive">
+
+
+
+															<div class="row">
+																<div class="col-md-8">
+																	<div class="font-design"></div>
+																</div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="editAdd">Edit</button>
+																</div>
+															</div>
+
+															<div id="myGrid5" style="width: 100%; height: 100px;"
+																class="ag-theme-alpine"></div>
+
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingsix">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapsealergy"
+																	aria-expanded="true" aria-controls="collapsesix">
+																	Education </a>
+															</h4>
+														</div>
+														<div id="collapsealergy" class="panel-collapse collapse "
+															role="tabpanel" aria-labelledby="headingsix">
+
+
+
+															<div class="row">
+																<div class="col-md-8">
+																	<div class="font-design"></div>
+																</div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="openNav6()">Edit</button>
+																</div>
+															</div>
+
+															<div id="myGrid6" style="width: 100%; height: 100px;"
+																class="ag-theme-alpine"></div>
+
+														</div>
+													</div>
+
+													<div class="panel panel-default">
+														<div class="panel-heading" role="tab" id="headingseven">
+															<h4 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion" href="#collapbio"
+																	aria-expanded="true" aria-controls="collapseseven">
+																	Family Details</a>
+															</h4>
+														</div>
+														<div id="collapbio" class="panel-collapse collapse"
+															role="tabpanel" aria-labelledby="headingseven">
+
+															<div class="row">
+																<div class="col-md-8"></div>
+																<div class="col-md-4 btn-hs" align="right">
+
+																	<button class="btn1" onclick="openNav7();">Edit</button>
+
+																</div>
+
+																<div id="myGrid7" style="width: 50%; height: 100px;"
+																	class="ag-theme-alpine"></div>
+
+															</div>
+
+															<div class="row">			
+														<div class="col-md-3">
+															<div class="form-group">
+																<div class="autocomplete">
+																	<label>Family Member Name</label> <input type="text"
+																		id="custName" placeholder="Family Doctor Name"
+																		class="form-control" onkeyup='getCustomerList()'>
+																	<input type="hidden" id="custId"> <input
+																		type="hidden" id="custGSTNo"> <input
+																		type="hidden" id="taxType" onclick="hideShowS()">
+																</div>
+																<div id="suggesstion-box1_" class="sugg-cls"></div>
+
+															</div>
+															</div>
+															
+															<div class="col-md-3">
+															<div class="form-group">
+																<label>Relation</label> <input type="text"
+																	name="Last Name" value="" placeholder="Relation"
+																	class="form-control" id="lastnameid">
+															</div>
+														</div>
+														
+														<div class="col-md-3">
+															<div class="form-group">
+																<label>Age</label> <input type="text"
+																	name="Last Name" value="" placeholder="Age"
+																	class="form-control" id="lastnameid">
+															</div>
+														</div>
+														
+														<div class="col-md-3">
+															<div class="form-group">
+																<label>NCORD's UHID Card No</label> <input type="text"
+																	name="Last Name" value="" placeholder="NCORD's UHID Card No"
+																	class="form-control" id="lastnameid">
+															</div>
+														</div>
+															
+														</div>	
+
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

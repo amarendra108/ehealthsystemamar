@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/master}">
+<head>
+<script>
+
+
+const columnDefs = [
+
+
+{field : 'empNo'},
+{field : 'empFname'},
+//{'data' : 'empLname'},
+{ field: 'empFatherName'},
+{field : 'empMotherName'},
+{ field: 'empDob'},
+{ field: 'empMobileNo'},
+{field : 'empGender'},
+{ field: 'empAdhar'},
+{ field: 'empPan'},
+{field : 'empAddress'},
+{ field: 'empCountry'},
+{field : 'empState'},
+{field: 'empDist'},
+{field : 'empPin'},
+{ field: 'empstatus'},
+{ field: 'action'},
+];
+
+//var rowData = [];
+// let the grid know which columns and what data to use
+var gridOptions = {
+columnDefs: columnDefs,
+//rowData: rowData
+};
+
+
+/* $(document).ready(function(){
+agGrid.simpleHttpRequest({
+url : "view-employee-through-ajax"
+}).then(function(data) {
+console.log(JSON.stringify(data));
+gridOptions.api.setRowData(data);
+});
+
+})
+*/
+
+
+$(document).ready(function(){
+gridOptions.api.setRowData();
+
+agGrid.simpleHttpRequest({
+url : "/newemployee/view-employee-through-ajax"
+}).then(function(data) {
+gridOptions.api.setRowData(data);
+});
+
+})
+
+// setup the grid after the page has finished loading
+document.addEventListener('DOMContentLoaded', () => {
+var gridDiv = document.querySelector('#myGrid');
+new agGrid.Grid(gridDiv, gridOptions);
+});
+
+
+
+</script>
+
+</head>
+
+<div layout:fragment="content">
+<div class="content-wrap">
+<div class="main mrt_20">
+<div class="col-md-12">
+<ol class="breadcrumb breadcrumb-arrow">
+<li><a href="/index-dashboard">Home</a></li>
+<li><a th:href="@{/newemployee/add-new-employee}">Add
+Employee</a></li>
+<li class="active"><span>View Employee </span></li>
+</ol>
+</div>
+<div class="card-title">
+<h4>View Details</h4>
+</div>
+<!-- <div class="card-title">
+<h4>Manage Employee</h4>
+</div> -->
+<div class="container-fluid">
+
+<div id="myGrid" style="height: 900px;width:900px;" class="ag-theme-alpine"></div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<body>
+</body>
+
+</html>

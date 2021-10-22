@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>eHealthsystem</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../index-assets/img/favicon.png" rel="icon">
+  <link href="../index-assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <!-- Vendor CSS Files -->
+  <link href="../index-assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../index-assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../index-assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../index-assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../index-assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="../index-assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../index-assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="../index-assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+<!--  Main CSS File -->
+<link href="../index-assets/css/style.css" rel="stylesheet">
+
+<script src="../index-assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lib/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+function registration(){
+	var state =$("#stateId").val();
+	 var stateName = $("#stateId option:selected").text();
+     var logo = $("#stateId option:selected").attr("image");
+     var cm = $("#stateId option:selected").attr("logo");
+	 if(state!=3936){
+		 window.location.href = '/address-wise-registration?country='+99+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    }else{
+    	window.location.href = '/address-wise-registration?country='+246+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    } 
+}
+function malaysiaRegistration(){
+	var country =$("#countryId").val();
+	var state =$("#stateId").val();
+	 var stateName ='Malaysia';
+     var logo = 'malaysia-logo1.png';
+     var cm = 'malaysiapm.jpg';
+	 if(country){
+		
+		 window.location.href = '/address-wise-registration?country='+131+'&state='+state+'&stateName='+stateName+'&logo='+logo+'&cm='+cm;
+    } 
+}
+</script>
+<style type="text/css">
+  .blog-grid {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.blog-grid .blog-img {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.blog-grid .blog-img .date {
+  position: absolute;
+  background: #3a3973;
+  color: #ffffff;
+  padding: 8px 15px;
+  left: 0;
+  top: 10px;
+  font-size: 14px;
+}
+.blog-grid .blog-info {
+    box-shadow: 0 0 30px rgb(31 45 61 / 13%);
+    border-radius: 5px;
+    background: #ffffff;
+    padding: 20px;
+    margin: -30px 20px 0;
+    position: relative;
+    height: 175px;
+}
+.blog-grid .blog-info h5 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+.blog-grid .blog-info h5 a {
+  color: #3a3973;
+}
+.blog-grid .blog-info p {
+  margin: 0;
+}
+.blog-grid .blog-info .btn-bar {
+  margin-top: 20px;
+}
+
+.px-btn-arrow {
+    padding: 0 50px 0 0;
+    line-height: 20px;
+    display: inline-block;
+    color: #1977cc;
+    position: absolute;
+    bottom: 15px;
+    -moz-transition: ease all 0.3s;
+    -o-transition: ease all 0.3s;
+    -webkit-transition: ease all 0.3s;
+    transition: ease all 0.3s;
+}
+
+
+.px-btn-arrow .arrow {
+    width: 13px;
+    height: 2px;
+    background: currentColor;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 25px;
+    -moz-transition: ease right 0.3s;
+    -o-transition: ease right 0.3s;
+    -webkit-transition: ease right 0.3s;
+    transition: ease right 0.3s;
+}
+
+.px-btn-arrow .arrow:after {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-top: 2px solid currentColor;
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: 0;
+    display: inline-block;
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+</style>
+
+</head>
+
+<body>
+
+
+	<!-- ======= Top Bar ======= -->
+	<div id="topbar" class="d-flex align-items-center fixed-top">
+		<div class="container d-flex justify-content-between">
+			<div class="contact-info d-flex align-items-center">
+				<i class="bi bi-envelope"></i> <a
+					href="mailto:contact@ehealthsystems.in">contact@ehealthsystem.com</a>
+				<i class="bi bi-phone"></i> +91 20 25656552
+			</div>
+			<div class="d-none d-lg-flex social-links align-items-center">
+            <button type="button" class="btn btn-cnt btn-sm" data-toggle="modal"
+					data-target="#countryModal">Select Country</button>
+				<!-- <a href="#" class="twitter"><i class="bi bi-twitter"></i></a> -->
+				<a href="https://www.facebook.com/eHealthSystemTechnologies"
+					class="facebook" target="blank"><i class="bi bi-facebook"></i></a>
+				<!--  <a href="#" class="instagram"><i class="bi bi-instagram"></i></a> -->
+				<a href="https://in.linkedin.com/in/ehealthsystem" class="linkedin"
+					target="blank"><i class="bi bi-linkedin"></i></a>
+			</div>
+		</div>
+	</div>
+
+	<!-- ======= Header ======= -->
+	<header id="header" class="fixed-top">
+		<div class="container d-flex align-items-center">
+
+
+			<a href="/" class="logo me-auto"><img
+				src="../index-assets/img/logo.png" alt="" class="img-fluid"></a>
+
+			<nav id="navbar" class="navbar order-last order-lg-0">
+				<ul>
+					<li><a class="nav-link scrollto" href="/about-us">About
+							Us</a></li>
+					<li class="dropdown"><a><span>Offering</span> <i
+							class="bi bi-chevron-down"></i></a>
+						<ul>
+              <li><a href="/offering-healthInformation">One
+                  Health Portal Health Information Exchange Platform</a></li>
+              <li><a href="/offering-preventive-healthCheckup">Preventive
+                  Health Check-up of Resident with Analytics</a></li>
+              <li><a href="/offering-mother-childTracking">Mother & Child
+                  Tracking System connected to Cord Blood-Bank</a></li>
+              <li><a href="/offering-covid19">COVID-19
+                  Vaccination/Quarantine Tracker with Realtime Analytics</a></li>
+              <li><a href="/offering-vaccineTracker">Vaccine/
+                  Immunization Tracker </a></li>
+              <li><a href="/offering-advanceStemCell">Advanced Stem Cell
+                  R&D Center</a></li>
+              <li><a href="/offering-singleIdentity-digitalSmartCard">Single
+                  Identity Digital Smart Card for Residents</a></li>
+              <li><a href="/offering-hivc">Health In formatics Network
+                  Value Chain</a></li>
+              <li><a href="/offering-hdms">Health Data Management Solutions</a></li>
+            </ul></li>
+
+					<li><a class="nav-link scrollto" href="/leadership">Leadership</a></li>
+					<li><a class="nav-link scrollto" href="/what-we-offer">What
+							We Offer</a></li>
+					<li><a class="nav-link scrollto" href="/faq">FAQ</a></li>
+					<li><a class="nav-link scrollto" href="/news">News</a></li>
+					<li><a class="nav-link scrollto" href="/contact-us">Contact
+							Us</a></li>
+					<li class="mrg-lft"><a class="appointment-btn scrollto" data-toggle="modal"
+						data-target="#exampleModal" href="#">Register
+							Us</a></li>
+					<li><a class="appointment-btn scrollto" href="/login">Login
+							Us</a></li>
+				</ul>
+				<i class="bi bi-list mobile-nav-toggle"></i>
+			</nav>
+		</div>
+	</header>
+	<!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+
+  <!-- End Hero -->
+
+  <main id="main">
+
+     <section  id="appointment" class="appointment section-bg">
+      <div class="container">
+        <div class="section-title">
+          <h2>News</h2>
+          
+        </div>
+
+    <div class="row">
+               <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">03 SEP</div> -->
+                                <a >
+                                    <img src="../index-assets/img/news1.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">04 FEB</div> -->
+                                <a >
+                                     <img src="../index-assets/img/news2.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">04 FEB</div> -->
+                                <a >
+                                    <img src="../index-assets/img/news3.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+
+                                     <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">03 SEP</div> -->
+                                <a >
+                                    <img src="../index-assets/img/news4.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">04 FEB</div> -->
+                                <a >
+                                    <img src="../index-assets/img/news5.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-grid">
+                            <div class="blog-img">
+                                <!-- <div class="date">04 FEB</div> -->
+                                <a >
+                                    <img src="../index-assets/img/news6.jpg" class="img-fluid" title="" alt="">
+                                </a>
+                            </div>
+                        </div>
+                      </div>
+    </div>
+      </div>
+    </section>
+
+
+    <!-- ======= Why Us Section ======= -->
+  
+
+  </main><!-- End #main -->
+
+  
+	<!-- ======= Footer ======= -->
+	<footer id="footer">
+
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-4 col-md-4 footer-contact">
+						<img src="../index-assets/img/logo.png" alt="" class="img-fluid"
+							style="width: 200px;">
+						<p style="margin-top: 15px;">
+							<strong>Corporate Office :</strong>
+						</p>
+						<p>
+							1073, Bhosale Mystiqa, <br>Gokhale Road, Model Colony,<br>
+							Pune - 411016, (MH) INDIA<br> <br> <strong>Phone:</strong>
+							+91 20 25656552<br> <strong>Email:</strong>
+							contact@ehealthsystems.in
+
+						</p>
+					</div>
+
+
+
+					<div class="col-lg-4 col-md-4 footer-links">
+						<h4>Offering</h4>
+						<ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="/offering-vaccineTracker">Vaccine/
+                  Immunization Tracker </a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="/offering-healthInformation">Health
+                  Information Exchange </a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="/offering-hdms">Product
+                  Management</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="/offering-hivc">Health In formatics Network Value Chain</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="/offering-advanceStemCell">Advanced Stem Cell R&D Center</a></li>
+
+              
+            </ul>
+					</div>
+
+					<div class="col-lg-4 col-md-4 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+
+							<li><i class="bx bx-chevron-right"></i> <a href="/about-us">About
+									us</a></li>
+							
+							<li><i class="bx bx-chevron-right"></i> <a href="/leadership">Leadership</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/what-we-offer">What
+									We Offer</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="/contact-us">Contact
+									Us</a></li>
+						</ul>
+					</div>
+
+					<!--  <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Join Our Newsletter</h4>
+            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div> -->
+
+				</div>
+			</div>
+		</div>
+
+		<div class="container d-md-flex py-4">
+
+			<div class="me-md-auto text-center text-md-start">
+				<div class="copyright">
+					&copy; 2021 Copyright <strong><span>eHealthSystem
+							Technologies</span></strong>. All Rights Reserved
+				</div>
+
+			</div>
+			<div class="social-links text-center text-md-right pt-3 pt-md-0">
+				<!-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a> -->
+				<a href="https://www.facebook.com/eHealthSystemTechnologies"
+					class="facebook"><i class="bx bxl-facebook"></i></a>
+				<!-- <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a> -->
+				<a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+			</div>
+		</div>
+	</footer>
+	<!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Modal -->
+
+  <div class="modal fade" id="exampleModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					<div class="select">
+						<select id="stateId" class="form-control"
+							onchange="registration()">
+							<option value="">----Select State----</option>
+							<option th:each="c,iter:${stateList}" th:value="${c.key}"
+								th:logo="${c.code}" th:image="${c.image}" th:text="${c.name}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="modal fade" id="countryModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<i data-dismiss="modal" class="bi bi-x-lg"
+						style="cursor: pointer; text-align: right; position: absolute; right: 10px;"></i>
+				</div>
+				<div class="modal-body">
+					<div class="select">
+						<select id="countryId" class="form-control"
+							onchange="malaysiaRegistration()">
+							<option value="">----Select Country----</option>
+							<option value="131">Malaysia</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+  <!-- Vendor JS Files -->
+  <script src="../index-assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../index-assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../index-assets/vendor/purecounter/purecounter.js"></script>
+  <script src="../index-assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../index-assets/js/main.js"></script>
+
+</body>
+
+</html>

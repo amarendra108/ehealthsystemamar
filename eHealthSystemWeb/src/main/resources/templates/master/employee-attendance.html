@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/master}">
+<head>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : false,
+			timepicker : true,
+		}).on("change", function() {
+			$('#punchinTime').val($(this).val());
+		})
+
+		$('#punchinTime').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+		
+		//punch out time
+		
+			$("#fromDateCalendar1").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : true,
+		}).on("change", function() {
+			$('#punchoutTime').val($(this).val());
+		})
+
+		$('#punchoutTime').blur(function() {
+			$("#fromDateCalendar1").val($(this).val());
+		})
+
+		$("#cancel").hide();
+		$("#submit").hide();
+		$('#delete').attr("disabled", true);
+		$("#add1").hide();
+		agGrid.simpleHttpRequest({
+			url : "employee-attendance-view"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+
+	});
+	
+	const columnDefs = [
+
+	{
+		headerName : " Date",
+		field : "punchinDate"
+	},  {
+		headerName : "Punchin Time",
+		field : "punchinTime"
+	},  {
+		headerName : 'Punchin Location',
+		field : "punchinLocation",
+		cellRenderer : function(params) {
+			if (params.data.punchinLocation == 0) {
+			return 'Office';
+			} else if (params.data.punchinLocation == 1) {
+			return 'Other Place';
+			} else {
+			return 'Office';
+			}
+			}
+	}, {
+		headerName : "Punchin Note",
+		field : "punchinNote",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	},
+ {
+		headerName : "Punchout Time",
+		field : "punchoutTime"
+	},  {
+		headerName : 'Punchout Location',
+		field : "punchOutLocation",
+		cellRenderer : function(params) {
+			if (params.data.punchOutLocation == 0) {
+			return 'Office';
+			} else if (params.data.punchOutLocation == 1) {
+			return 'Other Place';
+			} else {
+			return 'Office';
+			}
+			}
+	}, {
+		headerName : "Punchout Note",
+		field : "punchOutNote",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	},
+
+	];
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 149,
+			height : 10
+		}
+	/* ,
+		 			     rowSelection : 'multiple',
+		 			     onSelectionChanged: rowSelectEmployee,
+		 			    getRowNodeId : function(data) {
+							return data.isOut;
+						}
+	 */
+	};
+	function add() {
+		  var puchVal=  $("#isOut").val();
+		if(puchVal==0){
+			$("#demo").show();
+			$("#demo1").hide();
+		}else{
+			$("#demo").hide();
+			$("#demo1").show();
+		}
+		
+		$("#add1").show();
+		$("#add").hide();
+		//$("#demo").show();
+		$("#myGrid").hide();
+		$("#submit").show();
+		$("#cancel").show();
+		$("#delete").hide();
+		 var date = (new Date()).toISOString().split('T')[0];
+		$("#punchinDate").val(date); 
+		/* var date = (new Date()).toString().split(' ').splice(1,3).join(' ');
+
+		$("#punchinDate").val(date);  */
+
+		$("#isOut").val("");
+		
+		$("#punchinTime").val("");
+		$("#punchinLocation").val("");
+		$("#punchinNote").val("");
+		
+		
+
+
+	}
+/* 	function add1() {
+	  
+		$("#add").hide();
+		//$("#demo1").show();
+		$("#myGrid").hide();
+		$("#submit").show();
+		$("#cancel").show();
+		$("#delete").hide();
+		$("#isOut").val("");
+		$("#punchOutTime").val("");
+		$("#punchOutLocation").val("");
+		$("#punchOutNote").val("");
+	} */
+	function cancel() {
+		$("#add").show();
+		$("#myGrid").show();
+		$("#cancel").hide();
+		$("#submit").hide();
+		$("#demo").hide();
+		$('#delete').attr("disabled", true);
+
+	}
+
+	function addDetails() {
+		var obj = {};
+		obj.isOut = $("#isOut").val();
+		obj.punchinDate = $("#punchinDate").val();
+		obj.punchinTime = $("#punchinTime").val();
+		obj.punchinLocation = $("#punchinLocation").val();
+		obj.punchinNote = $("#punchinNote").val();
+		
+		console.log(obj)
+		var validation = true;
+		if (obj.punchinTime == null || obj.punchinTime == "") {
+			validation = validationUpdated("Punchin Time Requied",
+					"punchinTime");
+		}
+		if (obj.punchinLocation == null || obj.punchinLocation == "") {
+			validation = validationUpdated("Punchin Location  Requied",
+					"punchinLocation");
+		}
+		if (obj.punchinNote == null || obj.punchinNote == "") {
+			validation = validationUpdated("Punchin Note  Requied",
+					"punchinNote");
+		}
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "employee-attendance-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+					console.log(response);
+
+					if (response.message == "Success") {
+						$("#demo").hide();
+						$("#demo1").show();
+						$("#add").show();
+						$("#myGrid").hide();
+						$("#submit").show();
+
+						
+					 // $("#isOut").val()=1;
+					}
+
+					agGrid.simpleHttpRequest({
+						url : "employee-attendance-view"
+					}).then(function(data) {
+						gridOptions.api.setRowData(data);
+					});
+				},
+				error : function(data) {
+
+					console.log(data);
+				}
+			})
+
+		}
+		
+	
+
+	}
+	
+	function addDetailsOut() {
+		var obj = {};
+		obj.isOut = $("#isOut").val();
+	
+		obj.punchoutTime = $("#punchoutTime").val();
+		obj.punchOutLocation = $("#punchOutLocation").val();
+		obj.punchOutNote = $("#punchOutNote").val();
+		console.log(obj);
+			$.ajax({
+				type : "POST",
+				url : "employee-attendance-punchout-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+					console.log(response);
+
+					if (response.message == "Success") {
+						//$("#add").show();
+						$("#myGrid").show();
+						$("#submit").hide();
+
+						$("#demo").hide();
+						$("#demo1").hide();
+					}
+
+					 agGrid.simpleHttpRequest({
+						url : "employee-attendance-view"
+					}).then(function(data) {
+						gridOptions.api.setRowData(data);
+					}); 
+				},
+				error : function(data) {
+
+					console.log(data);
+				}
+			})
+
+		
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<div class="row">
+							<div class="col-md-5 buttonsec btn-hs"></div>
+							<div class="col-md-7 buttonsec btn-hs">
+								<button id="add" class="btn1" onclick="add()">Attendance</button>
+						
+							
+
+								<button type="submit" id="submit" form="form" value="add"
+									class="btn4" onclick="addDetails()">PUNCH IN</button>
+									<button id="add1" class="btn4" onclick="addDetailsOut()">PUNCH OUT</button>
+								<button id="cancel" class="btn4" onclick="cancel()">CANCEL</button>
+							</div>
+						</div>
+<!-- ------------------------------------------------------PUNCH IN------------------------------------------------------- -->
+						<div class="collapse" id="demo">
+							<input type="hidden" id="isOut" th:value= "${isOut}">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Punch in Date</label> <input type="text"
+											id="punchinDate" autocomplete="off" class="form-control">
+
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Punch in Time:</label> <input type="text"
+											id="punchinTime" class="form-control"
+											th:attr="onkeyup=|formatDate('punchinTime','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar"></i>
+
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Punch in Location:</label>
+										<div class="select">
+											<select id="punchinLocation">
+												<option value="null">--Select--</option>
+												<option value='0'>Office</option>
+												<option value='1'>Other Place</option>
+											</select>
+
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label> Punch in Note:</label> <input type="text"
+											class="form-control" id="punchinNote">
+									</div>
+								</div>
+							</div>
+							</div>
+							
+<!-- ----------------------------------PUNCH OUT------------------------------------------------------------------------------------ -->
+					<div class="collapse" id="demo1">
+							
+							<div class="row">
+							
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>PunchOut Time:</label> <input type="text"
+											id="punchoutTime" class="form-control"
+											th:attr="onkeyup=|formatDate('punchoutTime','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar1"></i>
+
+									</div>
+								</div>
+
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>PunchOut Location:</label>
+										<div class="select">
+											<select id="punchOutLocation">
+												<option value="null">--Select--</option>
+												<option value='0'>Office</option>
+												<option value='1'>Other Place</option>
+											</select>
+
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label> PunchOut Note:</label> <input type="textarea"
+											class="form-control" id="punchOutNote">
+									</div>
+								</div>
+							</div>
+							</div>
+				 <div id="myGrid" style="width: 100%; height: 450px;"
+								class="ag-theme-alpine"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

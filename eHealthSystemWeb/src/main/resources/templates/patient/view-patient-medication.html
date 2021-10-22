@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+.ag-theme-alpine .ag-header-cell, .ag-theme-alpine .ag-header-group-cell {
+    padding-left: 18px;
+    padding-right: 18px;
+    background: #12b3bb!important;
+}
+
+.ag-header-cell-text {
+    font-size: 15px;
+    color: #FFF!important;
+    background: #12b3bb!important;
+}
+
+.ag-theme-alpine .ag-checkbox-input-wrapper {
+    font-family: agGridAlpine;
+    font-size: 16px;
+    line-height: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 16px;
+    height: 16px;
+    background-color: none!important; 
+     background-color: var(--ag-checkbox-background-color,var(--ag-background-color,none)); 
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    flex: none;
+}
+.ag-theme-alpine .ag-checkbox-input-wrapper:after {
+    content: "\f108";
+    color: #999;
+    color: var(--ag-checkbox-unchecked-color,#000);
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.ag-theme-alpine .ag-checkbox-input-wrapper {
+    font-family: agGridAlpine;
+    font-size: 16px;
+    line-height: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 16px;
+    height: 16px;
+     background-color:none!important; 
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    flex: none;
+}</style>
+<script type="text/javascript">
+	/* 
+	 *
+	 Doctor Prescribed medicine details 
+	 *
+	 */
+
+	$(document)
+			.ready(
+					function() {
+						$
+								.ajax({
+									type : "GET",
+									url : "view-patient-medication-doctor-details",
+									success : function(response) {
+										if (response.message == "Success") {
+											var dataset6 = [];
+											dataset6 = response.body;
+											for (var i = 0; i < dataset6.length; i++) {
+												var accData = "";
+												accData = '<div class="panel panel-default">'
+														+ '<div class="panel-heading" role="tab" id="heading_'+i+'">'
+														+ '<h1 class="panel-title">'
+														+ '<a class="collapsed mainSecond" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i+'" aria-expanded="true" aria-controls="collapse'+i+'">'
+														+ dataset6[i].doctor
+														+ '  '
+														+ dataset6[i].priscriptionDate
+														+ '</a></h1>'
+														+ '</div>'
+														+ '<div id="collapse'+i+'" class="panel-collapse collapse " role="tabpanel" aria-labelledby="heading'+i+'">'
+														+ '<div class="row" id="main_acc">'
+														+ '<div class="col-md-12">'
+														+ '<div id="myGrid_'
+														+ i
+														+ '" style="width: 100%; height: 200px;" class="ag-theme-alpine"></div>'
+														+ '</div>'
+														+ '</div>'
+														+ '</div>' + '</div>';
+
+												$("#accDataDiv").empty();
+												$("#accDataDiv").after(accData);
+												aggridCall(
+														JSON
+																.stringify(dataset6[i].prescriptionList),
+														i)
+											}
+										}
+
+									}
+
+								});
+					});
+
+	$(document).ready(function() {
+		var dateFormat = localStorage.getItem("dateFormat");
+
+		//dosage Date
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			minDate : 0,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#toDate').val($(this).val());
+		})
+
+		$('#toDate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+
+		//dosage Date
+		$("#fromDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			minDate : 0,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#fromDate').val($(this).val());
+		})
+
+		$('#fromDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+	});
+
+	function aggridCall(list, i) {
+		var columnDefs = [ {
+			headerCheckboxSelection : true,
+			headerCheckboxSelectionFilteredOnly : true,
+			checkboxSelection : true,
+			width : 10,
+			sortable : false,
+			filter : false,
+			resizable : true
+		}, {
+			headerName : " Name",
+			field : "medicineName",
+			width : 175
+		}, {
+			headerName : "Type",
+			field : "medType",
+			width : 175
+		}, {
+			headerName : "Dosage",
+			field : "dosage",
+			width : 175
+		}, {
+			headerName : "Morning",
+			field : "morning",
+			width : 150
+		}, {
+			headerName : "AfterNoon",
+			field : "afterNoon",
+			width : 150
+		}, {
+			headerName : "Evening",
+			field : "evening",
+			width : 150
+		}, {
+			headerName : "Remarks",
+			field : "prescrRemark",
+			width : 150
+		},
+
+		];
+		eval("var gridOptions"
+				+ i
+				+ "= { columnDefs : columnDefs, defaultColDef : { sortable : true, filter : true, resizable : true, width : 700.5, height : 10 },  rowSelection : 'multiple', suppressRowClickSelection : true, };");
+		var n = "gridOptions" + i;
+		var newGrid = "gridOptions" + i;
+		newGrid = eval("gridOptions" + i);
+		var gridDiv = document.querySelector('#myGrid_' + i);
+		new agGrid.Grid(gridDiv, newGrid);
+		newGrid.api.setRowData(JSON.parse(list));
+
+	}
+
+	function openNav() {
+		$("#medId").val("");
+		//alert($("#medId").val())
+		$("#medName").val("");
+		$("#medType").val("");
+		$("#dosage").val("");
+		$("#toDate").val("");
+		$("#fromDate").val("");
+		$("#morning").val("");
+		$("#afternoon").val("");
+		$("#evening").val("");
+		$("#remarks").val("");
+		document.getElementById("mySidenav").style.cssText = "width: 350px; position: absolute; right:-30px; overflow: hidden; height:auto;top: 107px;";
+		document.getElementById("main_content").style.width = "72%";
+	}
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+		
+	}
+	/* 
+	 *
+	 Current medicine details 
+	 *
+	 */
+	$(document).ready(function() {
+
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-medication-current"
+		}).then(function(data1) {
+			console.log(data1)
+			gridOptions1.api.setRowData(data1);
+		});
+
+	});
+	/* 
+	 *
+	 Current Test details 
+	 *
+	 */
+	$(document).ready(function() {
+
+		var gridDivTest = document.querySelector('#myGridTest');
+		new agGrid.Grid(gridDivTest, gridOptionsTest);
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-medication-test-details"
+		}).then(function(data1) {
+			console.log("Test List Data")
+			console.log(data1)
+			gridOptionsTest.api.setRowData(data1);
+		});
+
+	});
+
+	
+	
+
+	/* 
+	 *
+	Current medicine details 
+	 *
+	 */
+
+	var columnDefs1 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : "Medicine Name",
+		field : "medicineName",
+	}, {
+		headerName : "Type",
+		field : "medType",
+	}, {
+		headerName : "Dosage",
+		field : "dosage",
+	}, {
+		headerName : "Morning",
+		field : "morning",
+	}, {
+		headerName : "AfterNoon",
+		field : "afterNoon",
+	}, {
+		headerName : "Evening",
+		field : "evening",
+	}, {
+		headerName : "Doctor",
+		field : "doctor",
+	}
+
+	];
+	var gridOptions1 = {
+		columnDefs : columnDefs1,
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelectId,//function to disable or enable button
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 176,
+			height : 10
+		}
+
+	};
+	
+	/* 
+	 *
+	Current Test details 
+	 *
+	 */
+
+	var columnDefsTest = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : "Test Name",
+		field : "testName",
+	}, {
+		headerName : "Test Group",
+		field : "testGroup",
+		hide :true
+	}, {
+		headerName : "Date",
+		field : "testDate",
+	}, {
+		headerName : "Remarks",
+		field : "testRemarks",
+	}, {
+		headerName : "Doctor",
+		field : "doctor",
+	} ];
+
+	var gridOptionsTest = {
+		columnDefs : columnDefsTest,
+		onSelectionChanged : rowSelectTestTableId,//function to disable or enable  request button
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 310,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		supressRowClickSelection : true,
+	};
+	//for rowSelectTestTableId
+	function rowSelectTestTableId() {
+		var selectedRows = gridOptionsTest.api.getSelectedRows();
+		var rowCount = 0;
+		console.log(selectedRows)
+		//$("#chemistId").val(selectedRows[0].id);
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		selectTestSrlno = "";
+		selectTestSrno = "";
+		selectTestGroup = "";
+		selectTestName = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+			selectTestSrlno = selectTestSrlno + '' + selectedRows[i].srlno + ',';
+			selectTestSrno = selectTestSrno + '' + selectedRows[i].srno + ',';
+			selectTestGroup = selectTestGroup + '' + selectedRows[i].testGroup + ',';
+			selectTestName = selectTestName + '' + selectedRows[i].testName + ',';
+		}
+		selectTestSrlno = selectTestSrlno.substring(0, selectTestSrlno.length - 1);
+		selectTestSrno = selectTestSrno.substring(0, selectTestSrno.length - 1);
+		selectTestGroup = selectTestGroup.substring(0, selectTestGroup.length - 1);
+		selectTestName = selectTestName.substring(0, selectTestName.length - 1);
+		
+		
+			$("#despLabsrlno").val(selectTestSrlno);
+			$("#despLabsrno").val(selectTestSrno);
+			$("#testsGroupNames").val(selectTestGroup);
+			$("#testsNames").val(selectTestName);
+			
+		if (rowCount > 0) {
+			$("#reqTestId").attr("disabled", false);
+		} else {
+			$("#reqTestId").attr("disabled", true);
+		}
+	}
+	var selectedId = "";
+	function rowSelectId() {
+		var selectedRows = gridOptions1.api.getSelectedRows();
+		
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+
+			rowCount = rowCount + 1;
+		});
+		selectedId = "";
+		selecteSrlno = "";
+		selecteSrno = "";
+		for (var i = 0; i < selectedRows.length; i++) {
+			selectedId = selectedId + '' + selectedRows[i].medId + ',';
+			selecteSrlno = selecteSrlno + '' + selectedRows[i].srlno + ',';
+			selecteSrno = selecteSrno + '' + selectedRows[i].srno + ',';
+		}
+		selectedId = selectedId.substring(0, selectedId.length - 1);
+		selecteSrlno = selecteSrlno.substring(0, selecteSrlno.length - 1);
+		selecteSrno = selecteSrno.substring(0, selecteSrno.length - 1);
+			
+		$("#medicinesIds").val(selectedId);
+		$("#despsrlno").val(selecteSrlno);
+		$("#despsrno").val(selecteSrno);
+		if (rowCount > 0) {
+			$("#reqButtonId").attr("disabled", false);
+		} else {
+			$("#reqButtonId").attr("disabled", true);
+		}
+
+	}
+
+	/* 
+	 *
+	All Patient Details
+	 *
+	 */
+
+	var columnDefsPatient = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 5,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : " UHID NO",
+		field : "eHealthNo",
+		width : 175
+	}, {
+		headerName : "PatientName",
+		field : "patientName",
+		width : 175
+	}, {
+		headerName : "Address",
+		field : "address",
+		width : 175
+	}, {
+		headerName : "Mobile No.",
+		field : "mobNo",
+		width : 150
+	}
+
+	];
+	var gridOptionsPatient = {
+		columnDefs : columnDefsPatient,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 700.5,
+			height : 10
+		}
+
+	};
+	$(document).ready(function() {
+		$("#reqButtonId").attr("disabled", true);
+		$("#main_content1").hide();
+		//$("#reqmeddivid").hide();
+		var userRole = $("#userRole").val();
+		if (userRole[1] == 2) {
+			$("#newBtn").show();
+			$("#reqButtonId").hide();
+			$("#deleteBttn").show();
+		} else {
+			$("#deleteBttn").hide();
+			$("#newBtn").hide();
+		}
+
+		var gridDivPatient = document.querySelector('#myGridPatient');
+		new agGrid.Grid(gridDivPatient, gridOptionsPatient);
+
+		var gridDiv5 = document.querySelector('#myGrid5');
+		new agGrid.Grid(gridDiv5, gridOptions5);
+
+		agGrid.simpleHttpRequest({
+			url : "doctor-patient-medication-Details"
+		}).then(function(data) {
+			gridOptionsPatient.api.setRowData(data);
+		});
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-medication-view-request-mdcn-agGrid"
+		}).then(function(data) {
+			gridOptions5.api.setRowData(data);
+		});
+
+	});
+
+	var columnDefsPatient = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : " UHID NO",
+		field : "eHealthNo",
+		width : 292
+	}, {
+		headerName : "PatientName",
+		field : "patientName",
+		width : 292
+	}, {
+		headerName : "Address",
+		field : "address",
+		width : 292
+	}, {
+		headerName : "Mobile No.",
+		field : "mobNo",
+		width : 292
+	}
+
+	];
+
+	var gridOptionsPatient = {
+		columnDefs : columnDefsPatient,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 251,
+			height : 10
+		}
+
+	};
+
+
+	var columnDefs5 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Medicine Name",
+		field : "medicinename"
+	}, {
+		headerName : "Type",
+		field : "medicinetype"
+	}, {
+		headerName : "Status",
+		field : "status"
+	}, {
+		headerName : "Quantity",
+		field : "quantity"
+	}, {
+		headerName : "Pharmacy Name",
+		field : "hospitalname"
+	}, {
+		headerName : "Order Id",
+		field : "orderid"
+	}, ];
+
+	// let the grid know which columns and what data to use
+	var gridOptions5 = {
+		columnDefs : columnDefs5,
+		//rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		rowHeight : 40,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 205
+		}
+	}
+
+	/* / -------------------search bar for mygrid------------------------ / */
+
+	function onQuickFilterChanged() {
+		gridOptions2.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	//Get Medicine List
+
+	function getMedcineList() {
+		var search = $("#medName").val();
+		if (search == "") {
+			$("#suggesstion-box1_").hide();
+			$("#medId").val("");
+		}
+
+		if (search) {
+			$
+					.ajax({
+						type : "POST",
+						url : "doctor-patient-medication-Details",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									console.log(response.body);
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutocompleteValue1(\''
+												+ response.body[i].medId
+												+ '\',\''
+												+ response.body[i].medicineName
+												+ '\')">'
+												+ response.body[i].medicineName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list1">';
+									content += '<div onClick="selectAutocompleteValue()">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+
+	function selectAutocompleteValue1(medId, medicineName) {
+		if (medId) {
+
+			$("#medId").val(medId);
+			$("#medName").val(medicineName);
+			$("#search").val(medicineName);
+			$("#search").attr('data-procat', medId);
+			$("#suggesstion-box1_").hide();
+
+		} else {
+			$("#medId").val("");
+			$("#medName").val("");
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box1_").hide();
+		}
+	}
+
+	function selectAutocompleteValue() {
+		$("#medId").val("");
+		$("#medName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+	}
+
+	var obj = {};
+	function addMedication() {
+
+		obj = {};
+		obj.medicineName = $("#medName").val();
+		obj.medType = $("#medType").val();
+		obj.fromDate = $("#fromDate").val();
+		obj.toDate = $("#toDate").val();
+		obj.morning = $("#morning").val();
+		obj.afterNoon = $("#afternoon").val();
+		obj.evening = $("#evening").val();
+		obj.remarks = $("#remarks").val();
+
+		var validation = true;
+
+		if (obj.medName == null || obj.medName == "") {
+			validation = validationUpdated("Medicine Name Required", "medName");
+		}
+
+		if (obj.morning == null || obj.morning == "") {
+			validation = validationUpdated("Dosage Details Required", "morning");
+		}
+		if (obj.afternoon == null || obj.afternoon == "") {
+			validation = validationUpdated("Dosage Details Required",
+					"afternoon");
+		}
+		if (obj.evening == null || obj.evening == "") {
+
+			validation = validationUpdated("Dosage Details Required", "evening");
+		}
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "doctor-patient-medication-addDetails",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						closeNav();
+						$("#mySidenav").hide();
+						agGrid.simpleHttpRequest({
+							url : "view-patient-medication-current"
+						}).then(function(data1) {
+							gridOptions1.api.setRowData(data1);
+						});
+
+					}
+				},
+				error : function(data) {
+				}
+			})
+		}
+	}
+	/************************** 	Patient Requests medicne from a chemist opens accordian **************************************/
+	// 
+	function requestMedicineFun() {
+		$("#reqmeddivid").hide();
+		$("#main_content").hide();
+		$("#main_content1").show();
+	}
+	function cancelMedcineFun() {
+		$("#reqmeddivid").show();
+		$("#main_content").show();
+		$("#main_content1").hide();
+	}
+	$(document).ready(function() {
+		//ag-grid request medicine accordian
+		var gridDiv2 = document.querySelector('#myGrid2');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+		//ag-grid request Lab accordian
+		var gridDiv3 = document.querySelector('#myGrid3');
+		new agGrid.Grid(gridDiv3, gridOptions3);
+		//function to get location from google map api
+		if (navigator.geolocation) {
+
+			navigator.geolocation.getCurrentPosition(showPosition);//here "showPosition" is a function which is declared outside this document.ready
+		} else {
+			console.log("browser not supported");
+		}
+
+	})
+	/// function showpOSITIN START
+	function showPosition(position) {
+		var latitude = position.coords.latitude;
+		var longitude = position.coords.longitude;
+		var locAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+				+ latitude
+				+ ","
+				+ longitude
+				+ "&key=AIzaSyD-o-8txzrqCvKZaf35i-zILm2ooG851uE";
+		$
+				.get({
+					url : locAPI,
+					success : function(data) {
+						var place = "";
+						for (var i = 0; i < data.results[0].address_components.length; i++) {
+							if (data.results[0].address_components[i].types
+									.includes('locality')) {
+								place = data.results[0].address_components[i].long_name
+							}
+						}
+						//console.log(place)
+						//calling aggrid for agGrid accroding to current location of patient
+						agGrid
+								.simpleHttpRequest(
+										{
+											url : "view-patient-medication-getChemist-through-agGrid?place="
+													+ place,
+										}).then(function(data) {
+									gridOptions2.api.setRowData(data);
+								});
+						//calling aggrid for agGrid accroding to current location of patient
+						agGrid
+								.simpleHttpRequest(
+										{
+											url : "view-patient-medication-getLabList-through-agGrid?place="
+													+ place,
+										}).then(function(data) {
+									gridOptions3.api.setRowData(data);
+								});
+					}
+
+				});
+	}
+	//3rd grid
+
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true,
+
+	}, {
+		headerName : "drId",
+		field : "id",
+		hide : true
+	}, {
+		headerName : "Pharmacy Name",
+		field : "name"
+	}, {
+		headerName : "State",
+		field : "state"
+	}, {
+		headerName : "City",
+		field : "city"
+	} ];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		rowSelection : 'single',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		onSelectionChanged : rowSelectId1,//function to disable or enable  request button
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 380
+		},
+
+	};
+	function searchChemist() {
+		var place = $("#search1").val();
+		agGrid
+				.simpleHttpRequest(
+						{
+							url : "view-patient-medication-getChemist-through-agGrid?place="
+									+ place,
+						}).then(function(data) {
+					gridOptions2.api.setRowData(data);
+				});
+	}
+	//for gridoptions2
+	function rowSelectId1() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		$("#chemistId").val(selectedRows[0].id);
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		if (rowCount > 0) {
+			$("#btnForRequestMedicine").attr("disabled", false);
+		} else {
+			$("#btnForRequestMedicine").attr("disabled", true);
+		}
+	}
+	//function to open request modal
+	function reQuestMedcineFun() {
+		console.log(selectedId)
+		$("#myModal").modal('show');
+	}
+	//save function for request medicine
+	function saveRequest() {
+		//var data = [];//if multiple pharmasy is required in fiture
+		var datas = {};
+		datas["chemistid"] = $("#chemistId").val();
+		datas["medicineids"] = $("#medicinesIds").val();
+		datas["patientNote"] = $("#patientNote").val();
+		datas["srlno"] = $("#despsrlno").val();
+		datas["srno"] = $("#despsrno").val();
+
+		console.log(JSON.stringify(datas))
+		$.ajax({
+			type : "POST",
+			url : "view-patient-medication-save-request",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				location.reload();
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+
+	}
+/* 	request test section start by deepak  */
+ 
+	$(document).ready(function(){
+		$("#reqTestId").attr('disabled',true);
+		//$("#btnForCancelLab").attr("disabled", true);
+		$("#btnForRequestLab").attr("disabled", true);
+		$("#main_content2").hide()
+	})
+	function requestLabFun() {
+		$("#reqmeddivid").hide();
+		$("#main_content").hide();
+		$("#main_content2").show();
+	}
+	function cancelLabFun() {
+		$("#reqmeddivid").show();
+		$("#main_content").show();
+		$("#main_content2").hide();
+	}
+	//function to open request modal
+	function reQuestLabFun() {
+		console.log(selectedId)
+		$("#myModalTestLab").modal('show');
+	}
+	//3rd grid
+
+	var columnDefs3 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true,
+
+	}, {
+		headerName : "drId",
+		field : "id",
+		hide : true
+	}, {
+		headerName : "Lab Name",
+		field : "name"
+	}, {
+		headerName : "State",
+		field : "state"
+	}, {
+		headerName : "City",
+		field : "city"
+	} ];
+
+	var gridOptions3 = {
+		columnDefs : columnDefs3,
+		rowSelection : 'single',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		onSelectionChanged : rowSelectIdtoSaveRequest,//function to disable or enable  request button of "request lab tests"
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 415
+		},
+
+	};
+	//for gridoptions2
+	function rowSelectIdtoSaveRequest() {
+		var selectedRows = gridOptions3.api.getSelectedRows();
+		var labId = selectedRows[0].id;
+		$("#labId").val(labId);
+		//alert($("#labId").val());
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		
+		if (rowCount > 0) {
+			$("#btnForCancelLab").attr("disabled", false);
+			$("#btnForRequestLab").attr("disabled", false);
+		} else {
+			$("#btnForCancelLab").attr("disabled", true);
+			$("#btnForRequestLab").attr("disabled", true);
+		}
+	}
+	//save function for request Test
+	function saveRequestLab() {
+		//var data = [];//if multiple pharmasy is required in fiture
+		var datas = {};
+		
+		datas["labid"] = $("#labId").val();
+		datas["patientNote"] = $("#patientNoteForLab").val();
+		datas["testGroupName"] = $("#testsGroupNames").val();
+		datas["testName"] = $("#testsNames").val();
+		datas["srlno"] = $("#despLabsrlno").val();
+		datas["srno"] = $("#despLabsrno").val();
+
+		console.log(JSON.stringify(datas))
+		$.ajax({
+			type : "POST",
+			url : "view-patient-medication-save-lab-test-request",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				location.reload();
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+
+	}
+
+/* 	request test section start by deepak  */
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					
+						<input type="hidden" id="userRole"
+							th:value="${session.USER_ROLES}">
+						<div class="maincontentsec">
+							<div class="panel-heading active" role="tab" id="headingOne" 
+								onclick="closeAllNav()">
+								<h6>MEDICATION</h6>
+							</div>
+							
+							<div id="main_content">
+								<div class="wrapper center-block">
+									<div class="panel-group prevclassacc" id="accordion"
+										role="tablist" aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingone" style = "margin-bottom: 26px;"
+												onclick="closeAllNav()">
+												<h1 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion" href="#collapseone"
+														aria-expanded="true" aria-controls="collapseone">
+														Current Medicine </a>
+												</h1>
+											</div>
+										
+										<div id="collapseone" class="panel-collapse collapse "
+												role="tabpanel" aria-labelledby="headingone">
+												<div class="row">
+													<div class="col-md-12" style = "margin-bottom: -20px;">
+														<button class="btn3" data-toggle="modal"
+															data-target="#delete" id="deleteBttn">DELETE</button>
+														<button class="btn1" id="newBtn" onclick="openNav()">NEW</button>
+														<button class="btn1" id="reqButtonId"
+															onclick="requestMedicineFun()">Request Medicine</button>
+															<h5>Prescribed Medicines</h5>
+													</div>
+													
+													
+													
+													<div class="col-md-12">
+														<div id="myGrid1" style="width: 100%; height: 300px; margin: 20px 0px;"
+															class="ag-theme-alpine"></div>
+														
+													</div>
+													<div class = "clearfix"></div>
+													<div class="col-md-12">
+												<!-- 	request test button by deepak start -->
+														<button class="btn1" id="reqTestId"
+															onclick="requestLabFun()">Request Lab</button>
+												<!-- 	request test button by deepak end -->
+															<h5>Prescribed Tests</h5>
+													</div>
+													
+													<div class="col-md-12">
+
+														<!-- Grid for test details -->
+														<div id="myGridTest" style="width: 100%; height: 300px;"
+															class="ag-theme-alpine"></div>
+
+													</div>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+
+									<div id="mySidenav" class="sidenav">
+										<div class="slidebox">
+											<div class="row">
+
+												<div class="chartbtnsec">
+													<div align="right">
+														<button class="btn4" onclick="closeNav()">CANCEL</button>
+														<button class="btn1" id="addMedication"
+															onclick="addMedication()">SAVE</button>
+
+													</div>
+												</div>
+
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Medicine Name</label><input type="hidden"
+															id="medId"> <input type="text" id="medName"
+															class="form-control" onkeyup='getMedcineList()'
+															placeholder="Enter First 3 Character Of Medicine ..."
+															autocomplete="off">
+														<div id="suggesstion-box1_" class="sugg-cls"></div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+
+														<label>Type</label>
+														<div class="select">
+															<select class="form-control countryclss" id="medType">
+																<option value="">-Select-</option>
+																<option th:each="c,iter:${medTypeList}"
+																	th:value="${c.key}" th:text="${c.name}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+
+												<div class="col-md-6">
+													<div class="form-group">
+														<label>Dosage days from</label> <input type="text"
+															id="fromDate" autocomplete="off" class="form-control"
+															onblur="removeValid(event)"
+															th:attr="onkeyup=|formatDate('fromDate','${session.DATEFORMAT_JS}')|">
+														<i class="ti-calendar picker_calendar"
+															id="fromDateCalendar"></i>
+													</div>
+												</div>
+
+												<div class="col-md-6">
+													<div class="form-group">
+														<label></label> <input type="text" id="toDate"
+															autocomplete="off" class="form-control"
+															onblur="removeValid(event)"
+															th:attr="onkeyup=|formatDate('toDate','${session.DATEFORMAT_JS}')|">
+														<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+													</div>
+												</div>
+
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Morning</label><input type="text" id="morning"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Afternoon</label> <input type="text" id="afternoon"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-4">
+													<div class="form-group">
+														<label>Evening</label><input type="text" id="evening"
+															class="form-control" autocomplete="off">
+													</div>
+												</div>
+												<div class="col-md-12">
+													<div class="form-group">
+														<label>Remarks</label>
+														<textarea id="remarks" class="form-control"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+								<!--  aggrid table for requested medicine starts -->
+								<div class="" id="reqmeddivid">
+									<div class="font-design"  style = "margin-bottom: auto;">
+										Requested Medicines<span></span>
+									</div>
+									<div id="myGrid5" style="width: 100%; height: 300px;"
+										class="ag-theme-alpine"></div>
+								</div>
+								<!--  aggrid table for requested medicine end -->
+								
+								<!--doctor details -->
+									<div id="accDataDiv">
+										<div id="#myGrid" style="width: 100%; height: 200px;"
+											class="ag-theme-alpine"></div>
+									</div>
+									<!-- doctor details -->
+
+
+								</div>
+							
+							</div>
+							<!-- 		Request Medicine starts-->
+							<div id="main_content1">
+								<div class="wrapper center-block">
+									<div class="panel-group" id="accordion1" role="tablist"
+										aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingtwo">
+												<h1 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion1" href="#collapsetwo"
+														aria-expanded="true" aria-controls="collapsetwo">Request
+														Medicine</a>
+												</h1>
+											</div>
+
+											<div id="collapsetwo" class="panel-collapse collapse show"
+												role="tabpanel" aria-labelledby="headingtwo">
+
+
+												<div class="row">
+													<div class="col-md-6">
+
+														<input class="form-control" type="text" id="search1"
+															value="" placeholder="Search location(State/District/City)">
+													</div>
+													<div class="buttonsec">
+														<button class="btn2" id="searchButton1"
+															onclick="searchChemist();">Search</button>
+													</div>
+
+
+												</div>
+												<div class="row">
+												<div class="col-md-6">
+													<div class="row margin_topbot" id="searchRowDiv">
+														<div class="input-style row">
+															<input type="text" placeholder="Search anything from below table" name="search"
+																class="searchboxinput" onkeyup="cancelBar()"
+																oninput="onQuickFilterChanged()" id="quickFilter">
+															<div class="searchicon">
+																<a href="javascript:void(0)"><span
+																	style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+																	id="closeKey"
+																	onclick="gridOptions2.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+																	class="close_i"><i class="ti-close srchicon"></i></span></a><a
+																	href="javascript:void(0)"><i
+																	class="ti-search srchicon"></i></a>
+															</div>
+														</div>
+													</div>
+													</div>
+													<div class="col-md-6">
+														<div class="col-md-12 buttonsec btn-hs">
+															<button class="btn1" id="btnForRequestMedicine"
+																onclick="reQuestMedcineFun()">Request</button>
+															<button class="btn4" id="btnForCancelMedicine"
+																onclick="cancelMedcineFun()">cancel</button>
+														</div>
+													</div>
+
+													<div class="col-md-12">
+														<div id="myGrid2" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+
+								</div>
+							</div>
+							<!-- 		Request Medicine ends-->
+							<!-- Modal Start-->
+							<div id="myModal" class="modal fade" role="dialog">
+								<div class="modal-dialog"
+									style="margin: 30px auto; position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">Request Medicine</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<i class="ti-close"></i>
+											</button>
+										</div>
+										<input type="hidden" id="chemistId"> <input
+											type="hidden" id="medicinesIds"> <input type="hidden"
+											id="despsrlno"> <input type="hidden" id="despsrno">
+
+										<div class="modal-body">
+											<!-- text input -->
+											<div id="appointmentAvailable">
+												<div class="row" id="timeslotWise">
+													<!-- <div class="col-md-2"><div class="box" >10:00</div></div> -->
+												</div>
+
+												<div class="row">
+													<div class="col-md-5">
+														<div class="form-group">
+															<label>Patient Notes :</label>
+														</div>
+													</div>
+													<div class="col-md-5">
+														<input class="form-control" type="text" id="patientNote"
+															value="">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12 buttonsec btn-hs">
+														<button class="btn1" id="btnForPatientStatus"
+															onclick="saveRequest()">Request</button>
+													</div>
+												</div>
+
+
+											</div>
+											<!-- <div id="requestNotAvailable">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Request Not available</label>
+												</div>
+											</div>
+										</div> -->
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<!-- Modal End-->
+							<!-- 		Request Lab starts-->
+							<div id="main_content2">
+								<div class="center-block">
+									<div class="panel-group" id="accordion2" role="tablist"
+										aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingtwo">
+												<h1 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion2" href="#collapseThree"
+														aria-expanded="true" aria-controls="#collapseThree">Request
+														Lab Tests</a>
+												</h1>
+											</div>
+
+											<div id="collapseThree" class="panel-collapse collapse show"
+												role="tabpanel" aria-labelledby="headingtwo">
+
+
+												<div class="row">
+													<div class="col-md-6">
+
+														<input class="form-control" type="text" id="search2"
+															value="" placeholder="Search location(State/District/City)">
+													</div>
+													<div class="buttonsec">
+														<button class="btn2" id="searchButton2"
+															onclick="searchLab();">Search</button>
+													</div>
+
+
+												</div>
+												<div class="row">
+												<div class="col-md-6">
+													<div class="row margin_topbot" id="searchRowDiv">
+														<div class="input-style row">
+															<input type="text" placeholder="Search anything from below table" name="search"
+																class="searchboxinput" onkeyup="cancelBar()"
+																oninput="onQuickFilterChanged()" id="quickFilter">
+															<div class="searchicon">
+																<a href="javascript:void(0)"><span
+																	style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+																	id="closeKey"
+																	onclick="gridOptions2.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+																	class="close_i"><i class="ti-close srchicon"></i></span></a><a
+																	href="javascript:void(0)"><i
+																	class="ti-search srchicon"></i></a>
+															</div>
+														</div>
+													</div>
+													</div>
+													<div class="col-md-6">
+														<div class="col-md-12 buttonsec btn-hs">
+															<button class="btn1" id="btnForRequestLab"
+																onclick="reQuestLabFun()">Request</button>
+															<button class="btn4" id="btnForCancelLab"
+																onclick="cancelLabFun()">cancel</button>
+														</div>
+													</div>
+
+													<div class="col-md-12">
+														<div id="myGrid3" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+
+								</div>
+							</div>
+							<!-- 		Request Lab ends-->
+							<!-- Request Lab Modal Start-->
+							<div id="myModalTestLab" class="modal fade" role="dialog">
+								<div class="modal-dialog"
+									style="margin: 30px auto; position: relative; top: 40%; transform: translateY(-50%) !important; width: 70%;">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">Request Lab</h4>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<i class="ti-close"></i>
+											</button>
+										</div>
+										<input type="hidden" id="labId"> 
+										<input type="hidden" id="testsGroupNames"> 
+										<input type="hidden" id="testsNames"><input type="hidden"
+											id="despLabsrlno"> <input type="hidden" id="despLabsrno">
+
+										<div class="modal-body">
+											<!-- text input -->
+											<div >
+												<div class="row">
+													<div class="col-md-5">
+														<div class="form-group">
+															<label>Patient Notes :</label>
+														</div>
+													</div>
+													<div class="col-md-5">
+														<input class="form-control" type="text" id="patientNoteForLab"
+															value="">
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12 buttonsec btn-hs">
+														<button class="btn1" id="btnForPatientLabStatus"
+															onclick="saveRequestLab()">Request</button>
+													</div>
+												</div>
+
+
+											</div>
+											<!-- <div id="requestNotAvailable">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Request Not available</label>
+												</div>
+											</div>
+										</div> -->
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<!-- Request Lab Modal End-->
+						</div>
+					</div>
+
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

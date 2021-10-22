@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+body {
+	background-color: #eee;
+}
+.tbodyCls td {
+    font-size: 16px!important;
+}
+
+
+.profile_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	height: 830px;
+}
+
+.profile-img img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	border: 1px solid #0071c1;
+	margin: 20px 0px 10px;
+	position: relative;
+}
+
+.change-pf {
+	height: 35px;
+	width: 35px;
+	background-color: #056fe2;
+	color: #fff;
+	border-radius: 50%;
+	position: absolute;
+	padding: 5px;
+	right: 132px;
+	top: 85px;
+}
+
+.user-nm {
+	font-size: 16px;
+	color: #000;
+	text-align: center;
+	font-weight: 500;
+	padding-bottom: 10px;
+}
+
+.user-dtl {
+	border-top: 1px dashed #0071c1;
+	padding: 10px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mb-8 {
+	margin-bottom: 4px;
+}
+
+.user-dtlhd {
+	font-size: 16px;
+	color: #000;
+	font-weight: 500;
+}
+
+.user-id {
+    font-size: 16px;
+    font-weight: 400;
+    color: #909193;
+    background-color: transparent;
+    border: none!important;
+    outline: none!important;
+}
+
+.right_tbl_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	height: 270px;
+}
+
+.tbl-scrl {
+	height: 210px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.vital_card {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	height: 495px;
+}
+
+.vital {
+	font-size: 16px;
+	color: #fff;
+	font-weight: 700;
+	background-color: #12b3bb!important;
+	text-transform: uppercase;
+	padding: 5px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.col-md-pd {
+	padding-right: 0px !important;
+	padding-left: 14px !important
+}
+
+#upload-photo {
+	opacity: 0;
+	position: absolute;
+	/* z-index: -1; */
+	height: 35px;
+	width: 35px;
+	right: 0px;
+	z-index: 999;
+	border-radius: 50%;
+}
+
+.pd-10 {
+	padding: 10px;
+}
+
+.modal-body {
+	width: 375px;
+	margin-right: 16px;
+	position: relative;
+	top: 0px;
+	float: none;
+}
+.modal-content-md {
+	padding: 15px 14px;
+	position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    outline: 0;
+
+
+}
+</style>
+<script>
+	$(document).ready(
+			function() {
+				$("#imageHideShow").hide();
+				$("#cancel1").hide();
+				$("#cancel2").hide();
+				$("#cancel3").hide();
+				
+				$("#savepersonalinfo").hide();
+				$("#saveperinfo").hide();
+				$('#saveide').hide();
+				$('#identification').hide();
+				$('#address').hide();
+				$('#saveAdd').hide();
+				$('#submitemerContact').hide();
+				
+
+				/*view personal info*/
+
+				$.ajax({
+					type : "GET",
+					url : "view-patient-details-edit",
+					success : function(response) {
+						if (response.message == "Success") {
+							$('#imgLocs').attr('src', '');
+							if (response.body.fileDetails != null
+									&& response.body.fileDetails != "") {
+								$('#imgLocs').attr('src',
+										response.body.fileDetails);
+							} else {
+								$('#imgLocs').attr('src',
+										'../assets/eHealth/images/doctor.jpg');
+							}
+							$("#firstnameid").val(response.body.firstnameid);
+							$("#lastnameid").val(response.body.lastnameid);
+							$("#uhidNo").val(response.body.uhidNo);
+							$("#bloodgrp").val(response.body.bloodgrp);
+							$("#dobid").val(response.body.dobid);
+							$("#age").val(response.body.age);
+							$("#gender").val(response.body.gender);
+							$("#maritialStatus").val(
+									response.body.maritialStatus);
+							$("#occupation").val(response.body.occupation);
+
+							$("#pancardNo").val(response.body.pancardNo);
+							$("#passportNo").val(response.body.passportNo);
+							$("#aadharNo").val(response.body.aadharNo);
+							$("#votarNo").val(response.body.votarNo);
+							$("#licenseNo").val(response.body.licenseNo);
+							$("#licenseAuthority").val(
+									response.body.licenseAuthority);
+							$("#countryid").val(response.body.countryid);
+							$("#dist").val(response.body.distId);
+							
+							$("#stateid").val(response.body.stateid);
+							
+							$("#cityid").val(response.body.cityid);
+							
+							$("#zipCode").val(response.body.zipCode);
+
+							$("#homeAdd").val(response.body.homeAdd);
+							$("#phNo").val(response.body.phNo);
+							$("#cemail").val(response.body.cemail);
+
+							$('#nameDtls').text(
+									response.body.firstnameid + " "
+											+ response.body.lastnameid);
+
+							for (var i = 0; i < response.body.length; i++) {
+								var div2 = '<tr><td>'
+										+ response.body[i].qualification
+										+ '</td>' + '<td>'
+										+ response.body[i].specialization
+										+ '</td>' + '<td>';
+								$("#tbodyid3").append(div2)
+								
+							}
+
+						}
+					},
+
+				});
+
+				/*vital sign*/
+
+				$.ajax({
+					type : "GET",
+					url : "view-patient-details-edit-vitalsign",
+					success : function(response) {
+						if (response.message == "Success") {
+
+							$("#heightId").val(response.body.heightId);
+							$("#weightid").val(response.body.weightid);
+							$("#bmi").val(response.body.bmi);
+							$("#tempCs").val(response.body.tempCs);
+							$("#tempFah").val(response.body.tempFah);
+							$("#bldpsr").val(response.body.bldpsr);
+							$("#sysDis").val(response.body.sysDis);
+							$("#pulseMin").val(response.body.pulseMin);
+							$("#respBpm").val(response.body.respBpm);
+							$("#oxygenPer").val(response.body.oxygenPer);
+							$("#vCount").val(response.body.vCount);
+							$("#poDate").val(response.body.maritalstatusId);
+						}
+					},
+
+				});
+
+				/*view emergency contact*/
+
+				agGrid.simpleHttpRequest({
+					url : "view-patient-details-edit-emercontact"
+				}).then(
+						function(data) {
+							//console.log("hi")
+							//console.log(data)
+							for (var i = 0; i < data.length; i++) {
+								
+								var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editEmergencyContact(\''+ data[i].eId +'\',\''+ data[i].eName +'\',\''+ data[i].eRelationId +'\',\''+ data[i].eMobNo +'\')">' + data[i].eName + '</td>'
+										+ '<td>' + data[i].eRealtion + '</td>'
+										+ '<td>' + data[i].eMobNo + '</td>';
+								$("#tbodyid").append(div2)
+							}
+
+						});
+
+				/*view Family Doctor*/
+
+				agGrid.simpleHttpRequest({
+					url : "view-patient-details-edit-famdoc"
+				}).then(
+						function(data) {
+						
+
+							
+							for (var i = 0; i < data.length; i++) {
+								
+								var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDoctor(\''+ data[i].famDocId +'\',\''+data[i].docName+'\',\''+data[i].docSpecialityId+'\',\''+data[i].docMobNo+'\')">' + data[i].docName + '</td>'
+										+ '<td>' + data[i].docSpeciality + '</td>'
+										+ '<td>' + data[i].docMobNo + '</td>';
+								$("#tbodyid2").append(div2)
+							}
+						});
+
+				/*view Education*/
+				agGrid.simpleHttpRequest({
+					url : "view-patient-details-edit"
+				}).then(
+						function(response) {
+							if(response.body.qualification==null){
+								var div2 = '<tr><td>' + 'N/A'
+								+ '</td>' + '<td>'
+								+ 'N/A' + '</td>';
+							}else{
+								var div2 = '<tr><td>' + response.body.qualification
+								+ '</td>' + '<td>'
+								+ response.body.specialization + '</td>';
+							}
+							
+							$("#tbodyid3").append(div2)
+
+						});
+				/*family details*/
+					agGrid.simpleHttpRequest({
+								url : "view-patient-details-edit-famDtl"
+							}).then(function(data) {
+								
+								for (var i = 0; i < data.length; i++) {
+									console.log(data[i].famAge)
+									var age1="";
+									if(data[i].famAge==null){
+										
+									 	 age1 = "N/A";
+									}else{
+										
+										 age1 = data[i].famAge;
+									}
+								var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDetails(\''+ data[i].eRelationId +'\',\''+ age1 +'\',\''
+										+ data[i].uhidCardNo +'\',\''+ data[i].famMeberName+'\', \''+ data[i].slNo+'\')">' + data[i].famMeberName
+								+ '</td>' + '<td>'
+								+ data[i].famRelation + '</td>'
+								+ '<td>'
+								+ age1 + '</td>'
+								+ '<td>'
+								+ data[i].uhidCardNo + '</td>';
+								
+						$("#tbodyid4").append(div2)
+								}
+							});
+
+						var dateFormat = localStorage.getItem("dateFormat");
+
+						$("#dobidCalendar").datetimepicker({
+							format : 'Y-m-d',
+							closeOnDateSelect : true,
+							timepicker : false,
+						}).on("change", function() {
+							$('#dobIds').val($(this).val());
+						})
+
+						$('#dobIds').blur(function() {
+							$("#dobidCalendar").val($(this).val());
+						})
+
+					});
+
+	/* edit family details*/
+	function editFamilyDetails(relation,age,familyHealthId,memberName, slno){
+		$("#deleteFamilyId").show();
+		$("#myModaladdFamilyDetails").modal('show');
+		$("#familyNameId").val(memberName);
+		$("#familyRelationSelectId").val(relation);
+		$("#familyAgeId").val(age);
+		$("#uhidCardNo").val(familyHealthId);
+		$("#familyMamberhiddenId").val(slno);
+	}
+	/* delete family details */
+	function deleteFamilyFun(){
+		var slno = $("#familyMamberhiddenId").val();
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-delete-family-details?slno="+slno,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#myModaladdFamilyDetails").modal('hide');
+					$("#tbodyid4").empty();
+					/*family details*/
+						agGrid.simpleHttpRequest({
+								url : "view-patient-details-edit-famDtl"
+							}).then(function(data) {
+								
+								for (var i = 0; i < data.length; i++) {
+									console.log(data[i].famAge)
+									var age1="";
+									if(data[i].famAge==null){
+										
+									 	 age1 = "N/A";
+									}else{
+										
+										 age1 = data[i].famAge;
+									}
+								var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDetails(\''+ data[i].eRelationId +'\',\''+ age1 +'\',\''
+										+ data[i].uhidCardNo +'\',\''+ data[i].famMeberName+'\', \''+ data[i].slNo+'\')">' + data[i].famMeberName
+								+ '</td>' + '<td>'
+								+ data[i].famRelation + '</td>'
+								+ '<td>'
+								+ age1 + '</td>'
+								+ '<td>'
+								+ data[i].uhidCardNo + '</td>';
+									
+							$("#tbodyid4").append(div2)
+				}
+			});
+
+				}
+			},
+
+		});
+	}
+	/*edit personalInfo*/
+
+	function editPersonalinfo() {
+		$("#cancel1").show();
+		$("#saveperinfo").show();
+		$("#editperinfo").hide();
+		$("#editPersonalinfo").hide();
+		$("#savepersonalinfo").show();
+		$("#imageHideShow").show();
+		
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-edit",
+			success : function(response) {
+				if (response.message == "Success") {
+
+					$("#firstname").val(response.body.firstnameid);
+					$("#lastname").val(response.body.lastnameid);
+					$("#uhid").val(response.body.uhidNo);
+					$("#bloodgroupId").val(response.body.bloodgroupId);
+					$("#dobIds").val(response.body.dobid);
+					$("#ageId").val(response.body.age);
+					$("#genderId").val(response.body.genderId);
+					$("#maritalstatusId").val(response.body.maritalstatusId);
+					$("#occupationId").val(response.body.occupation);
+					
+					
+
+				}
+			},
+
+		});
+
+	}
+	function cancelpersonalinfo() {
+		$("#cancel1").hide();
+		$("#saveperinfo").hide();
+		$("#editperinfo").show();
+		$("#savepersonalinfo").hide();
+		$("#editPersonalinfo").show();
+		$("#imageHideShow").hide();
+	}
+	/*save personal info*/
+	function savepersonalinfo() {
+		$("#cancel1").hide();
+		$("#editperinfo").show();
+		$("#saveperinfo").hide();
+		$("#savepersonalinfo").hide();
+		$("#editPersonalinfo").show();
+		$("#imageHideShow").hide();
+		
+		var data = {};
+
+		data.firstnameid = $("#firstname").val();
+		data.lastnameid = $("#lastname").val();
+		data.uhidNo = $("#uhid").val();
+		data.bloodgroupId = $("#bloodgroupId").val();
+		data.dobid = $("#dobIds").val();
+		data.age = $("#ageId").val();
+		data.genderId = $("#genderId").val();
+		data.maritalstatusId = $("#maritalstatusId").val();
+		data.occupation = $("#occupationId").val();
+		
+		data.fileDetails = $("#fileUpload").val();
+
+		var validation =true;
+		
+		/* if (data.fileDetails == j || data.fileDetails == "") {
+			validation = validationUpdated("Image Format  Required", "fileDetails");
+		} */
+			if (validation) {
+				$.ajax({
+					type : "POST",
+					url : "view-patient-details-personal-save",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						if (response.message == "Success") {
+
+							$.ajax({
+								type : "GET",
+								url : "view-patient-details-edit",
+								success : function(response) {
+									if (response.message == "Success") {
+										$("#firstnameid")
+												.val(response.body.firstnameid);
+										$("#lastnameid").val(response.body.lastnameid);
+										$("#uhidNo").val(response.body.uhidNo);
+										$("#bloodgrp").val(response.body.bloodgrp);
+										$("#dobid").val(response.body.dobid);
+										$("#age").val(response.body.age);
+										$("#gender").val(response.body.gender);
+										$("#maritialStatus").val(
+												response.body.maritialStatus);
+										$("#occupation").val(response.body.occupation);
+										$('#imgLocs').attr('src', '');
+										if (response.body.fileDetails != null
+												&& response.body.fileDetails != "") {
+											$('#imgLocs').attr('src',
+													response.body.fileDetails);
+										} else {
+											$('#imgLocs').attr('src',
+													'../assets/eHealth/images/doctor.jpg');
+										}
+									}
+								},
+
+							});
+
+						} else {
+							swal({
+								title : response.code,
+								text : response.message,
+								type : "warning"
+							})
+						}
+					},
+					error : function(response) {
+
+					}
+				})
+				}
+			
+
+
+	}
+
+	/*save identification*/
+
+	function editide() {
+		$('#cancel2').show();
+		$('#editide').hide();
+		$('#saveide').show();
+		$('#identification').show();
+		$('#identificationData').hide();
+
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-edit",
+			success : function(response) {
+				if (response.message == "Success") {
+
+					$("#pancardNoId").val(response.body.pancardNo);
+					$("#passportNoId").val(response.body.passportNo);
+					$("#aadharNoId").val(response.body.aadharNo);
+					$("#votarNoId").val(response.body.votarNo);
+					$("#licenseNoId").val(response.body.licenseNo);
+					$("#licenseAuthorityId")
+							.val(response.body.licenseAuthority);
+
+				}
+			},
+
+		});
+
+	}
+	
+	function cancelidentification() {
+		$('#cancel2').hide();
+		$('#editide').show();
+		$('#saveide').hide();
+		$('#identification').hide();
+		$('#identificationData').show();
+	}
+
+	function saveide() {
+		$('#cancel2').hide();
+		$('#editide').show();
+		$('#saveide').hide();
+		$('#identification').hide();
+		$('#identificationData').show();
+
+		var data = {};
+
+		data.pancardNo = $("#pancardNoId").val();
+		data.passportNo = $("#passportNoId").val();
+		data.aadharNo = $("#aadharNoId").val();
+		data.votarNo = $("#votarNoId").val();
+		data.licenseNo = $("#licenseNoId").val();
+		data.licenseAuthority = $("#licenseAuthorityId").val();
+
+		$.ajax({
+			type : "POST",
+			url : "view-patient-details-idefication-save",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(response) {
+				if (response.message == "Success") {
+
+					$.ajax({
+						type : "GET",
+						url : "view-patient-details-edit",
+						success : function(response) {
+							if (response.message == "Success") {
+
+								$("#pancardNo").val(response.body.pancardNo);
+								$("#passportNo").val(response.body.passportNo);
+								$("#aadharNo").val(response.body.aadharNo);
+								$("#votarNo").val(response.body.votarNo);
+								$("#licenseNo").val(response.body.licenseNo);
+								$("#licenseAuthority").val(
+										response.body.licenseAuthority);
+
+							}
+						},
+
+					});
+
+				} else {
+					swal({
+						title : response.code,
+						text : response.message,
+						type : "warning"
+					})
+				}
+			},
+			error : function(response) {
+
+			}
+		})
+
+	}
+
+
+	/*EDIT contact*/
+
+	function editAdd() {
+		$('#cancel3').show();
+		$('#editAdd').hide();
+		$('#saveAdd').show();
+		$('#address').show();
+		$('#addressDt').hide();
+
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-edit-contactDetails",
+			success : function(response) {
+				if (response.message == "Success") {
+						
+					$("#homeAddId").val(response.body.homeAdd);
+					$("#phNoId").val(response.body.phNo);
+					$("#cemailId").val(response.body.cemail);
+
+					$("#countrySid").val(response.body.countryid);
+					$("#stateSid").val(response.body.stateid);
+					
+					$("#distId").val(response.body.dist);
+					
+					$("#citySid").val(response.body.cityid);
+					$("#zipSCode").val(response.body.zipCode);
+					var st= response.body.state;
+					
+					var dt =response.body.dist;
+					getDistList(st,dt);
+					
+					var ct =response.body.city;
+					getCityListEdit(dt,ct); 
+					
+					
+					
+				}
+			},
+
+		});
+
+	}
+function cancelContact() {
+	$('#cancel3').hide();
+	$('#editAdd').show();
+	$('#saveAdd').hide();
+	$('#address').hide();
+	$('#addressDt').show();
+
+}
+	function saveAdd() {
+		$('#cancel3').hide();
+		$('#editAdd').show();
+		$('#saveAdd').hide();
+		$('#address').hide();
+		$('#addressDt').show();
+
+		var data = {};
+
+		data.homeAdd = $("#homeAddId").val();
+		data.phNo = $("#phNoId").val();
+		data.cemail = $("#cemailId").val();
+		data.dist = $("#distId").val();
+		data.city = $("#citySid").val();
+		data.zipCode = $("#zipSCode").val();
+		
+	console.log(data)
+		$.ajax({
+			type : "POST",
+			url : "view-patient-details-contact-save",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(response) {
+				if (response.message == "Success") {
+
+					
+					$.ajax({
+						type : "GET",
+						url : "view-patient-details-edit",
+						success : function(response) {
+							if (response.message == "Success") {
+
+								$("#homeAdd").val(response.body.homeAdd);
+								$("#phNo").val(response.body.phNo);
+								$("#cemail").val(response.body.cemail);
+								
+								$("#dist").val(response.body.distId);
+								$("#cityid").val(response.body.cityid);
+								$("#zipCode").val(response.body.zipCode);
+							}
+						},
+
+					});
+
+				} else {
+					swal({
+						title : response.code,
+						text : response.message,
+						type : "warning"
+					})
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+
+	}
+
+	/*Emergency Contact*/
+
+	function addEmerContact() {
+		
+		var eName=$("#eName").val('');
+		var eRealtion=$("#eRealtion").val('');
+		var eMobNo=$("#eMobNo").val('')
+		
+		$("#deleteContact").hide();
+		var rowCount = $("#tblId tr").length;
+		if(rowCount<=5){
+			$("#myModalEmergencyContact").modal('show')
+		}else{
+			$("#okModal").modal('show')
+		}
+		
+	}
+	/*---------------function for OkModal------------ */
+	function okModal1() {
+		$("#okModal").modal('hide');
+		
+	}
+
+	function cancelModalBtn() {
+		$("#myModalEmergencyContact").modal('hide');
+		
+		
+	}
+	function cancelModalBtn1() {
+		
+	$("#myModalEducation").hide();
+				
+	}
+	
+	function cancelModalBtn2() {
+		$("#myModalFamilyDocor").hide();
+	}
+	
+	/*Save Emergency Contact*/
+	function submitemerContact() {
+
+		var data = {};
+		data.eId = $("#emergencyHiddenId").val();
+		data.eName = $("#eName").val();
+		data.eRelationId = $("#eRealtion").val();
+		data.eMobNo = $("#eMobNo").val();
+		
+		var validation =true;
+		
+		if (data.eName == null || data.eName == "") {
+			validation = validationUpdated("Name  Required", "eName");
+		}
+		if (data.eRealtion == null || data.eRealtion == "") {
+			validation = validationUpdated("Relation  Required", "eRealtion");
+		}
+		if (data.eMobNo == null || data.eMobNo == "") {
+			validation = validationUpdated("Mobile No  Required", "eMobNo");
+		}
+		
+		if(validation) {
+			//alert(validation)
+			
+	$.ajax({
+		type : "POST",
+		url : "view-patient-details-emercontact-save",
+		dataType : "json",
+		contentType : "application/json",
+		data : JSON.stringify(data),
+		success : function(response) {
+			if (response.message == "Success") {
+
+				cancelModalBtn();
+				
+				agGrid.simpleHttpRequest(
+								{
+									url : "view-patient-details-edit-emercontact"
+								}).then(
+								function(data) {
+									$("#tbodyid").empty()
+									for (var i = 0; i < data.length; i++) {
+
+										var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editEmergencyContact(\''+ data[i].eId +'\',\''+ data[i].eName +'\',\''+ data[i].eRelationId +'\',\''+ data[i].eMobNo +'\')">'
+												+ data[i].eName
+												+ '</td>'
+												+ '<td>'
+												+ data[i].eRealtion
+												+ '</td>'
+												+ '<td>'
+												+ data[i].eMobNo
+												+ '</td>';
+
+										$("#tbodyid").append(div2)
+									}
+
+								});
+
+			} else {
+				console.log(response.message);
+			}
+		},
+		error : function(response) {
+			console.log(response);
+		}
+	})
+}
+}
+	/*edit Emergency Contact*/
+	function editEmergencyContact(id,name,relation, mobno) {
+		$("#emergencyHiddenId").val(id)
+
+		$("#myModalEmergencyContact").modal('show');
+		$("#deleteContact").show();
+		$("#eName").val(name)
+		$("#eRealtion").val(relation)
+		$("#eMobNo").val(mobno)
+
+		
+	}
+	
+	/*edit Family Dnction */
+	function editFamilyDoctor(id,name,specialty,mob) {
+		$("#famDocId").val(id)
+
+		$("#myModalFamilyDocor").modal('show');
+		$("#deleteFamilyDoctor").show();
+		$("#docName").val(name)
+		$("#docSpeciality").val(specialty)
+		$("#docMobNo").val(mob) 
+		
+	}
+	///* delete  emergency contact */
+	function deleteContact(){
+		var slno=$("#emergencyHiddenId").val()
+		
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-delete-contact?slno="+slno,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#tbodyid").empty();
+					$("#myModalEmergencyContact").modal('hide');
+					agGrid.simpleHttpRequest(
+							{
+								url : "view-patient-details-edit-emercontact"
+							}).then(
+							function(data) {
+								$("#tbodyid").empty()
+								for (var i = 0; i < data.length; i++) {
+
+									var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editEmergencyContact(\''+ data[i].eId +'\',\''+ data[i].eName +'\',\''+ data[i].eRelationId +'\',\''+ data[i].eMobNo +'\')">'
+											+ data[i].eName
+											+ '</td>'
+											+ '<td>'
+											+ data[i].eRealtion
+											+ '</td>'
+											+ '<td>'
+											+ data[i].eMobNo
+											+ '</td>';
+
+									$("#tbodyid").append(div2)
+								}
+
+							});
+
+				}
+			}
+		});
+	}
+	/*Family Doctor*/
+ 
+	function editFamdoc() {
+		var docName=$("#docName").val('');
+		var docSpecialityId=$("#docSpeciality").val('');
+		var docMobNo=$("#docMobNo").val('')
+		
+		$("#myModalFamilyDocor").show();
+		$("#deleteFamilyDoctor").hide();
+		
+	} 
+
+	
+	/*save Family Doctor*/
+
+	function submitfamdoc() {
+
+		var data = {};
+
+		data.docName = $("#docName ").val();
+		data.docSpecialityId = $("#docSpeciality").val();
+		data.docMobNo = $("#docMobNo").val();
+
+		
+		var validation =true;
+		
+		if (data.docName == null || data.docName == "") {
+			validation = validationUpdated("Name  Required", "docName");
+		}
+		if (data.docSpeciality == null || data.docSpeciality == "") {
+			validation = validationUpdated("Speciality  Required", "docSpeciality");
+		}
+		if (data.docMobNo == null || data.docMobNo == "") {
+			validation = validationUpdated("Mobile No  Required", "docMobNo");
+		}
+		if(validation) {
+			$.ajax({
+				type : "POST",
+				url : "view-patient-details-famdoc-save",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function(response) {
+					if (response.message == "Success") {
+						console.log(response.body)
+						cancelModalBtn2();
+
+						agGrid.simpleHttpRequest({
+							url : "view-patient-details-edit-famdoc"
+						}).then(
+								function(data) {
+									$("#tbodyid2").empty()
+								
+									for (var i = 0; i < data.length; i++) {
+										
+										var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDoctor(\''+ data[i].famDocId +'\',\''+data[i].docName+'\',\''+data[i].docSpecialityId+'\',\''+data[i].docMobNo+'\')">' + data[i].docName + '</td>'
+												+ '<td>' + data[i].docSpeciality + '</td>'
+												+ '<td>' + data[i].docMobNo + '</td>';
+										$("#tbodyid2").append(div2)
+									}
+
+								});
+
+					} else {
+						console.log(response.message);
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	
+	}
+	
+	function deleteFamilyDoctor(){
+		
+		var slno=$("#famDocId").val()
+		//alert(slno)
+		$.ajax({
+			type : "GET",
+			url : "view-patient-details-delete-familyDoctor?slno="+slno,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#tbodyid2").empty();
+					$("#myModalFamilyDocor").modal('hide');
+					agGrid.simpleHttpRequest(
+							{
+								url : "view-patient-details-edit-famdoc"
+							}).then(
+							function(data) {
+								$("#tbodyid2").empty()
+								for (var i = 0; i < data.length; i++) {
+
+									var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDoctor(\''+ data[i].famDocId +'\',\''+ data[i].docName +'\',\''+ data[i].docSpecialityId +'\',\''+ data[i].docMobNo +'\')">'
+											+ data[i].docName
+											+ '</td>'
+											+ '<td>'
+											+ data[i].eRealtion
+											+ '</td>'
+											+ '<td>'
+											+ data[i].docMobNo
+											+ '</td>';
+
+									$("#tbodyid2").append(div2)
+								}
+
+							});
+
+				}
+			}
+		});
+	}
+	
+	/*
+	 * edit education 
+	 */
+	function editEdu() {
+		$("#myModalEducation").show();
+
+		agGrid.simpleHttpRequest({
+			url : "view-patient-details-edit"
+		}).then(
+				function(response) {
+					
+					qualification = $("#qualification ").val(
+							response.body.qualification);
+					specialization = $("#specialization").val(
+							response.body.specialization);
+
+				});
+
+	}
+
+	function submitedu() {
+		$("#myModalEducation").show();
+
+		var data = {};
+
+		data.qualification = $("#qualification ").val();
+		data.specialization = $("#specialization").val();
+
+		$.ajax({
+			type : "POST",
+			url : "view-patient-details-edu-save",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(data),
+			success : function(response) {
+				if (response.message == "Success") {
+
+					console.log(response.body)
+					
+					cancelModalBtn1();
+					agGrid.simpleHttpRequest({
+						url : "view-patient-details-edit"
+					}).then(
+							function(response) {
+								$("#tbodyid3").empty();
+								var div2 = '<tr><td>'
+										+ response.body.qualification + '</td>'
+										+ '<td>' + response.body.specialization
+										+ '</td>';
+								$("#tbodyid3").append(div2)
+
+							});
+
+				} else {
+					swal({
+						title : response.code,
+						text : response.message,
+						type : "warning"
+					})
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+	}
+	function addFamily(){
+		$("#deleteFamilyId").hide();
+		$('#myModaladdFamilyDetails').modal('show');
+		$('#familyNameId').val('');
+		$('#familyRelationSelectId').val('');
+		$('#familyAgeId').val('');
+		$('#uhidCardNo').val('');
+		$("#familyMamberhiddenId").val('');
+		
+		
+	}
+	function getFamilymemberList() {
+		var search = $("#familyNameId").val();
+		if (search == "") {
+		      $("#suggesstion-box_").hide();
+		  }
+		if (search) {
+			$.ajax({
+						type : "POST",
+						url : "view-patient-details-family-get-list",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								console.log("response data"
+										+ JSON.stringify(response))
+								if (response.body.length != 0) {
+									$("#familyNameId").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutocompleteValueItem1(\''
+												+ response.body[i].famMeberName
+												+ '\',\''
+												+ response.body[i].famAge
+												+ '\',\''
+												+ response.body[i].uhidCardNo
+												+ '\')">'
+												+ response.body[i].famMeberName
+												+ '</li>';
+									}
+									content += '</ul>';
+									//console.log("content " + content)
+									$("#suggesstion-box_").show();
+									$("#suggesstion-box_").html(content);
+
+								} else {
+									$("#familyNameId").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1">';
+									content += '<li onClick="selectAutocompleteValueItem()">'
+											+ "No Data Found" + '</li>';
+									content += '</ul>';
+									$("#suggesstion-box_").show();
+									$("#suggesstion-box_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+	}
+
+	 function selectAutocompleteValueItem1(famMeberName, age,uhidCardNo) {
+		 if(age == "null" || age ==''){
+				var famAge = "N/A"
+			}else {
+				var famAge = age
+			}
+		if (famMeberName) {
+			//$("#famId").val(famMeberName);
+			$("#familyNameId").val(famMeberName);
+			$("#familyAgeId").val(famAge);
+			
+			$("#uhidCardNo").val(uhidCardNo);
+			$("#familyNameId").attr('data-procat', famMeberName);
+			$("#suggesstion-box_").hide();
+			
+			//checkForDuplicate(key,counter);
+
+		} else {
+
+		//	$("#famId").val("");
+
+			
+			$("#uhidCardNo").val("");
+			$("#familyNameId").val("");
+			$("#familyAgeId").val("");
+			$("#familyNameId").attr('data-procat', "");
+			$("#suggesstion-box_").hide();
+
+		}
+	} 
+	 function selectAutocompleteValueItem() {
+
+		$("#suggesstion-box_").hide();
+
+		}
+	 function submitAddFamilyFun() {
+		 	$("#deleteFamilyId").hide();
+		 	
+		 	var relation = $("#familyRelationSelectId").val();
+		 	var uhidCardNo = $("#uhidCardNo").val();
+		 	var slno =  $("#familyMamberhiddenId").val();
+		 	
+
+		 	
+		 		$.ajax({
+		 				type : "GET",
+		 				url : "view-patient-details-famDtl-save?relation="+relation+"&uhidCardNo="+uhidCardNo+"&slno="+slno,
+		 				dataType : "json",
+		 				success : function(response) {
+		 				if (response.message == "Success") {
+		 					$('#myModaladdFamilyDetails').modal('hide');
+		 					$("#tbodyid4").empty();
+		 					/*family details*/
+			 					agGrid.simpleHttpRequest({
+								url : "view-patient-details-edit-famDtl"
+							}).then(function(data) {
+								
+								for (var i = 0; i < data.length; i++) {
+									console.log(data[i].famAge)
+									var age1="";
+									if(data[i].famAge==null){
+										
+									 	 age1 = "N/A";
+									}else{
+										
+										 age1 = data[i].famAge;
+									}
+								var div2 = '<tr><td class="user-id" style="cursor:pointer" onclick="editFamilyDetails(\''+ data[i].eRelationId +'\',\''+ age1 +'\',\''
+										+ data[i].uhidCardNo +'\',\''+ data[i].famMeberName+'\', \''+ data[i].slNo+'\')">' + data[i].famMeberName
+								+ '</td>' + '<td>'
+								+ data[i].famRelation + '</td>'
+								+ '<td>'
+								+ age1 + '</td>'
+								+ '<td>'
+								+ data[i].uhidCardNo + '</td>';
+			 								
+			 						$("#tbodyid4").append(div2)
+			 								}
+			 							});
+
+		 				} else {
+		 					swal({
+		 						title : response.code,
+		 						text : response.message,
+		 						type : "warning"
+		 					})
+		 				}
+		 			},
+		 			error : function(response) {
+		 				console.log(response);
+		 			}
+		 		})
+		 	}
+	 function cancelAddFamilyFun(){
+		 $('#myModaladdFamilyDetails').modal('hide');
+	 }
+	 
+		
+		/*
+		dist onchange
+		*/
+		
+		function getDistList(st,dt) {
+			var state = st;
+			
+			if (state) {
+				
+		        $("#distId").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#distId").append(option);
+		        $.ajax({
+		            type: 'GET',
+		            url: 'view-patient-details-getDistList?state=' + state,
+		            contentType: false,
+		            success: function(response) {
+		                if (response.message == "success") {
+		                    $("#distId").empty();
+		                    var option = $("<option>--Select--</option>");
+		                    $(option).val(null);
+		                    $(option).html("--Select--");
+		                    $("#distId").append(option);
+		                 
+		                    for (var i = 0; i < response.body.length; i++) {
+		                    	
+		                        var option = $("<option></option>");
+		                        $(option).val(response.body[i].key);
+		                        $(option).html(response.body[i].name);
+		                        $(option).attr("code", response.body[i].code); 
+		                        $("#distId").append(option);
+		                    }
+		                   
+		                    $("#distId").val(dt);
+		                    
+		                }
+		            },
+		            error: function(e) {
+		                alert("error");
+		            }
+		        });
+		    } else {
+		        $("#distId").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#distId").append(option);
+		        $("#citySid").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#citySid").append(option);
+
+		    }
+			
+		
+		 
+		}
+		
+		//get City list on change of Dist
+		function getCityList() {
+		    var distId = $("#distId").val();
+
+		    if (distId) {
+		        $("#citySid").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#citySid").append(option);
+		        $.ajax({
+		            type: 'GET',
+		            url: 'view-patient-details-getCityList?distId=' + distId,
+		            contentType: false,
+		            success: function(response) {
+		                if (response.message == "success") {
+		                    $("#citySid").empty();
+		                 
+		                    var option = $("<option>--Select--</option>");
+		                    $(option).val(null);
+		                    $(option).html("--Select--");
+		                    $("#citySid").append(option);
+		                  
+		                    for (var i = 0; i < response.body.length; i++) {
+		                        var option = $("<option></option>");
+		                        $(option).val(response.body[i].key);
+		                        $(option).html(response.body[i].name);
+		                        $(option).attr("code", response.body[i].code);
+		                        $("#citySid").append(option);
+		                    }
+		                }
+		            },
+		            error: function(e) {
+		                alert("error");
+		            }
+		        });
+		    } else {
+		        $("#citySid").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#citySid").append(option);
+
+		    }
+
+		}
+		
+		function getCityListEdit(dt,ct) {
+		    //var distId = $("#distId").val();
+		    var distId = dt;
+		    if (distId) {
+		        $("#citySid").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#citySid").append(option);
+		        $.ajax({
+		            type: 'GET',
+		            url: 'view-patient-details-getCityList?distId=' + distId,
+		            contentType: false,
+		            success: function(response) {
+		                if (response.message == "success") {
+		                    $("#citySid").empty();
+		                 
+		                    var option = $("<option>--Select--</option>");
+		                    $(option).val(null);
+		                    $(option).html("--Select--");
+		                    $("#citySid").append(option);
+		                  
+		                    for (var i = 0; i < response.body.length; i++) {
+		                        var option = $("<option></option>");
+		                        $(option).val(response.body[i].key);
+		                        $(option).html(response.body[i].name);
+		                        $(option).attr("code", response.body[i].code);
+		                        $("#citySid").append(option);
+		                    }
+		                    $("#citySid").val(ct);
+		                    
+		                }
+		            },
+		            error: function(e) {
+		                alert("error");
+		            }
+		        });
+		    } else {
+		        $("#citySid").empty();
+		        var option = $("<option></option>");
+		        $(option).val(null);
+		        $(option).html("--Select--");
+		        $("#citySid").append(option);
+
+		    }
+
+		}
+		
+		//Profile Image Upload & Delete Strats
+
+		function saveFile() {
+
+			var uFile = $('#fileUpload')[0].files[0];
+			if(uFile!=null){
+				$("#addIcon").hide();
+				$("#editIcon").show();
+			}
+			var fileName = $('#fileUpload').val();
+
+			var lastIndex = fileName.lastIndexOf("\\");
+			if (lastIndex >= 0) {
+				fileName = fileName.substring(lastIndex + 1);
+			}
+			var iURL = URL.createObjectURL(uFile);
+
+			$('#imgLocs').attr('src', '');
+			$('#imgLocs').attr('src', iURL);
+
+			var fileData = new FormData();
+			fileData.append('file', uFile);
+			fileData.append('path', 'none');
+			$.ajax({
+				type : "POST",
+				url : "view-patient-details-upload-file",
+				enctype : "multipart/form-data",
+				contentType : false,
+				data : fileData,
+				processData : false,
+				cache : false,
+				success : function(response) {
+
+				},
+				error : function(e) {
+
+				}
+			});
+		}
+		 	
+</script>
+
+</head>
+
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				
+					<div class="row">
+						<div class="col-md-4 col-md-pd">
+							<div class="profile_sec">
+								<div class="profile-img" align="center">
+									<img th:src="${profile}" id="imgLocs"></img>
+
+									<div class="change-pf" id ="imageHideShow">
+										<input type="file" id="fileUpload" onchange="saveFile();" />
+										<span><label for="fileUpload"><i
+												class="ti-files" id="addIcon" style="cursor: pointer;"></i>
+												<i class="fa fa-edit" id="editIcon" style="cursor: pointer;"></i></label></span>
+
+									</div>
+								</div>
+
+								<div class="user-nm" id="nameDtls"></div>
+								<div class="col-md-12" align="right">
+
+									<button class="btn btn-outline-default bg-wt btn-sm"
+										id="editPersonalinfo" onclick="editPersonalinfo()">
+										<i class="fa fa-edit"></i>Edit
+									</button>
+									<button class="btn btn-outline-default bg-wt btn-sm"
+										id="savepersonalinfo" onclick="savepersonalinfo() ">Save</button>
+									<button class="btn btn-outline-default bg-wt btn-sm"
+										id="cancel1" onclick="cancelpersonalinfo() ">Cancel</button>
+								</div>
+								<div class="user-dtl" id=editperinfo>
+									<div class="mb-10">
+										<div class="user-dtlhd">First Name :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="firstnameid"> <input type="hidden" id="userId">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Last Name :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="lastnameid">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">UHID Card No :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="uhidNo">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Blood Group :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="bloodgrp">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">DOB :</div>
+
+										<input type="text" id="dobid" class="user-id border_none"
+											readonly>
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Age :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="age">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Gender :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="gender">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">MaritialStatus :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="maritialStatus">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Occupation :</div>
+
+										<input type="text" class="user-id border_none" readonly
+											id="occupation">
+									</div>
+								</div>
+
+								<div class="user-dtl" id=saveperinfo>
+									<div class="mb-10">
+										<div class="user-dtlhd">First Name:</div>
+										<input type="text" class="form-control"
+											placeholder="First Name" id="firstname">
+
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Last Name :</div>
+
+										<input type="text" placeholder="Last Name"
+											class="form-control" id="lastname">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">UHID Card No :</div>
+										<input type="text" class="form-control border_none" readonly
+											id="uhid">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Blood Group :</div>
+										<div class="select">
+											<select class="form-control" id="bloodgroupId">
+												<option value="">Select</option>
+												<option th:each="c,iter:${bloodgroupList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">DOB :</div>
+										<input type="text" id="dobIds" class="form-control"
+											th:attr="onkeyup=|formatDate('dobIds','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="dobidCalendar"
+											style="top: 515px;"></i>
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Age :</div>
+										<input type="text" class="form-control" placeholder="Age"
+											id="ageId">
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Gender :</div>
+										<div class="select">
+											<select class="form-control" id="genderId">
+												<option value="">Select</option>
+												<option th:each="c,iter:${genderTypeList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Maritial Status :</div>
+										<div class="select">
+											<select class="form-control" id="maritalstatusId">
+												<option value="">Select</option>
+												<option th:each="c,iter:${maritalstatusList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-10">
+										<div class="user-dtlhd">Occupation :</div>
+										<input type="text" class="form-control"
+											placeholder="Occupation" id="occupationId">
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="row">
+								<div class="col-md-6 col-md-pd">
+									<div class="right_tbl_sec">
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">My Identification</div>
+												<div class="col-md-4 d-flex justify-content-end">
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="saveide" onclick="saveide()">Save</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editide" onclick="editide()">
+														<i class="fa fa-edit"></i>Edit
+													</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="cancel2" onclick="cancelidentification()">
+														Cancel</button>
+												</div>
+											</div>
+										</div>
+										<div class="user-dtl">
+										<div class="row" id="identificationData">
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">PAN Card No :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="pancardNo">
+													</div>
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">Passport No :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="passportNo">
+													</div>
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">Aadhaar Card No :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="aadharNo">
+													</div>
+												
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">Voter Card No :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="votarNo">
+													</div>
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">License No :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="licenseNo">
+													</div>
+													<div class="col-md-6 mb-10">
+														<div class="user-dtlhd">License Authority :</div>
+														<input type="text" class="user-id border_none" readonly
+															id="licenseAuthority">
+													</div>
+												</div>
+											
+</div>
+
+
+										<div class="row" id="identification">
+											<div class="col-md-6">
+												<div class="pd-10">
+													<div class="mb-10">
+														<div class="user-dtlhd">PAN Card No :</div>
+														<input type="text" class="form-control" id="pancardNoId">
+													</div>
+													<div class="mb-10">
+														<div class="user-dtlhd">Passport No :</div>
+														<input type="text" class="form-control" id="passportNoId">
+													</div>
+													<div class="mb-10">
+														<div class="user-dtlhd">Aadhaar Card No :</div>
+														<input type="text" class="form-control" id="aadharNoId">
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="pd-10">
+													<div class="mb-10">
+														<div class="user-dtlhd">Voter Card No :</div>
+														<input type="text" class="form-control" id="votarNoId">
+													</div>
+													<div class="mb-10">
+														<div class="user-dtlhd">License No :</div>
+														<input type="text" class="form-control" id="licenseNoId">
+													</div>
+													<div class="mb-10">
+														<div class="user-dtlhd">License Authority :</div>
+														<input type="text" class="form-control"
+															id="licenseAuthorityId">
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+
+									</div>
+								</div>
+								<div class="col-md-6 col-md-pd">
+									<div class="right_tbl_sec">
+
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">Contact Details</div>
+												<div class="col-md-4 d-flex justify-content-end">
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="saveAdd" onclick="saveAdd()">Save</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editAdd" onclick="editAdd()">
+														<i class="fa fa-edit"></i>Edit
+													</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="cancel3" onclick="cancelContact()">
+														Cancel</button>
+												</div>
+											</div>
+										</div>
+
+										<div class="tbl-scrl" id="addressDt">
+										<div class="user-dtl">
+											<div class="row">
+												
+													
+														<div class="col-md-6  mb-10">
+															<div class="user-dtlhd">Home Address :</div>
+															<textarea id="homeAdd" class="user-id border_none"
+																readonly></textarea>
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">Country :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="countryid">
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">State :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="stateid">
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">District :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="dist">
+														</div>
+													
+												
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">City :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="cityid">
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">Zipcode :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="zipCode">
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">Phone :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="phNo">
+														</div>
+														<div class="col-md-6 mb-10">
+															<div class="user-dtlhd">Email :</div>
+															<input type="text" class="user-id border_none" readonly
+																id="cemail">
+														</div>
+													</div>
+												
+
+											</div>
+										</div>
+										<div class="tbl-scrl" id="address">
+											<div class="row">
+												<div class="col-md-6">
+													<div class="pd-10">
+
+														<div class="mb-10">
+															<div class="user-dtlhd">Home Address :</div>
+															<textarea id="homeAddId"></textarea>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Country :</div>
+															<input type="text" class="form-control border_none"
+																id="countrySid">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">State :</div>
+															<input type="text" class="form-control border_none"
+																readonly id="stateSid">
+														</div>
+															<div class="mb-10">
+															<div class="user-dtlhd">District :</div>
+															<div class="select">
+																<select class="form-control" onchange="getCityList();" id="distId">
+																	<option value="">----Select----</option>
+															<option th:each="c,iter:${distList}" th:value="${c.key}"
+																th:text="${c.name}"></option>
+														</select>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="pd-10">
+														<div class="mb-10">
+															<div class="user-dtlhd">City :</div>
+															<div class="select">
+																<select class="form-control" id="citySid">
+																	<option value="">Select</option>
+																	<option th:each="c,iter:${cityidList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Zipcode :</div>
+															<input type="text" class="form-control" id="zipSCode">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Phone :</div>
+															<input type="text" class="form-control" id="phNoId">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Email :</div>
+															<input type="text" class="form-control" id="cemailId">
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-md-6 col-md-pd">
+									<div class="right_tbl_sec">
+										<div class="vital">
+										
+											<div class="row">
+												<div class="col-md-8">Emergency Contact</div>
+												<div class="col-md-4" align="right">
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="submitemerContact" onclick="submitemerContact()">Save</button>
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editEmerCon" onclick="addEmerContact()">
+														<i class="fa fa-plus"></i>
+													</button>
+												</div>
+                                                </div>
+										</div>
+
+										<div class="pd-10 tbl-scrl">
+											<div id="tab22">
+												<table class="table table-responsive table-bordered"
+													id="tblId">
+													<thead>
+														<th>Name</th>
+														<th>Relation</th>
+														<th>Mobile</th>
+													<thead>
+													<tbody class="tbodyCls" id="tbodyid"></tbody>
+												</table>
+											</div>
+
+										</div>
+
+
+									</div>
+
+									<div class="right_tbl_sec">
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">Family Doctor</div>
+												<div class="col-md-4" align="right">
+
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editFamdoc" onclick="editFamdoc()">
+														<i class="fa fa-plus"></i>
+													</button>
+												</div>
+
+											</div>
+										</div>
+										<div class="pd-10 tbl-scrl">
+											<div id="tab_2">
+												<table class="table table-responsive table-bordered"
+													id="tblId2">
+													<thead>
+														<th>Name</th>
+														<th>Speciality</th>
+														<th>Mobile No.</th>
+													<thead>
+													<tbody class="tbodyCls" id="tbodyid2">
+
+
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-md-pd">
+									<div class="right_tbl_sec">
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">Education</div>
+												<div class="col-md-4" align="right">
+
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editEdu" onclick="editEdu()">
+														<i class="fa fa-edit"></i>Edit
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="pd-10">
+											<div id="tab_3">
+												<table class="table table-responsive table-bordered"
+													id="tblId3">
+													<thead>
+														<th>Qualification</th>
+														<th>Specialization</th>
+													<thead>
+													<tbody class="tbodyCls" id="tbodyid3">
+
+
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+
+									</div>
+
+									<div class="right_tbl_sec">
+										
+										<div class="vital">
+											<div class="row">
+												<div class="col-md-8">Family Details</div>
+												<div class="col-md-4" align="right">
+
+													<button class="btn btn-outline-default bg-wt btn-sm"
+														id="editFam" onclick="addFamily()">
+														<i class="fa fa-plus"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="pd-10 tbl-scrl">
+											<div id="tab_4 tbl-scrl">
+												<table class="table table-responsive table-bordered"
+													id="tblId4">
+													<thead>
+														<th>Name</th>
+														<th>Relation</th>
+														<th>Age</th>
+														<th>UHID Card No</th>
+													<thead>
+													<tbody class="tbodyCls" id="tbodyid4">
+
+
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+
+
+
+				
+				<!-- Family Details modal Starts-->
+				
+				<div id="myModaladdFamilyDetails" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md"style="height: 300px;overflow-y: scroll;overflow-x: hidden;">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelAddFamilyId"
+											onclick="cancelAddFamilyFun()">CANCEL</button>
+
+										<button class="btn1" id="submitAddFamilyId"
+											onclick="submitAddFamilyFun()">SAVE</button>
+										<button class="btn3" id="deleteFamilyId"
+											onclick="deleteFamilyFun()">DELETE</button>
+									</div>
+								</div>
+							</div>
+								<input type="hidden" id="familyMamberhiddenId">
+							<div class="row">
+								
+							
+								<div class="col-md-6 ">
+									<div class="form-group">
+										<form autocomplete="off">
+											<div class="autocomplete">
+												<div class="user-dtlhd">Name</div>
+												<input type="text" id="familyNameId" placeholder="Name" 
+												class="form-control" onkeyup="getFamilymemberList()">
+												<input type="hidden" id="famId">
+	
+											</div>
+										</form>
+											<div id="suggesstion-box_" class="sugg-cls"></div>
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+
+									<div class="user-dtlhd">Relation</div>
+									<div class="select">
+										<input type="hidden" id="familyRelationId"> <select
+											class="form-control" id="familyRelationSelectId">
+											<option value="">Select</option>
+											<option th:each="c,iter:${erelationList}" th:value="${c.key}"
+												th:text="${c.name}" ></option>
+
+										</select>
+									</div>
+
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Age</div>
+									<input type="text" placeholder="Age" class="form-control"
+										id="familyAgeId"autocomplete="off" disabled>
+								</div>
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">UHID Card No</div>
+									<input type="text" placeholder="Card No" class="form-control"
+										id="uhidCardNo"autocomplete="off" disabled>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- Family Details modal Ends-->
+				
+				<!-- emergency contact modal -->
+				<div id="myModalEmergencyContact" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+					
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn"
+											onclick="cancelModalBtn()">CANCEL</button>
+
+										<button class="btn1" id="submitemerContact"
+											onclick="submitemerContact()">SAVE</button>
+										<button class="btn3" id="deleteContact"
+											onclick="deleteContact()">Delete</button>
+									</div>
+								</div>
+							</div>
+
+
+										<input type ="hidden" id="emergencyHiddenId">
+							<div class="row">
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Name</div>
+
+									<input type="text" class="form-control" placeholder="Name"
+										id="eName"autocomplete="off"><input type ="hidden" id="eId">
+										
+								</div>
+
+
+								<div class="col-md-6">
+
+									<div class="user-dtlhd">Relation</div>
+									<div class="select">
+										<input type="hidden" id="eRelationId"> <select
+											class="form-control" id="eRealtion">
+											<option value="">Select</option>
+											<option th:each="c,iter:${erelationList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+
+										</select>
+									</div>
+
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Mobile No</div>
+									<input type="text" placeholder="Mobile No" class="form-control"
+										id="eMobNo"autocomplete="off">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			
+			<!-- alert modal start -->
+						<div id="okModal" class="modal fade show" aria-modal="true">
+							<div class="modal-dialog modal-confirm">
+								<div class="modal-content">
+									<div class="modal-header flex-column"></div>
+									<div class="modal-body a" >
+										<p>Can't add more than 5 contacts</p>
+									</div>
+									<div class="modal-footer justify-content-center"
+										style="margin-top: -4px;">
+
+										<button type="button" class="btn1" onclick="okModal1()" style="cursor: pointer;">OK</button>
+									</div>
+								</div>
+							</div>
+						</div>
+			<!-- alert modal ends -->			
+			<!-- Family Doctor Modal	 -->
+			
+				<div id="myModalFamilyDocor" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn2"
+											onclick="cancelModalBtn2()">CANCEL</button>
+
+										<button class="btn1" id="submitfamdoc"
+											onclick="submitfamdoc()">SAVE</button>
+											
+											<button class="btn3" id="deleteFamilyDoctor"
+											onclick="deleteFamilyDoctor()">Delete</button>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-6 ">
+								
+									<div class="user-dtlhd">Name</div>
+
+									<input type="text" class="form-control" placeholder="Name"
+										id="docName"autocomplete="off">
+										<input type="hidden" id="famDocId">
+								</div>
+
+
+								<div class="col-md-6">
+
+									<div class="user-dtlhd">Speciality</div>
+									<div class="select">
+										<input type="hidden" id="docSpecialityId"> <select
+											class="form-control" id="docSpeciality">
+											<option value="">Select</option>
+											<option th:each="c,iter:${specialityList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+
+										</select>
+									</div>
+
+								</div>
+
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Mobile No</div>
+									<input type="text" placeholder="Mobile No" class="form-control"
+										id="docMobNo" autocomplete="off">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+				<!-- education modal -->
+				
+					<div id="myModalEducation" class="modal fade show" aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -30px;">
+
+								<div class="chartbtnsec">
+									<div align="right">
+										<button class="btn4" id="cancelModalBtn1"
+											onclick="cancelModalBtn1()">CANCEL</button>
+
+										<button class="btn1" id="submitedu"
+											onclick="submitedu()">SAVE</button>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Qualification</div>
+
+									<input type="text" class="form-control" placeholder="Qualification"
+										id="qualification"autocomplete="off">
+								</div>
+
+
+					
+								<div class="col-md-6 ">
+									<div class="user-dtlhd">Specialization</div>
+									<input type="text" placeholder="Specialization" class="form-control"
+										id="specialization" autocomplete="off">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

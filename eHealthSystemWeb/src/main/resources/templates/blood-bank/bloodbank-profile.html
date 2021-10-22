@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<style type="text/css">
+body {
+	background-color: #eee;
+}
+.padding_5
+{
+padding:0px 5px;
+}
+.padding_right
+{
+padding-right:5px;
+}
+
+.maincontentsec {
+    float: left;
+    padding: 10px 0;
+    width: 97%;
+    max-height: 800px;
+    margin-left: 8px;
+}
+.padding_left
+{
+padding-left:5px;
+}
+.profile_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	height: 630px;
+}
+
+.profile-img img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	border: 1px solid #0071c1;
+	margin: 20px 0px 10px;
+	position: relative;
+}
+
+.change-pf {
+	height: 35px;
+	width: 35px;
+	background-color: #056fe2;
+	color: #fff;
+	border-radius: 50%;
+	position: absolute;
+	padding: 5px;
+	right: 132px;
+	top: 85px;
+}
+
+.user-nm {
+	font-size: 16px;
+	color: #000;
+	text-align: center;
+	font-weight: 500;
+	padding-bottom: 10px;
+}
+
+.user-dtl {
+	border-top: 1px dashed #0071c1;
+	padding: 10px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mb-8 {
+	margin-bottom: 4px;
+}
+
+.user-dtlhd {
+	font-size: 16px;
+	color: #000;
+	font-weight: 500;
+}
+
+.user-id {
+	font-size: 16px;
+	font-weight: 400;
+	color: #909193;
+	background-color: transparent;
+}
+
+.right_tbl_sec {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	height: 270px;
+}
+
+.tbl-scrl {
+	height: 220px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.tbl-scrl2 {
+    height: 312px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.vital_card {
+	background-color: #fff;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	height: 349px;
+}
+
+.vital {
+	font-size: 16px;
+	color: #fff;
+	font-weight: 700;
+	background-color:#12b3bb!important;
+	text-transform: uppercase;
+	padding: 5px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.col-md-pd {
+	padding-right: 0px !important;
+	padding-left: 14px !important
+}
+
+#upload-photo {
+	opacity: 0;
+	position: absolute;
+	/* z-index: -1; */
+	height: 35px;
+	width: 35px;
+	right: 0px;
+	z-index: 999;
+	border-radius: 50%;
+}
+.pd-10 {
+	padding: 10px;
+}
+
+.modal-body {
+	width: 375px;
+	margin-right: 16px;
+	position: relative;
+	top: 0px;
+	float: none;
+}
+
+.modal-content-md {
+	padding: 15px 14px;
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: .3rem;
+	outline: 0;
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+$(document).ready(function() {
+	//date Formater
+	
+	var dateFormat = localStorage.getItem("dateFormat");
+
+	$("#dobidCalendar").datetimepicker({
+		format : 'Y-m-d',
+		closeOnDateSelect : true,
+		timepicker : true,
+	}).on("change", function() {
+		$('#birthDates').val($(this).val());
+	})
+
+	$('#birthDates').blur(function() {
+		$("#dobidCalendar").val($(this).val());
+	})
+	
+	$("#tab12").hide();
+	$("#tab14").hide();
+	$("#tab16").hide();
+	$("#save").hide();
+	$("#cancel").hide();
+	$("#cancel1").hide();
+	$("#cancel2").hide();
+	$("#save1").hide();
+	$("#save2").hide();
+	//Doctor Profile
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-edit",
+			success : function(response) {
+				if (response.message == "Success") {
+					//alert(response.body.profileImg)
+					$("#doctorName").html(response.body.doctorName);
+					$("#birthDate").html(response.body.birthDate);
+					$("#gender").html(response.body.gender);
+					$("#education").html(response.body.education);
+					$("#speciality").html(response.body.speciality);
+					$("#organisation").html(response.body.organisation);	
+					
+					
+					
+					$('#imgemp').attr('src', '');
+					if (response.body.profileImg != null
+							&& response.body.profileImg != "") {
+						$('#imgemp').attr('src',
+								response.body.profileImg);
+					} else {
+						$('#imgemp').attr('src',
+								'../assets/images/noimage.jpg');
+					}
+					var ex = response.body.docExperience;
+					if(ex!= null) {
+						$("#docExperience").html(ex + "years");	
+					}else{
+						$("#docExperience").html(" ");	
+					}
+								
+				}
+			},
+		});
+	
+		//Doctor Identification
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-identification",
+			success : function(response) {
+				if (response.message == "Success") {
+					//alert(response.body.drProfDoc)
+					$("#imaNo").html(response.body.imaNo);
+					$("#panCardNo").html(response.body.panCardNo);
+					$("#passportNo").html(response.body.passportNo);
+					$("#adharNo").html(response.body.adharNo);
+					$("#votorCardNo").html(response.body.votorCardNo);
+					$("#licenseNo").html(response.body.licenseNo);
+					$("#licenseAuthority").html(response.body.licenseAuthority);
+					
+					
+					$('#imgLocs').attr('src', '');
+					if (response.body.drProfDoc != null
+							&& response.body.drProfDoc != "") {
+						$('#imgLocs').attr('src',
+								response.body.drProfDoc);
+					} else {
+						$('#imgLocs').attr('src',
+								'../assets/images/noimage.jpg');
+					}
+				}
+			},
+		});
+		
+		//Home Address
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-home-address-view",
+			success : function(response) {
+				
+				if (response.message == "Success") {
+					
+					$("#countryName").html(response.body.countryName);
+					$("#stateName").html(response.body.stateName);
+					$("#districtName").html(response.body.districtName);
+					$("#cityName").html(response.body.cityName);
+					$("#address").html(response.body.address);
+					$("#zipCode").html(response.body.zipCode);
+					$("#email").html(response.body.email);
+					$("#mobile").html(response.body.mobile);
+					$("#office").html(response.body.office);
+				}
+			},
+		});
+		
+	
+		 
+	 	agGrid.simpleHttpRequest({
+			url : "my-profile-bloodbank-my-attachment"
+		}).then(
+				function(data) {
+					
+					 for (var i = 0; i < data.body.length; i++) {
+						 for(var j = 0; j < data.body[i].documentList.length; j++) {
+							 
+							 var atid=j+1;
+							 data.body[i].documentList[j].attachmentId =atid;
+							 
+							 var div2 = '<tr>'
+							 +'<td class="user-id"  onclick="editDocumentAttachment()">' + data.body[i].documentList[j].attachmentId + '</td>'
+							 + '<td>' +data.body[i].documentList[j].fileName+ '</td>'
+							 +'<td> <i class="fa fa-download" onclick="downloadFile()"></i>'+'</td>';
+						$("#tbodyid").append(div2 )
+						 }
+						
+					}
+				}); 
+
+		
+		
+	});
+//Edit Button For Doctor Profile
+	function editDoctorProfile(){
+		$("#cancel").show();
+		$("#save").show();
+		$("#edit").hide();
+		$("#tab12").show();
+		$("#tab11").hide();
+	
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-edit",
+			success : function(response) {
+				if (response.message == "Success") {
+						
+					$("#birthDates").val(response.body.birthDate);
+					$("#genders").html(response.body.gender);
+					$("#educations").val(response.body.education);
+					$("#specialitys").html(response.body.speciality);
+					$("#organisations").html(response.body.organisation);
+					$("#docExperiences").html(response.body.docExperience);
+					
+					
+					
+								
+				}
+			},
+		});
+	}
+	
+	//Edit Button For Doctor Identification
+	function editDoctorIdentification(){
+		$("#save1").show();
+		$("#cancel1").show();
+		$("#tab14").show();
+		$("#tab13").hide();
+	$("#edit1").hide();
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-identification",
+			success : function(response) {
+				if (response.message == "Success") {
+					
+					$("#imaNos").val(response.body.imaNo);
+					$("#panCardNos").val(response.body.panCardNo);
+					$("#passportNos").val(response.body.passportNo);
+					$("#adharNos").val(response.body.adharNo);
+					$("#votorCardNos").val(response.body.votorCardNo);
+					$("#licenseNos").val(response.body.licenseNo);
+					$("#licenseAuthoritys").val(response.body.licenseAuthority);
+					
+						$('#imgLoc').attr('src', '');
+					if (response.body.drProfDoc != null
+							&& response.body.drProfDoc != "") {
+						$('#imgLoc').attr('src',
+								response.body.drProfDoc);
+					} else {
+						$('#imgLoc').attr('src',
+								'../assets/images/noimage.jpg');
+					}
+				}
+			},
+		});
+	}
+	
+	
+	
+	//Home Address Edit
+	
+	function editDoctorContactDetails(){
+		$("#tab16").show();
+		$("#tab15").hide();
+	$("#save2").show();
+	$("#cancel2").show();
+	$("#edit2").hide();
+		$.ajax({
+			type : "GET",
+			url : "my-profile-bloodbank-home-address",
+			success : function(response) {
+				
+				if (response.message == "Success") {					
+					$("#countrys").val(response.body.country);
+					$("#states").val(response.body.state);
+					$("#districts").val(response.body.district);
+					$("#citys").val(response.body.city);
+					var con = response.body.country;
+					var st =response.body.state;
+					getStateListtEdit(con,st);
+					
+					var dt =response.body.district;
+					getdistListtEdit(st,dt);
+					
+					var ct =response.body.city;
+					getCityListEdit(dt,ct); 
+					
+					$("#addresss").val(response.body.address);
+					$("#zipCodes").val(response.body.zipCode);
+					$("#emails").val(response.body.email);
+					$("#mobiles").val(response.body.mobile);
+					$("#offices").val(response.body.office);
+				}
+			},
+		});
+		
+	}
+	
+	
+	// Function for Doctor Profile Save
+
+	function saveDoctorProfile() {
+		$("#cancel").hide();
+		$("#tab11").show();
+		$("#tab12").hide();
+		var obj = {};
+		obj.doctorId = $("#doctorId").val();
+		obj.education = $("#educations").val();
+		obj.profileImg = $("#fileUploadProfile").val();
+		obj.birthDate = $("#birthDates").val();
+
+		$.ajax({
+			type : "POST",
+			url : "my-profile-bloodbank-add",
+			contentType : "application/json",
+			data : JSON.stringify(obj),
+			success : function(response) {
+
+				if (response.message == "Success") {
+
+					$("#tab11").show();
+					$("#tab12").hide();
+					$("#edit").show();
+					$("#save").hide();
+					$.ajax({
+						type : "GET",
+						url : "my-profile-bloodbank-edit",
+						success : function(response) {
+							if (response.message == "Success") {
+
+								$("#education").html(response.body.education);
+								$('#imgemp').attr('src', '');
+								if (response.body.profileImg != null
+										&& response.body.profileImg != "") {
+									$('#imgemp').attr('src',
+											response.body.profileImg);
+								} else {
+									$('#imgemp').attr('src',
+											'../assets/images/noimage.jpg');
+								}
+								$("#birthDate").html(response.body.birthDate);
+
+								var ex = response.body.docExperience;
+								if (ex != null) {
+									$("#docExperience").html(ex + "years");
+								} else {
+									$("#docExperience").html(" ");
+								}
+							}
+						},
+					});
+
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+
+	}
+	// Function for Doctor Identification Save
+	function saveDoctorIdentification() {
+		$("#cancel1").hide();
+		$("#tab14").hide();
+		$("#tab13").show();
+		var obj = {};
+		obj.doctorId = $("#doctorId").val();
+		obj.imaNo = $("#imaNos").val();
+		obj.panCardNo = $("#panCardNos").val();
+		obj.passportNo = $("#passportNos").val();
+		obj.adharNo = $("#adharNos").val();
+		obj.votorCardNo = $("#votorCardNos").val();
+		obj.licenseNo = $("#licenseNos").val();
+		obj.licenseAuthority = $("#licenseAuthoritys").val();
+		obj.digitalSign = $("#fileUpload").val();
+
+		var validation = true;
+		if (validation) {
+			$
+					.ajax({
+						type : "POST",
+						url : "my-profile-bloodbank-add-identification",
+						contentType : "application/json",
+						data : JSON.stringify(obj),
+						success : function(response) {
+
+							if (response.message == "Success") {
+
+								$("#tab14").hide();
+								$("#tab13").show();
+								$("#save1").hide();
+								$("#edit1").show();
+
+								$
+										.ajax({
+											type : "GET",
+											url : "my-profile-bloodbank-identification",
+											success : function(response) {
+												if (response.message == "Success") {
+													$("#imaNo")
+															.html(
+																	response.body.imaNo);
+													$("#panCardNo")
+															.html(
+																	response.body.panCardNo);
+													$("#passportNo")
+															.html(
+																	response.body.passportNo);
+													$("#adharNo")
+															.html(
+																	response.body.adharNo);
+													$("#votorCardNo")
+															.html(
+																	response.body.votorCardNo);
+													$("#licenseNo")
+															.html(
+																	response.body.licenseNo);
+													$("#licenseAuthority")
+															.html(
+																	response.body.licenseAuthority);
+
+													$('#imgLocs').attr('src',
+															'');
+													if (response.body.drProfDoc != null
+															&& response.body.drProfDoc != "") {
+														$('#imgLocs')
+																.attr(
+																		'src',
+																		response.body.drProfDoc);
+													} else {
+														$('#imgLocs')
+																.attr('src',
+																		'../assets/images/noimage.jpg');
+													}
+												}
+											},
+										});
+
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+	}
+
+	// Function for Doctor Contact Details Save
+	function saveDoctorContactDetails() {
+		$("#cancel2").hide();
+		$("#tab16").hide();
+		$("#tab15").show();
+		var obj = {};
+		obj.doctorId = $("#doctorId").val();
+		obj.country = $("#countrys").val();
+		obj.state = $("#states").val();
+		obj.district = $("#districts").val();
+		obj.city = $("#citys").val();
+		obj.address = $("#addresss").val();
+		obj.zipCode = $("#zipCodes").val();
+		obj.mobile = $("#mobiles").val();
+		obj.office = $("#offices").val();
+		obj.email = $("#emails").val();
+
+		var validation = true;
+		if (validation) {
+			$
+					.ajax({
+						type : "POST",
+						url : "my-profile-bloodbank-contact-details-add",
+						contentType : "application/json",
+						data : JSON.stringify(obj),
+						success : function(response) {
+
+							if (response.message == "Success") {
+
+								$("#tab16").hide();
+								$("#tab15").show();
+								$("#save2").hide();
+								$("#edit2").show();
+								$
+										.ajax({
+											type : "GET",
+											url : "my-profile-bloodbank-home-address-view",
+											success : function(response) {
+
+												if (response.message == "Success") {
+
+													$("#countryName")
+															.html(
+																	response.body.countryName);
+													$("#stateName")
+															.html(
+																	response.body.stateName);
+													$("#districtName")
+															.html(
+																	response.body.districtName);
+													$("#cityName")
+															.html(
+																	response.body.cityName);
+													$("#address")
+															.html(
+																	response.body.address);
+													$("#zipCode")
+															.html(
+																	response.body.zipCode);
+													$("#email")
+															.html(
+																	response.body.email);
+													$("#mobile")
+															.html(
+																	response.body.mobile);
+													$("#office")
+															.html(
+																	response.body.office);
+												}
+											},
+										});
+
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+	}
+
+	//get State list on change of Country
+	function getStateList() {
+		var country = $("#countrys").val();
+
+		if (country) {
+
+			$("#states").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#states").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#states").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#states").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#states").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#states").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#states").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#city").append(option);
+
+		}
+
+	}
+	//get State list on change of Country Edit
+	function getStateListtEdit(con, st) {
+		var country = con;
+
+		if (country) {
+
+			$("#states").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#states").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#states").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#states").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#states").append(option);
+						}
+
+						$("#states").val(st);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#states").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#states").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#city").append(option);
+
+		}
+
+	}
+
+	//get Dist list on change of State
+	function getDistList() {
+		var state = $("#states").val();
+		if (state) {
+			$("#districts").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#districts").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getDistList?state=' + state,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$("#districts").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#districts").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#districts").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#districts").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#districts").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#city").append(option);
+		}
+	}
+	//get Dist list on change of Country Edit
+	function getdistListtEdit(st, dt) {
+		var state = st;
+
+		if (state) {
+			$("#districts").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#districts").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getDistList?state=' + state,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$("#districts").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#districts").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#districts").append(option);
+						}
+
+						$("#districts").val(dt);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#districts").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#districts").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#city").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityList() {
+		var dist = $("#districts").val();
+		if (dist) {
+			$("#citys").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#citys").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#citys").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#citys").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#citys").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#citys").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#citys").append(option);
+		}
+	}
+	//get City list on change of Dist Edit
+	function getCityListEdit(dt, ct) {
+		var dist = dt;
+		if (dist) {
+			$("#citys").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#citys").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'my-profile-bloodbank-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#citys").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("--Select--");
+						$("#citys").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#citys").append(option);
+						}
+						$("#citys").val(ct);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#citys").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select--");
+			$("#citys").append(option);
+		}
+	}
+
+	//Profile Image Upload & Delete Strats
+
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class=''></i></a></div>";
+		$("#uploadedBillDocDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgLoc').attr('src', '');
+		$('#imgLoc').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "my-profile-bloodbank-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	/*Modal Attachment show*/
+
+	function editDoctorAttachment() {
+
+		$("#myModalAttachment").show()
+		$("#doctbodyDatamulti").empty();
+		var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+				+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+				+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoid_0" onblur="checkForDuplicateEntry(event)"></div></td>'
+
+				+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDocName_0" id="uploadForDoc_0"> <i class="ti-plus" id="clickImgDoc_0"></i> </label>'
+
+				+ '<div class="controls"> <input type="file" class="document" id="uploadDocName_0" name="userImage" onchange="saveMultiFile(event)" /></div> </div> <input type="hidden" id="uploadDocHidden_0" class="uploadHidCls">'
+
+				+ '<div id="uploadedDocBillDiv_0" align="center" class="uploadedBillCls"></div> <div id="imageDocName_0" class="imageName"></div><div id="dltImageDoc_0" class="dltImage"></div><input type="hidden" id="editId_0></td>'
+				+ '<td style="display:none"><div class="form-group">  </div></td>'
+				+ '</tr>';
+
+		$("#doctbodyDatamulti").append(tbl);
+
+	}
+
+	/*cancel modals */
+
+	function cancelModalBtn() {
+
+		$("#myModalAttachment").hide();
+
+	}
+
+	/*Document Upload save*/
+
+	function saveMultiFile(event) {
+
+		var AssignItemQty = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var currentFldId = "#" + currentFldId;
+
+		var uFile = $(currentFldId)[0].files[0];
+		var fileName = event.currentTarget.value;
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var extension = fileName.split(".");
+
+		var iURL = URL.createObjectURL(uFile);
+		$("#uploadedDocBillDiv_" + counter).html("");
+		if (extension[1] != null && extension[1] != "") {
+			$("#uploadDocHidden_" + counter).val('');
+		}
+		if (extension[1] == "jpg" || extension[1] == "png"
+				|| extension[1] == "jpeg") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-picture-o'></i></a></span>";
+		} else if (extension[1] == "pdf") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-pdf-o'></i> </a></span>";
+		} else if (extension[1] == "xls" || extension[1] == "xlsx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-excel-o'></i></a></span>";
+		} else if (extension[1] == "doc" || extension[1] == "dox"
+				|| extension[1] == "docx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-word-o'></i></a></span>";
+		} else {
+			var LightImg = "<span class='uploadicon position-l '> </div>";
+		}
+		var dltImg = "<i class='ti-close position-l rmv1' onclick='openDeleteConfirm()'></i>";
+		$("#uploadedDocBillDiv_" + counter).html(LightImg);
+		$("#imageDocName_" + counter).html(fileName);
+		$("#dltImageDoc_" + counter).html(dltImg);
+		$("#dltImageDoc_" + counter).addClass("custom-file-delete");
+
+		$("#clickImgDoc_" + counter).removeClass("ti-plus");
+		$("#clickImgDoc_" + counter).addClass("ti-pencil");
+
+	}
+
+	//addmore doc fun 
+
+	function addMore1() {
+
+		var lengthOfTableRow = $("#doctbodyDatamulti").children('tr').length;
+		var cloneHtml = $("#docTblMulti tbody tr:first").clone();
+
+		$("#docTblMulti tbody")
+				.append($("#docTblMulti tbody tr:first").clone());
+		$("#myTable tbody tr td:last").html("");
+		//var addMore = '<button type="button" class="btn btn-primary tr_clone_add" name="add" onclick="addMore1();"><span class="ti-plus"></span></button>&nbsp;'
+
+		$("#docTblMulti tbody tr:last").find(".documentclss").val("");
+		$("#docTblMulti tbody tr:last").find(".docNoclss").val("");
+		$("#docTblMulti tbody tr:last").find(".documentclssup").val("");
+		$("#docTblMulti tbody tr:last").find(".uploadedBillCls").empty();
+		$("#docTblMulti tbody tr:last").find(".uploadHidCls").empty();
+		$("#docTblMulti tbody tr:last").find(".uploadHidCls").val('');
+		$("#docTblMulti tbody tr:last").find(".imageName").empty();
+		$("#docTblMulti tbody tr:last").find(".dltImage").empty();
+
+		var j = 0;
+		$("#docTblMulti > #doctbodyDatamulti > tr").each(function(i) {
+
+			var selectInput = $(this).find('select');
+			var textInput = $(this).find('input');
+			var fileInput = $(this).find('file');
+			var divInput = $(this).find('div');
+			var label = $(this).find('label');
+			var iInput = $(this).find('i');
+
+			selectInput.eq(0).attr('id', "docid_" + i);
+			textInput.eq(1).attr('id', "docnoid_" + i);
+			label.eq(1).attr('for', "uploadDocName_" + i);
+			iInput.eq(0).attr('id', "clickImgDoc_" + i);
+			textInput.eq(2).attr('id', "uploadDocName_" + i);
+			textInput.eq(3).attr('id', "uploadDocHidden_" + i);
+			divInput.eq(4).attr('id', "uploadedDocBillDiv_" + i);
+			divInput.eq(5).attr('id', "imageDocName_" + i);
+			divInput.eq(6).attr('id', "dltImageDoc_" + i);
+
+			j++;
+		})
+		$("#clickImgDoc_" + (j - 1)).removeClass("ti-pencil");
+		$("#clickImgDoc_" + (j - 1)).addClass("ti-plus");
+
+	}
+
+	//checkEmpty() for Document 
+
+	function checkEmpty() {
+		var infofileName = true;
+		$(".formValidation").remove();
+		$('.docNoclss').each(function() {
+			if ($(this).val() == null || $(this).val() == "") {
+				infofileName = false;
+				validationModal("Document Name Required", $(this).attr('id'));
+			}
+		});
+
+		var mulDocInfo = true;
+		if (infofileName) {
+			$('#doctbodyDatamulti > tr').each(function() {
+				if ($(this).closest('tr').find('.imageName').text()) {
+					mulDocInfo = true;
+				} else {
+					mulDocInfo = false;
+					$("#messageParagraph").text("Please Choose a File ");
+					$("#msgOkModal").removeClass("btn3");
+					$("#msgOkModal").addClass("btn1");
+					$("#msgModal").modal('show');
+					return false;
+				}
+
+			});
+		}
+		if (infofileName && mulDocInfo) {
+			addMore1()
+		}
+	}
+
+	//function to check duplicate entry of document name
+	function checkForDuplicateEntry(event) {
+		var document = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var count = 0;
+		$(".docNoclss").each(function() {
+			if (document == $(this).val()) {
+				count++;
+			}
+		})
+		if (count >= 2) {
+			$("#messageParagraph").text("Document Name Already Entered");
+			$("#msgOkModal").removeClass("btn3");
+			$("#msgOkModal").addClass("btn1");
+			$("#msgModal").modal('show');
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+	/*
+	 * save Multiple Document Upload
+	 */
+
+	function saveData() {
+
+		var datas = [];
+		var uploadList = [];
+
+		$("#doctbodyDatamulti > tr").each(function(i) {
+			var uFile = $(this).find(".document")[0].files[0];
+			var fileName = $(this).find(".document").val();
+			var data = [];
+			var x = [];
+			if (fileName != '' && fileName != 'undefined' && fileName != null) {
+				var lastIndex = fileName.lastIndexOf("\\");
+				if (lastIndex >= 0) {
+					fileName = fileName.substring(lastIndex + 1);
+				}
+				var reader = new FileReader();
+				reader.readAsDataURL(uFile);
+
+				reader.onload = function() {
+					data = reader.result.split(",");
+					x.push(data[1]);
+				};
+			} else {
+				if ($("#roleId").val()) {
+					fileName = $(this).find(".uploadHidCls").val();
+				} else {
+					x = [];
+				}
+			}
+			uploadData = {};
+			uploadData['doctorId'] = $("#doctorId").val();
+			uploadData['roleId'] = $("#roleId").val();
+			uploadData['documnentName'] = $(this).find('.docNoclss').val();
+			uploadData['documentFile'] = x;
+			uploadData['fileName'] = fileName;
+			uploadData['imageNameEdit'] = $(this).find(".uploadHidCls").val();
+
+			uploadList.push(uploadData);
+
+			item = {};
+
+			item.doctorId = $("#doctorId").val();
+			item.roleId = $("#roleId").val();
+
+			item.documentList = uploadList;
+			datas.push(item);
+
+		});
+		save(datas);
+	}
+	//To save parent table data
+	function save(data) {
+
+		$
+				.ajax({
+					type : "POST",
+					url : "my-profile-bloodbank-data-upload-add",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						if (response.message == "Success") {
+							cancelModalBtn();
+
+							agGrid
+									.simpleHttpRequest(
+											{
+												url : "my-profile-bloodbank-my-attachment"
+											})
+									.then(
+											function(data) {
+
+												$("#tbodyid").empty()
+												for (var i = 0; i < data.body.length; i++) {
+													for (var j = 0; j < data.body[i].documentList.length; j++) {
+														var atid = j + 1;
+														data.body[i].documentList[j].attachmentId = atid;
+
+														var div2 = '<tr>'
+																+ '<td class="user-id"  onclick="editDocumentAttachment()">'
+																+ data.body[i].documentList[j].attachmentId
+																+ '</td>'
+																+ '<td>'
+																+ data.body[i].documentList[j].fileName
+																+ '</td>'
+																+ '<td <i class="fa fa-download" onclick="downloadFile"></i>'
+																+ '</td>';
+														$("#tbodyid").append(
+																div2)
+													}
+
+												}
+											});
+
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+	}
+	/*onclick Download*/
+	function downloadFile() {
+
+		window.open("doctor/my-profile-bloodbank-pdf-download");
+
+	}
+	//Profile Image Upload & Delete Strats
+
+	function saveProfileFile() {
+
+		var uFile = $('#fileUploadProfile')[0].files[0];
+		var fileName = $('#fileUploadProfile').val();
+
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgemp').attr('src', '');
+		$('#imgemp').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "my-profile-bloodbank-upload-profileImage",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+	//cancel profile
+	function cancelDoctorProfile(){
+		$("#save").hide();
+		$("#edit").show();
+		$("#tab12").hide();
+		$("#tab11").show();
+		$("#cancel").hide();
+	
+	}
+	
+	//cancelIdentification
+	
+	function cancelDoctorIdentification() {
+		$("#save1").hide();
+		$("#tab14").hide();
+		$("#tab13").show();
+		$("#edit1").show();
+		$("#cancel1").hide();
+	}
+	
+	//cancelContactDetails
+	function cancelDoctorContactDetails(){
+		
+			$("#tab16").hide();
+			$("#tab15").show();
+			$("#save2").hide();
+			$("#edit2").show();
+			$("#cancel2").hide();
+		}
+</script>
+
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="maincontentsec">
+						
+							<div class="row mt-10">
+								<div class="col-md-4 padding_5">
+									<div class="profile_sec">
+										<div class="profile-img"  align="center">
+											<img th:src="${profile}" id="imgemp"></img>
+											<div class="change-pf">
+												<input type="file" id="fileUploadProfile" onchange="saveProfileFile();" />
+															<span><label for="fileUploadProfile"><i
+																	class="fa fa-edit" style="cursor: pointer;"></i></label></span>
+														</div>
+										</div>
+										
+										<div class="user-nm" id="doctorName"></div>
+										<div class="col-md-12" align="right">
+											<button class="btn btn-outline-default bg-wt btn-sm"
+												onclick="editDoctorProfile()" id="edit">
+												<i class="fa fa-edit"></i>Edit
+											</button>
+
+											<button class="btn btn-outline-default bg-wt btn-sm"
+												id="save" onclick="saveDoctorProfile()">Save</button>
+												<button class="btn btn-outline-default bg-wt btn-sm"
+												id="cancel" onclick="cancelDoctorProfile()">Cancel</button>
+										</div>
+										<div class="user-dtl" id="tab11">
+										
+											<div class="mb-10">
+												<div class="user-dtlhd">Birth Date :</div>
+											<div class="user-id" id="birthDate"></div>
+												<input type="hidden" id="doctorId">
+												<input type="hidden" id="roleId">
+									
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Gender :</div>
+											<div class="user-id" id="gender"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Education :</div>
+											<div class="user-id" id="education"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Speciality :</div>
+											<div class="user-id" id="speciality"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Oraganization :</div>
+											<div class="user-id"  id="organisation"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Experience :</div>
+											<div class="user-id"  id="docExperience"></div>
+											</div>
+										</div>
+											<div class="user-dtl" id="tab12">
+										
+											<div class="mb-10">
+											
+
+													<div class="user-dtlhd">Birth Date :</div>
+													<input type="text" id="birthDates" class="form-control"
+														th:attr="onkeyup=|formatDate('birthDates','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar" id="dobidCalendar"
+														style="top: 249px;"></i>
+												
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Gender :</div>
+											<div class="user-id" id="genders"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Education :</div>
+											
+											 <input type="text" name="educations"
+													value="" placeholder="Enter Your Education"
+													class="form-control firstnameclss" id="educations">
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Speciality :</div>
+											<div class="user-id" id="specialitys"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Oraganization :</div>
+											<div class="user-id"  id="organisations"></div>
+											</div>
+											<div class="mb-10">
+												<div class="user-dtlhd">Experience :</div>
+											<div class="user-id"  id="docExperiences"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-8 padding_5">
+									<div class="row">
+										<div class="col-md-6 padding_right">
+											<div class="right_tbl_sec">
+												<div class="vital">
+													<div class="row">
+														<div class="col-md-8">My Identification</div>
+
+														<div class="col-md-4 d-flex justify-content-end" >
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="edit1" onclick="editDoctorIdentification()">
+																<i class="fa fa-edit"></i>Edit
+															</button>
+
+
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="save1" onclick="saveDoctorIdentification()">Save</button>
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="cancel1" onclick="cancelDoctorIdentification()">Cancel</button>	
+														</div>
+													</div>
+												</div>
+
+												<div class="tbl-scrl" id ="tab13">
+													
+														<div class="pd-10">
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">IMA No :</div>
+																<div class="user-id mb-10" id="imaNo"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">PAN Card No :</div>
+																<div class="user-id mb-10" id="panCardNo"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">Passport No :</div>
+																<div class="user-id mb-10" id="passportNo"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">Aadhaar Card No :</div>
+																<div class="user-id mb-10" id="adharNo"></div>
+															</div>
+													
+													</div>
+													
+														<div class="pd-10">
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">Voter Card No :</div>
+																<div class="user-id mb-10" id="votorCardNo"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">License No :</div>
+																<div class="user-id mb-10" id="licenseNo"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">License Authority :</div>
+																<div class="user-id mb-10" id="licenseAuthority"></div>
+															</div>
+															<div class="mb-10">
+																<div class="user-dtlhd mb-10">Digital Signature :</div>
+																<!-- <div class="user-id mb-10" id="imgLocs"></div> -->
+																<img th:src="${profile}" id="imgLocs"
+																	style="height: 50px; weight: 50px"></img>
+															</div>
+														</div>
+													
+												</div>
+
+
+												<div class="tbl-scrl" id="tab14">
+
+													<div class="pd-10">
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">IMA No :</div>
+
+															<input type="text" name="imaNo" value=""
+																placeholder="Enter Your IMA No"
+																class="form-control firstnameclss" id="imaNos">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">PAN Card No :</div>
+
+															<input type="text" name="panCardNo" value=""
+																placeholder="Enter Your Pan Card No"
+																class="form-control firstnameclss" id="panCardNos">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">Passport No :</div>
+
+															<input type="text" name="passportNo" value=""
+																placeholder="Enter Your Passport No"
+																class="form-control firstnameclss" id="passportNos">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">Aadhaar Card No :</div>
+															<input type="text" name="adharNo" value=""
+																placeholder="Enter Your Adhar No"
+																class="form-control firstnameclss" id="adharNos">
+														</div>
+
+													</div>
+
+													<div class="pd-10">
+														<div class="user-dtlhd mb-10">Voter Card No :</div>
+
+														<input type="text" name="votorCardNo" value=""
+															placeholder="Enter Your Voter Card No"
+															class="form-control firstnameclss" id="votorCardNos">
+
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">License No :</div>
+
+															<input type="text" name="licenseNo" value=""
+																placeholder="Enter Your License No"
+																class="form-control firstnameclss" id="licenseNos">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">License Authority :</div>
+
+															<input type="text" name="licenseAuthority" value=""
+																placeholder="Enter Your License Authority No"
+																class="form-control firstnameclss"
+																id="licenseAuthoritys">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd mb-10">Digital Signature :</div>
+															<table id="docTbl">
+																<thead>
+
+																</thead>
+																<tbody id="doctbodyData">
+
+																	</div>
+																	<td><div class="form-group">
+																			
+																			<img th:src="${profile}" id="imgLoc"
+																				style="height: 50px; weight: 50px"></img>
+																		</div></td>
+
+																	<td>
+																		<div class="control-group position-r">
+																			<label class="custom-file-upload" for="fileUpload"
+																				id="uploadFor_0"> <i id="clickImg_0"
+																				class="ti-plus"></i>
+																				<div id="uploadedBillDiv_" align="center"
+																					class="uploadedBillCls">
+																					<div class="uploadicon position-l"></div>
+																				</div>
+																			</label>
+																			<div class="controls">
+
+																				<input type="file" id="fileUpload" name="userImage"
+																					accept="image/*" onchange="saveFile()" />
+
+																			</div>
+																		</div> <input type="hidden" id="uploadHidden_0"
+																		class="uploadHidCls">
+																		<div id="uploadedBillDiv_0" align="center"
+																			class="uploadedBillCls"></div>
+																		<div id="imageName_0" class="imageName"></div>
+																		<div id="dltImage_0"></div>
+																	</td>
+																</tbody>
+															</table>
+														</div>
+													</div>
+
+												</div>
+
+											
+											</div>
+										</div>
+										<div class="col-md-6 padding_left">
+											<div class="right_tbl_sec">
+												<div class="vital">
+
+													<div class="row">
+														<div class="col-md-8">Contact Details</div>
+
+														<div class="col-md-4 d-flex justify-content-end" >
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="edit2" onclick="editDoctorContactDetails()">
+																<i class="fa fa-edit"></i>Edit
+															</button>
+
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="save2" onclick="saveDoctorContactDetails()">
+																Save</button>
+																<button class="btn btn-outline-default bg-wt btn-sm"
+																id="cancel2" onclick="cancelDoctorContactDetails()">Cancel</button>
+														</div>
+													</div>
+												</div>
+												<div class="tbl-scrl" id="tab15">
+													<div class="pd-10">
+														<div class="dct-name">Home Address</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Country :</div>
+															<div class="user-id" id="countryName"></div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">State :</div>
+															<div class="user-id" id="stateName"></div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">District :</div>
+															<div class="user-id" id="districtName"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">City :</div>
+															<div class="user-id" id="cityName"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Address :</div>
+															<div class="user-id" id="address"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Pin Code :</div>
+															<div class="user-id" id="zipCode"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Mobile :</div>
+															<div class="user-id" id="mobile"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Office :</div>
+															<div class="user-id" id="office"></div>
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Email :</div>
+															<div class="user-id" id="email"></div>
+
+														</div>
+													</div>
+												</div>
+
+												<div class="tbl-scrl" id="tab16">
+													<div class="pd-10">
+														<div class="dct-name">Home Address</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Country :</div>
+															<div class="select">
+																<select id="countrys" onchange="getStateList();">
+																	<option value="">----Select----</option>
+																	<option th:each="c,iter:${countryList}"
+																		th:value="${c.key}" th:text="${c.name}"
+																		th:attr="code=${c.code}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">State :</div>
+															<div class="select">
+																<select id="states" onchange="getDistList();">
+																	<option value="">----Select----</option>
+																	<option th:each="c,iter:${stateList}"
+																		th:value="${c.key}" th:text="${c.name}"
+																		th:attr="code=${c.code}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">District :</div>
+															<div class="select">
+																<select id="districts" onchange="getCityList();">
+																	<option value="">--Select--</option>
+																	<option th:each="c,iter:${distList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">City :</div>
+															<div class="select">
+																<select id="citys">
+																	<option value="">--Select--</option>
+																	<option th:each="c,iter:${citysList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Address :</div>
+															<input type="text" name="addresss" value=""
+																placeholder="Enter Your Address"
+																class="form-control firstnameclss" id="addresss">
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Pin Code :</div>
+															<input type="hidden" id="attachmentId"> <input
+																type="text" name="zipCodes" value=""
+																placeholder="Enter Your Address"
+																class="form-control firstnameclss" id="zipCodes">
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Mobile :</div>
+															<input type="text" name="mobiles" value=""
+																placeholder="Enter Your Address"
+																class="form-control firstnameclss" id="mobiles">
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Office :</div>
+															<input type="text" name="offices" value=""
+																placeholder="Enter Your Office"
+																class="form-control firstnameclss" id="offices">
+
+														</div>
+														<div class="mb-10">
+															<div class="user-dtlhd">Email :</div>
+															<input type="text" name="emails" value=""
+																placeholder="Enter Your Email"
+																class="form-control firstnameclss" id="emails">
+
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="vital_card">
+
+												<div class="vital">
+													<div class="row">
+														<div class="col-md-8">My Attachment</div>
+
+														<div class="col-md-4 d-flex justify-content-end" >
+															<button class="btn btn-outline-default bg-wt btn-sm"
+																id="edit4" onclick="editDoctorAttachment()">
+																<i class="fa fa-edit"></i>Edit
+															</button>
+
+														</div>
+													</div>
+												</div>
+												<div class="tbl-scrl2">
+												<div class="row">
+											<div class="col-md-12">
+												<table class="table table-bordered">
+													<thead>
+													
+															<th>Sl. No</th>
+															<th>Attachment Name</th>
+															<th>Action</th>
+														
+													</thead>
+													<tbody class="tbodyCls" id="tbodyid">
+													
+														
+													</tbody>
+												</table>
+											</div>
+
+										</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+						
+		<!-- 	Document Attachment Modal -->
+
+
+				<div id="myModalAttachment" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-confirm">
+						<div class="modal-content-md">
+							<div class="modal-header flex-column"></div>
+							<div class="row">
+								<div class="col-lg-12" align="right">
+									<button class="btn4" id="cancelModalBtn"
+										onclick="cancelModalBtn();">Cancel</button>
+									<button id="save" onclick="saveData()" class="btn1">save</button>
+									<button class="btn1" id="addAttchmentBtn"
+										onclick="checkEmpty();">New</button>
+								</div>
+
+
+								<table id="docTblMulti" class="docTblCls" cellspacing="7"
+									cellpadding="7" width="100%">
+									<thead>
+										<tr class="tr_clone">
+
+											<th width="220">Document Name</th>
+											<th>Attachment</th>
+
+
+										</tr>
+									</thead>
+									<tbody id="doctbodyDatamulti">
+						
+
+									</tbody>
+								</table>
+
+
+
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	
+
+</body>
+</html>

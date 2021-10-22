@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script type="text/javascript">
+$( document ).ready(function() {
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-general-piechart',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				ticketPiechartGeneral(response.body, [], '');
+	        } else {
+	        	ticketPiechartGeneral("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-servicce-piechart',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				ticketPiechartServicce(response.body, [], '');
+	        } else {
+	        	ticketPiechartServicce("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-complains-piechart',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				ticketPiechartComplains(response.body, [], '');
+	        } else {
+	        	ticketPiechartComplains("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-sales-piechart',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				ticketPiechartSales(response.body, [], '');
+	        } else {
+	        	ticketPiechartSales("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-marketing-piechart',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				ticketPiechartMarketing(response.body, [], '');
+	        } else {
+	        	ticketPiechartMarketing("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'view-ticket-dashbboard-location-graph',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				locationCustomerGraph(response.body, [], '');
+	        } else {
+	        	locationCustomerGraph("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+		<!--Total count sections -->
+					<div class="row">
+						<div class="col-md-2">
+							<div class="box_yellow">
+								<div class="inner-box-number" th:text="${totalTicket[0].key}">4,000</div>
+								<div class="inner-box-text">Total Tickets </div>
+							</div>
+						</div>
+						<!--Total Assets for maintaince-->
+					
+						<div class="col-md-2">
+							<div class="box_green">
+								<div class="inner-box-number" th:text="${generalTicket[0].key}">4,000</div>
+								<div class="inner-box-text">General Tickets </div>
+							</div>
+						</div>
+						
+						<div class="col-md-2">
+							<div class="box_pink">
+								<div class="inner-box-number" th:text="${serviceTicket[0].key}">4,000</div>
+								<div class="inner-box-text">  Service Tickets </div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_blue">
+								<div class="inner-box-number" th:text="${complainTicket[0].key}">4,000</div>
+								<div class="inner-box-text">Complain Tickets</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_deepblue">
+								<div class="inner-box-number" th:text="${salesTicket[0].key}">4,000</div>
+								<div class="inner-box-text">Sales Tickets </div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_brown">
+								<div class="inner-box-number" th:text="${marketTicket[0].key}">4,000</div>
+								<div class="inner-box-text">Market Tickets </div>
+							</div>
+						</div>
+					</div> 
+				<!--Total count sections ends-->
+				<div class = "row">
+				<div class="col-md-6 margin_topbot20">
+							<div class="dashboard_box">
+							<div class="dashboard_subheading">Location Customer</div>
+								<div class="highcharts-figure" id="invChartDiv1">
+									<div id="locationTicketGraph" style="height: 400px;"></div>
+								</div>
+								
+								<div class="row" id="invTableDiv1">
+									<div class="col-lg-12">
+										<!-- <table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Project Name</th>
+													<th>Owner Name</th>
+													<th>Total Employee</th>
+													<th>Budget Hours</th>
+													<th>Allocated Hours</th>
+													<th>Budget</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${projectTable}">
+													<td th:text="${c.projectName}"></td>
+													<td th:text="${c.ownerName}"></td>
+													<td th:text="${c.totalEmployee}"></td>
+													<td th:text="${c.budgetHour}"></td>
+													<td th:text="${c.allocatedHour}"></td>
+													<td th:text="${c.budget}"></td>
+												</tr>
+
+											</tbody>
+										</table> -->
+									</div>
+								</div>
+								
+							</div>
+						</div>
+				<!-- graph for general  starts-->
+				
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								General Tickets
+								<div class="float-right">
+									<a href="javascript:void(0)" id="barChartInv1"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="tableInv1"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+
+							<div id="invChartDiv1">
+								<div class="highcharts-figure">
+									<div id="paichart1" style="height: 300px;"></div>
+								</div>
+							</div>
+							<div class="row" id="invTableDiv1">
+										<div class="col-lg-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Ticket Status</th>
+														<th>No of Tickets </th>
+														
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${generalChartTicket}">
+														<td th:text="${c.key}"></td>
+														<td th:text="${c.name}"></td>
+														
+															
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+						</div>
+					</div>
+			<!-- graph for general  ends-->
+					</div>	
+			<!-- graph for service starts-->
+			<div class = "row">
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								Service Tickets
+								<div class="float-right">
+									<a href="javascript:void(0)" id="barChartInv2"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="tableInv2"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+
+							<div id="invChartDiv2">
+								<div class="highcharts-figure">
+									<div id="paichart2" style="height: 400px;"></div>
+								</div>
+							</div>
+								<div class="row" id="invTableDiv2">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Ticket Status</th>
+													<th>No of Tickets</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${servicelChartTicket}">
+													<td th:text="${c.key}"></td>
+													<td th:text="${c.name}"></td>
+
+
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+					</div>
+			<!-- graph for service end-->
+		
+			
+			<!-- graph for complaint starts -->
+					
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								Complaints Tickets
+								<div class="float-right">
+									<a href="javascript:void(0)" id="barChartInv3"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="tableInv3"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+
+							<div id="invChartDiv3">
+								<div class="highcharts-figure">
+									<div id="paichart3" style="height: 400px;"></div>
+								</div>
+							</div>
+							
+								<div class="row" id="invTableDiv3">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Ticket Status</th>
+													<th>No of Tickets</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${complainChartTicket}">
+													<td th:text="${c.key}"></td>
+													<td th:text="${c.name}"></td>
+
+
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							
+						</div>
+					</div>
+					<!-- graph for complaint ends-->
+					<!-- graph for sales starts -->
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								Sales Tickets
+								<div class="float-right">
+									<a href="javascript:void(0)" id="barChartInv4"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="tableInv4"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+
+							<div id="invChartDiv4">
+								<div class="highcharts-figure">
+									<div id="paichart4" style="height: 400px;"></div>
+								</div>
+							</div>
+								<div class="row" id="invTableDiv4">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Ticket Status</th>
+													<th>No of Tickets</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${salesChartTicket}">
+													<td th:text="${c.key}"></td>
+													<td th:text="${c.name}"></td>
+
+
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+					</div>
+					<!-- graph for sales ends -->
+				
+					<!-- graph for marketing starts -->
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								Marketing Tickets
+								<div class="float-right">
+									<a href="javascript:void(0)" id="barChartInv5"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="tableInv5"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+
+							<div id="invChartDiv5">
+								<div class="highcharts-figure">
+									<div id="paichart5" style="height: 400px;"></div>
+								</div>
+							</div>
+							
+								<div class="row" id="invTableDiv5">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Ticket Status</th>
+													<th>No of Tickets</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${marketChartTicket}">
+													<td th:text="${c.key}"></td>
+													<td th:text="${c.name}"></td>
+
+
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							
+						</div>
+					</div>
+					<!-- graph for marketing ends -->
+
+				</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>		 

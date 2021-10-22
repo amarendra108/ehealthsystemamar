@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+
+<script>
+	
+
+	$(document).ready(function() {
+		
+				var gridDiv = document.querySelector('#myGrid');
+				new agGrid.Grid(gridDiv, gridOptions);
+				
+				$("#demo").hide();
+				$("#addData").hide();
+				$("#save").hide();
+				$('#delete').attr("disabled", true);
+
+				agGrid.simpleHttpRequest({
+					url : "add-emp-through-ajax"
+				}).then(function(data) {
+					gridOptions.api.setRowData(data);
+				});
+
+				$("#save").click(
+						function() {
+							var obj = {};
+							obj.employee = $('#employee').val();
+							obj.fName = $('#fName').val();
+							obj.lName = $('#lName').val();
+							obj.age = $('#age').val();
+							obj.gender = $('#gender').val();
+							obj.maritialStatus = $('#maritialStatus').val();
+							obj.phNo = $('#phNo').val();
+							obj.employeeStatus = $('#employeeStatus').val();
+
+							var validation = true;
+
+							if (obj.fName == null || obj.fName == "") {
+								validation = validationUpdated(
+										"First Name Requied", "fName");
+							}
+
+							if (obj.lName == null || obj.lName == "") {
+								validation = validationUpdated(
+										"Last Name Requied", "lName");
+							}
+
+							if (obj.age == null || obj.age == "") {
+								validation = validationUpdated("Age Requied",
+										"age");
+							}
+
+							if (obj.gender == null || obj.gender == "") {
+								validation = validationUpdated("Gender",
+										"gender");
+							}
+
+							if (obj.maritialStatus == null
+									|| obj.maritialStatus == "") {
+								validation = validationUpdated(
+										"Maritial Status Requied",
+										"maritialStatus");
+							}
+							if (obj.phNo == null || obj.phNo == "") {
+								validation = validationUpdated("Ph No Requied",
+										"phNo");
+							}
+
+							if (obj.employeeStatus == null
+									|| obj.employeeStatus == "") {
+								validation = validationUpdated(
+										"Employee Status Requied",
+										"employeeStatus");
+							}
+							
+					if(valid)		
+
+							$.ajax({
+								type : "POST",
+								url : "add-emp-add-ajax",
+								contentType : "application/json",
+								data : JSON.stringify(obj),
+
+								success : function(response) {
+									console.log(response);
+									if (response.message == "Success") {
+
+										$("#add").show();
+										$("#myGrid").show();
+										$("#cancel").hide();
+										$("#save").hide();
+										$("#demo").hide();
+										$("#addData").hide();
+										$("#delete").show();
+
+										agGrid.simpleHttpRequest({
+											url : "add-emp-through-ajax"
+										}).then(function(data) {
+											gridOptions.api.setRowData(data);
+										});
+									}
+									;
+								},
+								error : function(data) {
+									console.log(data)
+								}
+							});
+						})
+
+			});
+
+	var columnDefs = [
+		{
+		
+		headerCheckboxSelection: true,
+			/*  headerCheckboxSelectionFilteredOnly: true, */ checkboxSelection: true,width: 10, sortable: false,filter: false,resizable: true
+			
+		},{
+			headerName:"Employee Id",
+		 field:"employee",
+		cellRenderer: function(params){
+ 	        return '<a id="" onclick=edit>' + params.data.employee + '</a>';} 
+	},{
+		headerName : "First Name",
+		field : "fName"
+	}, {
+		headerName : "Last Name",
+		field : "lName"
+	}, {
+		headerName : "Age",
+		field : "age",type:"rightAligned"
+	},{
+		headerName :"GenderId",
+		field :"genderId", hide: true
+		
+	}, {
+		headerName : "Gender",
+		field : "gender"
+	},{
+		headerName : "Maritial Status",
+		field : "maritialStatusId", hide : true
+	},{
+		headerName : "Maritial Status",
+		field : "maritialStatus"
+	}, {
+		headerName : "Ph No",
+		field : "phNo",type:"rightAligned"
+	}, {
+		headerName : "Employee Status",
+		field : "employeeStatus"
+	}
+
+	];
+	
+	
+	
+	function deleteEmp(){
+		$.ajax({
+		type:"GET",
+		url:"add-emp-delete?deleteId=" + deleteId,
+		success : function(response) {
+		if (response.message == "success") {
+			
+			agGrid.simpleHttpRequest({
+				url : "add-emp-through-ajax"
+			}).then(function(data) {
+				gridOptions.api.setRowData(data);
+			});
+			
+	}
+		}
+		
+	});
+		$('#delete').attr("disabled", true);
+	}
+	
+	
+	function edit(id){
+		
+		add()
+		
+		var rowNode = gridOptions.api.getRowNode(id);
+		console.log(rowNode)
+		
+		
+		 $("#employee").val(rowNode.data.employee);
+		$("#fName").val(rowNode.data.fName);
+		$("#lName").val(rowNode.data.lName);
+		$('#age').val(rowNode.data.age);
+		$('#gender').val(rowNode.data.gender);
+		$('#maritialStatus').val(rowNode.data.maritialStatus);
+		$('#phNo').val(rowNode.data.phNo);
+		//$('#employeeStatus').val(rowNode.data.employeeStatus);
+		if(rowNode.data.employeeStatus== "Active"){
+			$("#employeeStatus").val("1");
+		} else{
+			$("#employeeStatus").val("0");
+			
+		}
+	}
+		
+		
+	
+		/*  $.ajax({
+				type : "GET",
+				url : "add-emp-edit?id=" + id,
+				success : function(response) {
+					if (response.message == "Success") {
+						add()
+						
+							$("#employee").val(response.body.employee);
+							$("#fName").val(response.body.fName);
+							$("#lName").val(response.body.lName);
+							$('#age').val(response.body.age);
+							$('#gender').val(response.body.gender);
+							$('#maritialStatus').val(response.body.maritialStatus);
+							$('#phNo').val(response.body.phNo);
+							$('#employeeStatus').val(response.body.employeeStatus);
+							
+							 $("#save").show();
+							$("#demo").show();
+							$("#addData").show();
+							 
+					}
+				}
+		 }); 
+			//$('#delete').attr("disabled", true);
+	 */
+	
+	
+	
+
+
+	var gridOptions = {
+		columnDefs : columnDefs,
+		 defaultColDef: {
+			  sortable: true, 
+			  filter: true, 
+			  resizable: true, 
+			  width: 251,
+			  height: 10
+		   },
+	rowSelection : 'multiple',
+	onSelectionChanged : rowSelect,
+	
+	suppressRowClickSelection: true,
+	
+	getRowNodeId : function(data) {
+		return data.employee;
+	}
+
+	};
+	
+	
+	
+	var deleteId ="";
+	function rowSelect() {
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+		//console.log(selectedRows)
+		deleteId ="";
+		
+		for(var i=0;i<selectedRows.length;i++){
+			//console.log(selectedRows[i].employee)
+			deleteId=deleteId + '"' + selectedRows[i].employee + '",' ;
+			//console.log(id)
+		}
+		
+		deleteId=deleteId.substring(0,deleteId.length-1);
+		console.log(deleteId)
+		
+		var rowCount = 0;
+		
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		
+		
+		if (rowCount > 0) {
+			$('#delete').attr("disabled", false);
+		
+	} else {
+		$('#delete').attr("disabled", true);
+	}
+	}
+
+	/* document.addEventListener('DOMContentLoaded', function() {
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions); 
+	}); */
+
+	function add() {
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#save").show();
+		$("#demo").show();
+		$("#addData").show();
+		$('#delete').attr("disabled", true);
+		$('#fName').val("");
+		$('#lName').val("");
+		$('#age').val("");
+		$('#gender').val("");
+		$('#maritialStatus').val("");
+		$('#phNo').val("");
+		$('#employeeStatus').val("");
+		$("#delete").hide();
+	
+
+	}
+	function Cancel() {
+		$("#add").show();
+		$("#myGrid").show();
+		$("#save").hide();
+		$("#demo").hide();
+		$("#addData").hide();
+		$("#delete").show();
+	}
+	
+	
+	
+</script>
+
+</head>
+
+
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+
+						<div class="row">
+							<div class="col-md-5 buttonsec btn-hs"></div>
+							<div class="col-md-12 buttonsec btn-hs">
+								<button id="save" onclick="submit()" class="btn1">submit</button>
+								<button class="btn1" id="demo" onclick="Cancel()">Cancel</button>
+
+								<button onclick="add()" class="btn1" id="add">Add</button>
+								<button onclick="deleteEmp()" class="btn2" id="delete">delete</button>
+							</div>
+						</div>
+						
+						<div class="row" id="addData">
+							<input type="hidden" id="employee">
+
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>fastName</label> <input type="text" id="fName"
+										placeholder="fastName" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>lastName</label> <input type="text" id="lName"
+										placeholder="lastName" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Age</label> <input type="text" id="age"
+										placeholder="Age" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Gender</label>
+									<div class="select">
+										<select id="gender">
+											<option value="">Select</option>
+											<option th:each="c,iter:${genderlist}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Maritial Status</label>
+									<div class="select">
+										<select id="maritialStatus">
+											<option value="">Select</option>
+											<option th:each="c,iter:${maritalstatusList}"
+												th:value="${c.key}" th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Phone No</label> <input type="text" id="phNo"
+										placeholder="Ph No" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Employee Status</label>
+									<div class="select">
+										<select id="employeeStatus">
+											<option value="">Select</option>
+											<option value='1'>Active</option>
+											<option value='0'>Inactive</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="col-md-12 padding-0" align="right"> -->
+							
+						
+							<div id="myGrid" style="width: 100%; height: 500px;"
+								class="ag-theme-alpine"></div>
+
+						<!-- </div> -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

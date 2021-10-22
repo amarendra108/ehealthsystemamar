@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style>
+body {
+	background: #f5f5f5;
+}
+
+.content-wrapper {
+	background: transparent;
+	padding: .75rem 2.25rem;
+}
+
+.btnDisable {
+	color: #ccc !important;
+}
+
+.card-body a {
+	color: #000;
+}
+
+.highcharts-axis-title {
+	display: none;
+}
+/*todaychanges*/
+.card {
+	margin: 8px 0px;
+}
+
+.smlbox {
+	border: 1px solid #ccc;
+	background: #FFF;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 5px;
+	color: #333;
+}
+
+.smlbox1 {
+	border: 1px solid #ccc;
+	background: #FFF;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 11.5px 0px;
+	color: #333;
+}
+
+.smlbox11 {
+	border-radius: 5px;
+	padding: 10px;
+	color: #0071c1;
+}
+
+.smlbox11 .title {
+	width: 100px !important;
+	color: #000;
+	float: left;
+}
+
+.smlbox2 {
+	background: transparent;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 5px 0px;
+	color: #FFF;
+}
+
+.smlbox2 span {
+	float: right;
+	text-align: right;
+}
+
+.mrt_5 {
+	margin-top: 8px;
+}
+
+.text-left {
+	color: #0071c1;
+}
+
+.padding_8 {
+	padding: 0px 8px;
+}
+
+.heading {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 8px;
+}
+
+.card_light {
+	background: #FFF;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.card_light .card-title {
+	background: #0071c1;
+	color: #FFF;
+	padding: 12px 10px;
+	margin-bottom: 18px;
+}
+
+.cardtitle1 {
+	/*background: #0071c1;*/
+	font-size: 16px;
+	color: #333;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+.card_light p {
+	color: #ccc;
+}
+
+.card {
+	margin: 0 !important;
+	margin-bottom: 8px !important;
+}
+
+/*new*/
+.searchsec {
+	background: #dbdbdb;
+	height: 60px;
+	border-bottom: 3px solid #7bd4df;
+	padding: 5px;
+	width: 100%;
+	margin: 0px 5px;
+}
+
+.card-title {
+	padding: 10px 3px;
+	color: #333 !important;
+	font-size: 18px;
+}
+
+.highcharts-figure {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+.highcharts-drilldown-data-label text {
+	text-decoration: none !important;
+	color: #FFF !important;
+	fill: #FFF !important;
+}
+
+.padding_5 {
+	padding: 0px 5px;
+}
+
+.d-block {
+	display: block !important;
+	width: 100%;
+}
+
+.card-body {
+	padding: 0.5rem 0.5rem;
+	text-align: left;
+}
+
+.highcharts-xaxis-labels text {
+	color: #333 !important;
+	fill: #333 !important;
+}
+
+.highcharts-yaxis-labels text {
+	color: #333 !important;
+	fill: #333 !important;
+}
+
+#sundargarh {
+	height: 500px;
+	min-width: 310px;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.loading {
+	margin-top: 10em;
+	text-align: center;
+	color: gray;
+}
+
+#area {
+	height: 200px;
+	position: relative;
+	right: 20px;
+	width: 300px;
+}
+
+.highcharts-a11y-proxy-button {
+	color: #333 !important;
+}
+
+#daywise {
+	height: 150px;
+	width: 150px;
+	position: relative;
+	right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels {
+	display: none;
+}
+
+#chart .highcharts-a11y-proxy-button {
+	color: #333 !important;
+}
+
+.white {
+	color: #FFF;
+}
+
+.active {
+	background: #98cb4a;
+	border: 1px solid #FFF;
+}
+
+.inactive {
+	background: #f76d3c;
+	color: #333;
+	border: 1px solid #FFF;
+}
+
+.inactive a {
+	color: #FFF;
+}
+
+.ulbar {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+	margin-bottom: 8px;
+}
+
+.card a {
+	color: #98cb4a;
+	padding: 0px 7px;
+	position: relative;
+	top: 10px;
+	right: 10px;
+}
+
+.boxicon {
+	position: absolute;
+	bottom: 8px;
+	right: 8px;
+}
+
+.card-body a {
+	color: #FFF !important;
+	padding: 16px;
+	width: 100%;
+	position: relative;
+	top: -20px;
+	left: 0px;
+}
+
+.card-body a .icon {
+	position: relative;
+	top: -20px;
+}
+
+.font-weight-normal {
+	font-family: "ubuntu-regular", sans-serif;
+	font-size: 16px;
+}
+
+.profile {
+	border: 2px solid #ccc;
+	border-radius: 80px;
+	height: 104px;
+	width: 104px;
+	position: relative;
+	left: 33%;
+}
+
+.profile img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+}
+
+.edit {
+	position: absolute;
+	background: #0071c1;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+	color: #FFF;
+	right: 0;
+	bottom: 0px;
+	padding: 3px 8px;
+}
+
+.card-title2 {
+	padding: 10px 3px;
+	color: #333 !important;
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.card-dsn {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 315px;
+	border-bottom: 5px solid #913ccd;
+	border-radius: 5px;
+}
+
+.card-emergency {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 130px;
+	border-bottom: 5px solid #f2b40c;
+	border-radius: 5px;
+}
+
+.card-family {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 130px;
+	border-bottom: 5px solid #f15f74;
+	border-radius: 5px;
+}
+
+.card-profile {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	border-bottom: 5px solid #3000c6;
+	border-radius: 5px;
+}
+
+.mt-8 {
+	margin-top: 8px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.date-clnd {
+	border: 1px solid #2d9f9e;
+	border-radius: 7px;
+	text-align: center;
+	background-color: #fff;
+	font-weight: 700;
+	color: #000;
+}
+
+.btm-txt {
+	background-color: #2d9f9e;
+	border-radius: 0px 0px 7px 7px;
+	color: #fff;
+	font-weight: 500;
+}
+
+.disble-clnd {
+	border: 1px solid #cacaca;
+	border-radius: 7px;
+	text-align: center;
+	background-color: #fff;
+	font-weight: 700;
+	color: #000;
+}
+
+.disble-txt {
+	background-color: #cacaca;
+	border-radius: 0px 0px 7px 7px;
+	font-weight: 500;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.user-id {
+	font-size: 16px;
+	font-weight: 400;
+	color: #056fe2;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mecication-head {
+	font-size: 18px;
+	color: #fff;
+	background-color: #2ca8c2;
+	padding: 5px 10px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.mecication-card {
+	background-color: #fff;
+	border-radius: 5px;
+	border-bottom: 5px solid #2ca8c2;
+	margin-bottom: 10px;
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 300px;
+}
+
+.dct-tbl-card {
+	background-color: #fff;
+	border-radius: 5px;
+	border-bottom: 5px solid #2ca8c2;
+	margin-bottom: 10px;
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 250px;
+}
+
+.mecication-head a {
+	color: #fff;
+}
+
+.mb-8 {
+	margin-bottom: 8px;
+}
+
+.tbl-scrl {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 220px;
+}
+
+.md-tbl th, .md-tbl td {
+	padding: 4px;
+	font-size: 16px;
+}
+
+.pd-10 {
+	padding: 10px;
+}
+
+.btn-psn {
+	position: absolute;
+	bottom: 15px;
+}
+
+.grn-btn {
+	background: #00a330;
+	color: #FFF;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	border-radius: 30px;
+	padding: 4px 10px 4px 10px;
+	text-decoration: none;
+	font-family: roboto;
+}
+.grn-btn:hover{
+	background: #00a330;
+	color: #e5e5e5;
+}
+
+</style>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.0.1/highcharts.js">
+	
+</script>
+<script>
+
+
+
+
+
+$(
+	    function datechange(){
+	     console.log("#today")
+	        $('#today').click(function(){
+										var time = moment().format('YYYY-MM-DDThh:mm:ss');
+	                  $('#today-holder').val(today);  
+	        });
+	        
+	    }
+	);
+	$(document).ready(function() {
+		
+
+		$("#testDate").datetimepicker({
+			format : 'Y-m-d',
+			closeOnDateSelect : true,
+			timepicker : false,
+		})
+		todayDate()
+
+		Highcharts.chart('status', {
+			chart : {
+				type : 'column',
+				backgroundColor : 'transparent',
+				color : 'white',
+			},
+
+			credits : {
+				enabled : false
+			},
+			exporting : {
+				enabled : false
+			},
+			title : {
+				text : ''
+			},
+
+			subtitle : {
+				text : ''
+			},
+			xAxis : {
+				type : 'category',
+				labels : {
+
+					style : {
+						fontSize : '11px',
+						fontFamily : 'Verdana, sans-serif'
+					}
+				}
+			},
+			yAxis : {
+				min : 0,
+				gridLineWidth : 0,
+				title : {
+					text : ''
+				}
+			},
+
+			legend : {
+				enabled : false
+			},
+			tooltip : {
+				pointFormat : ''
+			},
+			colors : [ '#4b6875' ],
+			series : [{
+				name : 'status',
+				data : [ [ 'Immediate', 10.2 ], [ 'Emergency', 22.4 ],
+						[ 'Urgent', 32.3 ],
+				['Less urgent', 12.3],['Non urgent', 12.3]
+
+				],
+				dataLabels : {
+					enabled : true,
+					rotation : 0,
+					color : '#FFFFFF',
+					align : 'right',
+					format : '{point.y}', // one decimal
+					y : 10, // 10 pixels down from the top
+					style : {
+						fontSize : '11px',
+						fontFamily : 'Verdana, sans-serif'
+					}
+				}
+}]
+}); 
+
+Highcharts.chart('Condition', {
+					chart : {
+						type : 'bar'
+					},
+					exporting : {
+						enabled : false
+					},
+					title : {
+						text : ''
+					},
+					subtitle : {
+						text : ''
+					},
+
+					xAxis : {
+						categories : [ 'Emergent', 'Immediate',
+								'Non Urgent','Less Urgent','Urgent' ],
+						title : {
+							text : null
+						}
+					},
+					yAxis : {
+						min : 0,
+						title : {
+							text : 'Population (millions)',
+							align : 'high'
+						},
+						labels : {
+							overflow : 'justify'
+						}
+					},
+					tooltip : {
+						valueSuffix : ' M'
+					},
+					plotOptions : {
+						bar : {
+							dataLabels : {
+								enabled : true
+							}
+						}
+					},
+					colors : [ '#2db5a9' ],
+					credits : {
+						enabled : false
+					},
+					series : [ {
+						name : 'Condition',
+						data : [ 14, 21, 30 , 16, 21 ],
+					}, 
+
+
+]
+});
+
+
+
+
+Highcharts.chart('paichart', {
+chart: {
+plotBackgroundColor: null,
+plotBorderWidth: null,
+plotShadow: false,
+type: 'pie'
+},
+exporting: { enabled: false },
+title: {
+text: ''
+},
+tooltip: {
+pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+},
+accessibility: {
+point: {
+valueSuffix: '%'
+}
+},
+plotOptions: {
+pie: {
+allowPointSelect: true,
+cursor: 'pointer',
+dataLabels: {
+enabled: true,
+format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+}
+}
+},
+series: [{
+name: 'Brands',
+colorByPoint: true,
+data: [{
+name: 'AB+',
+color:'#d5d5d6',
+y: 20.41,
+sliced: true,
+selected: true
+}, {
+name: 'AB-',
+color:'#9cfdb1',
+y: 19.84
+}, {
+name: 'A+',
+color:'#d281fc',
+y: 18.85
+}, {
+name: 'A-',
+color:'#dafb95',
+y: 14.67
+}, {
+name: 'B+',
+color:'#fca2a2',
+y: 16.18
+}, {
+name: 'B-',
+color:'#ffc8cb',
+y: 10.64
+}, {
+name: 'O+',
+color:'#a2d5fd',
+y: 5.6
+}, {
+name: 'O-',
+color:'#fdfa9c',
+y: 8.2
+
+}]
+
+
+
+
+}]
+});
+
+Highcharts.chart('paichart1', {
+chart: {
+plotBackgroundColor: null,
+plotBorderWidth: null,
+plotShadow: false,
+type: 'pie'
+},
+exporting: { enabled: false },
+title: {
+text: ''
+},
+tooltip: {
+pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+},
+accessibility: {
+point: {
+valueSuffix: '%'
+}
+},
+plotOptions: {
+pie: {
+allowPointSelect: true,
+cursor: 'pointer',
+dataLabels: {
+  enabled: true,
+  format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+}
+}
+},
+series: [{
+name: 'Brands',
+colorByPoint: true,
+data: [{
+name: 'Fresh Frozen Plasma',
+color:'#d5d5d6',
+y: 15.85,
+sliced: true,
+selected: true
+}, {
+name: 'Whole Blood',
+color:'#9cfdb1',
+y: 19.84
+
+}]
+}]
+});
+
+
+
+
+	});
+	
+	
+	
+	/* 
+	//save Notice Details
+	function emailsent() {
+		
+		var allValid = true;
+		/*  if (!validationUpdated("Notice type can't be Left Blank", 'noticeType'))
+			allValid = false;
+		 */
+		 /* 	
+		var datas = [];
+		var uploadList = [];
+		if (allValid) {
+
+			var selectedRows = gridOption.api.getSelectedRows();
+			id = '';
+			
+			for (var i = 0; i < selectedRows.length; i++) {
+				var item = {};
+				console.log("loop start")
+				id =  selectedRows[i].medicineName + '-'
+						+ selectedRows[i].medicineStatus + '-'
+						+ selectedRows[i].Note + '-'
+						+ selectedRows[i].patientName + '-'
+						+ selectedRows[i].chemistId + '-';
+				
+				var nameArr = id.split('-');	
+				item['doctorName'] = nameArr[0];
+				item['medicineStatus'] = nameArr[1];
+				item['note'] = nameArr[2];
+				item['patientName'] = nameArr[3];
+				item['chemistId'] = nameArr[4];
+				datas.push(item)
+				console.log("xxxxxxxxxx",datas)
+			}
+			
+			saveData(datas);
+            
+		}
+	}
+	//To save parent table data
+	/* function saveData(datas) {
+		
+		
+		console.log(JSON.stringify(datas))
+		$.ajax({
+			type : "POST",
+			url : "chemist-dashboard-medicine-details",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(datas),
+			success : function(response) {
+				if (response.message == "Success") {
+					swal({
+						title : "Data Saved Successfully.",
+						type : "success",
+
+					})
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+
+	} */
+
+	  
+
+	function getPresDetails(patientName) {
+		
+		agGrid.simpleHttpRequest({
+			url : "chemist-dashboard-model?patientName=" + patientName,
+		}).then(function(data) {
+			var len = data.length;
+			//$('#totalReq').find('span').html(len);
+			console.log(data)
+			gridOption.api.setRowData(data);
+			$('#myModal').modal('show');
+		});
+
+	}
+
+	function datechange() {
+
+		var val = $("#testDate").val();
+		todayDate();
+	}
+
+	function todayDate() {
+		var val = $("#testDate").val();
+		var date;
+		var d = new Date();
+		var weekday = new Array(7);
+		weekday[0] = "Sunday";
+		weekday[1] = "Monday";
+		weekday[2] = "Tuesday";
+		weekday[3] = "Wednesday";
+		weekday[4] = "Thursday";
+		weekday[5] = "Friday";
+		weekday[6] = "Saturday";
+		if (val != null && val != '') {
+			var c = new Date(val);
+			var n = weekday[c.getDay()];
+			date = val
+			tdate = n + ',' + val;
+			$("#day").text(tdate);
+
+		} else {
+			var n = weekday[d.getDay()];
+			var currentDate = new Date(new Date().getTime());
+			var day = String(currentDate.getDate()).padStart(2, '0');
+			var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+			var year = currentDate.getFullYear();
+			date = day + "-" + month + "-" + year;
+			tdate = n + ',' + day + "-" + month + "-" + year;
+			$("#day").text(tdate);
+		}
+
+		viewDateDetails(date)
+
+	}
+
+	function viewDateDetails(date) {
+
+		$
+				.ajax({
+					type : "GET",
+					url : "chemist-dashboard-view-agGrid?date=" + date,
+					success : function(response) {
+
+						if (response.message == "Success") {
+							$("#tbodyId").empty();
+							console.log(response.body)
+
+							for (var i = 0; i < response.body.length; i++) {
+
+								var div2 = '<tr><td>'
+										+ response.body[i].time
+										+ '</td>'
+										+ '<td>'
+										+ response.body[i].name
+										+ '</td>'
+										+ '<td>'
+										+ '<a href="#" class="grn-btn" onclick="getPresDetails(\''
+										+ response.body[i].cardnumber + '\')">'
+										+ response.body[i].cardnumber + '</a>'
+										+ '</td>'
+
+										+ '<td>' + response.body[i].address 
+										+ '</td>'
+										+ '<td>' + response.body[i].status
+										+ '</td>'
+
+								$("#tbodyId").append(div2);
+							}
+
+						}
+					},
+				});
+
+	}
+
+	document.addEventListener('DOMContentLoaded', function() {
+		var gridDiv = document.querySelector('#myGrid');
+
+		new agGrid.Grid(gridDiv, gridOption);
+	});
+	/***********************************************************/
+
+	var columnDefs5 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 1,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Medicine Name",
+		field : "medicineName",
+		width :175
+
+	},{
+		headerName : "Medicine Type",
+		field : "medType",
+		width :175
+
+	},{
+		headerName : "Patient Name",
+		field : "patientName",
+		width :175
+
+	},  {
+		headerName : "Quantity",
+		field : "quantity",
+		width :175
+
+	}, {
+		headerName : "Medicine Status",
+		field : "medicineStatus",
+		width :175,
+		hide :true
+
+	} , {
+		headerName : "Order ID",
+		field : "orderid",
+		width :175
+
+	} ];
+
+	var gridOption = {
+		columnDefs : columnDefs5,
+		rowSelection : 'multiple',
+		//onSelectionChanged : rowSelectId,
+		//rowData : rowData,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 150,
+			height : 20
+		}
+	/* ,
+		rowSelection : 'Multiple',
+		getRowNodeId : function(data) {
+			return data.laundryServiceID;
+		},
+	 */
+	};
+	
+	function sendResponse(value){
+		var status = 0;
+		var selectedRows = gridOption.api.getSelectedRows();
+		console.log(selectedRows)
+	
+	/* 	if(value = 5){
+			 status = 0;
+		}else if(value = 6){
+			status = 0;
+		}else{
+			status = 1
+		} */
+		var orderid = selectedRows[0].orderid;
+		$.ajax({
+			type : "GET",
+			url : "chemist-dashboard-save-mdcine-status?orderid="+orderid+"&status="+value,
+		
+			success : function(response) {
+
+				if (response.message == "Success") {
+					location.reload();
+				}}})
+	}
+	sendConfirmResponse
+	sendRejectResponse
+</script>
+
+
+
+</head>
+
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-scroller">
+			<!-- partial -->
+			<div class="container-fluid">
+				<!-- partial -->
+				<div class="main-panel">
+					<div class="content-wrapper">
+
+						<div class="row">
+							<div class="col-md-12">
+
+								 
+              <div class="row">
+               <div class="col-md-3 stretch-card padding_5">
+              
+                <div class="card card-img-holder text-white" style="background: #913ccd; height: 120px;">
+                  <div class="card-body">
+                    <a href="#">
+                      <div class="font-weight-normal">Registered Blood Bank</div>
+                      <h4>210</h4>
+                      
+                       <i class="mdi mdi-cash-register mdi-36px float-right icon"></i>
+                   </a>
+                  </div>
+                </div>
+             
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #f15f74; height: 120px;">
+                  <div class="card-body">
+                    <a href="#">
+                      <div class="font-weight-normal">Registered Donor</div>
+                      <h4>522</h4>
+                      <i class="mdi mdi-doctor mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #2ca8c2; height: 120px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Voluntary Donor</div>
+                    <h4>188</h4>
+                    <i class="mdi mdi-file-document mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white" style="background: #009933; height: 120px;">
+                  <div class="card-body">
+                    <a href="#">
+                    <div class="font-weight-normal">Donation Campus</div>
+                    <h4>52</h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+       
+              
+             
+              
+              
+             
+              </div>
+
+
+
+
+							</div></div>
+							
+							
+							
+							
+							
+							 <div class="row">
+                  <div class="col-md-6 padding_5">
+               
+                <div class="card" style="background: #FFF; color: #333;">
+                <div class="col-md-12">
+                  <h4 class="card-title float-left">Status</h4>
+                </div>
+
+                 <div id="Condition" style="height:270px;"></div>
+            </div>
+
+               
+                </div>
+              <div class="col-md-6  padding_5">
+                <div class="card" style="background: #FFF;">
+                  <div class="col-md-12">
+                   <h4 class="card-title float-left">Activity Level</h4>
+                 </div>
+                 <div id="status" style="height:270px;"></div>
+               </div>
+
+               
+              </div>
+              </div>
+              
+              
+              <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-6 margin_topbot20">
+                <div class="dashboard_box">
+                
+                
+                  <div class="dashboard_subheading">
+                    Blood Group Wise Availability
+                    
+                  </div>
+                  
+                  
+                  
+                  
+                  
+                  
+                 
+                 <div id="invChartDiv2">
+                  <div class="highcharts-figure">
+                    <div id="paichart" style="height:400px;"></div>
+                  </div>
+			  </div>				
+                  
+                 
+
+                </div>
+                </div>
+                <div class="col-md-6 margin_topbot20">
+                
+                  <div class="dashboard_box">
+                
+                
+                  <div class="dashboard_subheading">
+                    Blood Availability
+                   
+                  </div>
+             <div id="invChartDiv2">
+                  <div class="highcharts-figure">
+                    <div id="paichart1" style="height:400px;"></div>
+                  </div>
+			  </div>				
+                  
+                 
+
+                </div>
+                
+                </div>
+							
+							
+							
+							<div class="col-md-12  stretch-card padding_5">
+								<div class="mecication-card">
+									<div class="mecication-head">
+										<div class="row">
+											<div class="col-md-4">Schedule</div>
+											<div class="col-md-4" align="center" id="day"></div>
+											<div class="col-md-4" align="right">
+											
+                              
+												<a href="#">Today</a> | <input type="text" id="testDate"
+													onchange="datechange()" class="form-control"
+													placeholder="Date">
+											</div>
+											<!-- <div class="col-md-2" align="right">
+											 <input type="text" id="testDate" onchange = "datechange()" class="form-control" placeholder="Date">
+													
+											</div> -->
+
+										</div>
+									</div>
+									<div class="tbl-scrl">
+										<table class="table md-tbl  table-bordered">
+											<thead>
+												<tr>
+													<th>Patient ID</th>
+													<th>Name</th>
+													<th>Gender</th>
+													<th>Date</th>
+													<th>Age</th>
+													<th>State</th>
+													<th>Blood Group</th>
+													
+
+												</tr>
+											</thead>
+											<tbody>
+                        <tr>
+                          <td>1212</td>
+                          <td>Sanjay Jena</td>
+                          <td>male</td>
+                          <td>12-09-21</td>
+                          <td>12</td>
+                          <td>Odisha</td>
+                          <td>A+</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>1214</td>
+                          <td>Sanjay Jena</td>
+                          <td>male</td>
+                          <td>12-09-21</td>
+                          <td>12</td>
+                          <td>Odisha</td>
+                          <td>B+</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>1215</td>
+                          <td>Sanjay Jena</td>
+                          <td>male</td>
+                          <td>12-09-21</td>
+                          <td>12</td>
+                          <td>Odisha</td>
+                          <td>O+</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>1216</td>
+                          <td>Sanjay Jena</td>
+                          <td>male</td>
+                          <td>12-09-21</td>
+                          <td>22</td>
+                          <td>Odisha</td>
+                          <td>O+</td>
+                          
+                        </tr>
+                        <tr>
+                          <td>1217</td>
+                          <td>Sanjay Jena</td>
+                          <td>male</td>
+                          <td>22-09-21</td>
+                          <td>12</td>
+                          <td>Odisha</td>
+                          <td>O+</td>
+                          
+                        </tr>
+                      </tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+							
+
+							<!-- 					/*********************************modalview*****************/	 -->
+							<div class="modal fade" id="myModal">
+								<div class="modal-dialog modal-lg"
+									style="margin-top: 130px; max-width: 1000px; max-height: 800px;">
+									<div class="modal-content">
+
+										<!-- 	Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title md-color">Confirm Medicine</h4>
+											<br>
+
+
+											<button type="button" class="close" data-dismiss="modal">
+												<i class="fa fa-close fa-2x"></i>
+											</button>
+										</div>
+
+
+										<!-- Modal body -->
+										<div class="row">
+											<div class="modal-body modal-cat">
+												<div class="panel-body">
+															<div class="row">
+															<br>
+														<div class="col-md-8" align="center">
+															<div id="myGrid" style="width: 150%; height: 200px;"
+																class="ag-theme-alpine"></div>
+
+															
+														</div>
+														<div class="col-md-12" >
+															<div class="form-group">
+																<label>Note : </label>
+																<div class="box-body">
+																	<input type="text" id="Note"
+																		class="form-control commentCls" name="note">
+
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+													
+												</div>
+												<div class="modal-footer">
+													<div class="col-md-12 buttonsec btn-hs">
+													
+													
+													<!-- <button class="btn4" id="newBtn" onclick='sendResponse("5");'>Response</button> -->
+													<div class="buttongap"></div>
+													<button class="btn3" id="newBtn" onclick='sendResponse("6");'>Reject</button>
+												
+													<button class="btn1" id="newBtn" onclick='sendResponse("4");'>Confirm</button>
+												</div>
+												</div>
+											</div>
+
+
+										</div>
+
+
+									</div>
+								</div>
+
+
+							</div>
+
+
+							<!-- partial -->
+						</div>
+						<!-- main-panel ends -->
+					</div>
+					<!-- page-body-wrapper ends -->
+				</div>
+				<!-- container-scroller -->
+
+				<!-- plugins:js -->
+				<!-- plugins:js -->
+
+				<!-- End custom js for this page -->
+			</div>
+		</div>
+</body>
+
+</html>

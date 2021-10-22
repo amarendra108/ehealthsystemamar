@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+<title>Extend</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+
+//Document Ready For Page load
+$(document).ready(function() {
+$("#tab12").hide();
+$("#edit").show();
+$("#add").hide();
+$("#deletes").hide();
+$("#delete").show();
+	$.ajax({
+		type : "GET",
+		url : "doc-view-patient-lifestyle-history-edit",
+		success : function(response) {
+			if (response.message == "Success") {
+				$("#smokingId").val(response.body.smokingId);
+				$("#alcoholId").val(response.body.alcoholId);
+				$("#diet").val(response.body.diet);
+				$("#exercise").val(response.body.exercise);
+				$("#occupation").val(response.body.occupation);
+				$("#pets").val(response.body.pets);				
+			}
+		},
+	});
+});
+
+/* Function For Save
+
+ */
+
+function addDetails(){
+	 var obj ={};
+	 	obj.lifeStyleId = $("#lifeStyleId").val();
+		 obj.smokingId = $("#smokingIds").val();		
+		 obj.alcoholId =$("#alcoholIds").val();		
+		 obj.diet = $("#diets").val();
+		 obj.exercise = $("#exercises").val();
+		 obj.occupation = $("#occupations").val();
+		 obj.pets = $("#petss").val();
+		 
+			console.log(obj)
+			 var validation = true;
+		
+			if(obj.diet==null || obj.diet==""){
+				validation=validationUpdated("Diet Required","diet");
+			}
+			if(obj.exercise==null || obj.exercise==""){
+				validation=validationUpdated("Exercise Required","exercise");
+			}
+			if(obj.occupation==null || obj.occupation==""){
+				validation=validationUpdated("Occupation Required","occupation");
+			}
+			if(obj.pets==null || obj.pets==""){
+				validation=validationUpdated("Pets Required","pets");
+			}		
+			if(validation){			
+			$.ajax({				
+			type : "POST",
+			url : "doc-view-patient-lifestyle-history-add",
+			contentType : "application/json",
+			data : JSON.stringify(obj),
+			success : function(response){
+			console.log(response);
+			if(response.message == "Success"){
+				console.log(response.message);
+			$("#edit").show();
+			$("#deletes").hide();
+			$("#add").hide();
+			$("#tab11").show();
+			$("#tab12").hide();
+			$.ajax({
+				type : "GET",
+				url : "doc-view-patient-lifestyle-history-edit",
+				success : function(response) {
+					if (response.message == "Success") {
+						$("#smokingId").val(response.body.smokingId);
+						$("#alcoholId").val(response.body.alcoholId);
+						$("#diet").val(response.body.diet);
+						$("#exercise").val(response.body.exercise);
+						$("#occupation").val(response.body.occupation);
+						$("#pets").val(response.body.pets);				
+					}
+				},
+			});
+			
+			}
+			},error : function(data){
+			console.log(data);
+			}
+			})
+			} 	 
+	}
+	/* 
+	
+	For Edit Button
+	 */
+function editLifeStyleDetails(){
+	$("#deletes").show();
+	$("#add").show();
+	$("#edit").hide();
+	$("#tab12").show();
+	$("#tab11").hide();
+	$.ajax({
+		type : "GET",
+		url : "doc-view-patient-lifestyle-history-edit",
+		success : function(response) {
+			if (response.message == "Success") {
+				console.log(JSON.stringify(response));
+				$("#smokingIds").val(response.body.smokingId);
+				$("#alcoholIds").val(response.body.alcoholId);
+				$("#diets").val(response.body.diet);
+				$("#exercises").val(response.body.exercise);
+				$("#occupations").val(response.body.occupation);
+				$("#petss").val(response.body.pets);				
+			}
+		},
+	});
+}
+/* 
+	For Cancel Button
+	 */
+function cancelEmp(){
+	$("#tab11").show();
+	$("#tab12").hide();
+	$("#edit").show();
+	$("#add").hide();
+	$("#deletes").hide();
+}
+
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="maincontentsec">
+						
+						
+							<div class="row">
+								<div class="col-md-5 buttonsec btn-hs"></div>
+								<div class="col-md-7 buttonsec btn-hs">
+									<button id="add" class="btn1" onclick="addDetails()">SAVE</button>
+									<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+									<!-- <button id="edit" class="btn1" onclick="editLifeStyleDetails()">EDIT</button> -->
+								</div>
+							</div>
+							<div>
+
+								<div id="tab11">
+									<div class="row">
+										<div class="col-md-6  btn-hs">
+											<div class="font-design" id="totalEmp">LIFE STYLE
+												HISTORY</div>
+										</div>
+									</div>
+									<div class="row" id="addData">									
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Smoking</label>
+												<div class="select">
+													<select id="smokingId" style="border: none !important;"
+														disabled="disabled">
+														<option value="null">Select</option>
+														<option th:each="c,iter:${getSmokingList}"
+															th:value="${c.key}" th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Alcohol</label>
+												<div class="select">
+													<select id="alcoholId" style="border: none !important;"
+														disabled="disabled">
+														<option value="null">Select</option>
+														<option th:each="c,iter:${getAlcoholList}"
+															th:value="${c.key}" th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Diet</label>
+												<div class="select">
+													<select class="form-control" id="diet"
+														style="border: none !important;" disabled="disabled">
+														<option value="">Select</option>
+														<option value="volvo">Veg</option>
+														<option value="saab">Non Veg</option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Exercise</label> <input type="text" name="Exercise"
+													value="" placeholder="Exercise"
+													class="form-control firstnameclss" id="exercise"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Occupation</label> <input type="text"
+													name="Occupations" value="" placeholder="Occupations"
+													class="form-control" id="occupation"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Pets</label> <input type="text" name="pets" value=""
+													placeholder="Prt" class="form-control" id="pets"
+													style="border: none !important;" disabled="disabled">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="tab12">
+									<div class="row">
+										<div class="col-md-6  btn-hs">
+											<div class="font-design" id="totalEmp">LIFE STYLE
+												HISTORY</div>
+										</div>
+									</div>
+									<div class="row" id="addData">
+										<input type="hidden" id="lifeStyleId">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Smoking</label>
+												<div class="select">
+													<select id="smokingIds">
+														<option value="null">Select</option>
+														<option th:each="c,iter:${getSmokingList}"
+															th:value="${c.key}" th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Alcohol</label>
+												<div class="select">
+													<select id="alcoholIds">
+														<option value="null">Select</option>
+														<option th:each="c,iter:${getAlcoholList}"
+															th:value="${c.key}" th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Diet</label>
+												<div class="select">
+													<select class="form-control" id="diets">
+														<option value="">Select</option>
+														<option value="volvo">Veg</option>
+														<option value="saab">Non Veg</option>
+													</select>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Exercise</label> <input type="text" name="Exercise"
+													value="" placeholder="Exercise"
+													class="form-control firstnameclss" id="exercises">
+											</div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Occupation</label> <input type="text"
+													name="Occupations" value="" placeholder="Occupations"
+													class="form-control" id="occupations">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Pets</label> <input type="text" name="pets" value=""
+													placeholder="Prt" class="form-control" id="petss">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<script>
+	$(document).ready(function() {
+		var id = $("#patientId").val();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'doc-view-patient-immunization-viewDetails?id=' + id
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		$('#myGrid').show();
+		$('#new').show();
+		$('#addData').hide();
+
+		//Date fromatter for immunization Date
+		var dateFormat = localStorage.getItem("dateFormat");
+
+		$("#immunizationDateCalendar").datetimepicker({
+			format :dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#immunizationDate').val($(this).val());
+		})
+
+		$('#immunizationDate').blur(function() {
+			$("#immunizationDateCalendar").val($(this).val());
+		})
+
+		$('#delete').attr('disabled', true);
+		
+	});
+
+	/* -------------------search bar for mygrid------------------------ */
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+
+
+	/* ----------------ag grid for myGrid parent table----------- */
+
+	const columnDefs = [
+			{
+				headerCheckboxSelection : false,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			 {
+				headerName : 'SlNo ',
+				field : "slNo",
+				 hide: true
+			},
+			 {
+				headerName : 'Immunization Id',
+				field : "immunizationId",
+				 hide: true
+			}, {
+
+				headerName : 'Immunization Name',
+				field : "immunizationName"
+			}, {
+
+				headerName : 'Status',
+				field : "status",
+				cellStyle : {
+					textAlign : 'center'
+				},
+					cellRenderer : function(params) {
+						if (params.data.status == "Active") {
+							return '<div class ="fa fa-check-circle" style="color:green"></div>';
+						} else {
+							return '<div class ="fa fa-times" style="color:red"></div>';
+						}
+					}
+				
+			},{
+
+				headerName : 'Immunization Date',
+				field : "immunizationDate",
+				cellStyle : {
+					textAlign : 'center'
+				}
+			}, {
+				headerName : 'Prescribed By',
+				field : "prescribedBy",
+			}, {
+				headerName : 'Immunization Details',
+				field : "comment",
+			} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			rowSelection : 'single',
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 260,
+			height : 10
+		},
+		
+		getRowNodeId: function (data) {
+		    return data.slNo;
+		  },
+	};
+	//Edit operation
+	function editImmunization1(id) {
+		add()
+		var selectedNodes = gridOptions.api.getRowNode(id);
+
+		$('#slNo').val(selectedNodes.data.slNo);
+		//$('#immunizationId').val(selectedNodes.data.immunizationId);
+		$('#immunizationName').val(selectedNodes.data.immunizationId);
+		$('#immunizationDate').val(selectedNodes.data.immunizationDate);
+		$('#prescribedBy').val(selectedNodes.data.prescribedBy);
+		$('#comment').val(selectedNodes.data.comment);
+	}
+	/* ---------------------------function for new button------------------ */
+	function add() {
+		$("#slNo").val('');
+		$("#immunizationId").val('');
+		$("#immunizationName").val('');
+		$("#immunizationDate").val('');
+		$("#prescribedBy").val('');
+		$("#comment").val('');
+		$('#new').hide();
+		$('#delete').hide();
+		$('#addData').show();
+		$('#myGrid').hide();
+		$('#searchRowDiv').hide();
+		$('#totalReq').hide();
+
+	}
+	/* -------------function for cancel button-------------- */
+	function Cancel() {
+		$('#new').show();
+		$('#addData').hide();
+		$('#myGrid').show();
+		
+		$("#slNo").val('');
+		$("#immunizationId").val('');
+		$("#immunizationName").val('');
+		$("#immunizationDate").val('');
+		$("#prescribedBy").val('');
+		$("#comment").val('');
+	}
+
+	/*************************************Save Data***********************************************/
+
+	function save() {
+		var data = {};
+		
+			var validation = true;
+			var id = $("#patientId").val();
+		    data.slNo = $("#slNo").val();
+			data.immunizationId = $("#immunizationName").val();
+			data.immunizationDate = $("#immunizationDate").val();
+			data.prescribedBy = $("#prescribedBy").val();
+			data.comment = $("#comment").val();
+		
+			if (data.immunizationId == null || data.immunizationId == "") {
+				validation = validationUpdated("immunization Name  Required",
+						"immunizationName");
+			}
+			if (data.immunizationDate == null || data.immunizationDate == "") {
+				validation = validationUpdated("immunization Date Required", "immunizationDate");
+			}
+			if (data.prescribedBy == null || data.prescribedBy == "") {
+				validation = validationUpdated("prescribedBy Required", "prescribedBy");
+			}
+			if (data.comment == null || data.comment == "") {
+				validation = validationUpdated("immunization Details Required", "comment");
+			}
+			console.log(data)
+			if (validation) {
+				
+				$.ajax({
+					type : "POST",
+					url : "doc-view-patient-immunization-addDetails",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						if (response.message == "Success") {
+							agGrid.simpleHttpRequest({
+								url : 'doc-view-patient-immunization-viewDetails?id=' + id
+							}).then(function(data) {
+								gridOptions.api.setRowData(data);
+							});
+
+							Cancel();
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+			}
+
+	}
+
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					
+
+						<div class="maincontentsec">
+
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="panel-body">
+								<div class="row" id="main_content">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-9">
+												<div class="font-design" id="totalReq">
+													PRESCRIBED IMMUNIZATION (<span></span>)
+												</div>
+											</div>
+										</div>
+										<div id="myGrid" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div>
+								</div>
+
+
+
+								<div class="clearfix"></div>
+
+								<div class="row" id="addData">
+
+									<div class="col-md-12" id="btnDiv">
+										<button id="save" onclick="save()" class="btn1">Proceed</button>
+										<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+									</div>
+									<input type="hidden" id="patientId" th:value="${patId}">
+									<input type="hidden" id="slNo">
+									<div class="col-md-12">
+										<input type="hidden" id="immunizationId">
+										<div class="form-group">
+											<label>Immunization Type</label>
+											<div class="select">
+												<select id="immunizationName">
+													<option value="">--Select--</option>
+													<option th:each="c,iter:${immunizationTypeList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Immunization Date</label> <input type="text"
+												id="immunizationDate" autocomplete="off"
+												class="form-control"
+												th:attr="onkeyup=|formatDate('immunizationDate','${session.DATEFORMAT_JS}')|">
+											<i class="ti-calendar picker_calendar"
+												id="immunizationDateCalendar"></i>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Prescribed By</label> <input type="text"
+												class="form-control" id="prescribedBy" autocomplete="off"
+												placeholder="Prescribed By .....">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Immunization Details</label>
+											<textarea id="comment" class="form-group"
+												placeholder="immunization details ....."></textarea>
+										</div>
+									</div>
+								</div>
+
+
+
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	
+
+
+
+</body>
+</html>

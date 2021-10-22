@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+                <script src = "https://cdnjs.cloudflare.com/ajax/libs/highcharts/9.0.1/highcharts.js"></script>
+               
+<script>
+
+var requisitionData = [];
+$(document).ready(function(){
+	$.ajax({
+		type : 'GET',
+		url : 'asset-management-dashboard-asset-report',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			if (response.body.length != 0) {
+				assetGraph(response.body, [], '');
+	        } else {
+	        	assetGraph("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'asset-management-dashboard-asset-category',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			if (response.body.length != 0) {
+				assetGraph(response.body, [], '');
+	        } else {
+	        	assetGraph("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+})
+$(document).ready(function(){
+	 $('#invTableDiv1').hide();
+    	    $("#barChartInv1").click(function() {
+    	      $("#invTableDiv1").hide();
+    	      $("#invChartDiv").show();
+    	      $("#barChartInv1").addClass("btnDisable");
+    	      $("#tableInv1").removeClass("btnDisable");
+    	    })
+    	    $("#tableInv1").click(function() {
+    	      $("#invTableDiv1").show();
+    	      $("#invChartDiv").hide();
+    	      $("#barChartInv1").removeClass("btnDisable");
+    	      $("#tableInv1").addClass("btnDisable");
+    	    })
+})
+
+
+</script>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+				 
+				<!--Total count sections -->
+					<div class="row">
+						<div class="col-md-2">
+							<div class="box_yellow">
+								<div class="inner-box-number" th:text="${assetsCount[0].key}">4,000</div>
+								<div class="inner-box-text">Total Assets </div>
+							</div>
+						</div>
+						<!--Total Assets for maintaince-->
+					
+						<div class="col-md-2">
+							<div class="box_green">
+								<div class="inner-box-number" th:text="${assetmentainance1[0].key}">4,000</div>
+								<div class="inner-box-text">Total Maintenance Done </div>
+							</div>
+						</div>
+						
+						<div class="col-md-2">
+							<div class="box_pink">
+								<div class="inner-box-number" th:text="${assetsCount[0].key}">4,000</div>
+								<div class="inner-box-text"> Damaged Asset </div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_blue">
+								<div class="inner-box-number" th:text="${assetsCount[0].key}">4,000</div>
+								<div class="inner-box-text">Repair Asset </div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_deepblue">
+								<div class="inner-box-number" th:text="${assetsCount[0].key}">4,000</div>
+								<div class="inner-box-text">Sold Asset </div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="box_brown">
+								<div class="inner-box-number" th:text="${assetsCount[0].key}">4,000</div>
+								<div class="inner-box-text">New Asset </div>
+							</div>
+						</div>
+					</div> 
+				<!--Total count sections ends-->
+					<div class="row">
+                	 <div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Asset Category Report
+										<div class="float-right">
+										 <a href="#"></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv2"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv2"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+								<!-- 	<div class="highcharts-figure" id="invChartDiv">
+										<div id="inventory123" style="height: 440px;"></div>
+									</div> -->
+
+									<div class="row" id="invTableDiv2">
+										<div class="col-lg-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Asset Code</th>
+														<th>SKU ID</th>
+														<th>Store Name</th>
+														<th>Date Of Purchase</th>
+														<th>Gurantee Period</th>
+														<th>Category</th>
+														<th>Item Name</th>
+														
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${assetReport}">
+														<td th:text="${c.assetCode}"></td>
+														<td th:text="${c.sku}"></td>
+														<td th:text="${c.store}"></td>
+														<td th:text="${c.dateOfPurchase}"></td>
+														<td th:text="${c.guaranty}"></td>
+														<td th:text="${c.classification}"></td>
+														<td th:text="${c.itemName}"></td>
+															
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+                	 <div class="col-lg-6">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Asset Maintenance Report
+										<div class="float-right">
+										 <a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											<a href="javascript:void(0)" id="barChartInv1"><i
+												class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+												id="tableInv1"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+
+									<div class="highcharts-figure" id="invChartDiv">
+										<div id="inventory123" style="height: 440px;"></div>
+									</div>
+
+									<div class="row" id="invTableDiv1">
+										<div class="col-lg-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Asset Code</th>
+														<th>Policy Id</th>
+														<th>Service Name</th>
+														<th>Frequency</th>
+														<th>Task To be performed</th>
+														<th>Maintenance Date</th>
+														<th>Next Service Date</th>
+														
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="c,iter:${assetService}">
+														<td th:text="${c.dashAssetCode}"></td>
+														<td th:text="${c.dashPolicy}"></td>
+														<td th:text="${c.dashServiceName}"></td>
+														<td th:text="${c.dashFreQuency}"></td>
+														<td th:text="${c.dashTaskPerform}"></td>
+														<td th:text="${c.dashMainDate}"></td>
+														<td th:text="${c.dashNextDate}"></td>
+															
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						 <div id="invChartDiv3">
+                  <div class="highcharts-figure">
+                    <div id="paichart1" style="height:400px;"></div>
+                  </div>
+			  </div>	
+				</div> 
+			</div>
+		</div>
+	</div>
+
+</body>
+</head>
+</html>

@@ -1,0 +1,3150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<style type="text/css">
+body
+{
+  background: #f5f5f5;
+}
+.content-wrapper {
+    background: transparent;
+    padding: .75rem 2.25rem;
+    }
+.btnDisable
+{
+  color: #ccc!important;
+}
+
+.card-body a{
+  color:#000;
+}
+.highcharts-axis-title
+{
+  display: none;
+}
+/*todaychanges*/
+.card
+{
+  margin:0px;
+}
+
+.smlbox
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:5px;
+color: #333;
+}
+.smlbox1
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:11.5px 0px;
+color: #333;
+}
+.smlbox11
+{
+
+border-radius: 5px;
+padding: 10px;
+color: #0071c1;
+}
+.smlbox11 .title
+{
+  width: 100px!important;
+  color: #000;
+  float: left;
+}
+.smlbox2
+{
+background: transparent;
+border-radius: 5px;
+padding:5px 10px;
+margin:5px 0px;
+color: #FFF;
+}
+.smlbox2 span
+{
+  float:right;
+  text-align: right;
+}
+.mrt_5
+{
+  margin-top: 8px;
+}
+.text-left
+{
+  color:#0071c1;
+}
+.padding_8
+{
+  padding: 0px 8px;
+}
+.heading
+{
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+}
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 16px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 8px !important;
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+
+.maincontent {
+    /* margin-top: 70px; */
+    left: 208px;
+    position: relative;
+    width: 87%;
+}
+
+.card-title
+{
+  padding:10px 3px;
+  color: #333!important;
+  font-size: 16px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+  position: relative;
+  top: -20px;
+}
+.font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 16px;
+}
+.profile
+{
+  border:2px solid #ccc;
+  border-radius: 80px;
+  height: 104px;
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.card-title2 {
+    /* padding: 10px 3px; */
+    color: #333!important;
+    font-size: 16px;
+    font-weight: 500;
+}
+.card-dsn{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 315px;
+  border-bottom: 5px solid #913ccd;
+  border-radius: 5px;
+  overflow-y: scroll;
+    overflow-x: hidden;
+}
+.card-emergency{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f2b40c;
+  border-radius: 5px;
+
+}
+.card-family{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  height: 130px;
+  border-bottom: 5px solid #f15f74;
+  border-radius: 5px;
+
+}
+.card-profile{
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  border-bottom: 5px solid #3000c6;
+  border-radius: 5px;
+
+}
+.mt-8{
+  margin-top: 8px;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+    .tbl-card {
+    background-color: #fff;
+    border-radius: 5px;
+    border-bottom: 5px solid #2ca8c2;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    height: 315px;
+   }
+    .tbl-head{
+      font-size: 16px;
+      color: #fff;
+      background-color: #2ca8c2;
+      padding: 5px 10px;
+      border-radius: 5px 5px 0px 0px;
+    }
+    .table thead th{
+      border:none;
+    }
+    .table td, .table th {
+     border-top:none; 
+}
+.inr-tbl{
+  padding: 10px;
+}
+.date-clnd{
+  border:1px solid #2d9f9e;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #000;
+}
+.btm-txt{
+  background-color: #2d9f9e;
+  border-radius: 0px 0px 7px 7px;
+  color: #fff;
+  font-weight: 500;
+}
+.disble-clnd{
+  border:1px solid #cacaca;
+  border-radius: 7px;
+  text-align: center;
+  background-color: #fff;
+  font-weight: 700;
+  color: #000;
+}
+.disble-txt{
+  background-color: #cacaca;
+  border-radius: 0px 0px 7px 7px;
+  font-weight: 500;
+}
+.rlt-nm {
+    font-size: 16px;
+    color: #000;
+    border-right: 2px solid #000;
+    width: 165px;
+    float: left;
+}
+.rlt {
+    font-size: 16px;
+    color: #000;
+    margin-left: 10px;
+}
+.ph-no {
+    font-size: 16px;
+    color: #000;
+}
+.ph-no span {
+  color: #056fe2;
+
+}
+.d-flex{
+  display: flex;
+}
+.user-dtlhd {
+              font-size: 16px;
+              color: #000;
+              font-weight: 500;
+          }
+           .user-id {
+            font-size: 16px;
+            font-weight: 400;
+            color: #056fe2;
+        }
+           
+           .mb-10{
+            margin-bottom: 10px;}
+
+    .since-txt{
+      font-size: 16px;
+      color: #000;
+    }
+    .since-txt span{
+      font-size: 16px;
+      color: #000;
+      margin-left: 10px;
+
+    }
+    .more{
+      text-align: right;
+      font-size: 16px;
+      color: #000;
+      margin-right: 20px;
+      margin-bottom: 8px;
+    }
+    .rpt-nm {
+    font-size: 16px;
+    color: #000;
+    }
+    .lab-name {
+        font-size: 16px;
+        color: #056fe2;
+    }
+    .btn-book{
+          color: #fff;
+    background-color: #3000c6;
+    border-color: #3000c6;
+    }
+     .btn-book:hover{
+          color: #fff;
+    background-color: #5129ce;
+    border-color: #5129ce;
+    }
+    .prf-ht{
+      height: 621px;
+    }
+    .mecication-head {
+    font-size: 16px;
+    color: #fff;
+    background-color: #117a75;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0px 0px;
+}
+.md-tbl td,.md-tbl th {
+  padding: 6px 5px;
+}
+.md-tbl td {
+  color: #056fe2;
+  font-size: 16px;
+}
+.mecication-card {
+    background-color: #fff;
+    border-radius: 5px;
+    border-bottom: 5px solid #117a75;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    height: 300px;
+    margin-top: -30px;
+}
+.mb-8 {
+    margin-bottom: 8px;
+}
+.user-dtlhd1 {
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+}
+.user-id1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #056fe2;
+}
+
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 14px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 0px !important;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+.mini-stat .mini-stat-img {
+    background: url(../../../assets/images/bg-1.png);
+    background-size: cover;
+}
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+	position: relative;
+    top: -59px;
+    font-size: 30px;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-block
+}
+.font-weight-normal {
+    font-size: 16px;
+}
+
+.card-title
+{
+  padding:10px 3px;
+  color: #333!important;
+  font-size: 18px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+  position: relative;
+  top: -60px;
+}
+.font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 14px;
+}
+.profile
+{
+  border:2px solid #ccc;
+  border-radius: 80px;
+  height: 104px;
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.padding_0 {
+    padding: 0px;
+}
+.flexrow {
+    display: flex;
+    flex-flow: row wrap;
+}
+ 
+.flexrow.row-7-el > .element  {
+    flex: 0 1 calc(100%/7);
+    max-width: calc(100%/7);
+}
+
+.element {
+  text-align: center;
+}
+.user-dtlhd {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.user-id {
+    font-size: 16px;
+    font-weight: 400;
+    color: #056fe2;
+}
+.mb-10 {
+    margin-bottom: 10px;
+}
+.card-profile {
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    border-bottom: 5px solid #3000c6;
+    border-radius: 5px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+    Highcharts.chart('blood', {
+    	 chart : {
+    	  backgroundColor: 'transparent',
+    	  type : 'column'
+    	},
+    	title : {
+    	 text : ''
+    	},
+
+    	colors: [
+    	  '#d83d39'
+    	],
+
+    	plotOptions: {
+    	  series: {
+    	    dataLabels: {
+    	      enabled: true,
+    	     /*  format: '{point.y:.1f}' */
+    	    }
+    	  }
+    	},
+
+    	xAxis: {
+    	  labels: {
+    	    style: {
+    	      color: '#e4e4e2',
+    	      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	    }
+    	  },
+    	  categories: ['Cardiology', 'Orthopedic', 'Asthma' , 'Diabetes', 'Cancer','Inflenza'],
+    	  crosshair : true,
+
+    	},
+    	credits: {
+    	  enabled: false
+    	},
+    	exporting: { enabled: false },
+    	series: [{
+    	  type: 'column',
+    	  colorByPoint: false,
+    	  data: [10.5, 15.7, 18.9, 35.0, 21.4, 30.3],
+    	  showInLegend: false
+    	}
+
+
+    	],
+
+    	yAxis:{ 
+    	  labels: {
+    	    style: {
+    	      color: '#e4e4e2',
+    	      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	    }
+    	  },
+    	  gridLineWidth: 0,
+    	  minorGridLineWidth: 0
+    	}
+
+    	});
+
+/*Day wise Registration*/
+
+Highcharts.chart('diabetes', {
+chart: {
+type: 'column',
+backgroundColor: 'transparent',
+color: 'white',
+},
+
+credits: {
+enabled: false
+},
+exporting: { enabled: false },
+title: {
+text: ''
+},
+
+subtitle: {
+text: ''
+},
+xAxis: {
+type: 'category',
+labels: {
+
+style: {
+  fontSize: '11px',
+  fontFamily: 'Verdana, sans-serif'
+}
+}
+},
+yAxis: {
+min: 0,
+gridLineWidth: 0,
+title: {
+text: ''
+}
+},
+
+legend: {
+enabled: false
+},
+tooltip: {
+pointFormat: ''
+},
+colors:[
+'#4b6875'
+],
+series: [{
+name: 'diabetes',
+data: [
+['Cancel', 10.2],
+['Pending', 22.4],
+['Booked', 32.3],
+//['', 12.3]
+],
+dataLabels: {
+enabled: true,
+rotation: 0,
+color: '#FFFFFF',
+align: 'right',
+        format: '{point.y:.1f}', // one decimal
+        y: 10, // 10 pixels down from the top
+        style: {
+          fontSize: '11px',
+          fontFamily: 'Verdana, sans-serif'
+        }
+      }
+    }]
+  }); 
+
+Highcharts.chart('cholesterol', {
+chart: {
+type: 'bar'
+},
+exporting: { enabled: false },
+title: {
+text: ''
+},
+subtitle: {
+text: ''
+},
+
+xAxis: {
+categories: [ 'Readdmision', 'Discharge', 'Addmision'],
+title: {
+  text: null
+}
+},
+yAxis: {
+min: 0,
+title: {
+  text: 'Population (millions)',
+  align: 'high'
+},
+labels: {
+  overflow: 'justify'
+}
+},
+tooltip: {
+valueSuffix: ' M'
+},
+plotOptions: {
+bar: {
+  dataLabels: {
+    enabled: true
+  }
+}
+},
+colors:[
+'#2db5a9'
+],
+credits: {
+enabled: false
+},
+series: [{
+name: 'Result',
+data: [ 14.5, 21.4, 30.3],
+}, 
+
+
+]
+});
+  
+Highcharts.chart('sugar', {
+chart: {
+type: 'spline'
+},
+title: {
+text: ''
+},
+subtitle: {
+text: ''
+},
+xAxis: {
+categories: ['Week1', 'Week2', 'Week3', 'Week4', 'Week5', ]
+},
+credits: {
+enabled: false
+},
+exporting: { enabled: false },
+yAxis: {
+title: {
+  text: ''
+},
+labels: {
+  formatter: function () {
+    return this.value + '°';
+  }
+}
+},
+colors:[
+'#942d2a'
+],
+tooltip: {
+crosshairs: true,
+shared: true
+},
+plotOptions: {
+spline: {
+  marker: {
+    radius: 4,
+    lineColor: '#666666',
+    lineWidth: 1
+  }
+}
+},
+series: [
+{
+name: 'Weekly Appointment',
+marker: {
+  symbol: 'diamond'
+},
+data: [60.0, 26.9, -9.5, -44.5, 18.2]
+}]
+});
+
+
+Highcharts.chart('Electrolyte', {
+  chart: {
+    type: 'spline'
+  },
+  title: {
+    text: ''
+  },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    categories: ['Week1', 'Week2', 'Week3', 'Week4', 'Week5']
+  },
+  credits: {
+  enabled: false
+  },
+exporting: { enabled: false },
+  yAxis: {
+    title: {
+      text: ''
+    },
+    labels: {
+      formatter: function () {
+        return this.value + '°';
+      }
+    }
+  },
+  tooltip: {
+    crosshairs: true,
+    shared: true
+  },
+  plotOptions: {
+    spline: {
+      marker: {
+        radius: 4,
+        lineColor: '#666666',
+        lineWidth: 1
+      }
+    }
+  },
+
+  series: [{
+    name: 'Potassium(Serum)',
+    marker: {
+      symbol: 'square'
+    },
+    data: [7.0, 6.9, 9.5, 14.5, 18.2]
+
+  }, {
+    name: 'Calcium(Serum)',
+    marker: {
+      symbol: 'diamond'
+    },
+    data: [4.2, 5.7, 8.5, 11.9, 15.2,]
+  },
+   {
+    name: 'Magnesium(Serum)',
+    marker: {
+      symbol: 'diamond'
+    },
+   data: [ 17.0, 16.6, 14.2, 20.3, 6.6,]
+  },
+  {
+    name: 'Sodium(Serum)',
+    marker: {
+      symbol: 'diamond'
+    },
+   data: [14.2, 15.7,  15.2, 17.0, 16.6,] 
+  }]
+});
+
+
+
+
+
+Highcharts.chart('livertest', {
+chart: {
+type: 'spline',
+scrollablePlotArea: {
+  minWidth: 800,
+  scrollPositionX: 1
+}
+},
+legend: {
+enabled: false
+},
+credits: {
+enabled: false
+},
+exporting: { enabled: false },
+title: {
+text: '',
+align: 'left'
+},
+subtitle: {
+text: '',
+align: 'left'
+},
+xAxis: {
+type: 'datetime',
+labels: {
+  overflow: 'justify'
+}
+},
+yAxis: {
+title: {
+  text: 'Wind speed (m/s)'
+},
+minorGridLineWidth: 0,
+gridLineWidth: 0,
+alternateGridColor: null,
+plotBands: [{
+  from: 0.3,
+  to: 1.5,
+  color: 'rgba(68, 170, 213, 0.1)',
+  label: {
+    text: 'Light air',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 1.5,
+  to: 3.3,
+  color: 'rgba(0, 0, 0, 0)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 3.3,
+  to: 5.5,
+  color: 'rgba(68, 170, 213, 0.1)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 5.5,
+  to: 8,
+  color: 'rgba(0, 0, 0, 0)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 8,
+  to: 11,
+  color: 'rgba(68, 170, 213, 0.1)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 11,
+  to: 14,
+  color: 'rgba(0, 0, 0, 0)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}, { 
+  from: 14,
+  to: 15,
+  color: 'rgba(68, 170, 213, 0.1)',
+  label: {
+    text: '',
+    style: {
+      color: '#606060'
+    }
+  }
+}]
+},
+tooltip: {
+valueSuffix: ' m/s'
+},
+plotOptions: {
+spline: {
+  lineWidth: 4,
+  states: {
+    hover: {
+      lineWidth: 5
+    }
+  },
+  marker: {
+    enabled: false
+  },
+  pointInterval: 3600000, // one hour
+  pointStart: Date.UTC(2021, 7, 10, 0, 0, 0)
+}
+},
+series: [{
+name: 'AG Ratio',
+data: [69.6, 63.7, 63.9, 43.7, 66.0, 61.7]
+}, 
+{
+name: 'Albumin',
+data: [34.8, 43.0, 51.2, 41.4, 64.9, 72.4]
+},
+
+{
+name: 'Alkaline Phosphatase',
+data: [20.2, 30.7, 36.8, 30.9, 39.6, 47.1]
+},
+{
+name: 'Direct Bilirubin',
+data: [null, null, null, null, 21.4, 30.3]
+},
+{
+name: 'Globulin',
+data: [null, null, null, null, 21.4, 30.3]
+},
+{
+name: 'Indirect Bilirubin',
+data: [null, null, null, null, 21.4, 30.3]
+},
+{
+name: 'SGPT',
+data: [null, null, null, null, 21.4, 30.3]
+},
+{
+name: 'Total Bilirubin',
+data: [null, null, null, null, 21.4, 30.3]
+},
+{
+name: 'Total Protein',
+data: [null, null, null, null, 21.4, 30.3]
+}
+],
+navigation: {
+menuItemStyle: {
+  fontSize: '10px'
+}
+}
+});
+
+  
+})
+  function gotohealthchart(){
+    window.location.href="C:/Users/USER/OneDrive/Desktop/e-health/new-ehealth/dashboard.html";
+  }
+  
+  function setModule(moduleId) {
+		sessionStorage.setItem('module', moduleId);
+		sessionStorage.setItem('function', $("#fun_" + moduleId).val());
+		sessionStorage.setItem('activity', $("#act_" + moduleId).val());
+		sessionStorage.setItem('moduleName', $("#" + moduleId).text());
+
+		window.location.href = "/index-get-function-list/" + moduleId;
+
+	}
+  
+  $(document).ready(function(){
+	 
+	  
+	  var module = sessionStorage.getItem('module');
+	    var fun = sessionStorage.getItem('function');
+	    var activity = sessionStorage.getItem('activity');
+	    
+	    sessionStorage.setItem('module', module);
+	    sessionStorage.setItem('function', fun);
+	    sessionStorage.setItem('activity', activity);
+	    
+	  //setModule(dataList[0])
+	 // console.log(dataList)
+  })
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		 <div class="container-scroller">
+      <!-- partial -->
+      <div class="container-fluid">
+
+      
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+<input type="hidden" id="moduleList" th:value="${session.MODULELIST}">
+          <div class="row">
+            <div class="col-md-10">
+
+                 <div class="mdl-body"   id="malaysiadashboard">
+					<div class="row">
+					
+					<input type="hidden" id="ctryId" th:value ="${pMDashboardModel[0].key}"> 
+            <div class="col-md-3 stretch-card padding_5">
+              
+                <div class="card card-img-holder text-white mini-stat" style="background: #913ccd; height: 80px;">
+                  <div class="card-body mini-stat-img">
+				  
+                    <a href="#">
+                      <div class="font-weight-normal">Total Medical Emergencies</div>
+                      <h4>31,234</h4>
+                      
+                       <i class="fa fa-user fa-lg mdi-36px float-right icon"></i>
+                   </a>
+                  </div>
+                </div>
+             
+              </div>
+              
+        
+              
+                <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #839098; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Accident Cases</div>
+                    <h4>5460</h4>
+                    
+                    <i class="fa fa-wheelchair-alt  mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              
+           
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #a93f40; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Ambulance Called</div>
+                    <h4>456</h4>
+                    
+                    <i class="fa fa-wheelchair-alt  mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #839098; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Organ Donated</div>
+                    <h4>5460</h4>
+                    
+                    <i class="fa fa-user-md mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+			   </div>
+              
+               <div class="row">
+              <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #f2b40c; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Life Saved</div>
+                    <h4>1200</h4>
+                    
+                    <i class="fa fa-stethoscope mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+			  
+            <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #3000c6; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Blood Donated</div>
+                    <h4>3456</h4>
+                    
+                    <i class="fa fa-tint mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+			     <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #2ca8c2; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Deliveries</div>
+                    <h4>8120</h4>
+                    <i class="fa fa-female mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+                
+              </div>
+               <div class="col-md-3 stretch-card padding_5">
+                <div class="card card-img-holder text-white mini-stat" style="background: #a93f40; height: 80px;">
+                  <div class="card-body mini-stat-img">
+                    <a href="#">
+                    <div class="font-weight-normal">Total Discharge</div>
+                    <h4>456</h4>
+                    
+                    <i class="fa fa-wheelchair  mdi-36px float-right icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              </div>
+        	    <div class="row">
+				  <div class="col-md-12 stretch-card padding_5">
+				<div class="card">
+                    <div class="card-body">
+						<div id="map" style="position: relative;overflow: hidden;height: 500px;"></div>
+				</div>
+				</div>
+				</div>
+				</div>
+     
+     
+  <!--High Chart Start-->
+			 
+			 
+			 <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-12">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Medical Emergencies </strong></h4>
+                                         </div>
+                                         
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="processed" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+									  <div class="d-flex">
+                                         <div class="col-xl-12">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Accidental Cases </strong></h4>
+                                         </div>
+                                         
+                                       </div>	
+										
+										
+
+                                   <div style="width:100%; clear:both;;">
+										<figure class="highcharts-figure">
+										<div id="insurance" style="height: 400px;"></div>
+										</figure>
+									</div>
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+			 
+			 
+			 
+			 <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Ambulance Called </strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="screening" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+									  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Organ Donated </strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>	
+										
+										
+
+                                   <div style="width:100%; clear:both;;">
+										<figure class="highcharts-figure">
+										<div id="organ" style="height: 400px;"></div>
+										</figure>
+									</div>
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+			 
+			 
+			  <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Life Saved</strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="sample" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+									  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Blood Donated</strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>	
+										
+										
+
+                                   <div style="width:100%; clear:both;;">
+										<figure class="highcharts-figure">
+										<div id="register" style="height: 400px;"></div>
+										</figure>
+									</div>
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+			 
+			 
+			 
+			  <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Deliveries</strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="highrisk" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+									  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Discharge</strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                            
+                                         </div>
+                                       </div>	
+										
+										
+
+                                   <div style="width:100%; clear:both;;">
+										<figure class="highcharts-figure">
+										<div id="abnormal" style="height: 400px;"></div>
+										</figure>
+									</div>
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+			 
+			 
+			  <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-7">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Admissions </strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                         <!-- <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-primary">Day</button>
+                                            <button type="button" class="btn btn-primary">Week</button>
+                                            <button type="button" class="btn btn-default">Month</button>
+                                          </div> -->
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="critical" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-5">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Deaths </strong></h4>
+                                         </div>
+                                         <div class="col-xl-7">
+                                         <!--  <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-primary">Day</button>
+                                            <button type="button" class="btn btn-primary">Week</button>
+                                            <button type="button" class="btn btn-primary">Month</button>
+											<button type="button" class="btn btn-default">Year</button>
+                                          </div> -->
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="normal" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end row -->
+			 
+			 
+			 <!-- start row -->
+                            <div class="row">
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-12">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Health Card Distributed</strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                         
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="ngo" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       
+										  <div class="d-flex">
+                                         <div class="col-xl-12">
+                                           <h4 class="card-title mb-4"><strong style="color:#007bff;">Total Wrist Band Distributed </strong></h4>
+                                         </div>
+                                         <div class="col-xl-5">
+                                         
+                                         </div>
+                                       </div>
+
+
+										
+                                         <div style="width:100%; clear:left;">
+										<div class="highcharts-figure" id="home" style="height: 400px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                             <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="d-flex">
+                                     <div class="col-xl-8">
+                                       <h4 class="card-title mt-4"><strong>Patient by Gender</strong></h4>
+                                     </div>
+                                     <div class="col-xl-4">
+                                       <!--  <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-primary">Week</button>
+                                        <button type="button" class="btn btn-default">Month</button>
+                                      </div> -->
+                                     </div>
+                                   </div>
+                                       
+
+
+                                         <div style="width:100%; overflow-y: hidden;overflow-x: scroll;white-space: nowrap;">
+										<div class="highcharts-figure" id="hematology" style="height: 250px;"></div>
+									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                       <div class="d-flex">
+                                         <div class="col-xl-8">
+                                           <h4 class="card-title mt-4"><strong>Patient by Hospital</strong></h4>
+                                         </div>
+                                         <div class="col-xl-4">
+                                            <!-- <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-primary">Week</button>
+                                            <button type="button" class="btn btn-default">Month</button>
+                                          </div> -->
+                                         </div>
+                                       </div>
+                                      
+
+                                   <div style="width:100%; clear:both;;">
+                  										<figure class="highcharts-figure">
+                  										<div id="Hospital" style="height: 250px;"></div>
+                  										</figure>
+                  									</div>
+										
+
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- end row -->
+						
+						
+						
+						
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="d-flex">
+                                         <div class="col-xl-8">
+                                           <h4 class="card-title mt-4"><strong>Patient by Division</strong></h4>
+                                         </div>
+                                         <div class="col-xl-4">
+                                           <!--  <div class="btn-group" role="group" aria-label="Basic example">
+                                             <button type="button" class="btn btn-primary">Week</button>
+                                             <button type="button" class="btn btn-default">Month</button>
+                                          </div> -->
+                                         </div>
+                                       </div>
+                                        
+
+                                         <div style="width:100%; clear:left;">
+                      										<div class="highcharts-figure" id="lipid" style="height: 250px;"></div>
+                      									</div>
+										
+										
+                                    </div>
+                                </div>
+                            </div>
+
+           
+                            <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                      <div class="d-flex">
+                                         <div class="col-xl-8">
+                                           <h4 class="card-title mt-4"><strong>Patient by Bucket</strong></h4>
+                                         </div>
+                                         <div class="col-xl-4">
+                                          <!--   <div class="btn-group" role="group" aria-label="Basic example">
+                                            
+                                            <button type="button" class="btn btn-primary">Week</button>
+                                            <button type="button" class="btn btn-default">Month</button>
+                                          </div> -->
+                                         </div>
+                                       </div>
+                                       
+
+                                         <div style="width:100%; clear:left;">
+                                            <div class="highcharts-figure" id="bucket" style="height: 250px;"></div>
+                                          </div>
+                    
+                    
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class="col-xl-6 stretch-card padding_5">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4"><strong>Avg waiting time by Division</strong></h4>
+
+                                         <div style="width:100%; clear:left;">
+                    <div class="highcharts-figure" id="division" style="height: 250px;"></div>
+                  </div>
+                    
+                    
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                        <!-- end row -->
+			 
+			 
+		
+			 
+			 
+	
+	
+			 
+			 
+			 <!--High Chart-->
+			 
+   </div>
+
+  <!-- partial -->
+</div>
+
+ <div class="col-md-2">
+		                                <div class="card">
+		                                    <div class="card-body"> 
+		                                        
+				<div
+					class="nav-profile-text d-flex flex-column text-center logoname">
+					<div class="mb-2">
+				
+					</div>
+				
+				</div>
+				<div align="center" style="margin-top: 15px; font-size: 16px; color:#000;">
+								e-Swasthya </div>
+				<!-- <div class="text-center">Mr. Kalyan<br>District Collector</div> -->
+				<ul class="nav">
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+						<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/eHealth/images/malaysiaflag.jpg"
+									alt="sundargarh" class="img-fluid"
+									style="border-radius: 50%; height:100px;" >
+							</div>
+							<div align="center"  class="logo-txt" style="margin-top: 15px; font-size: 18px; color:#000;">
+								&nbsp; &nbsp; &nbsp; &nbsp; Malaysia &nbsp; &nbsp; &nbsp; &nbsp;</div>
+					</a></li>
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+						<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/eHealth/images/malaysiapm.jpg"
+									alt="sundargarh" class="img-fluid"
+									style="border-radius: 50%;">
+							</div>
+							<div align="center"  class="logo-txt" style="margin-top: 15px; font-size: 16px; color:#000;">
+								Ismail Sabri Yaakob</div>
+							<div align="center"  class="logo-txt" style="margin-top: 5px; font-size: 16px; color:#000;">Priminister of Malaysia, 
+								</div>
+					</a></li>
+					
+
+
+				</ul>
+			
+		                                     </div>
+		                                </div>
+                               
+ </div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<!-- plugins:js -->
+
+<!-- End custom js for this page -->
+	</div>
+	</div>
+	</div>
+	
+	
+<script>
+      // This example creates circles on the map, representing populations in North
+      // America.
+
+      // First, create an object containing LatLng and population for each city.
+      var citymap = {
+        malaysia: {
+          center: {lat: 3.610484, lng: 101.97576600000002},
+          population: 2714856
+        }
+        
+      };
+
+
+      function initMap() {
+        // Create the map.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 3.610484, lng: 101.97576600000002},
+          mapTypeId: 'roadmap'
+        });
+
+        // Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+		
+   
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgba4fQQvW-OfOpoeIgZsDfUbXh8N_XkI&callback=initMap">
+    </script>
+    
+    <script>
+    $(document).ready(function() {
+    	
+    	
+    	Highcharts.chart('processed', {
+    		  chart: {
+    			 backgroundColor: 'transparent',
+
+    		    type: 'pie',
+    			options3d: {
+    					  enabled: true,
+    					  alpha: 45,
+    					  beta: 0
+    					}       
+    		  },
+    		  title: {
+    		    text: ''
+    		  },
+    		  tooltip: {
+    		   /*  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' */
+    		  },
+    		   exporting: { enabled: false },
+    		     credits: {
+    		     enabled: false
+    		    },
+    		  accessibility: {
+    		    point: {
+    		      valueSuffix: '%'
+    		    }
+    		  },
+    		  plotOptions: {
+    		        pie: {
+    		            allowPointSelect: true,
+    		            cursor: 'pointer',
+    		            showInLegend: true,
+    		            depth: 45,
+    		            dataLabels: {
+    		               enabled: true,
+    		               distance: -50,
+    		             /*    format: '{point.percentage:.1f} %', */
+    		                color: '#FFF',
+    		                
+    		                style: {
+    		                  textShadow: false,
+    		                  textOutline: false,
+    		                }
+    		            }
+    		        }
+    		    },
+    		  series: [{
+    		        type: 'pie',
+    		        name: 'Medical Emergencies',
+    		        data: [
+    		            ['Heart Attack', 20],
+    		            ['Stroke', 20],
+    		            ['Fire', 20],
+    					['Accident', 20],
+    					['Others', 20]		
+    					
+
+    		        ]
+    		    }]
+    		});
+    	
+    	
+    	Highcharts.chart('normal', {
+    	    chart: {
+    		    backgroundColor: 'transparent',
+    	        type: 'column'
+    	    },
+    	    title: {
+    	        text: ''
+    	    },
+    	   
+    	    xAxis: {
+    	        categories: [
+    	            'Malaria',
+    	            'Cancer',
+    	            'Covid-19',
+    	            'Dengue',
+    	            'Heart Attack',
+    	            'Fever',
+    	            'Diareha',
+    	            'Dysentry'
+    	        
+    	        ],
+    	        crosshair: true
+    	    },
+    	    yAxis: {
+    	        min: 0,
+    	        title: {
+    	            text: '(mm)'
+    	        }
+    	    },
+    	    tooltip: {
+    	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    	      /*   pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    	            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>', */
+    	        footerFormat: '</table>',
+    	        shared: true,
+    	        useHTML: true
+    	    },
+    	    plotOptions: {
+    	        column: {
+    	            pointPadding: 0.2,
+    	            borderWidth: 0
+    	        }
+    	    },
+    		
+    		 credits: {
+    	          enabled: false
+    	           },
+    		exporting: { enabled: false },
+    		
+    	    series: [{
+    	        name: 'Male',
+    			color:'#18af7e',
+    	        data: [49, 71, 106, 129, 144, 176, 135, 148]
+
+    	    }, {
+    	        name: 'Female',
+    			color:'#2ca8c2',
+    	        data: [83, 78, 98, 93, 106, 84, 105, 104]
+
+    	    }]
+    	});
+
+
+    	Highcharts.chart('abnormal', {
+    	    chart: {
+    	        type: 'line',
+    			
+    	    backgroundColor: 'transparent'
+    	    },
+    	    title: {
+    	        text: ''
+    	    },
+    	    
+    	    xAxis: {
+    	    categories: ['1-10 Jan', '11-20 Jan', '21-31 Jan', '1-10 Feb', '11-20 Feb', '21-28 Feb', '1-10 Mar', '11-20 Mar', '21-30 Mar'],
+    		
+    	    labels: {
+    	                 style: {
+    	                      color: '#333',
+    	                      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	                        }
+    	                 }
+    	    },
+    	    yAxis: {
+    		     gridLineColor: '#ccc',
+    			 gridLineWidth: '1px',
+    		
+    	        title: {
+    	            text: ''
+    	        },
+    	    labels: {
+    	                 style: {
+    	                      color: '#333',
+    	                      font: '11px Trebuchet MS, Verdana, sans-serif'
+    	                        }
+    	                 }
+    	    },
+    	    plotOptions: {
+    	        line: {
+    	            dataLabels: {
+    	                enabled: true
+    	            },
+    	            enableMouseTracking: false
+    	        }
+    	    },
+    	  
+    	  credits: {
+    	    enabled: false
+    	  },
+    	  
+    	  exporting: { enabled: false },
+    	  
+    	    series: [{
+    	        name: 'Planned',
+    			color:'#4AAAF5',
+    	        data: [40, 16, 22, 45, 25, 18, 11, 21, 8]
+    	    },
+    		{
+    	        name: 'DAMA/LAMA',
+    	       color:'#37DAC1',
+    	        data: [10, 6, 15, 25, 35, 11, 21, 17, 22]
+    	    },
+    		{
+    	        name: 'Transfer',
+    	        color:'#f15f74',
+    	        data: [18, 10, 22, 18, 32, 14, 21, 37, 31]
+    	    },
+    		{
+    	        name: 'Abscond',
+    	        color:'#f15f74',
+    	        data: [28, 30, 52, 38, 22, 34, 31, 47, 51]
+    	    },
+    		{
+    	        name: 'Refferal',
+    	        color:'#f15f74',
+    	        data: [18, 90, 22, 98, 32, 14, 21, 47, 41]
+    	    }
+    		]
+    	});
+
+
+
+    	Highcharts.chart('highrisk', {
+    	  chart: {
+    	    type: 'pie',
+    		backgroundColor: 'transparent',
+    	    options3d: {
+    	      enabled: true,
+    	      alpha: 45
+    	    }
+    	  },
+    	  title: {
+    	    text: ''
+    	  },
+    	  subtitle: {
+    	    text: ''
+    	  },
+    	  plotOptions: {
+    	    pie: {
+    	      innerSize: 100,
+    		  showInLegend: true,
+    	      depth: 45,
+    	     dataLabels: {
+    	               enabled: true,
+    	               distance: -50,
+    	              /*   format: '{point.percentage:.1f} %', */
+    	                color: '#FFF',
+    	                
+    	                style: {
+    	                  textShadow: false,
+    	                  textOutline: false,
+    	                }
+    	            }
+    	    }
+    	  },
+    	    
+    		 credits: {
+    	    enabled: false
+    	  },
+    	  
+    	  exporting: { enabled: false },
+    		
+    	  series: [{
+    	    name: 'Delivery',
+    	    data: [
+    	      ['Normal', 55],
+    	      ['Sygerian', 45]
+
+    	    ]
+    	  }]
+    	});
+
+
+
+
+    	Highcharts.chart('critical', {
+    	  chart: {
+    	    type: 'bar',
+    		backgroundColor: 'transparent'
+    	  },
+    	  title: {
+    	    text: ''
+    	  },
+    	  subtitle: {
+    	    text: ''
+    	  },
+    	  exporting: { enabled: false },
+
+    	  xAxis: {
+    	    categories: ['Malaria', 'Cancer', 'Dengue', 'Corona', 'Heart Attack', 'Fever', 'Diarohea', 'Dysentry','Indigestion'],
+    	    title: {
+    	      text: null
+    	    }
+    	  },
+    	  yAxis: {
+    	    min: 0,
+    	    title: {
+    	      text: '',
+    	      align: 'high'
+    	    },
+    	    labels: {
+    	      overflow: 'justify'
+    	    }
+    	  },
+    	  tooltip: {
+    	    valueSuffix: ' millions'
+    	  },
+    	  plotOptions: {
+    	    bar: {
+    	      dataLabels: {
+    	        enabled: true
+    	      }
+    	    }
+    	  },
+    	  legend: {
+    	    layout: 'vertical',
+    	    align: 'right',
+    	    verticalAlign: 'top',
+    	    x: -40,
+    	    y: 80,
+    	    floating: true,
+    	    borderWidth: 1,
+    	    backgroundColor:
+    	      Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    	    shadow: true
+    	  },
+    	  credits: {
+    	    enabled: false
+    	  },
+    	  series: [{
+    	    type: 'bar',
+    	    colorByPoint: true,
+    	    data: [30, 40, 50, 55, 60, 65,70,85,99],
+    	    showInLegend: false
+    	  }]
+    	  
+    	  
+    	});
+
+
+
+    	Highcharts.chart('insurance', {
+    	    chart: {
+    		    backgroundColor: 'transparent',
+    	        type: 'column'
+    	    },
+    	    title: {
+    	        text: ''
+    	    },
+    	   
+    	    xAxis: {
+    	        categories: [
+    	            'Car',
+    	            'Bike',
+    				'Other Natural'
+    	           		
+    	        
+    	        ],
+    	        crosshair: true
+    	    },
+    	    yAxis: {
+    	        min: 0,
+    	        title: {
+    	            text: ''
+    	        }
+    	    },
+    	    tooltip: {
+    	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    	       /*  pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    	            '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>', */
+    	        footerFormat: '</table>',
+    	        shared: true,
+    	        useHTML: true
+    	    },
+    	    plotOptions: {
+    	        column: {
+    	            dataLabels: {
+    	                enabled: true
+    	            }
+    	        }
+    	    },
+    		
+    		 credits: {
+    	          enabled: false
+    	           },
+    		exporting: { enabled: false },
+    		
+    	    series: [{
+    	        name: '',
+    			color:'#f15f74',
+    			showInLegend: false,
+    			
+    	        data: [49, 71, 95]
+
+    	    }]
+    	});
+
+
+    	Highcharts.chart('ngo', {
+    	  chart: {
+    	    type: 'line',
+    		 backgroundColor: 'transparent',
+    	  },
+    	  title: {
+    	    text: ''
+    	  },
+    	  subtitle: {
+    	    text: ''
+    	  },
+    	  xAxis: {
+    	    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    	  },
+    	  yAxis: {
+    	    title: {
+    	      text: 'Temperature (°C)'
+    	    }
+    	  },
+    	  plotOptions: {
+    	    line: {
+    	      dataLabels: {
+    	        enabled: true
+    	      },
+    	      enableMouseTracking: false
+    	    }
+    	  },
+    	   credits: {
+    	    enabled: false
+    	  },
+    	  
+    	  exporting: { enabled: false },
+    	  series: [{
+    	    name: 'Male',
+    	    data: [7, 6, 9, 14, 18, 21, 25, 26, 23, 18, 13, 9]
+    	  }, {
+    	    name: 'Female',
+    	    data: [3, 4, 5, 8, 11, 15, 17, 16, 14, 10, 6, 4]
+    	  }]
+    	});
+
+
+
+
+    	Highcharts.chart('organ', {
+    	  chart: {
+    	    type: 'pie',
+    		backgroundColor: 'transparent',
+    	    options3d: {
+    	      enabled: true,
+    	      alpha: 45
+    	    }
+    	  },
+    	  title: {
+    	    text: ''
+    	  },
+    	  subtitle: {
+    	    text: ''
+    	  },
+    	  plotOptions: {
+    	    pie: {
+    	      innerSize: 100,
+    	      depth: 45,
+    		  showInLegend: true,
+    	     dataLabels: {
+    	               enabled: true,
+    	               distance: -50,
+    	                /* format: '{point.percentage:.1f} %', */
+    	                color: '#FFF',
+    	                
+    	                style: {
+    	                  textShadow: false,
+    	                  textOutline: false,
+    	                }
+    	            }
+    	    }
+    	  },
+    	    
+    		 credits: {
+    	    enabled: false
+    	  },
+    	  
+    	  exporting: { enabled: false },
+    		
+    	  series: [{
+    	    name: 'Delivered amount',
+    	    data: [
+    	      ['Heart', 20],
+    	      ['Liver', 15],
+    	      ['Eyes', 20],
+    	      ['Kidneys', 15],
+    	      ['Intestines', 20],
+    	      ['Lungs', 15]
+    	    ]
+    	  }]
+    	});
+
+    	Highcharts.chart('screening', {
+
+    	    chart: {
+    	        type: 'bar',
+    			backgroundColor: 'transparent'
+    	    },
+
+    	    title: {
+    	        text: ''
+    	    },
+
+    	    xAxis: {
+    	        categories: ['2015','2016','2017', '2018', '2019', '2020', '2021']
+    	    },
+
+    	    yAxis: {
+    	        allowDecimals: false,
+    	        min: 0,
+    	        title: {
+    	            text: 'Number of fruits'
+    	        }
+    	    },
+
+    	    tooltip: {
+    	    /*     pointFormat: '<span>{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>', */
+    	        shared: true
+    	    },
+
+    	    plotOptions: {
+    	        column: {
+    	            stacking: 'normal'
+    	        }
+    	    },
+    		
+    		 credits: {
+    	          enabled: false
+    	           },
+    		exporting: { enabled: false },
+
+    	    series: [
+    		{
+    	        name: 'On Duty',
+    			 color:'#a93f40',
+    	        data: [3,4,7,10,13,16,19],
+    	        stack: 'Male'
+    	    }, 
+    		
+    		
+    		{
+    	        name: 'Off duty - Busy',
+    			 color:'#fc6025',
+    	        data: [4,5,8,11,14,17,20],
+    	        stack: 'Male'
+    	    },
+    		
+    		{
+    	        name: 'Available',
+    			 color:'#19bde0',
+    	        data: [5,6,9,12,15,18,21],
+    	        stack: 'Male'
+    	    }
+    		
+    		
+    		
+    		
+    		
+    		]
+    	});
+    	Highcharts.chart('sample', {
+    	    chart: {
+    	        type: 'bar',
+    	        backgroundColor: 'transparent',
+    	        color: 'black',
+    	    },
+    	    title: {
+    	        text: ''
+    	    },
+    	    exporting: { enabled: false },
+    	 credits: {
+    	    enabled: false
+    	    },
+    	    xAxis: {
+    	        categories: ['Heart', 'Liver', 'Eyes', 'Kidney', 'Intenstine', 'Lungs'],
+    	        title: {
+    	            text: null
+    	        }
+    	         
+    	    },
+    	    yAxis: {
+    	        min: 0,
+    	        color: 'black',
+    	        gridLineWidth: 0,
+    	        title: {
+    	            text: '',
+    	            align: 'high'
+    	        },
+    	       labels: {
+    	        format: '{value}'
+    	       }
+    	    },
+    	    tooltip: {
+    	        valueSuffix: ' '
+    	    },
+    	    plotOptions: {
+    	        bar: {
+    	            dataLabels: {
+    	                enabled: true
+    	            }
+    	        }
+    	    },
+    	    
+
+    	    series: [{
+    	        colorByPoint: false,
+    	        showInLegend: false,
+    	        data: [200, 250, 320, 450, 560, 670 ]
+    	    }
+    	  
+    	  ]
+    	});
+    	Highcharts.chart('register', {
+
+    	    chart: {
+    	        type: 'column',
+    	    backgroundColor: 'transparent'
+    	    },
+
+    	    title: {
+    	        text: ''
+    	    },
+
+    	    xAxis: {
+    	        categories: ['A+', 'A-', 'B+', 'B-', 'Platelets', 'O+', 'O-', 'AB+', 'AB-']
+    	    },
+
+    	    yAxis: {
+    	        allowDecimals: false,
+    	        min: 0,
+    	        title: {
+    	            text: 'Number of fruits'
+    	        }
+    	    },
+
+    	    tooltip: {
+    	      /*   pointFormat: '<span>{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>', */
+    	        shared: true
+    	    },
+
+    	    plotOptions: {
+    	        column: {
+    	            stacking: 'normal'
+    	        }
+    	    },
+    	  
+    	   credits: {
+    	          enabled: false
+    	           },
+    	  exporting: { enabled: false },
+
+    	    series: [{
+    	        name: 'Required',
+    			color:'#0bbb39',
+    	        data: [5,3,7,5,8,10,15,20,10],
+    	        stack: 'Male'
+    	    }, 
+    	  
+    	  
+    	  {
+    	        name: 'Received – Gap ',
+    			color:'#2567ab',
+    	        data: [3,4,9,2,7,10,6,12,11],
+    	        stack: 'Male'
+    	    }
+    	  
+    	  
+    	  
+    	  
+    	  
+    	  ]
+    	});
+    	Highcharts.chart('home', {
+    	    chart: {
+    		    backgroundColor: 'transparent',
+    	        type: 'column'
+    	    },
+    	    title: {
+    	        text: ''
+    	    },
+    	   
+    	    xAxis: {
+    	        categories: [
+    	            'January',
+    	            'February',
+    	            'March',
+    	            'April',
+    	            'May',
+    	            'June',
+    				'July'			
+    	        
+    	        ],
+    	        crosshair: true
+    	    },
+    	    yAxis: {
+    	        min: 0,
+    	        title: {
+    	            text: ''
+    	        }
+    	    },
+    	    tooltip: {
+    	        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    	       /*  pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    	            '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>', */
+    	        footerFormat: '</table>',
+    	        shared: true,
+    	        useHTML: true
+    	    },
+    	    plotOptions: {
+    	        column: {
+    	            dataLabels: {
+    	                enabled: true
+    	            }
+    	        }
+    	    },
+    		
+    		 credits: {
+    	          enabled: false
+    	           },
+    		exporting: { enabled: false },
+    		
+    	    series: [{
+    	        name: '',
+    			color:'#b15b03',
+    			showInLegend: false,
+    	        data: [49, 71, 106, 129, 144, 176, 199]
+
+    	    }]
+    	});
+
+
+    	 Highcharts.chart('hematology', {
+    	        chart: {
+    	            backgroundColor: 'transparent',
+    	            type: 'column'
+    	        },
+    	        title: {
+    	            text: ''
+    	        },
+
+    	        xAxis: {
+    	            categories: [
+    	                'Female',
+    	                'Male',
+
+    	            ],
+    	            crosshair: true
+    	        },
+    	        yAxis: {
+    	            min: 0,
+    	            title: {
+    	                text: ''
+    	            }
+    	        },
+    	        tooltip: {
+    	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    	           /*  pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    	                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>', */
+    	            footerFormat: '</table>',
+    	            shared: true,
+    	            useHTML: true
+    	        },
+    	        plotOptions: {
+    	            column: {
+    	                dataLabels: {
+    	                    enabled: true
+    	                }
+    	            }
+    	        },
+
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+
+    	        series: [{
+    	            name: 'Male.',
+    	            color: '#fdba2a',
+    	            pointWidth:40,
+    	            data: [49]
+    	        }, {
+    	            name: 'Female',
+    	            color: '#fd2a92',
+    	            pointWidth:40,
+    	            data: [71]
+    	        }]
+    	    });
+    	 Highcharts.chart('Hospital', {
+    	        chart: {
+    	            backgroundColor: 'transparent',
+    	            type: 'column'
+    	        },
+    	        title: {
+    	            text: ''
+    	        },
+
+    	        xAxis: {
+    	            categories: [
+    	                'Hospital ',
+
+    	            ],
+    	            crosshair: true
+    	        },
+    	        yAxis: {
+    	            min: 0,
+    	            title: {
+    	                text: '(mm)'
+    	            }
+    	        },
+    	        tooltip: {
+    	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+    	          /*   pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    	                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>', */
+    	            footerFormat: '</table>',
+    	            shared: true,
+    	            useHTML: true
+    	        },
+    	        plotOptions: {
+    	            column: {
+    	                dataLabels: {
+    	                    enabled: true
+    	                }
+    	            }
+    	        },
+
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+    	        series: [{
+    	            name: 'Govt.',
+    	            color: '#31e6d7',
+    	            pointWidth:40,
+    	            data: [63]
+    	        }, {
+    	            name: 'Private',
+    	            color: '#31e639',
+    	            pointWidth:40,
+    	            data: [51]
+    	        }]
+    	    });
+    	 
+    	 Highcharts.chart('lipid', {
+    	        chart: {
+    	            type: 'bar',
+    	            backgroundColor: 'transparent',
+    	            color: 'black',
+    	        },
+    	        title: {
+    	            text: ''
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        xAxis: {
+    	            categories: ['Division', 'Division1', 'Division2', 'Division3', 'Division4', 'Division5', 'Division6', 'Division7', 'Division8', 'Divisio9', 'Divisio10', 'Division11'],
+    	            title: {
+    	                text: null
+    	            }
+
+    	        },
+    	        yAxis: {
+    	            min: 0,
+    	            color: 'black',
+    	            gridLineWidth: 0,
+    	            title: {
+    	                text: '',
+    	                align: 'high'
+    	            },
+    	            labels: {
+    	                format: '{value}'
+    	            }
+    	        },
+    	        tooltip: {
+    	            valueSuffix: ' '
+    	        },
+    	        plotOptions: {
+    	            bar: {
+    	                dataLabels: {
+    	                    enabled: true
+    	                }
+    	            }
+    	        },
+
+
+    	        series: [{
+    	                colorByPoint: false,
+    	                color: '#489897',
+    	                showInLegend: false,
+    	                data: [18, 20, 22, 25, 28, 30, 32, 34, 38, 40, 42, 46]
+    	            }
+
+    	        ]
+    	    });
+
+
+    	    Highcharts.chart('division', {
+    	        chart: {
+    	            type: 'bar',
+    	            backgroundColor: 'transparent',
+    	            color: 'black',
+    	        },
+    	        title: {
+    	            text: ''
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        xAxis: {
+    	            categories: ['Division', 'Division1', 'Division2', 'Division3', 'Division4', 'Division5', 'Division6', 'Division7', 'Division8', 'Divisio9', 'Divisio10', 'Division11'],
+    	            title: {
+    	                text: null
+    	            }
+
+    	        },
+    	        yAxis: {
+    	            min: 0,
+    	            color: 'black',
+    	            gridLineWidth: 0,
+    	            title: {
+    	                text: '',
+    	                align: 'high'
+    	            },
+    	            labels: {
+    	                format: '{value}'
+    	            }
+    	        },
+    	        tooltip: {
+    	            valueSuffix: ' '
+    	        },
+    	        plotOptions: {
+    	            bar: {
+    	                dataLabels: {
+    	                    enabled: true
+    	                }
+    	            }
+    	        },
+
+
+    	        series: [{
+    	                colorByPoint: false,
+    	                color: '#f2cd63',
+    	                showInLegend: false,
+    	                data: [18, 20, 22, 25, 28, 30, 32, 34, 38, 40, 42, 46]
+    	            }
+
+    	        ]
+    	    });
+
+
+    	    Highcharts.chart('bucket', {
+    	        chart: {
+    	            type: 'bar',
+    	            backgroundColor: 'transparent',
+    	        },
+    	        // title: {
+    	        //   text: 'Population pyramid for Germany, 2018'
+    	        // },
+    	        // subtitle: {
+    	        //   text: 'Source: <a href="http://populationpyramid.net/germany/2018/">Population Pyramids of the World from 1950 to 2100</a>'
+    	        // },
+    	        // accessibility: {
+    	        //   point: {
+    	        //     valueDescriptionFormat: '{index}. Age {xDescription}, {value}%.'
+    	        //   }
+    	        // },
+    	        // xAxis: [{
+    	        //   categories: categories,
+    	        //   reversed: false,
+    	        //   labels: {
+    	        //     step: 1
+    	        //   },
+    	        //   accessibility: {
+    	        //     description: 'Age (male)'
+    	        //   }
+    	        // }, { // mirror axis on right side
+    	        //   opposite: true,
+    	        //   reversed: false,
+    	        //   categories: categories,
+    	        //   linkedTo: 0,
+    	        //   labels: {
+    	        //     step: 1
+    	        //   },
+    	        //   accessibility: {
+    	        //     description: 'Age (female)'
+    	        //   }
+    	        // }],
+    	        yAxis: {
+    	            title: {
+    	                text: null
+    	            },
+    	            labels: {
+    	                formatter: function() {
+    	                    return Math.abs(this.value);
+    	                }
+    	            },
+    	            accessibility: {
+    	                description: 'Percentage population',
+    	                rangeDescription: 'Range: 0 to 5%'
+    	            }
+    	        },
+
+    	        plotOptions: {
+    	            series: {
+    	                stacking: 'normal'
+    	            }
+    	        },
+
+    	        tooltip: {
+    	            formatter: function() {
+    	                return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+    	                    'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 1) + '%';
+    	            }
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        series: [{
+    	            name: 'Male',
+    	            data: [
+    	                -2.2, -2.1, -2.2, -2.4,
+    	                -2.7, -3.0, -3.3,
+    	            ]
+    	        }, {
+    	            name: 'Female',
+    	            data: [
+    	                2.1, 2.0, 2.1, 2.3, 2.6,
+    	                2.9, 3.2, 0.5,
+    	            ]
+    	        }]
+    	    });
+
+    	    /* ################################# */
+
+    	    var data = [{
+    	        name: 'Clinical Advance Consent',
+    	        low: 69,
+    	        high: 82
+    	    }, {
+    	        name: 'Discharged Themselves',
+    	        low: 70,
+    	        high: 81
+    	    }, {
+    	        name: 'Died',
+    	        low: 69,
+    	        high: 75
+    	    }];
+    	    
+    	    Highcharts.chart('discharge', {
+
+    	        chart: {
+    	            type: 'dumbbell',
+    	            inverted: true
+    	        },
+
+    	        legend: {
+    	            enabled: false
+    	        },
+
+    	        tooltip: {
+    	            shared: true
+    	        },
+
+    	        xAxis: {
+    	            type: 'category'
+    	        },
+
+    	        yAxis: {
+    	            title: {
+    	                text: 'Life Expectancy (years)'
+    	            }
+    	        },
+
+    	        series: [{
+    	            name: 'Life expectancy change',
+    	            data: data
+    	        }]
+
+    	    });
+    	    
+    	    Highcharts.chart('sugar', {
+    	        chart: {
+    	            type: 'spline',
+    	            backgroundColor: 'transparent',
+    	        },
+    	        title: {
+    	            text: 'Monthly Average Temperature'
+    	        },
+    	        exporting: {
+    	            enabled: false
+    	        },
+    	        credits: {
+    	            enabled: false
+    	        },
+    	        xAxis: {
+    	            categories: ['Week1', 'Week2', 'Week3', 'Week4', 'Week5']
+
+    	        },
+    	        yAxis: {
+    	            title: {
+    	                text: 'Temperature'
+    	            },
+    	            labels: {
+    	                formatter: function() {
+    	                    return this.value + '°';
+    	                }
+    	            }
+    	        },
+    	        tooltip: {
+    	            crosshairs: true,
+    	            shared: true
+    	        },
+    	        plotOptions: {
+    	            spline: {
+    	                marker: {
+    	                    radius: 4,
+    	                    lineColor: '#666666',
+    	                    lineWidth: 1
+    	                }
+    	            }
+    	        },
+    	        series: [{
+    	                name: 'Blood Sugar',
+    	                color: '#bb080a',
+    	                showInLegend: false,
+    	                marker: {
+    	                    symbol: 'circle'
+    	                },
+    	                data: [7, 6, 9, 14, 18]
+
+    	            }
+
+    	        ]
+    	    });
+		
+    })
+    
+    </script>
+</body>
+</html>

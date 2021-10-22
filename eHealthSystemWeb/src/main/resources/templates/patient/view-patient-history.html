@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+
+//Document Upload Ends
+
+	$(document).ready(function() {
+					
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+		
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+		 
+		var gridDiv2 = document.querySelector('#myGrid2');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+		
+		var gridDiv3 = document.querySelector('#myGrid3');
+		new agGrid.Grid(gridDiv3, gridOptions3); 
+
+
+		 agGrid.simpleHttpRequest({
+			url : "view-patient-history-through-ajax"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalCandidate').find('span').html(len);
+			gridOptions1.api.setRowData(data);
+		}); 
+		 
+		 agGrid.simpleHttpRequest({
+				url : "view-patient-history-major-surgery"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalCandidate').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+			}); 
+		 
+		 agGrid.simpleHttpRequest({
+				url : "view-patient-history-medical-condition"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalCandidate').find('span').html(len);
+				gridOptions.api.setRowData(data);
+			}); 
+		 
+	});
+
+ var columnDefs = [
+		
+		{
+			headerName : "Medical Condition",
+			field : "medConditionName",
+			width: 1200,
+			type : "leftAligned",
+			cellClass: "grid-cell-left"
+			}];			
+
+	var gridOptions = {
+			columnDefs : columnDefs,
+			//rowData: rowData,
+			defaultColDef : {
+				sortable : true,
+				filter : true,
+				resizable : true,
+				width : 700.5,
+				height : 10
+			},
+			rowSelection : 'multiple',
+			suppressRowClickSelection : true,	
+		};
+	
+	var columnDefs1 = [
+			{
+				headerName : "Name",
+				field : "name"
+				
+			},{
+				headerName : "Date",
+				field : "date"
+			},{
+				headerName : "Doctor",
+				field : "doctor"
+			
+			}];
+	
+	var gridOptions1 = {
+			columnDefs : columnDefs1,
+		
+			defaultColDef : {
+				sortable : true,
+				filter : true,
+				resizable : true,
+				width : 400,
+				height : 10
+			},
+			rowSelection : 'multiple',
+			suppressRowClickSelection : true,	
+
+		};
+	
+	var columnDefs2 = [
+		{
+			headerName : "Name",
+			field : "surgeryName",
+			width: 300
+		},{
+			headerName : "Date",
+			field : "surgeryDate",
+			width: 300
+		},{
+			headerName : "Doctor",
+			field : "surgeryDoctor",
+			width: 300
+		
+		},{
+			headerName : "Notes",
+			field : "surgeryNotes",
+			width: 300
+		
+		}];
+	
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,	
+
+	};
+	
+	var columnDefs3 = [
+		
+		
+		{
+			headerName : "Transcripted Major Surgery",
+			field : "name",
+			width: 1200,
+			type : "center",
+			cellClass: "grid-cell-left"
+			}];	
+	const rowData3 = [
+	 
+      {name: "No Record Found" }
+      ]; 
+	var gridOptions3 = {
+		columnDefs : columnDefs3,
+		rowData: rowData3,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 1000,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,	
+
+	};
+		
+						
+</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					
+						<div class="maincontentsec">
+								<div class="font-design" id="totalEmp">PATIENT HISTORY</div>
+							<div id="main_content">
+								<div class="wrapper center-block">
+									<div class="panel-group" id="accordion" role="tablist"
+										aria-multiselectable="true">
+												<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingone"
+												onclick="closeAllNav()">
+												<h1 class="panel-title">
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion" href="#collapseone"
+														aria-expanded="true" aria-controls="collapseone">
+														Medical Condition </a>
+												</h1>
+											</div>
+											<div id="collapseone" class="panel-collapse collapse "
+												role="tabpanel" aria-labelledby="headingone">
+												<div class="row">
+												
+													<div class="col-md-12">
+														<div id="myGrid" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingtwo"
+											onclick="closeAllNav()">
+
+											<h1 class="panel-title">
+												<a role="button" data-toggle="collapse"
+													data-parent="#accordion" href="#collapsetwo"
+													aria-expanded="true" aria-controls="collapsetwo">
+													Major Illness </a>
+											</h1>
+										</div>
+											<div id="collapsetwo" class="panel-collapse collapse "
+												role="tabpanel" aria-labelledby="headingtwo">
+												<div class="row">
+												
+													<div class="col-md-12">
+														<div id="myGrid1" style="width: 100%; height: 200px;"
+															class="ag-theme-alpine"></div>
+													</div>
+												</div>
+											</div>
+									</div>
+
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingthree"
+											onclick="closeAllNav()">
+											<h1 class="panel-title">
+												<a role="button" data-toggle="collapse"
+													data-parent="#accordion" href="#collapsethree"
+													aria-expanded="true" aria-controls="collapsethree"> Major Surgery </a>
+											</h1>
+										</div>
+										<div id="collapsethree" class="panel-collapse collapse "
+											role="tabpanel" aria-labelledby="headingthree">
+											<div class="row">
+												<div class="col-md-12">
+													<div id="myGrid2" style="width: 100%; height: 200px;"
+														class="ag-theme-alpine"></div>
+												</div>
+											</div>										
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingfour"
+											onclick="closeAllNav()">
+											<h1 class="panel-title">
+												<a role="button" data-toggle="collapse"
+													data-parent="#accordion" href="#collapsefour"
+													aria-expanded="true" aria-controls="collapsefour"> Transcripted Major Surgery</a>
+											</h1>
+										</div>
+										<div id="collapsefour" class="panel-collapse collapse "
+											role="tabpanel" aria-labelledby="headingfour">
+											<div class="row">
+												<div class="col-md-12">
+													<div id="myGrid3" style="width: 100%; height: 200px;"
+														class="ag-theme-alpine"></div>
+												</div>
+											</div>
+										</div>
+									</div>								
+								</div>
+							</div>
+						</div>
+				
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

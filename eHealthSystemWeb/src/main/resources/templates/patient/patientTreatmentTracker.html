@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<head>
+
+<!-- ck editor slim selector CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
+<!-- <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.css"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.js"></script>
+<!-- <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.mjs"></script>
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {		
+	var gridDiv1 = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv1, gridOptions1);
+
+	 agGrid.simpleHttpRequest({
+			url : "view-patient-treatment-tracker-user"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalCandidate').find('span').html(len);
+			gridOptions1.api.setRowData(data);
+		}); 		 
+});
+
+var columnDefs1 = [	
+	{
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},	
+		{
+			headerName : "Medicine",
+			field : "medicine"
+			
+		}/* ,{
+			headerName : "Dose",
+			field : "dose"
+		
+		} */,{
+			headerName : "Days",
+			field : "days"
+		
+		},{
+			headerName : "From Date",
+			field : "fromDate"
+		
+		},{
+			headerName : "To Date",
+			field : "toDate"
+		
+		},{
+			headerName : "Morning",
+			field : "morning"
+		
+		}
+		,{
+			headerName : "Noon",
+			field : "noon"
+		
+		},{
+			headerName : "Evening",
+			field : "evening"
+		
+		},{
+			headerName : "Doctor",
+			field : "doctor"
+		
+		},{
+			headerName : "Remark",
+			field : "remark"		
+		}];
+
+var gridOptions1 = {
+		columnDefs : columnDefs1,
+	
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 400,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,	
+
+	};
+
+
+</script>
+<script type="text/javascript">
+function onQuickFilterChanged() {
+	gridOptions1.api
+			.setQuickFilter(document.getElementById('quickFilter').value);
+}
+
+function cancelBar() {
+	var id = document.getElementById("closeKey");
+	id.style.display = "block";
+
+	if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+		id.style.display = "none";
+	}
+}
+</script>
+<style type="text/css">
+.ag-header-row:second-child {
+	width: 100px !important
+}
+</style>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			
+				<div class="maincontentsec">
+					
+						<div class="row margin_topbot" id="hideTbl">
+
+							<div class="input-style row">
+								<input type="text" placeholder="Search.." name="search"
+									class="searchboxinput" onkeyup="cancelBar()"
+									oninput="onQuickFilterChanged()" id="quickFilter">
+								<div class="searchicon">
+									<a href="javascript:void(0)"><span
+										style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+										id="closeKey"
+										onclick="gridOptions1.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+										class="close_i"><i class="ti-close srchicon"></i></span></a><a
+										href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-md-6  btn-hs">
+								<div class="font-design" id="totalEmp">TREATMENT TRACKER</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">							
+							</div>
+						
+						</div>
+
+
+						<!-- </div> -->
+						<div class="row"></div>
+						<div id="myGrid" style="height: 300px; width: 100%;"
+							class="ag-theme-alpine"></div>
+					</div>
+					<!-- Send screen -->
+
+
+				</div>
+			</div>
+		
+	
+	
+
+</body>
+</html>

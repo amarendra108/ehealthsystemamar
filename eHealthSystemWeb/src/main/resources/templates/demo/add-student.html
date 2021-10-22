@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+
+<script>
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		$("#demo").hide();
+		$("#addData").hide();
+		$("#save").hide();
+
+		$('#delete').attr("disabled", true);
+
+		agGrid.simpleHttpRequest({
+			url : "add-emp-stud-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+
+		var dateFormat = localStorage.getItem("dateFormat");
+		
+		$("#toDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#dob').val($(this).val());
+		})
+
+		$('#dob').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+		
+		
+		$("#toDateCalendarad").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#dateofadmisn').val($(this).val());
+		})
+
+		$('#dateofadmisn').blur(function() {
+			$("#toDateCalendarad").val($(this).val());
+		})
+		
+		
+		$("#toDateCalendarps").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#dateofpasst').val($(this).val());
+		})
+
+		$('#dateofpasst').blur(function() {
+			$("#toDateCalendarps").val($(this).val());
+		})
+	
+	
+		 
+		
+
+		$("#state").on('change', function() {
+			var state = $(this).val();
+			if (state) {
+
+				$.ajax({
+					type : 'GET',
+					url : 'add-emp-stud-dist-ajax?id=' + state,
+					contentType : false,
+					success : function(response) {
+						if (response.message == "success") {
+							$("#dist").empty();
+
+							var option = $("<option></option>");
+							$(option).val(null);
+							$(option).html("Select");
+							$("#dist").append(option);
+							for (var i = 0; i < response.body.length; i++) {
+								var option = $("<option></option>");
+								$(option).val(response.body[i].key);
+								$(option).html(response.body[i].name);
+								$("#dist").append(option);
+							}
+						}
+					},
+					error : function(e) {
+						alert("error");
+					}
+				});
+			} else {
+				$("#tdist").empty();
+				var option = $("<option></option>");
+				$(option).val(null);
+				$(option).html("Select");
+				$("#dist").append(option);
+			}
+		});
+		$("#country").on('change', function() {
+			var country = $(this).val();
+			//alert(country);
+			if (country) {
+				//alert(country);
+				$("#dist").empty();
+				var option = $("<option></option>");
+				$(option).val(null);
+				$(option).html("Select");
+				$("#dist").append(option);
+				$.ajax({
+					type : "GET",
+					url : "add-emp-stud-state-ajax?id=" + country,
+					success : function(response) {
+						if (response.message == "success") {
+							$("#state").empty();
+							console.log("In State")
+							var option = $("<option></option>");
+							$(option).val(null);
+							$(option).html("Select");
+							$("#state").append(option);
+							console.log(response.body)
+							for (var i = 0; i < response.body.length; i++) {
+								var option = $("<option></option>");
+								$(option).val(response.body[i].key);
+								$(option).html(response.body[i].name);
+								$("#state").append(option);
+							}
+						}
+					},
+					error : function(e) {
+						alert("error");
+					}
+				});
+			} else {
+				$("#state").empty();
+				var option = $("<option></option>");
+				$(option).val(null);
+				$(option).html("Select");
+				$("#state").append(option);
+				$("#state").empty();
+				var option = $("<option></option>");
+				$(option).val(null);
+				$(option).html("Select");
+				$("#dist").append(option);
+			}
+		});
+
+	});
+
+	var columnDefs = [
+			{
+
+				headerCheckboxSelection : true,
+				/*  headerCheckboxSelectionFilteredOnly: true, */checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			}, {
+				headerName : "StudentId",
+				field : "student",
+				cellRenderer: function(params){
+		 	        return '<a id="" onclick=edit("' +  params.data.student + '") href="javascript:void(0)">' + params.data.student + '</a>';
+		 	        }}, {
+				headerName : "Name",
+				field : "name"
+			}, {
+				headerName : "Father Name",
+				field : "fatherName",type:"leftAligned"
+			}, {
+				headerName : "Mother Name",
+				field : "motherName",type:"leftAligned"
+			}, {
+				headerName : "RegisNo",
+				field : "regisNo",type:"leftAligned"
+			}, {
+				headerName : "Dob",
+				field : "dob",cellStyle: {textAlign: 'center'}
+			}, {
+				headerName : "Address",
+				field : "address",type:"leftAligned"
+			}, {
+				headerName : "Country",
+				field : "country",type:"leftAligned"
+			}, {
+				headerName : "State",
+				field : "state",type:"leftAligned"
+			}, {
+				headerName : "Dist",
+				field : "dist",type:"leftAligned"
+			}, {
+				headerName : "Email",
+				field : "email",type:"leftAligned"
+			}, {
+				headerName : "Mobile",
+				field : "mobile",type:"leftAligned"
+			}, {
+				headerName : "BloodGroup",
+				field : "bloodGroup",type:"leftAligned"
+			}, {
+				headerName : "Date Of Addmision",
+				field : "dateofadmisn",cellStyle: {textAlign: 'center'}
+			}, {
+				headerName : "Date Of PassOut",
+				field : "dateofpasst",cellStyle: {textAlign: 'center'}
+			}, {
+				headerName : "EmployeeStatus",
+				field : "employeeStatus",cellStyle: {textAlign: 'center'}
+			}, ];
+
+function edit(id){
+		
+		add()
+	
+		
+		 $.ajax({
+		type : "GET",
+		url : "add-emp-stud-edit?id=" + id,
+		success : function(response) {
+			if (response.message == "Success") {
+				add()
+				
+					
+		 $("#student").val(response.body.student);
+		 $("#name").val(response.body.name);
+		 $("#fatherName").val(response.body.fatherName);
+		 $("#motherName").val(response.body.motherName);
+		 $("#regisNo").val(response.body.regisNo);
+		 $("#dob").val(response.body.dob);
+		 $("#address").val(response.body.address);
+		 $("#country").val(response.body.country);
+		  
+		 getStateDataOnEdit(response.body.state);
+		 getDistDataEdit(response.body.state,response.body.dist);
+		 
+		 $("#email").val(response.body.email);
+		 $("#mobile").val(response.body.mobile);
+		 $("#bloodGroup").val(response.body.bloodGroup);
+		 $("#dateofadmisn").val(response.body.dateofadmisn);
+		 $("#dateofpasst").val(response.body.dateofpasst);
+		 $('#employeeStatus').val(response.body.employeeStatus);
+		 var employeeStatus = response.body.employeeStatus;
+		 if (employeeStatus === '0') {
+
+		 $('#employeeStatus').prop('checked', false)
+
+		 } else {
+		 $('#employeeStatus').prop('checked', true)
+		 }
+					 $("#save").show();
+					$("#demo").show();
+					$("#addData").show();
+					 
+			}
+		}
+ }); 
+	$('#delete').attr("disabled", true);
+
+	}
+	
+
+function deletestud(){
+	$.ajax({
+	type:"GET",
+	url:"add-emp-stud-delete?deleteId=" + deleteId,
+	success : function(response) {
+	if (response.message == "success") {
+		
+		agGrid.simpleHttpRequest({
+			url : "add-emp-stud-through-ajax"
+		}).then(function(data) {
+			gridOptions.api.setRowData(data);
+		});
+		
+}
+	}
+	
+});
+	$('#delete').attr("disabled", true);
+}
+	
+	
+	var gridOptions = {
+			columnDefs : columnDefs,
+			 defaultColDef: {
+				  sortable: true, 
+				  filter: true, 
+				  resizable: true, 
+				  width: 251,
+				  height: 10
+			   },
+		rowSelection : 'multiple',
+		onSelectionChanged : rowSelect,
+		
+		suppressRowClickSelection: true,
+		
+		getRowNodeId : function(data) {
+			return data.student;
+		}
+	};
+	
+	
+	var deleteId ="";
+	function rowSelect() {
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+		//console.log(selectedRows)
+		deleteId ="";
+		
+		for(var i=0;i<selectedRows.length;i++){
+			//console.log(selectedRows[i].employee)
+			deleteId=deleteId + '"' + selectedRows[i].student + '",' ;
+			//console.log(id)
+		}
+		
+		deleteId=deleteId.substring(0,deleteId.length-1);
+		console.log(deleteId)
+		
+		var rowCount = 0;
+		
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		
+		
+		if (rowCount > 0) {
+			$('#delete').attr("disabled", false);
+		
+	} else {
+		$('#delete').attr("disabled", true);
+	}
+	}
+	
+	function add() {
+
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#save").show();
+		$("#demo").show();
+		$("#addData").show();
+		$("#cancel").hide();
+		$('#delete').attr("disabled", true);
+
+		$("#student").val("");
+		$("#name").val("");
+		$("#fatherName").val("");
+		$("#motherName").val("");
+		$("#regisNo").val("");
+		$("#dob").val("");
+		$("#address").val("");
+		$("#country").val("");
+		$("#state").val("");
+		$("#district").val("");
+		$("#email").val("");
+		$("#mobile").val("");
+		$("#bloodGroup").val("");
+		$("#dateofadmisn").val("");
+		$("#dateofpasst").val("");
+		$("#employeeStatus").prop("checked", true);
+
+	}
+	function Cancel() {
+		$("#add").show();
+		$("#myGrid").show();
+		$("#save").hide();
+		$("#demo").hide();
+		$("#addData").hide();
+		$("#delete").show();
+	}
+
+	function save() {
+		//alert("Save errror")
+		var obj = {};
+		obj.student = $("#student").val();
+		obj.name = $("#name").val();
+		obj.fatherName = $("#fatherName").val();
+		obj.motherName = $("#motherName").val();
+		obj.regisNo = $("#regisNo").val();
+		obj.dob = $("#dob").val();
+		obj.address = $("#address").val();
+		obj.country = $("#country").val();
+		obj.state = $("#state").val();
+		obj.dist = $("#dist").val();
+		obj.email = $("#email").val();
+		obj.mobile = $("#mobile").val();
+		obj.bloodGroup = $("#bloodGroup").val();
+		obj.dateofadmisn = $("#dateofadmisn").val();
+		obj.dateofpasst = $("#dateofpasst").val();
+		
+		obj.employeeStatus = $("#employeeStatus:checkbox:checked").val();
+		
+		//alert(obj.employeeStatus);
+		if(obj.employeeStatus==undefined)
+		{
+		//alert("hello");
+		obj.employeeStatus="0";
+
+		}
+		else
+		{
+		obj.employeeStatus="1";
+		}
+
+		
+
+		var validation = true;
+
+		if (obj.name == null || obj.name == "") {
+			validation = validationUpdated("Name Requied", "name");
+			//console.log("validat name " + validation)
+		}
+
+		if (obj.fatherName == null || obj.fatherName == "") {
+			validation = validationUpdated("father Name Requied", "fatherName");
+			//console.log("validat fname " + validation)
+		}
+
+		if (obj.motherName == null || obj.motherName == "") {
+			validation = validationUpdated("motherName Requied", "motherName");
+			//console.log("validat mname " + validation)
+		}
+
+		if (obj.regisNo == null || obj.regisNo == "") {
+			validation = validationUpdated("regis No", "regisNo");
+			//console.log("validat r No " + validation)
+		}
+		if (obj.dob == null || obj.dob == "") {
+			validation = validationUpdated("dob Required", "dob");
+			//console.log("validat dob " + validation)
+		}
+
+		if (obj.address == null || obj.address == "") {
+			validation = validationUpdated("address Requied", "address");
+			//console.log("validat addrs " + validation)
+		}
+		if (obj.country == null || obj.country == "") {
+			validation = validationUpdated("country Requied", "country");
+			//console.log("validat country " + validation)
+		}
+		if (obj.state == null || obj.state == "") {
+			validation = validationUpdated("state Requied", "state");
+			//console.log("validat state " + validation)
+		}
+		if (obj.dist == null || obj.dist == "") {
+			validation = validationUpdated("dist Requied", "dist");
+			//console.log("validat dist " + validation)
+		}
+		if (obj.email == null || obj.email == "") {
+			validation = validationUpdated("email Requied", "email");
+			//console.log("validat email " + validation)
+		}
+		if (obj.mobile == null || obj.mobile == "") {
+			validation = validationUpdated("mobile Requied", "mobile");
+			//console.log("validat mobile " + validation)
+
+		}
+		if (obj.bloodGroup == null || obj.bloodGroup == "") {
+
+			validation = validationUpdated("bloodGroup Requied", "bloodGroup");
+			//console.log("validat bg " + validation)
+		}
+		if (obj.dateofadmisn == null || obj.dateofadmisn == "") {
+
+			validation = validationUpdated("dateofadmisn Requied", "dateofadmisn");
+			//console.log("validat dateofadmisn " + validation)
+		}
+		
+		if (obj.dateofpasst == null || obj.dateofpasst == "") {
+
+			validation = validationUpdated("dateofpasst Requied", "dateofpasst");
+			//console.log("validat dateofpasst " + validation)
+		}
+		
+		
+
+		//console.log("validation " + validation + JSON.stringify(obj))
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "add-emp-stud-add",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+
+						$("#add").show();
+						$("#myGrid").show();
+						$("#cancel").hide();
+						$("#save").hide();
+						$("#demo").hide();
+						$("#addData").hide();
+						$("#delete").show();
+
+						agGrid.simpleHttpRequest({
+							url : "add-emp-stud-through-ajax"
+						}).then(function(data) {
+							gridOptions.api.setRowData(data);
+						});
+					}
+				},
+				error : function(data) {
+
+					console.log(data);
+				}
+			})
+
+		}
+	}
+	
+	
+function getDistDataEdit(state,dist){ 
+	if (state) {
+
+		$.ajax({
+			type : 'GET',
+			url : 'add-emp-stud-dist-ajax?id=' + state,
+			contentType : false,
+			success : function(response) {
+				if (response.message == "success") {
+					$("#dist").empty();
+
+					var option = $("<option></option>");
+					$(option).val(null);
+					$(option).html("Select");
+					$("#dist").append(option);
+					for (var i = 0; i < response.body.length; i++) {
+						var option = $("<option></option>");
+						$(option).val(response.body[i].key);
+						$(option).html(response.body[i].name);
+						$("#dist").append(option);
+					}
+					$("#dist").val(dist);
+				}
+			},
+			error : function(e) {
+				alert("error");
+			}
+		});
+	} else {
+		$("#tdist").empty();
+		var option = $("<option></option>");
+		$(option).val(null);
+		$(option).html("Select");
+		$("#dist").append(option);
+	}
+}
+	
+function getStateDataOnEdit(stateId){
+	var country = $("#country").val(); 
+	if (country) {
+		//alert(country);
+		$("#dist").empty();
+		var option = $("<option></option>");
+		$(option).val(null);
+		$(option).html("Select");
+		$("#dist").append(option);
+		$.ajax({
+			type : "GET",
+			url : "add-emp-stud-state-ajax?id=" + country,
+			success : function(response) {
+				if (response.message == "success") {
+					$("#state").empty(); 
+					var option = $("<option></option>");
+					$(option).val(null);
+					$(option).html("Select");
+					$("#state").append(option); 
+					for (var i = 0; i < response.body.length; i++) {
+						var option = $("<option></option>");
+						$(option).val(response.body[i].key);
+						$(option).html(response.body[i].name);
+						$("#state").append(option);
+					}
+					$("#state").val(stateId);
+				}
+			},
+			error : function(e) {
+				alert("error");
+			}
+		});
+	} else {
+		$("#state").empty();
+		var option = $("<option></option>");
+		$(option).val(null);
+		$(option).html("Select");
+		$("#state").append(option);
+		$("#state").empty();
+		var option = $("<option></option>");
+		$(option).val(null);
+		$(option).html("Select");
+		$("#dist").append(option);
+	}
+}	
+</script>
+
+</head>
+
+
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+
+						<div class="row">
+							<div class="col-md-5 buttonsec btn-hs"></div>
+							<div class="col-md-12 buttonsec btn-hs">
+								<button id="save" onclick="save()" class="btn3">submit</button>
+								<button class="btn1" id="demo" onclick="Cancel()">Cancel</button>
+
+								<button onclick="add()" class="btn2" id="add">Add</button>
+								 <button onclick="deletestud()" class="btn2" id="delete">delete</button>
+							</div>
+						</div>
+
+						<div class="row" id="addData">
+							<input type="hidden" id="student">
+
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Name</label> <input type="text" id="name"
+										placeholder="Name" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Father Name</label> <input type="text" id="fatherName"
+										placeholder="fatherName" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>MotherName</label> <input type="text" id="motherName"
+										placeholder="motherName" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Registration No</label> <input type="text" id="regisNo"
+										placeholder="regisNo" class="form-control">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label>DOB</label> <input type="text" id="dob"
+									class="form-control"
+									th:attr="onkeyup=|formatDate('dob','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="toDateCalendar"></i>
+							</div>
+
+							<br>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Address</label>
+									<textarea class="form-control" id="address"></textarea>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Country</label>
+									<div class="select">
+										<select id="country">
+											<option value="">Select</option>
+											<option th:each="c,iter:${countrylist}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>State</label>
+									<div class="select">
+										<select id="state">
+											<option value="">Select</option>
+											<option th:each="c,iter:${stateList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Dist</label>
+									<div class="select">
+										<select id="dist">
+											<option value="">Select</option>
+											<option th:each="c,iter:${distList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Email</label> <input type="text" id="email"
+										placeholder="email" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Mobile</label> <input type="text" id="mobile"
+										placeholder="mobile" class="form-control">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<label>Blood Group</label>
+									<div class="select">
+										<select id="bloodGroup">
+											<option value="">Select</option>
+											<option th:each="c,iter:${bloodGroupList}"
+												th:value="${c.key}" th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label>Date Of Addmision</label> <input type="text" id="dateofadmisn"
+									class="form-control"
+									th:attr="onkeyup=|formatDate('dob','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="toDateCalendarad"></i>
+							</div>
+							<div class="col-md-6">
+								<label>Date Of PassOut</label> <input type="text" id="dateofpasst"
+									class="form-control"
+									th:attr="onkeyup=|formatDate('dob','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="toDateCalendarps"></i>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group">
+									<div class="radio">
+										<input type="checkbox" id="employeeStatus" name="active"
+											value="1"> <label for="1">Status</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="myGrid" style="width: 100%; height: 500px;"
+							class="ag-theme-alpine"></div>
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

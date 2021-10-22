@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body
+{
+  background: #f5f5f5;
+}
+.content-wrapper {
+    background: transparent;
+    padding: .75rem 2.25rem;
+    }
+.btnDisable
+{
+  color: #ccc!important;
+}
+
+.card-body a{
+  color:#000;
+}
+.highcharts-axis-title
+{
+  display: none;
+}
+/*todaychanges*/
+.card
+{
+  margin:8px 0px;
+}
+
+.smlbox
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:5px;
+color: #333;
+}
+.smlbox1
+{
+border:1px solid #ccc;
+background: #FFF;
+border-radius: 5px;
+padding: 10px;
+margin:11.5px 0px;
+color: #333;
+}
+.smlbox11
+{
+border-radius: 5px;
+padding: 10px;
+color: #0071c1;
+}
+.smlbox11 .title
+{
+  width: 100px!important;
+  color: #000;
+  float: left;
+}
+.smlbox2
+{
+background: transparent;
+border-radius: 5px;
+padding:5px 10px;
+margin:5px 0px;
+color: #FFF;
+}
+.smlbox2 span
+{
+  float:right;
+  text-align: right;
+}
+.mrt_5
+{
+  margin-top: 8px;
+}
+.text-left
+{
+  color:#0071c1;
+}
+.padding_8
+{
+  padding: 0px 8px;
+}
+.heading
+{
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+}
+.card_light
+{
+background: #FFF;
+border: 1px solid #ccc;
+padding: 10px;
+border-radius: 10px;
+}
+.card_light .card-title
+{
+  background: #0071c1;
+  color: #FFF;
+  padding:12px 10px;
+  margin-bottom: 18px;
+}
+.cardtitle1
+{
+  /*background: #0071c1;*/
+  font-size: 14px;
+  color: #333;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.card_light p
+{
+  color: #ccc;
+}
+.card {
+  margin:0!important;
+    margin-bottom: 8px !important;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+}
+
+/*new*/
+.searchsec
+{
+  background:#dbdbdb;
+  height:60px;
+  border-bottom: 3px solid #7bd4df;
+  padding: 5px;
+  width: 100%;
+  margin: 0px 5px;
+}
+
+
+
+.card-title
+{
+  padding:10px 3px;
+  color: #333!important;
+  font-size: 18px;
+  margin:0px;
+}
+.highcharts-figure
+{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.highcharts-drilldown-data-label text{
+  text-decoration:none !important;
+  color: #FFF!important;
+  fill:#FFF!important;
+}
+.padding_5
+{
+  padding:0px 5px;
+}
+.card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+}
+.highcharts-xaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+.highcharts-yaxis-labels text
+{
+  color: #333!important;
+  fill:#333!important;
+}
+
+#sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#area {
+  height: 200px;
+  position: relative;
+  right: 20px;
+  width: 300px;
+}
+.highcharts-a11y-proxy-button
+{
+  color: #333!important;
+}
+#daywise
+{
+  height:150px;
+  width: 150px;
+  position: relative;
+  right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels
+{
+  display: none;
+}
+
+#chart .highcharts-a11y-proxy-button
+{
+  color:#333!important;
+}
+.white
+{
+  color: #FFF;
+}
+
+.active
+{
+  background: #98cb4a;
+  border:1px solid #FFF;
+}
+.inactive
+{
+  background: #f76d3c;
+  color: #333;
+  border:1px solid #FFF;
+}
+.inactive a
+{
+  color: #FFF;
+}
+.ulbar
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+}
+.card a
+{
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+}
+.boxicon
+{
+  position: absolute;
+    bottom:8px;
+    right: 8px;
+}
+
+.card-body a 
+{
+  color: #FFF!important;
+  padding: 16px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+  left: 0px;
+}
+.card-body a .icon
+{
+  position: relative;
+  top: -20px;
+}
+.font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 14px;
+}
+.profile
+{
+ /*  border:2px solid #ccc; */
+  border-radius: 80px;
+  /* height: 104px; */
+  width: 104px;
+  position: relative;
+  left: 33%;
+}
+.profile img{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.edit
+{
+  position: absolute;
+  background: #0071c1;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  color: #FFF;
+  right: 0;
+    bottom: 0px;
+ padding: 3px 8px;
+}
+.padding_0 {
+    padding: 0px;
+}
+.flexrow {
+    display: flex;
+    flex-flow: row wrap;
+}
+ 
+.flexrow.row-7-el > .element  {
+    flex: 0 1 calc(100%/7);
+    max-width: calc(100%/7);
+}
+
+.element {
+  text-align: center;
+}
+.user-dtlhd {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.user-id {
+    font-size: 16px;
+    font-weight: 400;
+    color: #056fe2;
+}
+.mb-10 {
+    margin-bottom: 10px;
+}
+.card-profile {
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    border-bottom: 5px solid #3000c6;
+    border-radius: 5px;
+    height:620px;
+}
+.d-block {
+    display: block!important;
+    width: 100%;
+}
+/*.card-body a:hover{
+  text-decoration: none;
+}*/
+</style>
+
+<script type="text/javascript">
+  function gotodashboard(){
+    window.location.href="C:/Users/USER/OneDrive/Desktop/e-health/new-ehealth/dashboard2.html";
+  }
+</script> 
+<script>
+
+
+
+/*Age Pie*/
+
+
+Highcharts.setOptions({
+  colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
+    return {
+      radialGradient: {
+        cx: 0.5,
+        cy: 0.3,
+        r: 0.7
+      },
+      stops: [
+      [0, color],
+                [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+              };
+            })
+});
+
+
+
+$(document)
+.ready(
+  function() {
+
+    $("#barChartInv").addClass("btnDisable");
+    $("#barChartInv1").addClass("btnDisable");
+    $("#barChartInv2").addClass("btnDisable");
+    $("#pobarChartInv").addClass("btnDisable");
+
+
+    $('#invpiechart').hide();
+    $("#barChartInv2").click(function() {
+      $("#invpiechart").hide();
+      $("#invChartDiv2").show();
+      $("#barChartInv2").addClass("btnDisable");
+      $("#tableInv2").removeClass("btnDisable");
+    })
+    $("#tableInv2").click(function() {
+      $("#invpiechart").show();
+      $("#invChartDiv2").hide();
+      $("#barChartInv2").removeClass("btnDisable");
+      $("#tableInv2").addClass("btnDisable");
+    })
+
+    $('#invTableDiv1').hide();
+    $("#barChartInv1").click(function() {
+      $("#invTableDiv1").hide();
+      $("#invChartDiv1").show();
+      $("#barChartInv1").addClass("btnDisable");
+      $("#tableInv1").removeClass("btnDisable");
+    })
+    $("#tableInv1").click(function() {
+      $("#invTableDiv1").show();
+      $("#invChartDiv1").hide();
+      $("#barChartInv1").removeClass("btnDisable");
+      $("#tableInv1").addClass("btnDisable");
+    })
+    
+	$.ajax({
+		type : 'GET',
+		url : 'view-patient-health-chart-graph',
+		contentType : 'application/json',
+		async : false,
+		success : function(response) {
+			$("#patientName").html(response.body[0].patientName);
+			$("#patientId").html(response.body[0].patientId);
+			$("#mob").html(response.body[0].mob);
+			var add=response.body[0].address;
+			if(add!=null){
+				$("#address").html(add);
+			}else{
+				$("#address").html("N/A");
+			}
+			var blg=response.body[0].bloodGrp;
+			if(blg!=null){
+				$("#bloodGrp").html(blg);
+			}else{
+				$("#bloodGrp").html("N/A");
+			}
+			var wt=response.body[0].weight;
+			if(wt!=null){
+				$("#weight").html(wt+" Kg");
+			}else{
+				$("#weight").html("N/A");
+			}
+			var ht=response.body[0].height;
+			if(ht!=null){
+				$("#height").html(ht+" M");
+			}else{
+				$("#height").html("N/A");
+			}
+		},
+		error : function(err) {
+			console.log(err)
+		}
+	});
+
+	$.ajax({
+		type : 'GET',
+		url : 'view-patient-health-chart-details',
+		contentType : 'application/json',
+		async : false,
+		success : function(response) {
+			//alert(JSON.stringify(response))
+				for (var i = 0; i < response.body.length; i++) {
+					
+				var testName = response.body[i].testName
+
+				 if (testName == "Weight") {
+					 $("#weight1").html(response.body[i].actualValue);
+					
+				   }
+
+				 if (testName == "Height") {
+					 $("#height1").html(response.body[i].actualValue);
+				   }
+				 if (testName == "BMI") {
+					 $("#bmi").html(response.body[i].actualValue);
+				   }
+				 if (testName == "Temp") {
+					 $("#tempC").html(response.body[i].actualValue);
+					 let tc=parseInt(response.body[i].actualValue);
+					 if(tc!=null){
+					 $("#tempF").html(tc+9/5+32);
+					 }else{
+						 $("#tempF").html("N/A");
+					 }
+				   }
+				 if (testName == "BP") {
+					 $("#bPressure").html(response.body[i].actualValue);
+				   }
+				 if (testName == "Pulse") {
+					 $("#pulse").html(response.body[i].actualValue);
+				   }
+				 if (testName == "Respiration") {
+					 $("#respiration").html(response.body[i].actualValue);
+				   }
+				 if (testName == "Oxygen Saturation") {
+					// $("#oxygen").html(response.body[i].actualValue);
+					 var os=response.body[i].actualValue;
+						if(os!=null){
+							$("#oxygen").html(os+"%");
+						}else{
+							$("#oxygen").html("N/A");
+						}
+				   }
+				}
+				if(response.body.length === 0){
+				$("#weight1").html("N/A");
+				$("#height1").html("N/A");
+				$("#bmi").html("N/A");
+				$("#tempF").html("N/A");
+				$("#tempC").html("N/A");
+				$("#bPressure").html("N/A");
+				$("#pulse").html("N/A");
+				$("#respiration").html("N/A");
+				$("#oxygen").html("N/A");
+				}
+	},
+	error : function(err) {
+		console.log(err)
+	}
+});
+	
+	/* HAEMATOLOGICAL EXAMINATION */
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forHematology",
+		success : function(response) {
+			if (response.message == "Success") {
+				
+				 var testname = [];
+					var testresult = [];
+					   for (var i = 0; i < response.body.length; i++) {
+	                        testresult.push(parseInt(response.body[i].name));
+	                        testname.push(response.body[i].key);
+	                    }
+				
+				if(testname.length === 0){
+					testname = ['','','','',];
+					testresult = [0,0,0,0];
+				}
+				
+				  Highcharts.chart('blood', {
+					  chart : {
+					   backgroundColor: 'transparent',
+					   type : 'column'
+					 },
+					 title : {
+					  text : ''
+					 },
+
+					 colors: [
+					   '#d83d39'
+					 ],
+
+					 plotOptions: {
+					   series: {
+					     dataLabels: {
+					       enabled: true,
+					     }
+					   }
+					 },
+
+					 xAxis: {
+					   labels: {
+					     style: {
+					       color: '#e4e4e2',
+					       font: '11px Trebuchet MS, Verdana, sans-serif'
+					     }
+					   },
+					   categories: testname,
+					   crosshair : true,
+
+					 },
+					 credits: {
+					   enabled: false
+					 },
+					 exporting: { enabled: false },
+					 series: [{
+					   type: 'column',
+					   colorByPoint: false,
+					   data: testresult,
+					   showInLegend: false
+					 }
+
+
+					 ],
+
+					 yAxis:{ 
+					   labels: {
+					     style: {
+					       color: '#e4e4e2',
+					       font: '11px Trebuchet MS, Verdana, sans-serif'
+					     }
+					   },
+					   gridLineWidth: 0,
+					   minorGridLineWidth: 0
+					 }
+
+					 });
+			
+			}
+		},
+
+	});
+	/* Kidney Function Test */
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forKidneyTest",
+		success : function(response) {
+			if (response.message == "Success") {
+				 var testname = [];
+					var testresult = [];
+					for (j = 0; j < response.body.length; j++) {
+					   testname.push(response.body[j].key);
+					   testresult.push(parseInt(response.body[j].name));
+					}
+					if(testname.length === 0){
+					
+						testname = ['','','','',];
+						testresult = [0,0,0,0];
+					}
+					
+				  Highcharts.chart('kidney', {
+					  chart : {
+					   backgroundColor: 'transparent',
+					   type : 'column'
+					 },
+					 title : {
+					  text : ''
+					 },
+
+					 colors: [
+					   '#4b6875'
+					 ],
+
+					 plotOptions: {
+					   series: {
+					     dataLabels: {
+					       enabled: true,
+					     }
+					   }
+					 },
+
+					 xAxis: {
+					   labels: {
+					     style: {
+					       color: '#e4e4e2',
+					       font: '11px Trebuchet MS, Verdana, sans-serif'
+					     }
+					   },
+					   categories: testname,
+					   crosshair : true,
+
+					 },
+					 credits: {
+					   enabled: false
+					 },
+					 exporting: { enabled: false },
+					 series: [{
+					   type: 'column',
+					   colorByPoint: false,
+					   data: testresult,
+					   showInLegend: false
+					 }
+
+
+					 ],
+
+					 yAxis:{ 
+					   labels: {
+					     style: {
+					       color: '#e4e4e2',
+					       font: '11px Trebuchet MS, Verdana, sans-serif'
+					     }
+					   },
+					   gridLineWidth: 0,
+					   minorGridLineWidth: 0
+					 }
+
+					 }); 
+				 
+			
+			}
+		},
+
+	});
+	/*Lipid Profile*/
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forLipidProfile",
+		success : function(response) {
+			if (response.message == "Success") {
+				var testname = [];
+				var testresult = [];
+				for (j = 0; j < response.body.length; j++) {
+					   testname.push(response.body[j].key);
+					   testresult.push(parseInt(response.body[j].name));
+					}
+				if(testname.length === 0){
+					testname = ['','','','',];
+					testresult = [0,0,0,0];
+				}
+				Highcharts.chart('lipid', {
+					  chart: {
+						  backgroundColor: 'transparent',
+					    type: 'bar'
+					  },
+					  exporting: { enabled: false },
+					  title: {
+					    text: ''
+					  },
+					  subtitle: {
+					    text: ''
+					  },
+
+					  xAxis: {
+					    categories: testname,
+					    title: {
+					      text: null
+					    }
+					  },
+					  yAxis: {
+					    min: 0,
+					    title: {
+					      text: 'Population (millions)',
+					      align: 'high'
+					    },
+					    labels: {
+					      overflow: 'justify'
+					    }
+					  },
+					  tooltip: {
+					    valueSuffix: ' M'
+					  },
+					  plotOptions: {
+					    bar: {
+					      dataLabels: {
+					        enabled: true
+					      }
+					    }
+					  },
+					colors:[
+					'#2db5a9'
+					],
+					  credits: {
+					    enabled: false
+					  },
+					  series: [{
+					    name: 'Result',
+					   data: testresult,
+					  }, 
+					  
+					  
+					  ]
+					});
+			
+			}
+		},
+
+	});
+ 
+	/* Blood Sugar */
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forBloodSugar",
+		success : function(response) {
+			if (response.message == "Success") {
+				var testname = [];
+				var testresult = [];
+				var testdate = [];
+				for (j = 0; j < response.body.length; j++) {
+					
+					var testname=response.body[j].key;
+						testresult.push(parseInt(response.body[j].name));
+						testdate.push(response.body[j].code)
+						
+					}
+				
+				if(testname.length === 0){
+					testname = ['',''];
+					testresult = [0,0];
+					testdate = ['',''];
+				}
+				Highcharts.chart('sugar', {
+					  chart: {
+						  backgroundColor: 'transparent',
+					    type: 'spline'
+					  },
+					  title: {
+					    text: ''
+					  },
+					  subtitle: {
+					    text: ''
+					  },
+					  xAxis: {
+					    categories: testdate
+					  },
+					  credits: {
+					  enabled: false
+					  },
+					exporting: { enabled: false },
+					  yAxis: {
+					    title: {
+					      text: ''
+					    },
+					    labels: {
+					      formatter: function () {
+					        return this.value + '°';
+					      }
+					    }
+					  },
+					  colors:[
+					'#942d2a'
+					],
+					  tooltip: {
+					    crosshairs: true,
+					    shared: true
+					  },
+					  plotOptions: {
+					    spline: {
+					      marker: {
+					        radius: 4,
+					        lineColor: '#666666',
+					        lineWidth: 1
+					      }
+					    }
+					  },
+					  series: [
+					{
+					    name: 'Blood Sugar',
+					    marker: {
+					      symbol: 'diamond'
+					    },
+					   data: testresult
+					  }]
+					});
+			
+			}
+		},
+
+	});
+	/* Electrolyte */
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forElectrolyte",
+		success : function(response) {
+			
+			if (response.message == "Success") {
+			//	alert(JSON.stringify(response))
+				var testname = [];
+				var testdate = [];
+				var testresult1 = [];
+				var testresult2 = [];
+				var testresult3 = [];
+			//	alert(testname)
+				for (j = 0; j < response.body.length; j++) {
+				
+					var testname=response.body[j].key;
+					
+					if(testname=="POTASSIUM"){
+						testresult1.push(parseInt(response.body[j].name));
+						testdate.push(response.body[j].code)
+					}
+					if(testname=="SODIUM"){
+						testresult2.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="CALCIUM"){
+						testresult3.push(parseInt(response.body[j].name));
+						
+					}
+					
+				}
+				if(testname.length === 0){
+					testname = ['','','','',];
+					testresult1 = [0];
+					testresult2 = [0];
+					testresult3 = [0];
+					testresult4 = [0];
+					testdate = ['','','','',];
+				}
+				Highcharts.chart('electrolyte', {
+					  chart: {
+						backgroundColor: 'transparent',
+					    type: 'spline'
+					  },
+					  title: {
+					    text: ''
+					  },
+					  subtitle: {
+					    text: ''
+					  },
+					  xAxis: {
+					    categories: testdate
+					  },
+					  credits: {
+					  enabled: false
+					  },
+					exporting: { enabled: false },
+					  yAxis: {
+					    title: {
+					      text: ''
+					    },
+					    labels: {
+					      formatter: function () {
+					        return this.value + '°';
+					      }
+					    }
+					  },
+					  tooltip: {
+					    crosshairs: true,
+					    shared: true
+					  },
+					  plotOptions: {
+					    spline: {
+					      marker: {
+					        radius: 4,
+					        lineColor: '#666666',
+					        lineWidth: 1
+					      }
+					    }
+					  },
+
+					  series: [{
+					    name: 'Potassium(Serum)',
+					    marker: {
+					      symbol: 'square'
+					    },
+					    data: testresult1
+
+					  }, {
+					    name: 'SODIUM(Serum)',
+					    marker: {
+					      symbol: 'diamond'
+					    },
+					    data: testresult2
+					  },
+					   {
+					    name: 'Calcium(Serum)',
+					    marker: {
+					      symbol: 'diamond'
+					    },
+					   data: testresult3
+					  }]
+					});
+			
+			}
+		},
+
+	});
+	/* Liver Function Test */
+	$.ajax({
+		type : "GET",
+		url : "view-patient-health-chart-forLiverTest",
+		success : function(response) {
+			if (response.message == "Success") {
+				
+				var testname = [];
+				var testdate = [];
+				var testresult1 = [];
+				var testresult2 = [];
+				var testresult3 = [];
+				var testresult4 = [];
+				var testresult5 = [];
+				var testresult6 = [];
+				var testresult7 = [];
+				var testresult8 = [];
+				var testresult9 = [];
+				for (j = 0; j < response.body.length; j++) {
+					var testname=response.body[j].key;
+					
+					if(testname=="A:G Ratio"){
+						testresult1.push(parseInt(response.body[j].name));
+						testdate.push(response.body[j].code)
+						
+					}
+					if(testname=="Albumin"){
+						testresult2.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Alkaline Phosphatase"){
+						testresult3.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Bilirubin Direct"){
+						testresult4.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Globulin"){
+						testresult5.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Bilirubin indirect"){
+						testresult6.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="SGPT"){
+						testresult7.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Billirubin Total"){
+						testresult8.push(parseInt(response.body[j].name));
+						
+					}
+					if(testname=="Total Protein"){
+						testresult9.push(parseInt(response.body[j].name));
+						
+					}
+				}
+				if(testname.length === 0){
+					testname = ['','','','',];
+					testresult1 = [0];
+					testresult2 = [0];
+					testresult3 = [0];
+					testresult4 = [0];
+					testresult5 = [0];
+					testresult6 = [0];
+					testresult7 = [0];
+					testresult8 = [0];
+					testresult9 = [0];
+					testdate = ['','','','',];
+				}
+				Highcharts.chart('livertest', {
+					  chart: {
+						backgroundColor: 'transparent',
+					    type: 'spline',
+					    scrollablePlotArea: {
+					      minWidth: 800,
+					      scrollPositionX: 1
+					    }
+					  },
+					  legend: {
+					  enabled: false
+					},
+					credits: {
+					    enabled: false
+					  },
+					 exporting: { enabled: false },
+					  title: {
+					    text: '',
+					    align: 'left'
+					  },
+					  subtitle: {
+					    text: '',
+					    align: 'left'
+					  },
+					  xAxis: {
+						  categories: testdate
+					  },
+					  yAxis: {
+					    title: {
+					      text: 'Wind speed (m/s)'
+					    },
+					    minorGridLineWidth: 0,
+					    gridLineWidth: 0,
+					    alternateGridColor: null,
+					    plotBands: [{
+					      from: 0.3,
+					      to: 1.5,
+					      color: 'rgba(68, 170, 213, 0.1)',
+					      label: {
+					        text: 'Light air',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 1.5,
+					      to: 3.3,
+					      color: 'rgba(0, 0, 0, 0)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 3.3,
+					      to: 5.5,
+					      color: 'rgba(68, 170, 213, 0.1)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 5.5,
+					      to: 8,
+					      color: 'rgba(0, 0, 0, 0)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 8,
+					      to: 11,
+					      color: 'rgba(68, 170, 213, 0.1)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 11,
+					      to: 14,
+					      color: 'rgba(0, 0, 0, 0)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }, { 
+					      from: 14,
+					      to: 15,
+					      color: 'rgba(68, 170, 213, 0.1)',
+					      label: {
+					        text: '',
+					        style: {
+					          color: '#606060'
+					        }
+					      }
+					    }]
+					  },
+					  tooltip: {
+					    valueSuffix: ' m/s'
+					  },
+					  plotOptions: {
+					    spline: {
+					      lineWidth: 4,
+					      states: {
+					        hover: {
+					          lineWidth: 5
+					        }
+					      },
+					      marker: {
+					        enabled: false
+					      },
+					     /*  pointInterval: 3600000, // one hour
+					      pointStart: Date.UTC(2021, 7, 10, 0, 0, 0) */
+					    }
+					  },
+					  series: [{
+					    name: 'AG Ratio',
+					    data: testresult1
+					  }, 
+					  {
+					    name: 'Albumin',
+					    data: testresult2
+					  },
+					  
+					  {
+					    name: 'Alkaline Phosphatase',
+					   data: testresult3
+					  },
+					  {
+					    name: 'Direct Bilirubin',
+					   data: testresult4
+					  },
+					  {
+					    name: 'Globulin',
+					    data: testresult5
+					  },
+					  {
+					    name: 'Indirect Bilirubin',
+					    data: testresult6
+					  },
+					  {
+					    name: 'SGPT',
+					    data: testresult7
+					  },
+					   {
+					    name: 'Total Bilirubin',
+					   data: testresult8
+					  },
+					   {
+					    name: 'Total Protein',
+					   data: testresult9
+					  }
+					  ],
+					  navigation: {
+					    menuItemStyle: {
+					      fontSize: '10px'
+					    }
+					  }
+					});
+			}
+		},
+
+	});
+	
+    
+  });
+/*---------------                function for Page redirect               ------------ */
+function modOnclick(funId) {
+
+    var moduleId = $("#moduleId").val();
+
+    var activityUrl = $("#" + funId).attr("value");
+    var activityId = $("#Act_" + funId).val();
+    document.getElementById("side_bar_menu").innerHTML = "";
+    sessionStorage.setItem('module', moduleId);
+    sessionStorage.setItem('function', funId);
+    sessionStorage.setItem('activity', activityId);
+    //localStorage.setItem('moduleName', $("#moduleId").text());
+
+    window.location.href = activityUrl;
+}
+function gotodashboard() {
+    modOnclick("FUN001");
+}
+function gotoFamilyDetails() {
+		
+	    sessionStorage.setItem('module', "MOD001");
+	    sessionStorage.setItem('function', "FUN002");
+	    sessionStorage.setItem('activity', "ACT0007");
+		window.location.href ="/user/view-patient-family-details";
+}
+function gotoMedicalHistry() {
+	
+    sessionStorage.setItem('module', "MOD001");
+    sessionStorage.setItem('function', "FUN002");
+    sessionStorage.setItem('activity', "ACT0003");
+	window.location.href ="/user/view-patient-history";
+	 
+}
+</script> 
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		 <div class="container-scroller">
+      <!-- partial -->
+      <div class="container-fluid">
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+
+          <div class="row">
+            <div class="col-md-12  stretch-card padding_0">
+                 <div class="flexrow row-7-el">
+                  <div class="element  stretch-card padding_5">
+                     <div class="card card-img-holder text-white" style="background: #006495; height: 80px;">
+                  <div class="card-body">
+                      <div class="font-weight-normal">Height (cm)/Weight (kg)</div>
+                      <h4><span id="height1"></span>/<span id="weight1"></span></h4>
+                      
+                       <i class="mdi mdi-cash-register mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    
+                <div class="card card-img-holder text-white" style="background: #004c70; height: 80px;">
+                  <div class="card-body">
+                      <div class="font-weight-normal">BMI (kg/m2)</div>
+                      <h4><span id="bmi"></span></h4>
+                      <i class="mdi mdi-doctor mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    <div class="card card-img-holder text-white" style="background: #0093d1; height: 80px;">
+                  <div class="card-body">
+                    <div class="font-weight-normal">Temperature (C/F)</div>
+                    <h4><span id="tempC"></span>/<span id="tempF"></span></h4>
+                    <i class="mdi mdi-file-document mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    <div class="card card-img-holder text-white" style="background: #f2635f; height: 80px;">
+                  <div class="card-body">
+                    <div class="font-weight-normal">Blood Pressure (mmHg)</div>
+                    <h4><span id="bPressure"></span></h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    <div class="card card-img-holder text-white" style="background: #f4d00c; height: 80px;">
+                  <div class="card-body">
+                    <div class="font-weight-normal">Pulse (per min)</div>
+                    <h4><span id="pulse"></span></h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    <div class="card card-img-holder text-white" style="background: #e0a025; height: 80px;">
+                  <div class="card-body">
+                    <div class="font-weight-normal">Respiration (bpm)</div>
+                    <h4><span id="respiration"></span></h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                  <div class="element stretch-card padding_5">
+                    <div class="card card-img-holder text-white" style="background: #b5b02f; height: 80px;">
+                  <div class="card-body">
+                    <div class="font-weight-normal">Oxygen Saturation</div>
+                    <h4><span id="oxygen"></span></h4>
+                    
+                    <i class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+                  </div>
+                </div>
+                  </div>
+                </div>
+              </div>
+
+         <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-3 stretch-card padding_5">
+                   <div class="card card-profile" style="background: #FFF; color: #333;">
+                    <div class="col-md-12">
+                     <h4 class="card-title float-left">Profile</h4>
+                   <div class="prf-ht" style="margin:5px 0px;"><!-- <img src="assets/images/sundargarhmap.svg" class="img-fluid"> -->
+                     <div class="profile">
+                      <img src="../assets/eHealth/images/user_img.jpg" alt="profile">
+                     <!--  <div class="edit"><i class="fa fa-edit"></i></div> -->
+                    </div>
+                    <div class="padding_8">
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Name :</div>
+                      <div class="user-id"><span id="patientName"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Register Id :</div>
+                       <div class="user-id"><span id="patientId"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Role :</div>
+                      <div class="user-id">Patient</div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Phone :</div>
+                      <div class="user-id"><span id="mob"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Address :</div>
+                      <div class="user-id"><span id="address"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Blood Group :</div>
+                      <div class="user-id"><span id="bloodGrp"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Weight :</div>
+                      <div class="user-id"><span id="weight"></span></div>
+                    </div>
+                    <div class="mb-10">
+                      <div class="user-dtlhd">Height :</div>
+                      <div class="user-id"><span id="height"></span></div>
+                    </div>
+                  </div></div>
+                 
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="row mb-10">
+                  <div class="col-md-4 stretch-card padding_5">
+                    <button class="btn btn-warning d-block" onclick="gotoMedicalHistry();" style="color: #fff;">Medcal History</button>
+                  </div>
+                  <div class="col-md-4 stretch-card padding_5">
+                    <button class="btn btn-primary d-block" onclick="gotoFamilyDetails();">Family Details</button>
+                  </div>
+                  <div class="col-md-4 stretch-card padding_5">
+                    <button class="btn btn-dark d-block" onclick="gotodashboard()">Dashboard</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 padding_5">
+                <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                   <h4 class="card-title">Hematology</h4>
+                 </div>
+                 <div id="blood" style="height:270px;"></div>
+               </div>
+                <div class="card" style="background: #FFF; color: #333;">
+                <div class="col-md-12">
+                  <h4 class="card-title float-left"> Lipid Profile</h4>
+                </div>
+
+                <div id="invChartDiv2">
+                  <div class="highcharts-figure" id="lipid" style="height:200px;"> </div> 
+                </div>
+            </div>
+
+               
+                </div>
+              <div class="col-md-6  padding_5">
+                <div class="card" style="background: #FFF;">
+                  <div class="col-md-12">
+                   <h4 class="card-title float-left">Kidney Function Test</h4>
+                 </div>
+                 <div id="kidney" style="height:200px;"></div>
+               </div>
+
+                <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                   <h4 class="card-title">Blood Sugar </h4>
+                 </div>
+                 <div id="sugar" style="height:270px;"></div>
+               </div>
+              </div>
+              </div>
+
+             </div>
+             <div class="col-md-6 padding_5">
+              <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                     <h4 class="card-title float-left">Electrolyte </h4>
+                   </div>
+                 <div id="electrolyte" style="height:300px;"></div>
+                </div>
+             </div>
+             <div class="col-md-6 padding_5">
+              <div class="card" style="background: #FFF; color: #333;">
+                  <div class="col-md-12">
+                   <h4 class="card-title">Liver Function Test</h4>
+                  </div>
+                 <div id="livertest" style="height:300px;"></div>
+                </div>
+             </div>
+
+ 
+       </div>
+     </div>  
+
+   </div>
+
+</div>
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+	</div>
+</body>
+</html>

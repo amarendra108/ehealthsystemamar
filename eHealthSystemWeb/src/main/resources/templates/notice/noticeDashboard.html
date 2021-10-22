@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<title>Extend</title>
+<style>
+.btnDisable{
+color: #ccc!important;
+}
+</style>
+<!-- 
+<script type="text/javascript">
+  var gridOptions = {
+  columnDefs: [
+    // different ways to define 'categories'
+    { field: 'athlete', width: 150, chartDataType: 'category' },
+    { field: 'age', chartDataType: 'category', sort: 'asc' },
+    { field: 'sport' }, // inferred as category by grid
+
+    // excludes year from charts
+    { field: 'year', chartDataType: 'excluded' },
+
+    // different ways to define 'series'
+    { field: 'gold', chartDataType: 'series' },
+    { field: 'silver', chartDataType: 'series' },
+    { field: 'bronze' }, // inferred as series by grid
+  ],
+  defaultColDef: {
+    editable: true,
+    sortable: true,
+    flex: 1,
+    minWidth: 100,
+    filter: true,
+    resizable: true,
+  },
+  popupParent: document.body,
+  enableRangeSelection: true,
+  enableCharts: true,
+  chartThemeOverrides: {
+    common: {
+      title: {
+        enabled: true,
+        text: 'Medals by Age',
+      },
+      legend: {
+        position: 'bottom',
+      },
+    },
+    column: {
+      axes: {
+        category: {
+          label: {
+            rotation: 0,
+          },
+        },
+      },
+    },
+  },
+  onFirstDataRendered: onFirstDataRendered,
+};
+
+function onFirstDataRendered(params) {
+  var createRangeChartParams = {
+    cellRange: {
+      rowStartIndex: 0,
+      rowEndIndex: 79,
+      columns: ['age', 'gold', 'silver', 'bronze'],
+    },
+    chartType: 'groupedColumn',
+    chartContainer: document.querySelector('#myChart'),
+    aggFunc: 'sum',
+  };
+
+  params.api.createRangeChart(createRangeChartParams);
+}
+
+// setup the grid after the page has finished loading
+document.addEventListener('DOMContentLoaded', function () {
+  var gridDiv = document.querySelector('#myGrid');
+  new agGrid.Grid(gridDiv, gridOptions);
+
+  agGrid
+    .simpleHttpRequest({
+      url: 'https://www.ag-grid.com/example-assets/wide-spread-of-sports.json',
+    })
+    .then(function (data) {
+      gridOptions.api.setRowData(data);
+    });
+});
+</script> -->
+
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						
+						$("#barChartInv").addClass("btnDisable");
+						$("#barChartInv1").addClass("btnDisable");
+						$("#barChartInv2").addClass("btnDisable");
+						
+					
+					})
+
+	$(document).ready(function() {
+		
+		$('#poinvTableDiv').show();
+		$("#pobarChartInv").click(function() {
+			$("#poinvTableDiv").hide();
+			$("#poinvChartDiv").show();
+			$("#pobarChartInv").addClass("btnDisable");
+			$("#potableInv").removeClass("btnDisable");
+		})
+		$("#potableInv").click(function() {
+			$("#poinvTableDiv").show();
+			$("#poinvChartDiv").hide();
+			$("#pobarChartInv").removeClass("btnDisable");
+			$("#potableInv").addClass("btnDisable");
+		})
+	})
+</script>
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+
+/*
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.my-chart {
+  flex: 1;
+}*/
+</style>
+
+</head>
+<body>
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<!--  <div class="dashboard_heading">Login By: Pinaki Datta 
+            <div class="vshort_details">Value Added: #2,000</div>
+            <div class="vshort_details">Requisition: 200</div>
+            <div class="vshort_details">Spending: $ 400,000</div>
+            <div class="vshort_details">Suppliers: 5000</div>
+          </div> -->
+						<div class="row">
+							<div class="col-md-4">
+								<div class="box_green">
+									<div class="inner-box-number" >500</div>
+									<div class="inner-box-text">Notice File</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="box_yellow">
+									<div class="inner-box-number">40</div>
+									<div class="inner-box-text">Notice Open</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="box_pink">
+									<div class="inner-box-number">60</div>
+									<div class="inner-box-text">Notice close</div>
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+
+						<div class="row">
+							
+							<div class="col-md-12 margin_topbot20">
+								<div class="dashboard_box">
+									<div class="dashboard_subheading">
+										Notice Period
+										<div class="float-right">
+										<a href="#"><i class="ti-download"></i></a> <a href="#"><i class="ti-printer"></i></a> &nbsp; &nbsp; &nbsp;
+											 <a href="javascript:void(0)"
+												id="potableInv"><i class="ti-layout-grid3"></i></a>
+										</div>
+									</div>
+									
+									<div id="poinvTableDiv">
+									<div class="row">
+										<div class="col-md-12">
+											<table class="table table-responsive table-bordered">
+												<thead>
+													<tr>
+														<th>Notice Id</th>
+														<th>Notice FromDate</th>
+														<th>Notice ToDate</th>
+														<th>Notice Status</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>REQ0000001</td>
+														<td align="center">12-01-2021</td>
+														<td align="center">15-01-2021</td>
+														<td align="center">Active</td>
+													</tr>
+													<tr>
+														<td>REQ0000002</td>
+														<td align="center">12-01-2021</td>
+														<td align="center" >18-01-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+													<tr>
+														<td>REQ0000003</td>
+														<td align="center">19-01-2021</td>
+														<td align="center">24-01-2021</td>
+														<td align="center">Active</td>
+													</tr>
+													<tr>
+														<td>REQ0000004</td>
+														<td align="center">05-01-2021</td>
+														<td align="center">15-01-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+													<tr>
+														<td>REQ0000005</td>
+														<td align="center">07-01-2021</td>
+														<td align="center">18-01-2021</td>
+														<td align="center">Active</td>
+													</tr>
+													<tr>
+														<td>REQ0000006</td>
+														<td align="center">12-02-2021</td>
+														<td align="center">15-03-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+													<tr>
+														<td>REQ0000007</td>
+														<td align="center">15-01-2021</td>
+														<td align="center">15-03-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+													<tr>
+														<td>REQ0000008</td>
+														<td align="center">12-01-2021</td>
+														<td align="center">12-02-2021</td>
+														<td align="center">Active</td>
+													</tr>
+													<tr>
+														<td>REQ0000009</td>
+														<td align="center">10-01-2021</td>
+														<td align="center">15-03-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+													<tr>
+														<td>REQ0000010</td>
+														<td align="center">10-01-2021</td>
+														<td align="center">15-07-2021</td>
+														<td align="center">Active</td>
+													</tr>
+													<tr>
+														<td>REQ0000011</td>
+														<td align="center">10-04-2021</td>
+														<td align="center">15-09-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+
+													<tr>
+														<td>REQ0000012</td>
+														<td align="center">10-01-2021</td>
+														<td align="center">15-06-2021</td>
+														<td align="center">Active</td>
+													</tr>
+
+													<tr>
+														<td>REQ0000013</td>
+														<td align="center">10-02-2021</td>
+														<td align="center">17-03-2021</td>
+														<td align="center">Inactive</td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

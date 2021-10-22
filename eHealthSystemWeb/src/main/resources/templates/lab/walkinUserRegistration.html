@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style type="text/css">
+.box {
+	/* background-color: #f7fdfd;*/
+	padding: 0px 20px;
+	margin: 0px 0px 20px 0px;
+	height: 100px;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+	background: transparent !important;
+}
+
+.design-process-section .text-align-center {
+	line-height: 25px;
+	margin-bottom: 12px;
+}
+
+.design-process-content {
+	/*border: 1px solid #e9e9e9;*/
+	position: relative;
+	/*padding: 16px 0% 30px 30px;*/
+}
+
+.design-process-content .btn-primary a {
+	color: #fff;
+}
+
+.design-process-content .btn-primary a:hover {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.hvrbox-text span {
+	background: #181d1f;
+	padding: 5px 7px;
+	margin: 6px;
+	border-radius: 15px;
+	cursor: pointer;
+}
+/*.design-process-content img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    max-height: 100%;
+}*/
+.design-process-content h3 {
+	margin-bottom: 16px;
+}
+
+.design-process-content p {
+	line-height: 26px;
+	margin-bottom: 12px;
+}
+
+.process-model {
+	list-style: none;
+	padding: 0;
+	position: relative;
+	/*max-width: 600px;*/
+	/*margin: 20px auto 26px;*/
+	border: none;
+	z-index: 0;
+}
+
+.process-model li::after {
+	background: #e5e5e5 none repeat scroll 0 0;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: 4px;
+	margin: 0 auto;
+	position: absolute;
+	right: 95px;
+	top: 18px;
+	width: 65%;
+	z-index: -1;
+}
+
+.mt-50 {
+	margin: 42px 0px;
+}
+
+/* input[type=checkbox] {
+	margin-top: -6px;
+	
+} */
+/*.process-model li.visited::after {
+    background: #01215e;
+}*/
+.process-model li:last-child::after {
+	width: 0;
+}
+
+.process-model li {
+	display: inline-block;
+	width: 33%;
+	text-align: center;
+	float: none;
+}
+
+.nav-tabs.process-model>li.active>a, .nav-tabs.process-model>li.active>a:hover,
+	.nav-tabs.process-model>li.active>a:focus, .process-model li a:hover,
+	.process-model li a:focus {
+	border: none;
+	background: transparent;
+}
+
+.process-model li a {
+	padding: 0;
+	border: none;
+	color: #606060;
+}
+
+.process-model li.active, .process-model li.visited {
+	color: #D6DA28;
+}
+
+.process-model li.active a, .process-model li.active a:hover,
+	.process-model li.active a:focus, .process-model li.visited a,
+	.process-model li.visited a:hover, .process-model li.visited a:focus {
+	color: #01215e;
+}
+
+.process-model li.active p, .process-model li.visited p {
+	font-weight: 600;
+	color: #01215e;
+}
+
+.process-model li b {
+	display: block;
+	height: 40px;
+	width: 40px;
+	text-align: center;
+	margin: 0 auto;
+	background: #5ac1e0;
+	border: 2px solid #e5e5e5;
+	color: #fff;
+	line-height: 2;
+	font-size: 16px;
+	border-radius: 50%;
+}
+
+.process-model li.active b, .process-model li.visited b {
+	background: #01215e;
+	border-color: #58bdd9;
+}
+
+.process-model li p {
+	font-size: 14px;
+	margin-top: 11px;
+}
+
+.process-model.contact-us-tab li.visited a, .process-model.contact-us-tab li.visited p
+	{
+	color: #606060 !important;
+	font-weight: normal
+}
+
+.process-model.contact-us-tab li::after {
+	display: none;
+}
+
+.process-model.contact-us-tab li.visited b {
+	border-color: #e5e5e5;
+}
+
+@media screen and (max-width: 560px) {
+	.more-icon-preocess.process-model li span {
+		font-size: 16px;
+		height: 50px;
+		line-height: 46px;
+		width: 50px;
+	}
+	.more-icon-preocess.process-model li::after {
+		top: 24px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	.process-model.more-icon-preocess li {
+		width: 16%;
+	}
+	.more-icon-preocess.process-model li span {
+		font-size: 16px;
+		height: 35px;
+		line-height: 32px;
+		width: 35px;
+	}
+	.more-icon-preocess.process-model li p {
+		font-size: 16px;
+	}
+	.more-icon-preocess.process-model li::after {
+		top: 18px;
+	}
+	.process-model.more-icon-preocess {
+		text-align: center;
+	}
+}
+
+input[type=checkbox]:before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #ccc;
+	background-color: #f6f8f8;
+	margin-top: -16px;
+	border: 1px solid #333 !important;
+}
+
+.user-img {
+	background-color: #5ac1e0;
+	padding: 5px;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	float: left;
+	margin-right: 10px;
+	box-shadow: 1px 2px #a4a4a4;
+}
+
+.user-text {
+	font-size: 16px;
+	float: left;
+	color: #0d99c4;
+	font-weight: 600;
+	margin: 4px 0px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.ml-20 {
+	margin-left: 20px;
+}
+
+.heading {
+	color: #0d99c4;
+	font-weight: 600;
+	font-size: 16px;
+	text-transform: uppercase;
+}
+
+.captcha img {
+	height: 60px;
+	width: 200px
+}
+
+.refresh {
+	font-size: 16px;
+	color: #0d99c4;
+}
+
+.form-check span {
+	font-size: 16px;
+	color: #000;
+}
+
+.user-sec {
+	background-color: #eee;
+	padding: 20px;
+	margin-bottom: 30px;
+}
+
+.user-img2 {
+	height: 80px;
+	width: 80px;
+	background-color: #fff;
+	border-radius: 50%;
+	font-size: 50px;
+	text-align: center;
+	color: #0d99c4;
+	box-shadow: 1px 2px #0d99c4;
+}
+
+.detail {
+	font-size: 16px;
+	color: #929292;
+	margin-bottom: 20px;
+}
+
+.modal-content-md label {
+	color: #006aa7;
+}
+
+.mail {
+	font-size: 16px;
+	color: #0d99c4;
+}
+
+input[type=checkbox], input[type=radio] {
+	box-sizing: border-box;
+	padding: 0;
+	margin-top: 6px;
+	margin-right: 5px;
+}
+
+.modal-content-md {
+	padding: 15px 14px;
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, .2);
+	border-radius: .3rem;
+	outline: 0;
+	margin-top: -100px;
+}
+
+.plan {
+	font-size: 18px;
+	font-weight: 200;
+	color: #0d99c4;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.tab-clr {
+	background: #eeeeee;
+	padding: 20px 14px 0px 14px;
+}
+
+.basic-sec {
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+
+.tablink {
+	background-color: #eee;
+	color: #000;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 6px 10px;
+	font-size: 16px;
+	width: 25%;
+}
+
+.tablink:hover {
+	background-color: #777;
+}
+
+button:focus {
+	border: none;
+	outline: none;
+}
+
+.tabcontent {
+	color: white;
+	display: none;
+	padding: 10px;
+	height: 100%;
+}
+
+.tabclr {
+	background-color: #eee;
+	padding: 15px 10px;
+	height: 53px;
+	border-radius: 10px 10px 0px 0px;
+}
+
+.tab-border {
+	border: 1px solid #ccc;
+}
+
+.basic-sec label {
+	color: #000;
+}
+
+.data {
+	color: #878787;
+	font-size: 16px;
+}
+
+.wlcm-head {
+	font-size: 16px;
+	color: #01215e;
+	font-weight: 600;
+	margin-bottom: 15px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.wlcm-text {
+	font-size: 16px;
+	color: #01215e;
+}
+
+.pd-10 {
+	padding: 10px;
+}
+
+button:active {
+	border: none;
+}
+
+.top-logo {
+	padding: 20px;
+}
+
+.top-logo img {
+	height: 35px;
+}
+
+.top-btn {
+	list-style: none;
+	padding: 0;
+	position: relative;
+	/* max-width: 600px; */
+	margin: 10px 0px 10px 0px;
+	border: none;
+	z-index: 0;
+}
+
+.btn-align {
+	display: flex;
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+.top-btn li::after {
+	background: #e5e5e5 none repeat scroll 0 0;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: 3px;
+	margin: 0 auto;
+	position: absolute;
+	right: 35px;
+	top: 15px;
+	width: 76%;
+	z-index: -1;
+}
+
+.top-btn li {
+	display: inline-block;
+	width: 35%;
+	text-align: center;
+	float: none;
+}
+
+.top-btn li button {
+	margin: 0 auto;
+}
+
+.login-form-1 {
+	padding: 5% 3% 5%;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	height: auto;
+	background-color: #0076ba;
+}
+
+.signup-txt {
+	font-size: 30px;
+	font-weight: 700;
+	margin-bottom: 10px;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.capcha-sec {
+	background-color: #eee;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.signup-subtxt {
+	font-size: 20px;
+	margin-bottom: 20px;
+	color: #FFF;
+	text-align: center;
+	padding: 0px 20px;
+}
+
+.login-form-1 h3 {
+	text-align: center;
+	color: #333;
+}
+
+label {
+	font-size: 16px;
+	color: #fff;
+}
+
+.login-form-2 {
+	padding: 5%;
+	background: #fff;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff !important;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.input-group-text {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: .375rem .75rem;
+	margin-bottom: 0;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #e9ecef;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+}
+
+select {
+	width: 100%;
+	height: 25px;
+	margin: 0;
+	padding: 0 0 0 0;
+	/* font-family: 'HelveticaNeue'; */
+	color: #0a5db8;
+	/* font-weight: 100; */
+	cursor: pointer;
+	font-weight: 500;
+	line-height: 30px;
+	font-size: 16px;
+	border-bottom: none;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #bfbfbf;
+	opacity: 1; /* Firefox */
+	font-size: 14px;
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #bfbfbf;
+	font-size: 14px;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+	color: #bfbfbf;
+}
+
+.login-form-2 h3 {
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+}
+
+.login-container form {
+	padding: 10%;
+}
+
+.right-text {
+	font-size: 26px;
+	color: #0076ba;
+	vertical-align: middle;
+	font-weight: 600;
+	text-align: center;
+	position: relative;
+	top: 35%;
+}
+
+.regpg-btn {
+	background-color: #fff; /* Green */
+	border: 1px solid #0d99c4;
+	color: #0d99c4;
+	font-weight: 600;
+	font-size: 10px;
+	text-transform: uppercase;
+	width: 75px;
+}
+
+.regpg-btn a:hover {
+	text-decoration: none;
+}
+
+.active {
+	background: transparent;
+}
+
+.form-check-label span {
+	margin-left: 8px;
+}
+
+#tab-button {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#tab-button li {
+	display: table-cell;
+	width: 20%;
+}
+
+#tab-button li a {
+	display: block;
+	padding: .5em;
+	background: #eee;
+	border: 1px solid #ddd;
+	text-align: center;
+	color: #000;
+	text-decoration: none;
+}
+
+#tab-button li:not(:first-child) a {
+	border-left: none;
+}
+
+#tab-button li a:hover, #tab-button .is-active a {
+	border-bottom-color: transparent;
+	background: #fff;
+}
+
+.tab-contents {
+	padding: 10px;
+	border: 1px solid #ddd;
+}
+
+.tab-button-outer {
+	display: none;
+}
+
+.tab-contents {
+	margin-top: 20px;
+}
+
+@media screen and (min-width: 768px) {
+	.tab-button-outer {
+		position: relative;
+		z-index: 2;
+		display: block;
+	}
+	.tab-select-outer {
+		display: none;
+	}
+	.tab-contents {
+		position: relative;
+		top: -1px;
+		margin-top: 0;
+	}
+}
+
+.btn5 {
+	border: none;
+	border-radius: 4px;
+	font-size: 10px;
+	background-color: #d8d8d8;
+	color: #fff;
+	margin-left: 5px;
+	margin-bottom: 6px;
+	width: 160px;
+	height: 38px;
+	line-height: 12px;
+	float: right;
+	text-transform: uppercase;
+	cursor: pointer;
+	white-space: normal;
+}
+
+.bg-white1 {
+	background-color: #fff !important;
+	height: auto;
+	margin-top: 20px;
+	padding: 20px;
+}
+
+/* #fileUpload1 {
+	opacity: 0;
+	position: absolute;
+	height: 35px;
+	top: -4px;
+	left: 0px;
+	width: 15%;
+} */
+.uploadicon {
+	border: 1px solid #FFF;
+	display: inline-block;
+	padding: 0px 5px;
+	cursor: pointer;
+	font-family: 'HelveticaNeue';
+	color: #333;
+	font-weight: 100;
+	background-color: #FFF;
+	margin: -29px 112px;
+}
+
+.formValidation1 {
+	font-size: 14px;
+	font-weight: 100;
+	color: #a00a0a;
+	background-color: transparent;
+	/*    border-top: 1px solid #ff9e99; */
+	position: relative;
+	top: -1px;
+	padding: 3px 0px;
+}
+
+.reg-img {
+	position: relative;
+	width: 120px;
+}
+
+.reg-img img {
+	height: 100px;
+	border-radius: 50%;
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.hvrbox-layer_top {
+	position: absolute;
+	right: 0;
+	top: 70px;
+}
+
+.m-top5 {
+	margin-top: 6px;
+}
+
+.icon-crl .fa {
+	padding: 14px;
+	font-size: 25px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #80bbdd;
+	margin: 5px 2px;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.icon-crl .fa:hover {
+	opacity: 0.7;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.upload {
+	position: relative;
+}
+
+.plus-ico {
+	color: #fff;
+	margin-top: 30px;
+}
+
+.upload input[type="file"] {
+	display: block !important;
+	background: #FFF;
+	padding: 3px;
+	width: 100%;
+}
+
+#autocomplete-list1 {
+	margin-left: 0px !important;
+	font-weight: 100;
+	font-size: 14px;
+	color: #ccc;
+	position: absolute;
+	z-index: 105;
+	background: rgba(0, 0, 0, 0.9);
+	width: 91%;
+	overflow-y: scroll;
+	height: 200px;
+}
+
+#autocomplete-list1 li {
+	margin-left: -25px !important;
+}
+
+#autocomplete-list1 li:hover {
+	margin-left: -25px !important;
+	color: #FFF;
+}
+
+.mt_15 {
+	margin-top: 15px;
+}
+</style>
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		addPage();
+		$("#strategy").show();
+		$("#userRegdBtn").hide();
+		disableSubmit();
+		$("#editIcon").hide();
+
+		$.ajax({
+			type : "GET",
+			url : "view-walkin-user-getAddress",
+			success : function(response) {
+				if (response.message == "Success") {
+					console.log(response)
+					$("#country").val(response.body.country);
+					var con = response.body.country;
+					getCountryCodeEdit(con);
+					var st = response.body.state;
+					getStateListEdit(con, st);
+					var dt = response.body.dist;
+					getDistListEdit(st, dt);
+					var ct = response.body.city;
+					getCityListEdit(dt, ct);
+				}
+			},
+
+		});
+	});
+
+	/*---------------                function for Login               ------------ */
+	function disableSubmit() {
+		document.getElementById("subBtn").disabled = true;
+	}
+
+	function activateButton(element) {
+
+		if (element.checked) {
+			document.getElementById("subBtn").disabled = false;
+		} else {
+			document.getElementById("subBtn").disabled = true;
+		}
+	}
+
+	/*---------------                function for Select Proceed               ------------ */
+	function addPage() {
+		$("#strategy").show();
+		$("#userRegdNextBtn").show();
+		$("#userRegdBtn").hide();
+		$("#aa").show();
+		$("#aa2").show();
+		$("#a3").show();
+		$("#a11").show();
+		$("#a12").show();
+		$("#a13").show();
+		$("#a14").show();
+		$("#a18").hide();
+		$("#a19").hide();
+		$("#a22").hide();
+		$("#a23").hide();
+
+	}
+	function userNext() {
+		var validation = true;
+		$(".formValidation").remove();
+		fileUpload = $('#fileUpload').val();
+		tittle = $('#tittle').val();
+		fName = $("#fName").val();
+		lName = $("#lName").val();
+		country = $('#country').val();
+		state = $('#state').val();
+		dist = $('#dist').val();
+		city = $('#city').val();
+		mob = $("#mob").val();
+		mail = $("#mail").val();
+		textinput = $("#textinput").val();
+		/* if (tittle == null || tittle == "") {
+			validation = validationUpdated("Title Required", "tittle");
+		} */
+		if (fName == null || fName == "") {
+			validation = validationUpdated("First Name Required", "fName");
+		}
+		if (lName == null || lName == "") {
+			validation = validationUpdated("Last Name Required", "lName");
+		}
+		if (country == null || country == "") {
+			validation = validationUpdated("Country Required", "country");
+		}
+		if (state == null || state == "") {
+			validation = validationUpdated("State Required", "state");
+		}
+		if (dist == null || dist == "") {
+			validation = validationUpdated("District Required", "dist");
+		}
+		if (city == null || city == "") {
+			validation = validationUpdated("City Required", "city");
+		}
+
+		if (validation) {
+			$("#strategy").show();
+			$("#userRegdNextBtn").hide();
+			$("#userRegdBtn").show();
+			$("#aa").hide();
+			$("#aa2").hide();
+			$("#a3").hide();
+			$("#a11").hide();
+			$("#a12").hide();
+			$("#a13").hide();
+			$("#a14").hide();
+			$("#a18").show();
+			$("#a19").show();
+			$("#a22").show();
+			$("#a23").show();
+		}
+	}
+
+	//Function For generate  Random number	
+	function getRandomizer(bottom, top) {
+		return function() {
+			return Math.floor(Math.random() * (1 + top - bottom)) + bottom;
+		}
+	}
+	/*---------------                function for User Submit               ------------ */
+	//For User Registration
+	function userSubmit() {
+		var rollDie = getRandomizer(1, 9);
+		var results = ""
+		for (var i = 0; i < 5; i++) {
+			results += rollDie(); //make a string filled with 9 random numbers in the range 1-9.
+		}
+		var str = $('#fName').val();
+		var res = str.substring(0, 3);
+		var uid = res.toUpperCase();
+		var userId = uid + results;
+
+		var data1 = {};
+		data1.tittle = $('#tittle').val();
+		data1.fName = $("#fName").val();
+		data1.lName = $("#lName").val();
+		data1.country = $('#country').val();
+		data1.countryName = $("#country option:selected").text();
+		data1.countryCode = $("#country option:selected").attr("code");
+		data1.state = $('#state').val();
+		data1.stateName = $("#state option:selected").text();
+		data1.stateCode = $("#state option:selected").attr("code");
+		data1.dist = $('#dist').val();
+		data1.city = $('#city').val();
+		data1.mob = $("#mob").val();
+		data1.mail = $("#mail").val();
+		data1.userId = userId;
+		mobVal();
+		mailVal();
+		if (mailValid && mobValid) {
+			$.ajax({
+				type : "POST",
+				url : "view-walkin-user-add-user",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data1),
+				success : function(response) {
+					if (response.message == "Success") {
+						$("#strategy").hide();
+						modOnclick("FUN019");
+					} else {
+						$("#okModal").modal('show');
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	}
+
+	/*********************      On change            ************************/
+
+	//get State list on change of Country
+	function getStateList() {
+		var country = $("#country").val();
+
+		if (country) {
+
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option>-- Select State --</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#state").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+
+		}
+
+	}
+	//get Country Code  on change of Country
+	function getCountryCode() {
+		var country = $("#country").val();
+		if (country) {
+			var cCode = $("#country option:selected").attr("code");
+			var cc = "+" + cCode;
+			$("#countryCode").val(cc);
+		} else {
+
+			$("#countryCode").val("");
+		}
+	}
+	//get Dist list on change of State
+	function getDistList() {
+		var state = $("#state").val();
+		if (state) {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getDistList?state=' + state,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#dist").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select District --");
+						$("#dist").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#dist").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityList() {
+		var dist = $("#dist").val();
+
+		if (dist) {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#city").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select City --");
+						$("#city").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#city").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	/*********************      On change    Edit        ************************/
+
+	//get State list on change of Country
+	function getStateListEdit(con, st) {
+		var country = con;
+
+		if (country) {
+
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#state").append(option);
+						}
+						$("#state").val(st);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+
+		}
+
+	}
+	//get Country Code  on change of Country
+	function getCountryCodeEdit(con) {
+		var country = con;
+		if (country) {
+			var cCode = $("#country option:selected").attr("code");
+			var cc = "+" + cCode;
+			$("#countryCode").val(cc);
+		} else {
+
+			$("#countryCode").val("");
+		}
+	}
+	//get Dist list on change of State
+	function getDistListEdit(st, dt) {
+		var state = st;
+		if (state) {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getDistList?state=' + state,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#dist").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select District --");
+						$("#dist").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#dist").append(option);
+						}
+						$("#dist").val(dt);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityListEdit(dt, ct) {
+		var dist = dt;
+
+		if (dist) {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'view-walkin-user-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#city").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select City --");
+						$("#city").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#city").append(option);
+						}
+						$("#city").val(ct);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//function for alphabet validation
+	function checkAlphabet(fieldId) {
+		var tempVal = $("#" + fieldId).val().replace(/[^a-zA-Z.]/g, '');
+		$("#" + fieldId).val(tempVal);
+	}
+
+	//Mobile Number validation
+	var mobValid;
+
+	function mobVal() {
+		var mob = $('#mob').val();
+		var phoneno = /^\d{10}$/;
+
+		if (mob != '') {
+			if (mob.match(phoneno)) {
+				$("#error3").hide();
+				mobValid = true;
+				return true;
+			} else {
+				$("#error3").html(
+						"please enter  10 digit mobile number  ex:7089451278");
+				mobValid = false;
+				return false;
+			}
+		} else {
+			$("#error3").html(" Mobile No is Required");
+			mobValid = false;
+			return false;
+		}
+
+	}
+	//Email validation
+	var mailValid;
+
+	function mailVal() {
+		var mail = $('#mail').val();
+		var mid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (mail != '') {
+			if (mail.match(mid)) {
+				$("#error2").hide();
+				mailValid = true;
+				return true;
+			} else {
+				$("#error2").html("Please enter a valid email id.");
+				mailValid = false;
+				return false;
+			}
+
+		} else {
+			$("#error2").html(" email is Required");
+			mailValid = false;
+			return false;
+		}
+
+	}
+
+	//Profile Image Upload & Delete Strats
+
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		if (uFile != null) {
+			$("#addIcon").hide();
+			$("#editIcon").show();
+		}
+		var fileName = $('#fileUpload').val();
+
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgemp').attr('src', '');
+		$('#imgemp').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+		$.ajax({
+			type : "POST",
+			url : "view-walkin-user-upload-profileImage",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+	function deleteFile() {
+
+		$('#imgemp').attr('src', '');
+		$('#imgemp').attr('src', '../assets/eHealth/images/profile_img.jpg');
+
+		var fileData = new FormData();
+
+		fileData.append('file', 'none');
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "view-walkin-user-delete-profileImage",
+			enctype : "multipart/form-data",
+			contentType : false,
+			/* data        : fileData, */
+			processData : false,
+			cache : false,
+			success : function(response) {
+				console.log("ABC")
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	/*---------------                function for Login               ------------ */
+	function login() {
+		window.location.href = 'login';
+	}
+	function registration() {
+		window.location.href = 'register';
+	}
+	/*---------------                function for Page redirect               ------------ */
+	function modOnclick(funId) {
+
+		var moduleId = $("#moduleId").val();
+
+		var activityUrl = $("#" + funId).attr("value");
+		var activityId = $("#Act_" + funId).val();
+		document.getElementById("side_bar_menu").innerHTML = "";
+		sessionStorage.setItem('module', moduleId);
+		sessionStorage.setItem('function', funId);
+		sessionStorage.setItem('activity', activityId);
+		//localStorage.setItem('moduleName', $("#moduleId").text());
+
+		window.location.href = activityUrl;
+	}
+	/*---------------function for OkModal------------ */
+	function okModal() {
+		$("#okModal").hide();
+		modOnclick("FUN018");
+	}
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container">
+			<div class="row justify-content-sm-center">
+
+				<div class="col-sm-12 col-md-12">
+					<div class="row">
+						<div class="col-md-6 login-form-1">
+							<div class="row justify-content-sm-center">
+								<div class="col-md-12">
+									<div class="signup-txt">Sign Up</div>
+									<div class="signup-subtxt">To keep connected with us
+										please login with your personal info</div>
+								</div>
+
+								<div class="col-md-12">
+									<!-- design process steps-->
+									<!-- Nav tabs -->
+
+									<div class="tab-content">
+
+										<div role="tabpanel" class="tab-pane" id="strategy">
+											<div class="design-process-content">
+												<div class="row" id="aa">
+													<div class="col-md-12" align="center">
+														<div class="reg-img">
+
+															<img src="../assets/eHealth/images/profile_img.png"
+																class="img-fluid" id="imgemp" alt="Location">
+															<div class="hvrbox-layer_top">
+																<div class="hvrbox-text">
+																	<input type="file" id="fileUpload"
+																		onchange="saveFile();" /> <span><label
+																		for="fileUpload"><i class="ti-files"
+																			id="addIcon" style="cursor: pointer;"></i> <i
+																			class="fa fa-edit" id="editIcon"
+																			style="cursor: pointer;"></i></label></span>
+
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
+												<div class="row">
+													<div class="col-md-6" id="aa2">
+														<label></label>
+														<div class="row">
+															<div class="col-md-5" style="padding-right: 0px;">
+																<div class="form-group">
+																	<div class="select">
+																		<select id="tittle" class="form-control">
+																			<option value="">Select</option>
+																			<option th:each="c,iter:${tittleList}"
+																				th:value="${c.key}" th:text="${c.name}"></option>
+																		</select>
+																	</div>
+																</div>
+															</div>
+															<div class="col-md-7" style="padding-left: 5px;">
+																<div class="form-group">
+
+																	<input type="text" class="form-control" id="fName"
+																		style="line-height: 34px;"
+																		onkeyup="checkAlphabet('fName')" autocomplete="off"
+																		placeholder="Enter First Name....">
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6" id="a3">
+														<label for="email"></label>
+														<div class="form-group">
+															<input type="text" class="form-control" id="lName"
+																onkeyup="checkAlphabet('lName')" autocomplete="off"
+																placeholder="Enter Last Name....">
+														</div>
+													</div>
+													<div class="col-md-6" id="a11">
+														<label for="email"></label>
+														<div class="form-group">
+															<div class="select">
+																<select id="country"
+																	onchange="getStateList();getCountryCode();"
+																	class="form-control">
+																	<option value="">-- Select Country --</option>
+																	<option th:each="c,iter:${countryList}"
+																		th:value="${c.key}" th:text="${c.name}"
+																		th:attr="code=${c.code}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6" id="a12">
+														<label for="email"></label>
+														<div class="form-group">
+															<div class="select">
+																<select id="state" onchange="getDistList();"
+																	class="form-control">
+																	<option value="">-- Select State --</option>
+																	<option th:each="c,iter:${stateList}"
+																		th:value="${c.key}" th:text="${c.name}"
+																		th:attr="code=${c.code}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6" id="a13">
+														<label for="email"></label>
+														<div class="form-group">
+															<div class="select">
+																<select id="dist" onchange="getCityList();"
+																	class="form-control">
+																	<option value="">-- Select District --</option>
+																	<option th:each="c,iter:${distList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6" id="a14">
+														<label for="email"></label>
+														<div class="form-group">
+															<div class="select">
+																<select id="city" class="form-control">
+																	<option value="">-- Select City --</option>
+																	<option th:each="c,iter:${cityList}"
+																		th:value="${c.key}" th:text="${c.name}"></option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6" id="a18">
+														<label></label>
+														<div class="form-group input-group">
+															<div class="input-group-prepend">
+																<input id="countryCode" class="form-control" readonly
+																	style="width: 35px;">
+															</div>
+															<input type="text" id="mob" class="form-control"
+																onkeyup="checkNum('mob')"
+																placeholder="Enter Mobile No..." maxLength="10"
+																autocomplete="off">
+														</div>
+														<span id="error3" class="formValidation1"
+															style="top: -18px;"></span>
+													</div>
+													<div class="col-md-6" id="a19">
+														<label for="email"></label>
+														<div class="form-group">
+															<input type="text" class="form-control" id="mail"
+																placeholder="Enter Mail Id..." autocomplete="off"><span
+																id="error2" class="formValidation1"></span>
+														</div>
+													</div>
+													<div class="col-md-12" id="a22">
+														<div class="capcha-sec">
+															<div class="row">
+																<div class="col-md-9">
+																	<div class="form-group form-check mt-50">
+																		<label class="form-check-label"> <input
+																			class="form-check-input" type="checkbox"><span>I
+																				am Not a robot</span>
+																		</label>
+																	</div>
+																</div>
+																<div class="col-md-3" align="center">
+																	<img src="../assets/images/captcha.png"
+																		class="img-fluid">
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<div class="col-md-8" id="a23">
+														<div class="form-group form-check mt_15">
+															<label class="form-check-label"> <input
+																class="form-check-input" type="checkbox"
+																onchange="activateButton(this)"> I agree <span>Term
+																	and Condition</span>
+															</label>
+														</div>
+													</div>
+
+													<div class="col-md-4 mt-10" align="right" id="userRegdBtn">
+														<button class="btn btn-danger" id="subBtn"
+															onclick="userSubmit();" onchange="activateButton(this);"
+															style="cursor: pointer;">Submit</button>
+													</div>
+
+												</div>
+												<div class="row" id="userRegdNextBtn">
+													<div class="col-md-12" align="right">
+														<button class="btn btn-danger" id="nextBtn"
+															onclick="userNext();" style="cursor: pointer;">Next</button>
+													</div>
+												</div>
+
+
+											</div>
+
+
+
+											<!-- <div class="row">
+												<div class="col-md-12 mt-20" align="center">
+													<div class="icon-crl">
+														<a href="#" class="fa fa-facebook"></a> <a href="#"
+															class="fa fa-google"></a>
+													</div>
+												</div>
+											</div> -->
+										</div>
+									</div>
+
+
+									<!-- alert modal start -->
+									<div id="okModal" class="modal fade show" aria-modal="true">
+										<div class="modal-dialog modal-confirm">
+											<div class="modal-content">
+												<div class="modal-header flex-column"></div>
+												<div class="modal-body">
+													<p>Something went wrong. Try Again...</p>
+												</div>
+												<div class="modal-footer justify-content-center"
+													style="margin-top: -30px;">
+
+													<button type="button" class="btn1" onclick="okModal()"
+														style="cursor: pointer;">OK</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<!-- end design process steps-->
+									<!-- Tab panes -->
+
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6 login-form-2">
+							<div class="row">
+								<div class="col-md-12" align="center">
+									<div class="top-logo">
+										<img src="../assets/images/ehsmainlogo.png">
+									</div>
+								</div>
+							</div>
+							<div class="right-text">
+								Internationally Patented Technology interconnecting all
+								Healthcare Service Providers on one single Platform.<br>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

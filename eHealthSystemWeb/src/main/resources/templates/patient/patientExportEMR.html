@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<script type="text/javascript">
+	
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="content-wrap">
+			<div class="container-fluid">
+				<div class="maincontent">
+					<div class="row">
+
+						<div class="maincontentsec">
+							<div class="panel-heading active" role="tab" id="headingOne"
+								onclick="closeAllNav()">
+								<h6>EXPORT EMR</h6>
+							</div>
+
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingone"
+									onclick="closeAllNav()">
+									<h1 class="panel-title">
+										<a role="button" data-toggle="collapse"
+											data-parent="#accordion" href="#collapseone"
+											aria-expanded="true" aria-controls="collapseone"> Export
+											EMR </a>
+									</h1>
+
+								</div>
+								<div id="collapseone" class="panel-collapse collapse "
+									role="tabpanel" aria-labelledby="headingone">
+									<label> <input type="radio" name="select" value="all"
+										id=" ">&nbsp Convert to PDF
+									</label> <label style="margin-left: 100px;"> <input
+										type="radio" name="select" value="todayservice" id=" ">&nbsp
+										&nbsp Forward through Email
+									</label>
+									<div class="chartbtnsec">
+										<div align="right">
+											<button class="btn5">proceed</button>
+
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label>Enter Password for PDF</label> <input type="password"
+												name="password" value="" placeholder="Enter password"
+												class="form-control " id="passwordid">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label>Enter Email To Send PDF</label> <input type="text"
+												name="" value="" placeholder="email" class="form-control "
+												id="firstnameid">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingone"
+									onclick="closeAllNav()">
+									<h4 class="panel-title">
+										<a role="button" data-toggle="collapse"
+											data-parent="#accordion" href="#collapsetwo"
+											aria-expanded="true" aria-controls="collapseone">Translator</a>
+									</h4>
+
+								</div>
+
+								<div id="collapsetwo" class="panel-collapse collapse "
+									role="tabpanel" aria-labelledby="headingone">
+									<div class="chartbtnsec">
+										<div align="right">
+											<button class="btn5">proceed</button>
+
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label>Select Language</label>
+											<div class="select">
+												<select id="Lang_name" name="Lang_name"><option
+														value="">Select Language for translation</option>
+													<option value="1">Afrikaans</option>
+													<option value="2">Albanian</option>
+													<option value="3">Arabic</option>
+													<option value="4">Armenian</option>
+													<option value="5">Azerbaijani</option>
+													<option value="6">Basque</option>
+													<option value="7">Belarusian</option>
+													<option value="8">Bengali</option>
+													<option value="9">Bosnian</option>
+													<option value="10">Bulgarian</option>
+													<option value="11">Catalan</option>
+													<option value="12">Cebuano</option>
+													<option value="13">Chichewa</option>
+													<option value="14">Chinese (Simplified)</option>
+													<option value="15">Chinese (Traditional)</option>
+													<option value="16">Croatian</option>
+													<option value="17">Czech</option>
+													<option value="18">Danish</option>
+													<option value="19">Dutch</option>
+													<option value="20">English</option>
+													<option value="21">Esperanto</option>
+													<option value="22">Estonian</option>
+													<option value="23">Filipino</option>
+													<option value="24">Finnish</option>
+													<option value="25">French</option>
+													<option value="26">Galician</option>
+													<option value="27">Georgian</option>
+													<option value="28">German</option>
+													<option value="29">Greek</option>
+													<option value="30">Gujarati</option>
+													<option value="31">Haitian Creole</option>
+													<option value="32">Hausa</option>
+													<option value="33">Hebrew</option>
+													<option value="34">Hindi</option>
+													<option value="35">Hmong</option>
+													<option value="36">Hungarian</option>
+													<option value="37">Icelandic</option>
+													<option value="38">Igbo</option>
+													<option value="39">Indonesian</option>
+													<option value="40">Irish</option>
+													<option value="41">Italian</option>
+													<option value="42">Japanese</option>
+													<option value="43">Javanese</option>
+													<option value="44">Kannada</option>
+													<option value="45">Kazakh</option>
+													<option value="46">Khmer</option>
+													<option value="47">Korean</option>
+													<option value="48">Laothian(Lao)</option>
+													<option value="49">Latin</option>
+													<option value="50">Latvian</option>
+													<option value="51">Lithuanian</option>
+													<option value="52">Macedonian</option>
+													<option value="53">Malagasy</option>
+													<option value="54">Malay</option>
+													<option value="55">Malayalam</option>
+													<option value="56">Maltese</option>
+													<option value="57">Maori</option>
+													<option value="58">Marathi</option>
+													<option value="59">Mongolian</option>
+													<option value="60">Myanmar(Burmese)</option>
+													<option value="61">Nepali</option>
+													<option value="62">Norwegian</option>
+													<option value="63">Persian</option>
+													<option value="64">Polish</option>
+													<option value="65">Portuguese</option>
+													<option value="66">Punjabi</option>
+													<option value="67">Romanian</option>
+													<option value="68">Russian</option>
+													<option value="69">Serbian</option>
+													<option value="70">Sesotho</option>
+													<option value="71">Sinhala</option>
+													<option value="72">Slovak</option>
+													<option value="73">Slovenian</option>
+													<option value="74">Somali</option>
+													<option value="75">Spanish</option>
+													<option value="76">Sundanese</option>
+													<option value="77">Swahili</option>
+													<option value="78">Swedish</option>
+													<option value="79">Tajik</option>
+													<option value="80">Tamil</option>
+													<option value="81">Telugu</option>
+													<option value="82">Thai</option>
+													<option value="83">Turkish</option>
+													<option value="84">Ukrainian</option>
+													<option value="85">Urdu</option>
+													<option value="86">Uzbek</option>
+													<option value="87">Vietnamese</option>
+													<option value="88">Welsh</option>
+													<option value="89">Yiddish</option>
+													<option value="90">Yoruba</option>
+													<option value="91">Zulu</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label>Enter Password</label> <input type="password"
+												name="password" value="" placeholder="Enter password"
+												class="form-control " id="passwordForTranlate">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<head>
+
+<!-- ck editor slim selector CDN -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
+<!-- <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.css"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.js"></script>
+<!-- <script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.mjs"></script>
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<!-- chosen link -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css"></link>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"></link>
+<!-- end -->
+<head>
+<title>Extend</title>
+<style>
+.hover-class {
+	cursor: pointer;
+}
+
+.btnDisable {
+	color: #ccc !important;
+}
+</style>
+
+<style type="text/css">
+.highcharts-figure, .highcharts-data-table table {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 1em auto;
+}
+
+#container {
+	height: 400px;
+}
+
+.highcharts-data-table table {
+	font-family: 'HelveticaNeue';
+	font-weight: 100;
+	border-collapse: collapse;
+	border: 1px solid #EBEBEB;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.highcharts-data-table caption {
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
+}
+
+.highcharts-data-table th {
+	font-weight: 600;
+	padding: 0.5em;
+}
+
+.highcharts-data-table td, .highcharts-data-table th,
+	.highcharts-data-table caption {
+	padding: 0.5em;
+}
+
+.highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even)
+	{
+	background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+	background: #f1f7ff;
+}
+</style>
+<script type="text/javascript">
+	//view 	my Grid
+
+	$(document).ready(function() {
+		var id = $("#auditTypeId").val();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'audit-dashboard-viewAudit?id=' + id
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		});
+		
+		var gridDiv1 = document.querySelector('#myGridManageAudit');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		agGrid.simpleHttpRequest({
+			url : 'audit-dashboard-viewAudit?id=' + id
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions1.api.setRowData(data);
+		});
+
+		$("#myGrid").show();
+		$("#demo").hide(); 
+		$("#sendlist").hide();
+		$("#btnDiv").hide();
+		$("#myGridManageAudit").hide();
+		$('#delete').attr("disabled", true);
+
+		
+	//document upload	
+		
+
+		// date format end date endDate endDateDateCalendar
+
+		// date format Start date
+
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#startDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+		}).on("change", function() {
+			$('#submissionDate').val($(this).val());
+		})
+
+		$('#submissionDate').blur(function() {
+			$("#startDateCalendar").val($(this).val());
+		})
+
+
+		
+		$("#endDateDateCalendar").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : true,
+		}).on("change", function() {
+			$('#initiatedDate').val($(this).val());
+		})
+
+		$('#initiatedDate').blur(function() {
+			$("#endDateDateCalendar").val($(this).val());
+		})
+// Slim Select	
+		/*var autocomplete = new SlimSelect({
+			select: '#selectSection_0',
+			multiple: true,
+			autocomplete: true,
+			icon: "fa fa-times",
+			onChange: key => {
+			var data = [];
+			for(var i = 0; i < key.length; i++) {
+
+			data.push(key[i].value);
+			}
+
+			$("#dsHiddenId1").val(data);
+			},
+			});*/
+			
+			 $('#selectSection_0').chosen(); 
+			 $('#selectSection_0').on('change', function(evt, params) {
+				    var selectedValue = params.selected;
+				    var data = [];
+				    data.push(selectedValue);
+				    $("#dsHiddenId1").val(data);
+				    
+				}); 
+			var autocomplete = new SlimSelect({
+			select: '#inputDeptHeadId_0',
+			multiple: true,
+			autocomplete: true,
+			icon: "fa fa-times",
+			onChange: key => {
+			var data = [];
+			for(var i = 0; i < key.length; i++) {
+
+			data.push(key[i].value);
+			}
+			
+			$("#dhHiddenId1").val(data);
+			},
+			});
+			
+	// date format Start date & End Date for Audit Details
+
+			var dateFormat = localStorage.getItem("dateFormat");
+			$("#startDateCalendar1").datetimepicker({
+				format : dateFormat,
+				closeOnDateSelect : true,
+				timepicker : false,
+			}).on("change", function() {
+				$('#startDate').val($(this).val());
+			})
+
+			$('#startDate').blur(function() {
+				$("#startDateCalendar1").val($(this).val());
+			})
+
+
+			
+			$("#endDateCalendar1").datetimepicker({
+				format : dateFormat,
+				closeOnDateSelect : true,
+				timepicker : false,
+			}).on("change", function() {
+				$('#endDate').val($(this).val());
+			})
+
+			$('#endDate').blur(function() {
+				$("#endDateCalendar1").val($(this).val());
+			})
+			
+			var auditType1 = $("#auditTypeId").val();
+			if(auditType1 == 'ADTM005'){
+				$("#intDashboard").show();
+				$("#TransDashboard").hide();
+				$("#TransDashboard1").hide();
+			}
+			else if(auditType1 == 'ADTM002'){
+				$("#intDashboard").hide();
+				$("#TransDashboard").show();
+				$("#TransDashboard1").show();
+			}
+			else{
+				$("#intDashboard").hide();
+				$("#TransDashboard").hide();
+				$("#TransDashboard1").hide();
+			}
+	});
+	//Ckeditor
+	$(document).ready(function() {
+		CKEDITOR.replace('summary', {
+			height : 300,
+			removePlugins : 'wsc',
+			scayt_autoStartup : true,
+			scayt_maxSuggestions : 3
+		});
+
+	});
+	//columnDefs
+	const columnDefs = [ {
+		headerName : 'Audit NO',
+		field : "auditInitiate",
+	}, {
+		headerName : 'Audit Type',
+		field : "auditType",
+	}, {
+		headerName : 'Financial Year',
+		field : "financialYear",
+	}, {
+		headerName : 'Status',
+		field : "auditStatus",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	}, {
+		headerName : 'Initiated Date',
+		field : "initiatedDate",
+	} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 250,
+			height : 10
+		},
+
+	};
+	/*********************************         add Page          **********************************/
+	$(document).ready(function(){
+	$("#initiatedDate").show();
+	var auditType = $("#auditTypeId").val();
+	if(auditType == 'ADTM005'){
+		$("#intaudFld1").show();
+		$("#intaudFld2").show();
+		$("#intaudFld3").show();
+		$("#intaudFld4").show();
+		$("#intaudFld5").show();
+		$("#dateHide").show();
+		$("#fld1").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+		$("#cmnFld1").hide();
+		$("#cmnFld3").hide();
+		$("#auditdet").show();
+		$("#cmnFld2").hide();
+		supplyfields();
+	}
+	else if(auditType == 'ADTM006'){
+	
+		
+		$("#intaudFld1").hide();
+		$("#intaudFld2").hide();
+		$("#intaudFld3").hide();
+		$("#intaudFld4").hide();
+		$("#intaudFld5").hide();
+		$("#dateHide").show();
+	}
+
+
+	else if(auditType != 'ADTM005'){
+	$("#submit").show();
+	$("#fld1").hide();
+	$("#fld2").show();
+	$("#fld3").show();
+	//$("#myTable").show();
+	$("#dateHide").hide();
+	$("#cmnFld1").hide();
+	$("#cmnFld2").hide();
+	$("#cmnFld3").hide();
+	$("#intaudFld1").hide();
+	$("#intaudFld2").hide();
+	$("#intaudFld3").hide();
+	$("#intaudFld4").hide();
+	$("#intaudFld5").show();
+	$("#auditdet").show();
+}
+  
+   else if(auditType == null || auditType == ""){
+		$("#intaudFld1").hide();
+		$("#intaudFld2").hide();
+		$("#intaudFld3").hide();
+		$("#intaudFld4").hide();
+		$("#intaudFld5").hide();
+		//$("#dateHide").hide();
+		$("#fld1").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+	}
+	else{
+		$("#submit").show();
+		$("#fld1").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+		$("#intaudFld5").hide();
+		$("#intaudFld1").hide();
+		$("#dateHide").hide();
+		$("#cmnFld2").hide();
+	}
+})
+
+
+
+function supplyfields() {
+	var region = $("#region").val();
+	var auditor = $("#auditor").val();
+	var audittype = $("#auditTypeId").val();
+	if(audittype === "ADTM005"){
+		if(region != null && auditor!="" ){
+				getRegion(region);
+			if(region!=null && region!=""){
+				getAuditor(region);	
+			}
+			
+		} 
+	}
+	
+	 if(audittype == "ADTM005"){
+		$("#intaudFld1").show();
+		$("#intaudFld2").show();
+		$("#intaudFld3").show();
+		$("#intaudFld4").show();
+		$("#intaudFld5").show();
+		$("#dateHide").show();
+		$("#fld1").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+		$("#cmnFld1").hide();
+		$("#cmnFld3").hide();
+		$("#auditdet").show();
+		$("#cmnFld2").hide();
+		
+	}
+	//var audittype = $('#auditTypeId').val();
+	else if(auditType ==="ADTM001"){
+		//hideField();
+		$("#submit").show();
+		$("#fld1").hide();
+		$("#fld2").show();
+		$("#fld3").show();
+		$("#dateHide").hide();
+		$("#cmnFld1").hide();
+		$("#cmnFld2").hide();
+		$("#cmnFld3").hide();
+		$("#intaudFld1").hide();
+		$("#intaudFld2").hide();
+		$("#intaudFld3").hide();
+		$("#intaudFld4").hide();
+		$("#intaudFld5").hide();
+	}else if(audittype ==="ADTM006"){
+		$("#submit").show();
+		$("#intaudFld5").hide();
+		$("#intaudFld2").hide();
+		$("#intaudFld1").hide();
+		$("#intaudFld3").hide();
+		$("#cmnFld1").show();
+		$("#cmnFld2").show();
+		$("#cmnFld3").show();
+		//$("#myTable").show();
+		$("#dateHide").show();
+		$("#intaudFld4").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+		$("#fld1").hide();
+		$("#auditdet").show();
+		
+	}
+	else{
+		$("#submit").show();
+		$("#fld1").hide();
+		$("#fld2").hide();
+		$("#fld3").hide();
+		$("#intaudFld5").hide();
+		$("#dateHide").hide();
+		$("#cmnFld2").hide();
+	}
+	
+}
+
+
+	function add() {
+		$("#auditIdSpan").html("");
+		$("#auditType").val("");
+		$("#auditor").val("");
+		$("#financialYr").val("");
+		$("#initiatedBy").val("");
+		$("#initiatedDate").val("");
+		$("#letterNo").val("");
+		$("#toHiddenId1").val("");
+		$("#CcHiddenId1").val("");
+		$("#subject").val("");
+		$("#summary").val("");
+		$("#doctbodyData").empty();
+		var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+				+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+				+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoid_0" onblur="checkForDuplicateEntry(event)"></div></td>'
+			 	
+				 + '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_0" id="uploadFor_0"> <i class="ti-plus" id="clickImg_0"></i> </label>'
+				
+				+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_0" name="userImage" onchange="saveMultiFile(event)" /></div> </div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">'
+
+				+ '<div id="uploadedBillDiv_0" align="center" class="uploadedBillCls"></div> <div id="imageName_0" class="imageName"></div><div id="dltImage_0" class="dltImage"></div><input type="hidden" id="editId_0></td>'
+				+ '<td style="display:none"><div class="form-group">  </div></td>'
+				+ '<td><div class="form-group"> <input type="text" value="" class="form-control comNoclss" id="docnoidd_0" onblur="checkForDuplicateEntry(event)"></div></td>' 
+				+ '</tr>';
+				
+		$("#doctbodyData").append(tbl);
+		$("#add").hide();
+		$("#myGrid").hide();
+		$("#myGridManageAudit").hide();
+		$("#tab1").hide();
+		$("#searchRowDiv").hide();
+		$("#totalRowDiv").hide();
+		$("#demo").show();
+		$("#save").show();
+		$("#Cancel").show();
+		$("#sendlist").hide();
+
+		$("#hideTbl").hide();
+
+	}
+	//Cancel
+	function Cancel() {
+		var id = $("#auditTypeId").val();
+		agGrid.simpleHttpRequest({
+			url : 'audit-dashboard-viewAudit?id=' + id
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		});
+
+		$("#myGrid").show();
+		$("#myGridManageAudit").hide();
+		$("#add").show();
+		$("#tab1").show();
+		$("#btnDiv").hide();
+		$("#save").hide();
+		$("#cancel").hide();
+		$("#demo").hide();
+		
+		$("#sendlist").hide();
+
+		$("#searchRowDiv").show();
+		$("#totalRowDiv").show();
+	
+	}
+
+	function checkEmpty() {
+		var infofileName = true;
+		$(".formValidation").remove();
+		$('.docNoclss').each(function() {
+			if ($(this).val() == null || $(this).val() == "") {
+				infofileName = false;
+				validationModal("Document Name Required", $(this).attr('id'));
+			}
+			
+		});
+
+		var mulDocInfo = true;
+		if (infofileName) {
+			$('#doctbodyData > tr').each(function() {
+				if ($(this).closest('tr').find('.imageName').text()) {
+					mulDocInfo = true;
+				} else {
+					mulDocInfo = false;
+					$("#messageParagraph").text("Please Choose a File ");
+					$("#msgOkModal").removeClass("btn3");
+					$("#msgOkModal").addClass("btn1");
+					$("#msgModal").modal('show');
+					return false;
+				}
+
+			});
+		}
+		if (infofileName && mulDocInfo) {
+			addMore1()
+		}
+	}
+
+	//Documnet Section
+
+	function saveMultiFile(event) {
+
+		var AssignItemQty = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var currentFldId = "#" + currentFldId;
+
+		var uFile = $(currentFldId)[0].files[0];
+		var fileName = event.currentTarget.value;
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var extension = fileName.split(".");
+
+		var iURL = URL.createObjectURL(uFile);
+		$("#uploadedBillDiv_" + counter).html("");
+		if (extension[1] != null && extension[1] != "") {
+			$("#uploadHidden_" + counter).val('');
+		}
+		if (extension[1] == "jpg" || extension[1] == "png"
+				|| extension[1] == "jpeg") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-picture-o'></i></a></span>";
+		} else if (extension[1] == "pdf") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-pdf-o'></i> </a></span>";
+		} else if (extension[1] == "xls" || extension[1] == "xlsx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-excel-o'></i></a></span>";
+		} else if (extension[1] == "doc" || extension[1] == "dox"
+				|| extension[1] == "docx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class='fa fa-file-word-o'></i></a></span>";
+		} else {
+			var LightImg = "<span class='uploadicon position-l '> </div>";
+		}
+		var dltImg = "<i class='ti-close position-l rmv1' onclick='openDeleteConfirm()'></i>";
+		$("#uploadedBillDiv_" + counter).html(LightImg);
+		$("#imageName_" + counter).html(fileName);
+		$("#dltImage_" + counter).html(dltImg);
+		$("#dltImage_" + counter).addClass("custom-file-delete");
+
+		$("#clickImg_" + counter).removeClass("ti-plus");
+		$("#clickImg_" + counter).addClass("ti-pencil");
+
+	}
+
+
+	function addMore1() {
+
+		var lengthOfTableRow = $("#doctbodyData").children('tr').length;
+		var cloneHtml = $("#docTbl tbody tr:first").clone();
+
+		$("#docTbl tbody").append($("#docTbl tbody tr:first").clone());
+		$("#myTable tbody tr td:last").html("");
+		//var addMore = '<button type="button" class="btn btn-primary tr_clone_add" name="add" onclick="addMore1();"><span class="ti-plus"></span></button>&nbsp;'
+
+		$("#docTbl tbody tr:last").find(".documentclss").val("");
+		$("#docTbl tbody tr:last").find(".docNoclss").val("");
+		$("#docTbl tbody tr:last").find(".comNoclss").val("");
+		
+		$("#docTbl tbody tr:last").find(".documentclssup").val("");
+		$("#docTbl tbody tr:last").find(".uploadedBillCls").empty();
+		$("#docTbl tbody tr:last").find(".uploadHidCls").empty();
+		$("#docTbl tbody tr:last").find(".uploadHidCls").val('');
+		$("#docTbl tbody tr:last").find(".imageName").empty();
+		$("#docTbl tbody tr:last").find(".dltImage").empty();
+
+		var j = 0;
+		$("#docTbl > #doctbodyData > tr").each(function(i) {
+
+			var selectInput = $(this).find('select');
+			var textInput = $(this).find('input');
+			var fileInput = $(this).find('file');
+			var divInput = $(this).find('div');
+			var label = $(this).find('label');
+			var iInput = $(this).find('i');
+
+			selectInput.eq(0).attr('id', "docid_" + i);
+			//selectInput.eq(1).attr('id', "docid_" + i);
+			textInput.eq(1).attr('id', "docnoid_" + i);
+			textInput.eq(2).attr('id', "docnoidd_" + i);
+			label.eq(1).attr('for', "uploadDoc_" + i);
+			label.eq(2).attr('for', "uploadDoc_" + i);
+			iInput.eq(0).attr('id', "clickImg_" + i);
+			textInput.eq(2).attr('id', "uploadDoc_" + i);
+			textInput.eq(3).attr('id', "uploadHidden_" + i);
+			//textInput.eq(4).attr('id', "uploadHidden_" + i);
+			divInput.eq(4).attr('id', "uploadedBillDiv_" + i);
+			divInput.eq(5).attr('id', "uploadedBillDiv_" + i);
+			divInput.eq(5).attr('id', "imageName_" + i);
+			divInput.eq(6).attr('id', "dltImage_" + i);
+
+			j++;
+		})
+		$("#clickImg_" + (j - 1)).removeClass("ti-pencil");
+		$("#clickImg_" + (j - 1)).addClass("ti-plus");
+
+	}
+
+	//function to check duplicate entry of document name
+	function checkForDuplicateEntry(event) {
+		var document = event.currentTarget.value;
+		var comment = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var count = 0;
+		$(".docNoclss").each(function() {
+			if (document == $(this).val()) {
+				count++;
+			}
+		})
+
+		/* $(".docNoclss").each(function() {
+			if (comment == $(this).val()) {
+				count++;
+			}
+		}) */
+		if (count >= 2) {
+			$("#messageParagraph").text("Document Name Already Entered");
+			$("#msgOkModal").removeClass("btn3");
+			$("#msgOkModal").addClass("btn1");
+			$("#msgModal").modal('show');
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	function openDeleteConfirm() {
+		$("#dltValue").val("");
+		$('#deleteAttachment').modal('show');
+	}
+	function closeDeleteConfirm() {
+		$("#dltValue").val("");
+		$('#deleteAttachment').modal('hide');
+	}
+	function deletAttachmentRow() {
+		var lengthOfTableRow1 = 0;
+		$("#docTbl > #doctbodyData > tr").each(function() {
+			lengthOfTableRow1 = lengthOfTableRow1 + 1;
+		})
+		var id = $("#dltValue").val();
+
+
+		$("#" + id).closest('tr').remove();
+		closeDeleteConfirm();
+		if (lengthOfTableRow1 == 1) {
+			var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+					+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+					+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoid_0" onblur="checkForDuplicateEntry(event)"></div></td>'
+					
+					+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_0" id="uploadFor_0"> <i class="ti-plus" id="clickImg_0"></i> </label>'
+					+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_0" name="userImage" onchange="saveMultiFile(event)" /></div> </div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">'
+				+ '<div id="uploadedBillDiv_0" align="center" class="uploadedBillCls"></div> <div id="imageName_0" class="imageName"></div><div id="dltImage_0" class="dltImage" ></div> </td>'
+				 + '<td><div class="form-group"> <input type="text" value="" class="form-control comNoclss" id="docnoidd_0" onblur="checkForDuplicateEntry(event)"></div></td>' 	
+				+ '</tr>';
+			$("#doctbodyData").append(tbl);
+		}
+	}
+
+	function getAuditorList(){
+			var region = $("#region").val();
+			var auditor = $("#auditor").val();
+			var audittype = $("#auditTypeId").val();
+			if(audittype === "ADTM005"){
+				if(region != null && auditor!="" ){
+						getRegion(region);
+					if(region!=null && region!=""){
+						getAuditor(region);	
+					}
+					
+				} 
+			}
+			
+		}
+
+		function getRegion(region){
+			var auditor = $("#hidAuditor").val();
+			var audittype = $("#auditTypeId").val();
+			if(audittype ==="ADTM005"){
+				$.ajax({
+					type : 'GET',
+					url : '/audit/audit-dashboard-link-getAuditor?region='+region,
+					contentType : false,
+					//data : audit,
+					success : function(response) {
+						if (response.message == "success") {
+							$("#organizaionName").empty();
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val( response.body[i].key);
+							$(option).html( response.body[i].name);
+							$("#organizaionName").append(option);
+						}
+						}
+			
+					},
+					error : function(e) {
+						console.log("error");
+					}
+				});
+			}
+		}
+
+		function getAuditor(region){
+			///var region = $("#region").val();
+			var audittype = $("#auditTypeId").val();
+			if(audittype ==="ADTM005"){
+				$.ajax({
+					type : 'GET',
+					url : '/audit/audit-dashboard-link-getRegionalManager?region='+region,
+					contentType : false,
+					//data : audit,
+					success : function(response) {
+						console.log(response);
+						if (response.message == "success") {
+							$("#regionalManager").empty();
+							for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val( response.body[i].key);
+							$(option).html( response.body[i].name);
+							$("#regionalManager").append(option);
+						}
+						}
+			
+					},
+					error : function(e) {
+						console.log("error");
+					}
+				});
+				$.ajax({
+					type : 'GET',
+					url : '/audit/audit-dashboard-link-getConcernFinance?region='+region,
+					contentType : false,
+					//data : audit,
+					success : function(response) {
+						if (response.message == "success") {
+							$("#concernedFinance").empty();
+							for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val( response.body[i].key);
+							$(option).html( response.body[i].name);
+							$("#concernedFinance").append(option);
+						}
+						}
+			
+					},
+					error : function(e) {
+						console.log("error");
+					}
+				}); 
+			}
+		}
+ $(function() {
+		var dept=$("#selectDept_0").val();
+
+			if (dept !="") {
+				
+				 $.ajax({
+					type : 'POST',
+					url : '/audit/audit-dashboard-link-getDept-section',
+					contentType : false,
+					data : dept,				
+					success : function(response) {	
+						if (response.message == "success") {
+						$("#selectSection_0").empty();
+						//console.log(response);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val( response.body[i].key);
+							$(option).html( response.body[i].name);
+							$("#selectSection_0").append(option);
+						}
+					}
+					},
+					error : function(e) {
+						console.log("error",e);
+					}
+				});
+			}
+			else {
+				$("#selectSection_0").empty();
+			}
+	
+			
+			var auditIdType=$("#auditTypeId").val();	
+			if($("#auditTypeId").val() != "ADTM005"){
+				$.ajax({
+					type : 'POST',
+					url : '/audit/audit-dashboard-link-getOrganization',
+					contentType : false,
+					data : auditIdType,
+					success : function(response) {
+						if (response.message == "success") {
+							$("#organizaionName").empty();
+							$("#organizaionName").append(option);
+							for (var i = 0; i < response.body.length; i++) {
+								var option = $("<option></option>");
+								$(option).val(response.body[i].key);
+								$(option).html(response.body[i].name);
+								$("#organizaionName").append(option);
+							}
+						}
+
+					},
+					error : function(e) {
+						console.log("error");
+					}
+				});
+			}
+}); 
+ function getDeptHeadList() {
+		var section= $("#selectSection_0").val();
+		$("#inputDeptHeadId_0").empty();
+		//$("#inputDeptHeadId_0").remove();
+		if (section !="") {
+			 $.ajax({
+					type : 'POST',
+					url : '/audit/audit-dashboard-link-getDept-head',
+					contentType : 'application/json; charset=utf-8',
+					data : JSON.stringify(section),
+					success : function(response) {	
+					console.log(response);
+					//$("#inputDeptHeadId_0").empty();
+				    for (var i = 0; i < response.body.length; i++) {
+				    	var option = $("<option></option>");
+						$(option).val( response.body[i].key);
+						$(option).html( response.body[i].name);
+						$("#inputDeptHeadId_0").append(option);
+					}  				 
+				},
+				error : function(e) {
+					console.log("error",e);
+				}
+			});
+		}
+		else {
+			$("#inputDeptHeadId_0").empty();
+		}
+	}
+ 
+
+//save Audit Details
+function saveAudit() {
+	var datas = [];
+	var uploadList = [];
+
+	$("#doctbodyData > tr").each(function(i) {
+		var uFile = $(this).find(".document")[0].files[0];
+		var fileName = $(this).find(".document").val();
+		var data = [];
+		var x = [];
+		if (fileName != '' && fileName != 'undefined' && fileName != null) {
+			var lastIndex = fileName.lastIndexOf("\\");
+			if (lastIndex >= 0) {
+				fileName = fileName.substring(lastIndex + 1);
+			}
+			var reader = new FileReader();
+			reader.readAsDataURL(uFile);
+
+			reader.onload = function() {
+				data = reader.result.split(",");
+				x.push(data[1]);
+			};
+		} else {
+			if ($("#auditTypeId").val()) {
+				fileName = $(this).find(".uploadHidCls").val();
+			} else {
+				x = [];
+			}
+		}
+		uploadData = {};
+		uploadData['auditTypeId'] = $("#auditTypeId").val();
+		uploadData['documnentName'] = $(this).find('.docNoclss').val();
+		uploadData['documentFile'] = x;
+		uploadData['fileName'] = fileName;
+		uploadData['commentName'] =  $(this).find(".comNoclss").val();
+		uploadData['imageNameEdit'] = $(this).find(".uploadHidCls").val();
+		
+		uploadList.push(uploadData);
+		alert(uploadList);
+	});
+
+	setTimeout(function() {    
+		 var auditSummary = CKEDITOR.instances.summary.getData();
+
+		    var section = [];
+		     
+		    $("#dsHiddenId1").each(function () {
+		    	section=$(this).val();
+			});
+		    var deptHead = [];
+		    
+		    $("#dhHiddenId1").each(function () {
+		    	deptHead=$(this).val();
+			});
+
+		item = {};
+		item.auditInitiate = $("#hidAuditInitiate").val();
+		item.auditType = $("#auditTypeId").val();
+		item.auditorName = $("#organizaionName").val();
+		item.financialYear = $("#financialYr").val();
+		item.initiatedBy = $("#initiatedBy").val();
+		item.initiatedDate = $("#initiatedDate").val(); 
+		item.letterNo = $("#letterNo").val();
+		   
+		item.region = $("#region").val();
+		item.regionalManager = $("#regionalManager").val(); 
+		item.concernedFinance = $("#concernedFinance").val();
+		item.quarter = $("#quarter").val(); 
+		
+		item.subject = $("#subject").val();
+		item.summary = auditSummary;
+		item.dept = $("#selectDept_0").val();
+		item.section = section; 
+		item.deptHead = deptHead;
+		item.startDate = $("#startDate").val(); 
+		item.endDate = $("#endDate").val(); 
+	
+		item.documentList = uploadList;
+		datas.push(item);
+		save(datas);
+	}, 1000)
+
+}
+//To save parent table data
+function save(data) {
+	var id = $("#auditTypeId").val();
+	var aId = $("#auditTypeId").val();
+	console.log(JSON.stringify(data))
+	$.ajax({
+		type : "POST",
+		url : "audit-dashboard-link-addAudit",
+		dataType : "json",
+		contentType : "application/json",
+		data : JSON.stringify(data),
+		success : function(response) {
+			if (response.message == "Success") {
+
+				agGrid.simpleHttpRequest({
+					url : 'audit-dashboard-viewAudit?id=' + id
+				}).then(function(data) {
+					var len = data.length;
+					$('#totalReq').find('span').html(len);
+					gridOptions.api.setRowData(data);
+				});
+			      agGrid.simpleHttpRequest({
+		                url: 'audit-dashboard-viewAudit?id=' + aId
+		            }).then(function(data) {
+		            	$('#totalReq').find('span').html(len);
+		            	gridOptions1.api.setRowData(data);
+		            });
+				$("#add").show();
+				$("#myGrid").show();
+				$("#tab1").show();
+				$("#searchRowDiv").show();
+				$("#totalRowDiv").show();
+				$("#demo").hide();
+			}
+		},
+		error : function(response) {
+			console.log(response);
+		}
+	})
+}
+
+/******************         Mange Audit        ***************************************/
+
+	//columnDefs
+	const columnDefs1 = [
+		{
+			headerCheckboxSelection : false,
+			checkboxSelection : true,
+			width : 10,
+			sortable : false,
+			filter : false,
+			resizable : true
+		},{
+		headerName : 'Audit NO',
+		field : "auditInitiate",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editAudit("' + params.data.auditInitiate
+					+ '") href="javascript:void(0)">'
+					+ params.data.auditInitiate + '</a>';
+		}
+	}, {
+		headerName : 'Audit Type',
+		field : "auditType",
+	}, {
+		headerName : 'Financial Year',
+		field : "financialYear",
+	}, {
+		headerName : 'Status',
+		field : "auditStatus",
+		cellStyle : {
+			textAlign : 'center'
+		}
+	}, {
+		headerName : 'Initiated Date',
+		field : "initiatedDate",
+	} ];
+
+	const gridOptions1 = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 250,
+			height : 10
+		},
+		rowSelection : 'single',
+		onSelectionChanged : deleteDetails,
+		suppressRowClickSelection : true,
+		getRowNodeId : function(data) {
+			return data.auditInitiate;
+		}
+
+	};
+
+
+function manageAuditr(){
+	$("#add").hide();
+	$("#myGrid").hide();
+	$("#myGridManageAudit").show();
+	$("#tab1").hide();
+	$("#searchRowDiv").show();
+	$("#totalRowDiv").show();
+	$("#btnDiv").show();
+	$("#demo").hide();
+	$("#save").hide();
+	//$("#Cancel").hide();
+	$("#hideTbl").hide();
+}
+
+//Delete Operation	
+var deleteId = "";
+
+function deleteDetails() {
+
+var selectedRows = gridOptions1.api.getSelectedRows();
+deleteId = "";
+for (var i = 0; i < selectedRows.length; i++) {
+    deleteId =selectedRows[i].auditInitiate;
+}
+
+var rowCount = 0;
+selectedRows.forEach(function() {
+    rowCount = rowCount + 1;
+});
+if (rowCount == 1) {
+    $('#delete').attr("disabled", false);
+} else {
+    $('#delete').attr("disabled", true);
+}
+}
+//Delete Audit function
+function deleteAuditDetails() {
+	var aId = $("#auditTypeId").val();
+$.ajax({
+    type: "GET",
+    url: "/audit/audit-dashboard-link-deleteAudit?deleteId=" + deleteId,
+    async: false,
+    success: function(response) {
+        console.log(response)
+        if (response.message == "Success") {
+            agGrid.simpleHttpRequest({
+                url: 'audit-dashboard-viewAudit?aId=' + id
+            }).then(function(data) {
+            	gridOptions1.api.setRowData(data);
+            });
+            $('#delete').attr("disabled", true);
+
+        }
+
+    },
+    error: function(data) {
+
+    }
+
+});
+
+}
+//Edit Audit Details
+function editAudit(id) {
+	add()
+	$("#save").show();
+
+	agGrid.simpleHttpRequest({
+				url : 'audit-dashboard-editAudit?id=' + id
+			}).then(function(data) {
+						$("#auditNoSpan").html(data[0].auditInitiate);
+						$("#hidAuditInitiate").val(data[0].auditInitiate);
+						$("#auditTypeId").val(data[0].auditTypeId);
+						$("#auditTypeId").val(data[0].auditType);
+						$("#financialYr").val(data[0].financialYear);
+						$("#initiatedBy").val(data[0].initiatedBy);
+						$("#initiatedDate").val(data[0].initiatedDate);
+						$("#letterNo").val(data[0].letterNo);
+						$("#region").val(data[0].region);
+						getAuditorList()
+						$("#quarter").val(data[0].quarter);
+						
+						$("#subject").val(data[0].subject);
+						CKEDITOR.instances['summary'].setData(data[0].summary);
+						$("#dsHiddenId1").val(data[0].sectionList);
+						$("#startDate").val(data[0].startDate);
+						$("#endDate").val(data[0].endDate);
+						$("#doctbodyData").empty();
+					
+
+						var documentList = data[0].documentList;
+						if (documentList != null && documentList != "") {
+							for (var i = 0; i < documentList.length; i++) {
+
+								var tbl = '<tr>'
+									+ '<td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+									+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+									+ '<td><div class="form-group"> <input type="text" value="'+documentList[i].documnentName+'" class="form-control docNoclss" id="docnoid_0'+i+'"> </div></td>'
+								 /*+ '<td><div class="form-group"> <input type="text" value="'+documentList[i].commentName+'" class="form-control docNoclss" id="docnoidd_0'+i+'"> </div></td>' */
+									+ '<td><div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_'+i+'" id="uploadFor_'+i+'"> <i class="ti-pencil" id="clickImg_'+i+'"></i> </label>'
+									+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_'
+									+ i
+									+ '"name="userImage" onchange="saveMultiFile(event)" /> </div>'
+									+ '</div> <input type="hidden" id="uploadHidden_'+i+'" value="'+documentList[i].fileName+'" class="uploadHidCls">'
+									+ '<div id="uploadedBillDiv_'+i+'" align="center" class="uploadedBillCls"><div class="uploadicon position-l">'
+									+ documentList[i].action
+									+ '</div></div>'
+									+ '<div id="imageName_'+i+'" class="imageName">'
+									+ documentList[i].fileName
+									+ '</div>'
+									+ '<td><div class="form-group"> <input type="text" value="'+documentList[i].commentName+'" class="form-control comNoclss" id="docnoidd_0'+i+'"> </div></td>'
+									+ '<input type="hidden" id="editId_'+i+'" value="'+ documentList[i].auditTypeId+'">'
+									+ '<div id="dltImage_'+i+'" class="custom-file-delete"><i class="ti-close position-l rmv1" onclick="openDeleteConfirm()"></i></div> </td>'
+									+ '</tr>';
+
+							$("#doctbodyData").append(tbl);
+
+						}
+					} else {
+						//$("#doctbodyData").empty();
+						var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+								+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docid_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+								+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoid_0" onblur="checkForDuplicateEntry(event)"></div></td>'
+								 + '<td><div class="form-group"> <input type="text" value="" class="form-control comNoclss" id="docnoidd_0" onblur="checkForDuplicateEntry(event)"></div></td>' 
+								+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_0" id="uploadFor_0"> <i class="ti-plus" id="clickImg_0"></i> </label>'
+								+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDoc_0" id="uploadFor_0"> <i class="ti-plus" id="clickImg_0"></i> </label>'
+								+ '<div class="controls"> <input type="file" class="document" id="uploadDoc_0" name="userImage" onchange="saveMultiFile(event)" /></div> </div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">'
+								+ '<div id="uploadedBillDiv_0" align="center" class="uploadedBillCls"></div> <div id="imageName_0" class="imageName"></div><div id="dltImage_0" class="dltImage" ></div><input type="hidden" id="editId_0></td>'
+								+ '</tr>';
+						$("#doctbodyData").append(tbl);
+					}
+
+					});
+
+}
+
+function saveDraftdata(datas){
+	$.ajax({
+		type : "POST",
+		url : "audit-dashboard-link-Meeting-saveDraft",
+		dataType : "json",
+		contentType : "application/json",
+		data : JSON.stringify(datas),
+		success : function(response) {
+			if (response.message == "Success") {
+				$("#meetingIdSpan").html(response.body[0].meetingId);
+
+			}
+		},
+		error : function(response) {
+			console.log(response);
+		}
+	})
+
+}
+
+
+
+function saveDraftDetails() {
+	alert('rohanwwe');
+	var datas = [];
+	var uploadList = [];
+	var allValid = true;
+	if (allValid) {
+		 var participantName = "";
+			var personCC ="";
+			
+			$("#toHiddenId1").each(function () {
+				participantName=$(this).val();
+			});
+		$("#doctbodySecondData > tr").each(
+				function(i) {
+					var uFile = $(this).find(".document")[0].files[0];
+					var fileName = $(this).find(".document").val();
+					var data = [];
+					var x = [];
+					if (fileName != '' && fileName != 'undefined'
+							&& fileName != null) {
+						var lastIndex = fileName.lastIndexOf("\\");
+						if (lastIndex >= 0) {
+							fileName = fileName.substring(lastIndex + 1);
+						}
+						var reader = new FileReader();
+						reader.readAsDataURL(uFile);
+
+						reader.onload = function() {
+							data = reader.result.split(",");
+							x.push(data[1]);
+						};
+					} else {
+						if ($("#meetingId").val()) {
+							fileName = $(this).find(".uploadHidCls").val();
+						} else {
+							x = [];
+						}
+					}
+					uploadData = {};
+					uploadData['meetingId'] = $("#meetingId").val();
+					uploadData['draftNo'] = $("#draftNo").val();
+					uploadData['documnentName'] = $("#docnoidMail_" + i).val(); 
+					uploadData['documentFile'] = x;
+					uploadData['fileName'] = fileName;
+					uploadData['imageNameEdit'] = $(this).find(".uploadHidCls").val();
+					uploadList.push(uploadData);
+				});
+
+		
+
+
+   // audit = {};
+ 
+		
+		
+			setTimeout(function() {
+			mail = {};
+			
+			   // audit = {};
+			    mail['draftNo'] = $('#draftNo').val();
+			    mail['meetingId'] = $('#meetingId').val();
+			    mail['draftDate'] = $('#datemail').val();
+			    mail['draftfromtime'] = $('#startTimemail').val();
+			    mail['draftendtime'] = $('#endTimemail').val();
+			    mail['draftsubject'] = $('#subjectmail').val();
+			
+			    
+			    mail['draftDepartment'] = $('#departmentidmail_').val();
+			  
+			    mail.draftparticipant =  participantName;
+			    mail.draftComment = CKEDITOR.instances.commentckmail.getData();
+			    mail.documentList = uploadList;
+			    
+			   
+				console.log(mail.documentList);
+			datas.push(mail);
+			console.log(datas)
+			saveDraftdata(datas);
+		}, 1000)
+
+	}
+}
+
+
+function draftsend() {
+	$("#sendDraft").hide();
+	//$("#cancelDraft").show();
+	send();
+
+	}
+
+function draft() {
+	
+	var selectedRows = gridOptions.api.getSelectedRows();
+	var meetingId = selectedRows[0].meetingId;
+	var gridDivdraft = document.querySelector('#myGriddraft');
+	new agGrid.Grid(gridDivdraft, gridOptionsdraft);
+	
+	agGrid.simpleHttpRequest({
+	url : "audit-dashboard-link-Meeting-viewSaveDraft?meetingId="+meetingId
+	}).then(function(data) {
+	gridOptionsdraft.api.setRowData(data);
+	});
+
+	
+$("#add").hide();
+$("#draft").hide();
+$("#delete").hide();
+$("#myGridManageAudit").hide();
+
+$("#tab1").hide();
+$("#save").hide();
+$("#submitBtnBtn").hide();
+$("#Cancel").show();
+$("#hideTbl").hide();
+$("#send").hide();
+$("#sendmail").hide();
+$("#cancelMail").show();
+$("#savemail").hide();
+$("#sendDraft").show();
+$("#sendlist").hide();
+$("#myGriddraft").show();
+}
+
+function sendDraft() {
+
+$("#add").hide();
+$("#delete").hide();
+$("#myGrid").hide();
+$("#tab1").hide();
+$("#save").hide();
+$("#submitBtnBtn").hide();
+$("#Cancel").show();
+$("#hideTbl").hide();
+$("#sendmail").show();
+$("#savemail").show();
+$("#sendDraft").hide();
+$("#sendlist").hide();
+}
+
+
+//Send Mail		
+function send() {
+	
+$("#cancelMail").show();
+$("#add").hide();
+$("#delete").hide();
+$("#myGridManageAudit").hide();
+$("#tab1").hide();
+$("#save").hide();
+$("#submitBtnBtn").hide();
+$("#Cancel").show();
+$("#hideTbl").hide();
+$("#sendmail").show();
+$("#savemail").show();
+$("#sendDraft").hide();
+$("#send").hide();
+$("#draft").hide();
+$("#sendlist").show();
+$("#myGriddraft").hide();
+$("#noticeiddiv").hide();
+$("#doctbodySecondData").empty();
+var tbl = '<tr> <td style="display:none" align="center" class="pdb-24"><input class="checkCls" type="checkbox" id="check2"><label for="check2"></label></td>'
+	+ '<td style="display:none"><div class="form-group"> <select class="form-control documentclss" id="docidMail_0" onblur="removeValid(event);"> <option value="">Select</option> </select> </div></td>'
+	+ '<td><div class="form-group"> <input type="text" value="" class="form-control docNoclss" id="docnoidMail_0"  onblur="checkForDuplicateEntry(event)"></div></td>'
+	+ '<td> <div class="control-group position-r"> <label class="custom-file-upload" for="uploadDocMail_0" id="uploadFor_0"> <i class="ti-plus" id="clickImgMail_0"></i> </label>'
+	+ '<div class="controls"> <input type="file" class="document" id="uploadDocMail_0" name="userImage" onchange="saveMultiDocument(event)" /></div> </div> <input type="hidden" id="uploadHiddenMail_0" class="uploadHidCls">'
+	+ '<div id="uploadedBillDivMail_0" align="center" class="uploadedBillCls"></div> <div id="imageNameMail_0" class="imageName"></div><div id="dltImageMail_0" class="dltImage"></div><input type="hidden" id="editIdMail_0></td>'
+	+ '</tr>';
+$("#doctbodySecondData").append(tbl);
+var selectedRows = gridOptions.api.getSelectedRows();
+if (selectedRows.length > 0) {
+
+var auditTypeId = selectedRows[0].auditTypeId;
+$("#auditNoSpan").html(auditTypeId);
+$("#auditTypeId").val(auditTypeId);
+}
+
+}
+
+</script>
+</head>
+<!--********************************         Body Part         ******************************************-->
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<div class="content_padding">
+						<div id="tab1">
+							<div class="row">
+								<input type="hidden" th:value="${auditTypeId}" id="ID" /> <input
+									type="hidden" th:value="${auditType}" id="ID1" /> <input
+									type="hidden" th:value="${auditTypeName}" id="ID2" /> <input
+									type="hidden" th:value="${auditTypeIdName}" id="ID3" /><input
+									type="hidden" value="" id="param1" /> <input type="hidden"
+									value="" id="param2" />
+
+								<div class="col-md-2">
+									<a onclick="setLocalStorage();"
+										th:href="${'/audit/audit-dashboard-link-meeting?id='+ auditType+'&name='+auditTypeName}">
+										<div class="box_yellow hover-class">
+											<i class="fa fa-calendar fa-2x" aria-hidden="true"></i>
+											<div class="inner-box-text">Schedule Meeting</div>
+										</div>
+									</a>
+								</div>
+								<div class="col-md-2">
+									<a
+										th:href="${'/audit/audit-dashboard-link-commensement?id='+ auditType+'&name='+auditTypeName}">
+										<div class="box_blue hover-class">
+											<i class="fa fa-upload fa-2x" aria-hidden="true"></i>
+											<div class="inner-box-text">Commencement Of Audit</div>
+										</div>
+									</a>
+								</div>
+								<div class="col-md-2">
+								<a
+								th:href="${'/audit/audit-dashboard-manage?id='+ auditType+'&name='+auditTypeName}">
+									<div class="box_green hover-class" >
+										
+										<i class="fa fa-tasks fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Manage Audit</div>
+									</div>
+									</a>
+								</div>
+								<div class="col-md-2">
+									<a
+										th:href="${'/audit/audit-dashboard-link-doc?id='+ auditType+'&name='+auditTypeName}">
+										<div class="box_blue hover-class">
+											<i class="fa fa-upload fa-2x" aria-hidden="true"></i>
+											<div class="inner-box-text">Upload Documents</div>
+										</div>
+									</a>
+								</div>
+								<!-- 		<div class="col-md-2">
+									<a onclick="setLocalStorage();"
+										th:href="${'/audit/audit-dashboard-link-viewDoc?id='+ auditType+'&name='+auditTypeName}">
+									<div class="box_brown hover-class" >
+										<i class="fa fa-file fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">View Documents</div>
+									</div>
+									</a>
+								</div> -->
+								<div class="col-md-2">
+									<div class="box_green hover-class">
+										<i class="fa fa-clock-o fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">In Progress</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="box_blue hover-class">
+										<i class="fa fa-briefcase fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Today case</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div class="box_brown hover-class">
+										<i class="fa fa-save fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Audit Report</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="box_blue hover-class">
+										<i class="fa fa-bar-chart fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Audit Document Report</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<a
+										th:href="${'/audit/audit-dashboard-link-trail?id='+ auditType+'&name='+auditTypeName}">
+										<div class="box_brown hover-class">
+											<i class="fa fa-history fa-2x" aria-hidden="true"></i>
+											<div class="inner-box-text">Audit Trail</div>
+										</div>
+									</a>
+								</div>
+								<div class="col-md-2" id="intDashboard">
+									<div class="box_green hover-class">
+										<i class="fa fa-file fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Executive Summary</div>
+									</div>
+								</div>
+								<div class="col-md-2" id="TransDashboard">
+									<div class="box_blue hover-class">
+										<i class="fa fa-file fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">Add Outstanding Paras</div>
+									</div>
+								</div>
+								<div class="col-md-2" id="TransDashboard1">
+									<div class="box_blue hover-class">
+										<i class="fa fa-file fa-2x" aria-hidden="true"></i>
+										<div class="inner-box-text">View Outstanding Paras</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="row margin_topbot" id="searchRowDiv">
+
+							<div class="input-style row">
+								<input type="text" placeholder="Search.." name="search"
+									class="searchboxinput" onkeyup="cancelBar()"
+									oninput="onQuickFilterChanged()" id="quickFilter">
+								<div class="searchicon">
+									<a href="javascript:void(0)"><span
+										style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+										id="closeKey"
+										onclick="gridOptionsEmp.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+										class="close_i"><i class="ti-close srchicon"></i></span></a><a
+										href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row" id="totalRowDiv">
+							<div class="col-md-6">
+								<div class="font-design" id="totalReq">
+									Audit Details (<span></span>)
+								</div>
+							</div>
+							<div class="col-md-6" id="btnDiv">
+								<button onclick="deleteAuditDetails()" class="btn3" id="delete">delete</button>
+								<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+								<button onclick="draft();" class="btn1" id="draft">Drafts</button>
+
+								<button onclick="saveDraftDetails();" class="btn1" id="savemail">Save</button>
+								<button onclick="draftsend();" class="btn1" id="sendDraft">Send</button>
+
+								<!-- 	<button onclick="add();" class="btn1" id="add">New</button> -->
+							</div>
+						</div>
+
+						<div id="myGrid" style="height: 500px; width: 100%;"
+							class="ag-theme-alpine"></div>
+
+						<div id="myGridManageAudit" style="height: 500px; width: 100%;"
+							class="ag-theme-alpine"></div>
+
+						<div id="demo">
+							<!-- <div class="card-title">
+								<h4>Commencement Of Audit :-</h4>
+							</div> -->
+							<div class="row">
+								<div class="col-md-9" id="bttn">
+									Audit No: <span id="auditNoSpan"></span>
+								</div>
+
+								<div class="col-md-3">
+									<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+									<button id="save" onclick="saveAudit()" class="btn1">save</button>
+								</div>
+
+							</div>
+
+							<div class="row" id="addData">
+								<input type="hidden" id="auditInitiate">
+								<div class="col-md-4">
+									<input type="hidden" id="hidAuditInitiate">
+									<div class="form-group">
+
+										<label>Audit Type</label><input type="hidden" id="auditTypeId"
+											th:value="${auditTypeId}"> <input type="text"
+											id="auditTypeName" class="form-control"
+											th:value="${auditTypeIdName}" readonly />
+									</div>
+								</div>
+								<div class="col-md-4" id="intaudFld1" style="display: none;">
+									<div class="form-group">
+										<label>Region</label>
+										<div class="select">
+											<select id="region" onchange="getAuditorList();">
+												<option th:value="NULL">- Select Region -</option>
+												<option th:each="c,iter:${regionList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group" id="organizaionDiv">
+										<label>Auditor</label>
+										<div class="select">
+											<select id="organizaionName">
+												<option th:value="NULL">- Select Auditor -</option>
+												<option th:each="c,iter:${auditorList}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-4" id="intaudFld2" style="display: none;">
+
+									<!-- for internal audit -->
+									<div class="form-group">
+										<label>Regional Manager</label>
+										<div class="select">
+											<select class="form-control" id="regionalManager">
+											</select>
+										</div>
+
+									</div>
+								</div>
+								<div class="col-md-4" id="intaudFld3" style="display: none;">
+									<div class="form-group">
+										<label>Concerned Finance Head</label>
+										<div class="select">
+											<select class="form-control" id="concernedFinance">
+											</select>
+										</div>
+									</div>
+									<!-- for internal audit -->
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Financial Year</label>
+										<div class="select">
+											<select id="financialYr">
+												<option th:value="NULL">- Select Financial Year -</option>
+												<option th:each="c,iter:${financialYearList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- for initiate internal audit -->
+								<div class="col-md-4" id="intaudFld4" style="display: none;">
+									<div class="form-group">
+										<label>Quarter</label>
+										<div class="select">
+											<select id="quarter">
+												<option value="">- Select -</option>
+												<option th:each="c,iter:${getQuarterList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+									<!-- for initiate internal audit -->
+								</div>
+								<div class="col-md-4" id="fld1" style="display: none;">
+									<div class="form-group">
+										<label>Date Of Submission</label><input type="text"
+											id="submissionDate" autocomplete="off" class="form-control"
+											onblur="removeValid(event)"
+											placeholder="Enter Date of submission to C & AG"
+											th:attr="onkeyup=|formatDate('submissionDate','${session.DATEFORMAT_JS}')|"
+											readonly> <i class="ti-calendar picker_calendar"
+											id="startDateCalendar"></i>
+									</div>
+								</div>
+
+								<div class="col-md-4" id="cmnFld1">
+									<div class="form-group">
+										<label>Initiated By</label> <input type="text"
+											class="form-control" id="initiatedBy"
+											placeholder="Enter Initiater Name">
+									</div>
+								</div>
+								<div class="col-md-4" id="dateHide" style="display: none;">
+									<div class="form-group">
+										<label id="cmnFld2">Date</label> <label id="intaudFld5">Date
+											Of Initiation</label> <input type="text" id="initiatedDate"
+											autocomplete="off" class="form-control"
+											onblur="removeValid(event)" placeholder="Enter Date and Time"
+											th:attr="onkeyup=|formatDate('initiatedDate','${session.DATEFORMAT_JS}')|"
+											readonly> <i class="ti-calendar picker_calendar"
+											id="endDateDateCalendar"></i>
+									</div>
+								</div>
+
+								<div class="col-md-4" id="cmnFld3">
+									<div class="form-group">
+										<label>Letter No</label> <input type="text" id="letterNo"
+											autocomplete="off" class="form-control"
+											placeholder="Enter Letter No">
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="heading" id="subjectmail">Subject:</div>
+									<input type="text" id="subject" class="form-control"
+										placeholder="Write Your Subject Here....."
+										style="width: 100%; height: 40px">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+
+									<div class="heading">Audit Summary</div>
+									<textarea id="summary" name="editor1" rows="10" cols="80">
+
+										</textarea>
+								</div>
+							</div>
+
+							<!-- Document Section -->
+							<div class="panel panel-default" style="width: 100%;">
+								<div class="panel-heading" role="tab" id="headingNine">
+									<h4 class="panel-title">
+										<a class="collapsed mainSecond" role="button"
+											data-toggle="collapse" data-parent="#accordion"
+											href="#collapseNine" aria-expanded="true"
+											aria-controls="collapseNine"> DOCUMENTS </a>
+									</h4>
+								</div>
+								<div id="collapseNine" class="panel-collapse collapse show"
+									role="tabpanel" aria-labelledby="headingNine">
+									<div class="row">
+										<div class="col-md-12 btn-hs1 padding-7" align="right">
+											<button class="btn1" id="saveAttachmentBtn"
+												onclick="checkEmpty();">New</button>
+										</div>
+									</div>
+									<table id="docTbl" cellspacing="7" cellpadding="7">
+										<thead>
+											<tr class="tr_clone">
+												<!-- <th align="center"></th> -->
+
+												<th width="320">Document Name</th>
+												<th width="320">Attachment</th>
+												<th width="380">Comment</th>
+
+											</tr>
+										</thead>
+										<tbody id="doctbodyData">
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- Document Section end -->
+							<!-- Audit Details Section -->
+							<div class="panel panel-default" style="width: 100%;">
+								<div class="panel-heading" role="tab" id="headingTwo">
+									<h4 class="panel-title">
+										<a class="collapsed mainSecond" role="button"
+											data-toggle="collapse" data-parent="#accordion"
+											href="#collapseTwo" aria-expanded="true"
+											aria-controls="collapseTwo"> Audit Details </a>
+									</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse show"
+									role="tabpanel" aria-labelledby="headingTwo">
+
+									<div class="row">
+										<div class="col-md-2">
+											<div class="form-group">
+												<label>Department</label><input type="hidden"
+													class="auditIdCls" id="auditId_0">
+												<div class="select">
+													<select id="selectDept_0" onchange="getSectionList();">
+
+														<option th:each="c,iter:${deptList}" th:value="${c.key}"
+															th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label>Department Section:</label> <select
+													id="selectSection_0" onchange="getDeptHeadList();" multiple
+													style="display: block !important;">
+													<option th:each="g,iter:${sectionList}" th:value="${g.key}"
+														th:text="${g.name}"></option>
+
+												</select> <input type="hidden" id="dsHiddenId1" />
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label>Department Head:</label> <select
+													id="inputDeptHeadId_0" multiple>
+													<option th:each="f,iter:${deptHeadList}"
+														th:value='${f.key}' th:text="${f.name}"></option>
+
+												</select> <input type="hidden" id="dhHiddenId1">
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label> Start Date</label><input type="text" id="startDate"
+													autocomplete="off" class="form-control"
+													onblur="removeValid(event)" placeholder="Enter start Date"
+													th:attr="onkeyup=|formatDate('startDate','${session.DATEFORMAT_JS}')|"
+													readonly> <i class="ti-calendar picker_calendar"
+													id="startDateCalendar1"></i>
+											</div>
+										</div>
+										<div class="col-md-2">
+											<div class="form-group">
+												<label> End Date</label><input type="text" id="endDate"
+													autocomplete="off" class="form-control"
+													onblur="removeValid(event)" placeholder="Enter end Date"
+													th:attr="onkeyup=|formatDate('endDate','${session.DATEFORMAT_JS}')|"
+													readonly> <i class="ti-calendar picker_calendar"
+													id="endDateCalendar1"></i>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<!--  Audit Details Section end -->
+						</div>
+						<div id="sendlist">
+							<div class="row">
+								<div class="col-md-3">
+									Meeting ID: <span id="auditNoSpan"></span>
+								</div>
+							</div>
+							<div class="row">
+						<!-- 	<input type="hidden" id="employeeid" th:value="${emplists}"> -->
+							
+							
+							<div class="col-md-2">
+											<div class="form-group">
+												<label>Department</label><input type="hidden"
+													class="auditIdCls" id="auditId_0">
+												<div class="select">
+													<select id="selectDept_0" onchange="getSectionList();">
+
+														<option th:each="c,iter:${deptList}" th:value="${c.key}"
+															th:text="${c.name}"></option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label>Department Section:</label> <select
+													id="selectSection_0" onchange="getDeptHeadList();" multiple
+													style="display: block !important;">
+													<option th:each="g,iter:${sectionList}" th:value="${g.key}"
+														th:text="${g.name}"></option>
+
+												</select> <input type="hidden" id="dsHiddenId1" />
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+												<label>Department Head:</label> <select
+													id="inputDeptHeadId_0" multiple>
+													<option th:each="f,iter:${deptHeadList}"
+														th:value='${f.key}' th:text="${f.name}"></option>
+
+												</select> <input type="hidden" id="dhHiddenId1">
+											</div>
+										</div>
+							
+							
+						
+								
+								<div class="col-md-4">
+									<label>Date</label> <input type="text" id="datemail"
+										class="form-control" onblur="removeValid(event)"
+										th:attr="onkeyup=|formatDate('date','${session.DATEFORMAT_JS}')|">
+									<i class="ti-calendar picker_calendar" id="startDateCalendar1"></i>
+								</div>
+
+
+
+
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>From Time</label> <input type="text"
+											class="form-control transparenttxtbox" placeholder=""
+											id="startTimemail">
+									</div>
+
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>To Time</label> <input type="text"
+											class="form-control transparenttxtbox" placeholder=""
+											id="endTimemail">
+									</div>
+
+								</div>
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label>Subject</label>
+										<textarea id="subjectmail"></textarea>
+									</div>
+								</div>
+								<div class="col-md-6">
+																	<div class="form-group">
+																		<label>Department</label>
+																		<div class="select">
+																			<select class="form-control   departmentclsss" id="departmentidmail_">
+																				<option value="">Select</option>
+																				<option th:each="c,iter:${deptList}"
+																					th:value="${c.key}" th:text="${c.name}"></option>
+																			</select>
+																		</div>
+																	</div>
+																</div>
+								
+								                             <div class="col-md-6">	
+										<div>Participant:</div>
+										
+										<select id="multiple89" multiple>
+								<option th:each="c,iter:${empList}" th:value='${c.key}'
+									th:text="${c.name}"
+									th:attr="data-email=${c.email}">
+									
+									</option>
+
+							</select> <input type="hidden" id="toHiddenId1">
+							<input type="hidden" id="email">
+											
+											</div>
+	
+							<div class="col-lg-12k">
+									<div class="form-group">
+										<label>Comment</label>
+										<textarea id="commentckmail"></textarea>
+									</div>
+								</div>
+</div>
+							<!-- end -->
+
+							<!-- Document Section For Send Mail -->
+							<div class="panel panel-default" style="width: 100%;">
+								<div class="panel-heading" role="tab" id="headingTwo">
+									<h4 class="panel-title">
+										<a class="collapsed mainSecond" role="button"
+											data-toggle="collapse" data-parent="#accordion"
+											href="#collapseTwo" aria-expanded="true"
+											aria-controls="collapseTwo"> ATTACHMENT </a>
+									</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse show"
+									role="tabpanel" aria-labelledby="headingTwo">
+									<div class="row">
+										<div class="col-md-12 btn-hs1 padding-7" align="right">
+											<button class="btn1" id="saveAttachmentBtnMail"
+												onclick="checkEmptySend();">New</button>
+										</div>
+									</div>
+									<table id="docSecondTbl" cellspacing="7" cellpadding="7">
+										<thead>
+											<tr class="tr_clone">
+												<!-- <th align="center"></th> -->
+
+												<th width="320">Document Name</th>
+												<th width="380">Attachment</th>
+											</tr>
+										</thead>
+										<tbody id="doctbodySecondData">
+											<!-- 		<tr>
+												<td style="display: none" align="center" class="pdb-24"><input
+													class="checkCls" type="checkbox" id="check2"><label
+													for="check2"></label></td>
+												<td style="display: none"><div class="form-group">
+
+
+														<select class="form-control documentclss" id="docid_0"
+															onblur="removeValid(event);">
+															<option value="">--Select--</option>
+															<option th:each="c,iter:${documentTypeList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div></td>
+												<td><div class="form-group">
+														<input type="text" value="" class="form-control docNoclss"
+															id="docnoid_0">
+													</div></td>
+
+												<td>
+													<div class="control-group position-r">
+														<label class="custom-file-upload" for="uploadDoc_0"
+															id="uploadFor_0"> <i id="clickImg_0"
+															class="ti-plus"></i>
+														</label>
+														<div class="controls">
+
+															<input type="file" class="document" id="uploadDoc_0"
+																name="userImage" accept="image/*"
+																onchange="saveMultiFile(event)" />
+
+														</div>
+													</div> <input type="hidden" id="uploadHidden_0"
+													class="uploadHidCls">
+													<div id="uploadedBillDiv_0" align="center"
+														class="uploadedBillCls"></div>
+													<div id="imageName_0" class="imageName"></div>
+													<div id="dltImage_0" class="dltImage"></div>
+												</td>
+
+											</tr> -->
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<!-- Document Section end-->
+						</div>
+					</div>
+					
+					<!-- delete attachment modal start -->
+					<div id="deleteAttachment" class="modal fade show"
+						aria-modal="true">
+						<div class="modal-dialog modal-confirm">
+							<div class="modal-content">
+								<div class="modal-header flex-column">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true" onclick="cancelModalProductBtn()">
+										<i class="ti-close modal-close"></i>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p>Do you really want to delete these records? This process
+										cannot be undone.</p>
+									<input type="hidden" id="dltValue">
+								</div>
+								<div class="modal-footer justify-content-center">
+
+									<button type="button" class="btn4" data-dismiss="modal"
+										onclick="closeDeleteConfirm();">Cancel</button>
+									<button type="button" class="btn3"
+										onclick="deletAttachmentRow()">Delete</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- alert modal start -->
+					<div id="alert" class="modal fade show" aria-modal="true">
+						<div class="modal-dialog modal-confirm">
+							<div class="modal-content">
+								<div class="modal-header flex-column">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true" onclick="cancelModalBtn()">
+										<i class="ti-close modal-close"></i>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p id="textId"></p>
+								</div>
+								<div class="modal-footer justify-content-center"
+									style="margin-top: -30px;">
+
+									<button type="button" class="btn4" data-dismiss="modal"
+										onclick="cancelModalBtn();">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>
